@@ -23,7 +23,8 @@ package org.mxupdate.eclipse.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
@@ -50,13 +51,24 @@ public class UpdateHandler
      */
     public Object execute(final ExecutionEvent _event)
     {
-        final IEditorPart activeEditor = HandlerUtil.getActiveEditor(_event);
-        if (activeEditor != null)  {
-            final IEditorInput input = activeEditor.getEditorInput();
-            if (input instanceof IFileEditorInput)  {
-                final IFile file = ((IFileEditorInput) input).getFile();
-                final IPath filePath = file.getLocation();
-                Activator.getDefault().update(filePath.toString());
+        final ISelection selection = HandlerUtil.getCurrentSelection(_event);
+
+        // selection from the navigator? (popup)
+        if (selection instanceof TreeSelection)  {
+            final TreeSelection treeSel = (TreeSelection) selection;
+            for (final Object obj : treeSel.toList())  {
+                final IFile file = (IFile) obj;
+                Activator.getDefault().update(file.getLocation().toString());
+            }
+        // started within editor or as toolbar command
+        } else  {
+            final IEditorPart activeEditor = HandlerUtil.getActiveEditor(_event);
+            if (activeEditor != null)  {
+                final IEditorInput input = activeEditor.getEditorInput();
+                if (input instanceof IFileEditorInput)  {
+                    final IFile file = ((IFileEditorInput) input).getFile();
+                    Activator.getDefault().update(file.getLocation().toString());
+                }
             }
         }
         return null;
