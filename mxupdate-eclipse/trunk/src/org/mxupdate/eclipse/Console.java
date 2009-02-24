@@ -26,8 +26,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -47,27 +46,27 @@ public class Console
     public enum LogLevel
     {
         /** Debug log level with blue color. */
-        DEBUG(SWT.COLOR_BLUE),
+        DEBUG(new Color(null, 0, 0, 255)),
         /** Error log level with dark red color. */
-        ERROR(SWT.COLOR_DARK_RED),
+        ERROR(new Color(null, 128, 0, 0)),
         /** Info log level with black color. */
-        INFO(SWT.COLOR_BLACK),
+        INFO(new Color(null, 0, 0, 0)),
         /** Trace log level with gray color. */
-        TRACE(SWT.COLOR_GRAY),
+        TRACE(new Color(null, 192, 192, 192)),
         /** Warning log level with dark magenta color. */
-        WARN(SWT.COLOR_DARK_MAGENTA);
+        WARN(new Color(null, 255, 0, 255));
 
         /**
          * Defines the used color for the log level.
          */
-        final int color;
+        final Color color;
 
         /**
          * Creates a new instance of the log level.
          *
          * @param _color    color for the log level
          */
-        private LogLevel(final int _color)
+        private LogLevel(final Color _color)
         {
           this.color = _color;
         }
@@ -83,15 +82,6 @@ public class Console
             = new HashMap<Console.LogLevel,MessageConsoleStream>();
 
     /**
-     * Are the colors of the {@link #streams} already defined? Then the value
-     * is <i>true</i>. Otherwise the colors for the streams depending on the
-     * {@link LogLevel} are not defined.
-     *
-     * @see #defineColors()
-     */
-    private boolean colorsDefined = false;
-
-    /**
      * Creates new MxUpdate console with all {@link #streams} depending on the
      * log levels {@link LogLevel}.
      */
@@ -101,25 +91,8 @@ public class Console
         for (final Console.LogLevel logLevel : Console.LogLevel.values())  {
             final MessageConsoleStream stream = this.newMessageStream();
             stream.setActivateOnWrite(true);
+            stream.setColor(logLevel.color);
             this.streams.put(logLevel, stream);
-        }
-    }
-
-    /**
-     * Defines the colors for all {@link #streams} depending on the log levels
-     * {@link LogLevel} if not defined.
-     *
-     * @see #colorsDefined
-     * @see #streams
-     */
-    private void defineColors()
-    {
-        if (!this.colorsDefined)  {
-            final Display display = ConsolePlugin.getStandardDisplay();
-            for (final Map.Entry<Console.LogLevel,MessageConsoleStream> entry : this.streams.entrySet())  {
-                entry.getValue().setColor(display.getSystemColor(entry.getKey().color));
-            }
-            this.colorsDefined = true;
         }
     }
 
@@ -137,9 +110,6 @@ public class Console
                         final Throwable _e)
     {
         ConsolePlugin.getDefault().getConsoleManager().showConsoleView(this);
-        if (!this.colorsDefined)  {
-            this.defineColors();
-        }
         final MessageConsoleStream stream = this.streams.get(_logLevel);
         final StringBuilder text = new StringBuilder().append(_text);
 
