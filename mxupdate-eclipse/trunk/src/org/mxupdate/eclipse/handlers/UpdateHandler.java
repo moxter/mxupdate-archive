@@ -20,15 +20,9 @@
 
 package org.mxupdate.eclipse.handlers;
 
-import org.eclipse.core.commands.AbstractHandler;
-import org.eclipse.core.commands.ExecutionEvent;
+import java.util.List;
+
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.TreeSelection;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IEditorPart;
-import org.eclipse.ui.IFileEditorInput;
-import org.eclipse.ui.handlers.HandlerUtil;
 import org.mxupdate.eclipse.Activator;
 
 /**
@@ -39,38 +33,20 @@ import org.mxupdate.eclipse.Activator;
  * @version $Id$
  */
 public class UpdateHandler
-        extends AbstractHandler
+        extends AbstractFileHandler
 {
     /**
      * the command has been executed, so extract extract the needed information
      * from the application context.
      *
-     * @param _event  execution event
-     * @return always <code>null</code>
+     * @param _files    set of files for which this handler is called
      * @see Activator#update(String)
      */
-    public Object execute(final ExecutionEvent _event)
+    @Override
+    protected void execute(final List<IFile> _files)
     {
-        final ISelection selection = HandlerUtil.getCurrentSelection(_event);
-
-        // selection from the navigator? (popup)
-        if (selection instanceof TreeSelection)  {
-            final TreeSelection treeSel = (TreeSelection) selection;
-            for (final Object obj : treeSel.toList())  {
-                final IFile file = (IFile) obj;
-                Activator.getDefault().update(file.getLocation().toString());
-            }
-        // started within editor or as toolbar command
-        } else  {
-            final IEditorPart activeEditor = HandlerUtil.getActiveEditor(_event);
-            if (activeEditor != null)  {
-                final IEditorInput input = activeEditor.getEditorInput();
-                if (input instanceof IFileEditorInput)  {
-                    final IFile file = ((IFileEditorInput) input).getFile();
-                    Activator.getDefault().update(file.getLocation().toString());
-                }
-            }
+        for (final IFile file : _files)  {
+            Activator.getDefault().update(file.getLocation().toString());
         }
-        return null;
     }
 }
