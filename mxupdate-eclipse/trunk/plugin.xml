@@ -71,6 +71,11 @@
                class="org.mxupdate.eclipse.handlers.UpdateHandler">
          </defaultHandler>
       </command>
+      <command
+            id="org.mxupdate.eclipse.command.compare"
+            name="%CompareHandler.Label">
+         <defaultHandler class="org.mxupdate.eclipse.handlers.CompareHandler"/>
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -91,7 +96,6 @@
             <command
                   commandId="org.mxupdate.eclipse.command.update"
                   icon="icons/Update.gif"
-                  id="org.mxupdate.eclipse.menus.update"
                   style="push">
             </command>
             <separator
@@ -101,13 +105,11 @@
             <command
                   commandId="org.mxupdate.eclipse.command.connect"
                   icon="icons/Connect.gif"
-                  id="org.mxupdate.eclipse.menus.connect"
                   style="push">
             </command>
             <command
                   commandId="org.mxupdate.eclipse.command.disconnect"
                   icon="icons/Disconnect.gif"
-                  id="org.mxupdate.eclipse.menus.disconnect"
                   style="push">
             </command>
          </menu>
@@ -115,24 +117,18 @@
       <!-- update command for the action toolbar -->
       <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar id="org.mxupdate.eclipse.toolbars.toolbar">
-            <command
-                  commandId="org.mxupdate.eclipse.command.update"
-                  icon="icons/Update.gif"
-                  id="org.mxupdate.eclipse.toolbars.updateCommand"
-                  tooltip="%plugin.command.update.tooltip">
+            <command commandId="org.mxupdate.eclipse.command.update"
+                     icon="icons/Update.gif"
+                     tooltip="%plugin.command.update.tooltip">
             </command>
          </toolbar>
       </menuContribution>
       <!-- MxUpdate popup menu -->
       <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
-         <menu id="org.mxupdate.eclipse.popup.menu"
-               label="%plugin.popup.label">
-            <command
-                  commandId="org.mxupdate.eclipse.command.update"
-                  icon="icons/Update.gif"
-                  id="org.mxupdate.eclipse.popup.update"
-                  tooltip="%plugin.command.update.tooltip">
-            </command>
+         <menu label="%plugin.popup.label">
+            <command commandId="org.mxupdate.eclipse.command.update"
+                     icon="icons/Update.gif"/>
+            <command commandId="org.mxupdate.eclipse.command.compare"/>
          </menu>
       </menuContribution>
    </extension>
