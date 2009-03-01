@@ -41,11 +41,22 @@
       </decorator>
    </extension>
 
-   <extension point="org.eclipse.ui.preferencePages">
-      <page class="org.mxupdate.eclipse.PreferencePage"
-            id="EclipsePlugin.page1"
-            name="%plugin.settings.label">
-      </page>
+    <extension point="org.eclipse.core.runtime.preferences">
+        <!-- <scope name="foo" class="com.example.FooPrefs"/>-->
+        <initializer class="org.mxupdate.eclipse.shell.ShellPreferencesInitializer"/>
+    </extension>
+
+
+    <extension point="org.eclipse.ui.preferencePages">
+        <page class="org.mxupdate.eclipse.PreferencePage"
+              id="EclipsePlugin.page1"
+              name="%plugin.settings.label">
+        </page>
+        <page id="org.mxupdate.eclipse.shell.ShellPreferencesPage"
+              name="%ShellPreference.Label"
+              class="org.mxupdate.eclipse.shell.ShellPreferencesPage"
+              category="EclipsePlugin.page1">
+        </page>
    </extension>
 
    <!-- definition of all commands -->
@@ -141,5 +152,17 @@
             label="%plugin.console.label">
       </consoleFactory>
    </extension>
+
+    <!-- MQL shell -->
+    <extension point="org.eclipse.ui.views">
+        <category id="org.mxupdate.eclipse.views.category"
+                  name="%plugin.views.category"/>
+        <view id="org.mxupdate.eclipse.shell.ShellView"
+              name="%plugin.views.view.mql"
+              class="org.mxupdate.eclipse.shell.ShellView"
+              category="org.mxupdate.eclipse.views.category"
+              icon="icons/Shell.gif">
+        </view>
+    </extension>
 
 </plugin>
