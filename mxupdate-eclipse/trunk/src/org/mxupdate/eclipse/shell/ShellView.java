@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.ViewPart;
 import org.mxupdate.eclipse.Activator;
+import org.mxupdate.eclipse.Messages;
 
 /**
  *
@@ -102,6 +103,15 @@ public class ShellView
      */
     private final List<String> history = new ArrayList<String>();
 
+    /**
+     * Creates the shell view with an output text field {@link #textOutput} and
+     * an input text field {@link #textInput}.
+     *
+     * @param _parent   parent composite element where the new GUI elements
+     *                  must be added
+     * @see #textInput
+     * @see #textOutput
+     */
     @Override
     public void createPartControl(final Composite _parent)
     {
@@ -114,6 +124,8 @@ public class ShellView
         this.textInput = new Text(_parent, SWT.SINGLE | SWT.BORDER);
         this.textInput.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 1, 1));
 
+        // key listener for the input text field
+        // (execute, previous history entry, next history entry)
         this.textInput.addKeyListener(new KeyAdapter()  {
             @Override
             public void keyReleased(final KeyEvent _event)  {
@@ -132,10 +144,11 @@ public class ShellView
         });
 
         // clear button
-        this.getViewSite().getActionBars().getMenuManager().add(new Action("Clear Output") {
+        this.getViewSite().getActionBars().getMenuManager()
+                .add(new Action(Messages.getString("ShellView.ClearOutputButton")) { //$NON-NLS-1$
             @Override
             public void run() {
-                ShellView.this.textOutput.setText("");
+                ShellView.this.textOutput.setText(""); //$NON-NLS-1$
             }
         });
 
@@ -175,6 +188,9 @@ public class ShellView
     }
 
     /**
+     * Updates after a property change the shell styles.
+     *
+     * @param _event    property change event (not used)
      * @see #updateStyle()
      */
     public void propertyChange(final PropertyChangeEvent _event)
@@ -193,13 +209,29 @@ public class ShellView
         this.textInput.setFocus();
     }
 
+    /**
+     * Executes current string in the input text field {@link #textInput}. The
+     * string is added to the history entries of the last entry of the history
+     * is not the same or if the string is not an empty string. This string is
+     * added to the output text field together with the current amount of
+     * input strings defined with {@link #count}. The returned values from the
+     * data base are added to the output text field {@link #textOutput} with
+     * color {@link #colorOuput} or, if an error was thrown, with color
+     * {@link #colorError}.
+     *
+     * @see #textInput
+     * @see #history
+     * @see #textOutput
+     * @see #colorOuput
+     * @see #colorError
+     */
     private void execute()
     {
         final String inputText = this.textInput.getText();
 
         // store new shell command only if not equal and not already stored
         // (as last entry)
-        if (!"".equals(inputText)
+        if (!"".equals(inputText) //$NON-NLS-1$
                 && ((this.history.size() == 0) || !this.history.get(this.history.size() - 1).equals(inputText)))  {
             this.history.add(inputText);
         }
@@ -212,12 +244,12 @@ public class ShellView
         }
 
         // reset input text field
-        this.textInput.setText("");
+        this.textInput.setText(""); //$NON-NLS-1$
 
         // write input command into output text field
         this.count++;
-        this.textOutput.append("\n" + this.count + "> " + inputText );
-        this.textOutput.append("\n");
+        this.textOutput.append("\n" + this.count + "> " + inputText ); //$NON-NLS-1$ //$NON-NLS-2$
+        this.textOutput.append("\n"); //$NON-NLS-1$
 
         final StyleRange txtStyleRange = new StyleRange();
         txtStyleRange.start = this.textOutput.getCharCount();
@@ -231,7 +263,7 @@ public class ShellView
         final int charCount = this.textOutput.getCharCount();
         txtStyleRange.length = charCount - txtStyleRange.start;
         this.textOutput.setStyleRange(txtStyleRange);
-        this.textOutput.append("\n");
+        this.textOutput.append("\n"); //$NON-NLS-1$
 
         // go to last line
         this.textOutput.setSelection(charCount);
@@ -269,7 +301,7 @@ public class ShellView
             this.textInput.setSelection(this.history.get(this.historyPos).length());
         // if last index => input text must be cleaned
         } else if (this.historyPos == this.history.size())  {
-            this.textInput.setText("");
+            this.textInput.setText(""); //$NON-NLS-1$
             this.textInput.setSelection(0);
         }
     }
