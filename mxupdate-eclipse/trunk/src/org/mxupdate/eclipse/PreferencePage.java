@@ -22,20 +22,14 @@ package org.mxupdate.eclipse;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.KeyAdapter;
-import org.eclipse.swt.events.KeyEvent;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
+ * Common preference page for the MxUpdate eclipse plug-in to define URL, name
+ * and password for the MX context.
+ *
  * @author Tim Moxter
  * @version $Id$
  */
@@ -43,14 +37,19 @@ public class PreferencePage
         extends FieldEditorPreferencePage
         implements IWorkbenchPreferencePage
 {
+    /**
+     * Initialize the layout of the preference (defined as grid) and defines
+     * the preference store from the plug-in activator {@link Activator}.
+     */
     public PreferencePage()
     {
         super(FieldEditorPreferencePage.GRID);
         this.setPreferenceStore(Activator.getDefault().getPreferenceStore());
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.preference.FieldEditorPreferencePage#createFieldEditors()
+    /**
+     *
+     * @see FieldEditorPreferencePage#createFieldEditors()
      */
     @Override
     protected void createFieldEditors()
@@ -74,94 +73,13 @@ public class PreferencePage
                 Messages.getString("PreferencePage.Password"), //$NON-NLS-1$
                 parent);
         this.addField(passwdField);
-
-        this.addField(new MyTextEditor(this.getFieldEditorParent()));
     }
 
-  /* (non-Javadoc)
-   * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
-   */
+    /**
+     * @param _workbench    workbench which must be initialized
+     * @see IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
+     */
     public void init(final IWorkbench _workbench)
     {
-    }
-
-
-    class MyTextEditor extends StringFieldEditor
-    {
-
-        MyTextEditor(final Composite _parent)
-        {
-            super("pluginProperties", //$NON-NLS-1$
-                  Messages.getString("PreferencePage.PluginProperties"), _parent); //$NON-NLS-1$
-        }
-
-        /**
-         * Fills this field editor's basic controls into the given parent.
-         * <p>
-         * The string field implementation of this <code>FieldEditor</code>
-         * framework method contributes the text field. Subclasses may override
-         * but must call <code>super.doFillIntoGrid</code>.
-         * </p>
-         */
-        @Override
-        protected void doFillIntoGrid(final Composite _parent,
-                                      final int _numColumns)
-        {
-            super.doFillIntoGrid(_parent, _numColumns);
-
-            final Text textField = this.getTextControl();
-
-            final GridData gd = new GridData();
-            gd.horizontalSpan = _numColumns - 1;
-            gd.horizontalAlignment = GridData.FILL;
-            gd.grabExcessHorizontalSpace = true;
-            gd.verticalSpan = 15;
-            gd.verticalAlignment = GridData.FILL;
-            gd.grabExcessVerticalSpace = true;
-            textField.setLayoutData(gd);
-        }
-
-        /**
-         * Returns this field editor's text control.
-         * <p>
-         * The control is created if it does not yet exist
-         * </p>
-         *
-         * @param _parent the parent
-         * @return the text control
-         */
-        @Override
-        public Text getTextControl(final Composite _parent)
-        {
-            Text textField = this.getTextControl();
-
-            if (textField == null) {
-                textField = new Text(_parent, SWT.MULTI | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
-                textField.setFont(_parent.getFont());
-                textField.addKeyListener(new KeyAdapter() {
-                    @Override
-                    public void keyPressed(final KeyEvent _e) {
-                        PreferencePage.MyTextEditor.this.clearErrorMessage();
-                    }
-                });
-                textField.addFocusListener(new FocusAdapter() {
-                    @Override
-                    public void focusGained(final FocusEvent _e) {
-                        PreferencePage.MyTextEditor.this.refreshValidState();
-                    }
-                    @Override
-                    public void focusLost(final FocusEvent _e) {
-                        PreferencePage.MyTextEditor.this.valueChanged();
-                        PreferencePage.MyTextEditor.this.clearErrorMessage();
-                    }
-                });
-                textField.addDisposeListener(new DisposeListener() {
-                    public void widgetDisposed(final DisposeEvent _event) {
-    //            textField = null;
-                    }
-                });
-            }
-            return textField;
-        }
     }
 }
