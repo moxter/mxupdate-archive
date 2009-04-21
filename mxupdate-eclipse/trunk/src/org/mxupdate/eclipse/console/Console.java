@@ -18,7 +18,7 @@
  * Last Changed By: $Author$
  */
 
-package org.mxupdate.eclipse;
+package org.mxupdate.eclipse.console;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,10 +26,13 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.mxupdate.eclipse.Messages;
 
 /**
  * MxUpdate specific eclipse plug-in console.
@@ -39,47 +42,16 @@ import org.eclipse.ui.console.MessageConsoleStream;
  */
 public class Console
         extends MessageConsole
+        implements IPropertyChangeListener
 {
-    /**
-     * Supported log levels for the MxUpdate console.
-     */
-    public enum LogLevel
-    {
-        /** Debug log level with blue color. */
-        DEBUG(new Color(null, 0, 0, 255)),
-        /** Error log level with dark red color. */
-        ERROR(new Color(null, 128, 0, 0)),
-        /** Info log level with black color. */
-        INFO(new Color(null, 0, 0, 0)),
-        /** Trace log level with gray color. */
-        TRACE(new Color(null, 192, 192, 192)),
-        /** Warning log level with dark magenta color. */
-        WARN(new Color(null, 255, 0, 255));
-
-        /**
-         * Defines the used color for the log level.
-         */
-        final Color color;
-
-        /**
-         * Creates a new instance of the log level.
-         *
-         * @param _color    color for the log level
-         */
-        private LogLevel(final Color _color)
-        {
-          this.color = _color;
-        }
-      }
-
     /**
      * Map of all console streams depending on the log level (and the different
      * colors for each console).
      *
      * @see LogLevel
      */
-    private final Map<Console.LogLevel,MessageConsoleStream> streams
-            = new HashMap<Console.LogLevel,MessageConsoleStream>();
+    private final Map<ConsolePreference,MessageConsoleStream> streams
+            = new HashMap<ConsolePreference,MessageConsoleStream>();
 
     /**
      * Creates new MxUpdate console with all {@link #streams} depending on the
@@ -88,12 +60,57 @@ public class Console
     public Console()
     {
         super(Messages.getString("plugin.console.label"), null); //$NON-NLS-1$
-        for (final Console.LogLevel logLevel : Console.LogLevel.values())  {
+        for (final ConsolePreference pref : ConsolePreference.values())  {
             final MessageConsoleStream stream = this.newMessageStream();
             stream.setActivateOnWrite(true);
-            stream.setColor(logLevel.color);
-            this.streams.put(logLevel, stream);
+            stream.setColor(new Color(null, pref.getRGB()));
+            this.streams.put(pref, stream);
         }
+        ConsolePreference.addListener(this);
+    }
+
+    /**
+     *
+     * @param _text     text for the info logging
+     * @see #println(ConsolePreference, String, Throwable)
+     */
+    public void logInfo(final String _text)
+    {
+        this.logInfo(_text, null);
+    }
+
+    /**
+     *
+     * @param _text     text for the info logging
+     * @param _ex       exception instance
+     * @see #println(ConsolePreference, String, Throwable)
+     */
+    public void logInfo(final String _text,
+                        final Throwable _ex)
+    {
+        this.println(ConsolePreference.INFO, _text, _ex);
+    }
+
+    /**
+     *
+     * @param _text     text for the error logging
+     * @see #println(ConsolePreference, String, Throwable)
+     */
+    public void logError(final String _text)
+    {
+        this.logError(_text, null);
+    }
+
+    /**
+     *
+     * @param _text     text for the error logging
+     * @param _ex       exception instance
+     * @see #println(ConsolePreference, String, Throwable)
+     */
+    public void logError(final String _text,
+                         final Throwable _ex)
+    {
+        this.println(ConsolePreference.ERROR, _text, _ex);
     }
 
     /**
@@ -105,9 +122,9 @@ public class Console
      * @param _e          exception with stack trace (or null if no exception is
      *                    defined)
      */
-    public void println(final Console.LogLevel _logLevel,
-                        final String _text,
-                        final Throwable _e)
+    private void println(final ConsolePreference _logLevel,
+                         final String _text,
+                         final Throwable _e)
     {
         ConsolePlugin.getDefault().getConsoleManager().showConsoleView(this);
         final MessageConsoleStream stream = this.streams.get(_logLevel);
@@ -120,7 +137,8 @@ public class Console
                 .append(sw.toString());
         }
         for (final String line : text.toString().split("\n"))  {
-            stream.print('[' + _logLevel.name() + "] ");
+            stream.print(_logLevel.getConsoleText());
+            stream.print(" ");
             stream.println(line);
         }
         try {
@@ -128,6 +146,32 @@ public class Console
         } catch (final IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace(System.out);
+        }
+    }
+
+    /**
+     * If the console is removed, also the event listening on the preferences
+     * must be removed.
+     */
+    @Override
+    protected void dispose()
+    {
+        ConsolePreference.removeListener(this);
+        super.dispose();
+    }
+
+    /**
+     * If the console preferences are changed with the console preference page
+     * {@link ConsolePreferencesPage} all {@link #streams} must be updated to
+     * new defined colors.
+     *
+     * @param _event    property change event (not used)
+     * @see #streams
+     */
+    public void propertyChange(final PropertyChangeEvent _event)
+    {
+        for (final Map.Entry<ConsolePreference, MessageConsoleStream> entry : this.streams.entrySet())  {
+            entry.getValue().setColor(new Color(null, entry.getKey().getRGB()));
         }
     }
 }

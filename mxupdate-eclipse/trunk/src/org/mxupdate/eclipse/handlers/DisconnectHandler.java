@@ -46,7 +46,8 @@ public class DisconnectHandler
     {
         final boolean disconnected = Activator.getDefault().disconnect();
         if (!disconnected)  {
-            Activator.getDefault().logError(Messages.getString("DisconnectHandler.DisconnectFailed")); //$NON-NLS-1$
+            Activator.getDefault()
+                    .getConsole().logError(Messages.getString("DisconnectHandler.DisconnectFailed")); //$NON-NLS-1$
         }
         return null;
     }

@@ -18,9 +18,10 @@
  * Last Changed By: $Author$
  */
 
-package org.mxupdate.eclipse;
+package org.mxupdate.eclipse.console;
 
 import org.eclipse.ui.console.IConsoleFactory;
+import org.mxupdate.eclipse.Activator;
 
 /**
  * Console Factory used to show the console defined from the MxUpdate eclipse

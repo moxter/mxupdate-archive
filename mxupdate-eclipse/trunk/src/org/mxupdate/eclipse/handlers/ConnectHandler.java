@@ -45,7 +45,8 @@ public class ConnectHandler
     {
         final boolean connected = Activator.getDefault().connect();
         if (!connected)  {
-            Activator.getDefault().logError(Messages.getString("ConnectHandler.ConnectFailed")); //$NON-NLS-1$
+            Activator.getDefault()
+                    .getConsole().logError(Messages.getString("ConnectHandler.ConnectFailed")); //$NON-NLS-1$
         }
         return null;
     }

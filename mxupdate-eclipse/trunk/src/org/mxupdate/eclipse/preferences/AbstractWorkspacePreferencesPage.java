@@ -36,7 +36,7 @@ import org.mxupdate.eclipse.Messages;
 
 /**
  *
- * @param <T>
+ * @param <T>   related preference class for which the preference page is shown
  * @author Tim Moxter
  * @version $Id$
  */
@@ -44,11 +44,21 @@ public class AbstractWorkspacePreferencesPage<T extends AbstractWorkspacePrefere
         extends FieldEditorPreferencePage
         implements IWorkbenchPreferencePage
 {
+    /**
+     * Initialize the preference page with grid layout.
+     */
     public AbstractWorkspacePreferencesPage()
     {
         super(FieldEditorPreferencePage.GRID);
     }
 
+    /**
+     * Depending on the preference default class
+     * {@link AbstractWorkspacePreference#getDefaultClazz()} a field editor is
+     * created. The label of a preference is translated by
+     * {@link Messages#getString(String, Object...)} with message key
+     * &quot;&lt;PreferenceSimpleClassName&gt;.&lt;PrefenceName&gt;.PreferencePageLabel&quot;.
+     */
     @Override
     protected void createFieldEditors()
     {
@@ -59,6 +69,7 @@ public class AbstractWorkspacePreferencesPage<T extends AbstractWorkspacePrefere
         for (final AbstractWorkspacePreference<?> pref : AbstractWorkspacePreference.values(clazz))  {
             final String label = Messages.getString(new StringBuilder()
                     .append(clazz.getSimpleName()).append('.').append(pref.name())
+                    .append(".PreferencePageLabel")
                     .toString());
             if (pref.getDefaultClazz().equals(FontData.class))  {
                 this.addField(new FontFieldEditor(pref.name(), label, parent));
@@ -72,11 +83,20 @@ public class AbstractWorkspacePreferencesPage<T extends AbstractWorkspacePrefere
 
     }
 
-    public void init(final IWorkbench iworkbench)
+    /**
+     * Initialize the preference page by defining the description and the
+     * workspace preference store of the plug-in for this preference page.
+     * The description is translated by calling method
+     * {@link Messages#getString(String, Object...)} with message key
+     * &quot;&lt;PreferenceSimpleClassName&gt;.PreferencePageDescription&quot;.
+     *
+     * @param _iworkbench   workbench instance (not used)
+     */
+    public void init(final IWorkbench _iworkbench)
     {
         this.setPreferenceStore(Activator.getDefault().getPreferenceStore());
         this.setDescription(Messages.getString(new StringBuilder()
-                .append(this.getPreferenceClass().getSimpleName()).append(".Description")
+                .append(this.getPreferenceClass().getSimpleName()).append(".PreferencePageDescription")
                 .toString()));
     }
 

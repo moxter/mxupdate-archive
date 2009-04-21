@@ -39,7 +39,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.mxupdate.eclipse.Console.LogLevel;
+import org.mxupdate.eclipse.console.Console;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -148,7 +148,7 @@ for (final String admin : admins)  {
 }
 } catch (final Throwable e)  {
     e.printStackTrace(System.out);
-    this.logError("ERROR", e); //$NON-NLS-1$
+    this.console.logError("ERROR", e); //$NON-NLS-1$
 }
 
 
@@ -180,38 +180,15 @@ for (final String admin : admins)  {
     }
 
     /**
+     * Returns the console for the plug-in. The method is the getter method for
+     * instance variable {@link #console}.
      *
-     * @param _text     error text
+     * @return console of the plug-in
      * @see #console
      */
-    public void logError(final String _text)
+    public Console getConsole()
     {
-      this.console.println(LogLevel.ERROR, _text, (Throwable) null);
-    }
-
-    /**
-     *
-     * @param _text         error text
-     * @param _exception    exception of the error
-     * @see #console
-     */
-    public void logError(final String _text,
-                         final Throwable _exception)
-    {
-        this.console.println(LogLevel.ERROR, _text, _exception);
-    }
-
-    /**
-     * Prints a text to the console stream.
-     *
-     * @param _logLevel     log level (used to add to the output)
-     * @param _text         text to print
-     * @see #console
-     */
-    public void println(final LogLevel _logLevel,
-                        final String _text)
-    {
-        this.console.println(_logLevel, _text, (Throwable) null);
+        return this.console;
     }
 
     /**
@@ -221,7 +198,7 @@ for (final String admin : admins)  {
      */
     public void showConsole()
     {
-      ConsolePlugin.getDefault().getConsoleManager().showConsoleView(this.console);
+        ConsolePlugin.getDefault().getConsoleManager().showConsoleView(this.console);
     }
 
     /**
@@ -236,8 +213,7 @@ for (final String admin : admins)  {
         boolean connect = false;
         if (this.connected)  {
             connect = true;
-            this.println(LogLevel.INFO,
-                         Messages.getString("Activator.AlreadyConnected")); //$NON-NLS-1$
+            this.console.logInfo(Messages.getString("Activator.AlreadyConnected")); //$NON-NLS-1$
         } else  {
             final String host =  this.getPluginPreferences().getString("url"); //$NON-NLS-1$
             final String user =  this.getPluginPreferences().getString("name"); //$NON-NLS-1$
@@ -249,20 +225,18 @@ for (final String admin : admins)  {
                 this.mxContext.connect();
                 this.connected = this.mxContext.isConnected();
                 connect = true;
-                this.println(LogLevel.INFO,
-                             Messages.getString("Activator.ConnectedTo", host)); //$NON-NLS-1$
+                this.console.logInfo(Messages.getString("Activator.ConnectedTo", host)); //$NON-NLS-1$
 
                 // read properties
                 final String newProps = this.execMql("exec prog org.mxupdate.plugin.GetProperties"); //$NON-NLS-1$
                 final String curProps = this.getPluginPreferences().getString("pluginProperties"); //$NON-NLS-1$
                 if (!newProps.equals(curProps))  {
                     this.getPluginPreferences().setValue("pluginProperties", newProps); //$NON-NLS-1$
-                    this.println(LogLevel.INFO,
-                                 Messages.getString("Activator.PluginPropertiesChanged")); //$NON-NLS-1$
+                    this.console.logInfo(Messages.getString("Activator.PluginPropertiesChanged")); //$NON-NLS-1$
                 }
 
             } catch (final MatrixException e) {
-                this.logError(Messages.getString("Activator.ConnectFailed"), e); //$NON-NLS-1$
+                this.console.logError(Messages.getString("Activator.ConnectFailed"), e); //$NON-NLS-1$
             }
         }
         return connect;
@@ -279,8 +253,7 @@ for (final String admin : admins)  {
     {
         boolean disconnect = false;
         if (!this.connected)  {
-            this.println(LogLevel.INFO,
-                         Messages.getString("Activator.AlreadyDisconnected")); //$NON-NLS-1$
+            this.console.logInfo(Messages.getString("Activator.AlreadyDisconnected")); //$NON-NLS-1$
             disconnect = true;
         } else  {
             try {
@@ -288,10 +261,9 @@ for (final String admin : admins)  {
                 this.mxContext = null;
                 this.connected = false;
                 disconnect = true;
-                this.println(LogLevel.INFO,
-                             Messages.getString("Activator.Disconnected")); //$NON-NLS-1$
+                this.console.logInfo(Messages.getString("Activator.Disconnected")); //$NON-NLS-1$
             } catch (final MatrixException e) {
-                this.logError(Messages.getString("Activator.DisconnectFailed"), e); //$NON-NLS-1$
+                this.console.logError(Messages.getString("Activator.DisconnectFailed"), e); //$NON-NLS-1$
             }
         }
         return disconnect;
@@ -309,9 +281,9 @@ for (final String admin : admins)  {
                     "exec prog org.mxupdate.plugin.Update '" + _file + "';" //$NON-NLS-1$ //$NON-NLS-2$
             );
 
-            this.println(LogLevel.INFO, ret);
+            this.console.logInfo(ret);
         } catch (final MatrixException e)  {
-            this.logError(Messages.getString("Activator.UpdateFailed", _file), e); //$NON-NLS-1$
+            this.console.logError(Messages.getString("Activator.UpdateFailed", _file), e); //$NON-NLS-1$
         }
     }
 
