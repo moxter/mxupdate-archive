@@ -43,17 +43,23 @@
 
     <extension point="org.eclipse.core.runtime.preferences">
         <!-- <scope name="foo" class="com.example.FooPrefs"/>-->
+        <initializer class="org.mxupdate.eclipse.console.ConsolePreferencesInitializer"/>
         <initializer class="org.mxupdate.eclipse.shell.ShellPreferencesInitializer"/>
     </extension>
 
-
+    <!-- Preference Pages -->
     <extension point="org.eclipse.ui.preferencePages">
         <page class="org.mxupdate.eclipse.PreferencePage"
               id="EclipsePlugin.page1"
               name="%plugin.settings.label">
         </page>
+        <page id="org.mxupdate.eclipse.console.ConsolePreferencesPage"
+              name="%ConsolePreference.PreferencePageLabel"
+              class="org.mxupdate.eclipse.console.ConsolePreferencesPage"
+              category="EclipsePlugin.page1">
+        </page>
         <page id="org.mxupdate.eclipse.shell.ShellPreferencesPage"
-              name="%ShellPreference.Label"
+              name="%ShellPreference.PreferencePageLabel"
               class="org.mxupdate.eclipse.shell.ShellPreferencesPage"
               category="EclipsePlugin.page1">
         </page>
@@ -148,7 +154,7 @@
    <extension
          point="org.eclipse.ui.console.consoleFactories">
       <consoleFactory
-            class="org.mxupdate.eclipse.ConsoleFactory"
+            class="org.mxupdate.eclipse.console.ConsoleFactory"
             label="%plugin.console.label">
       </consoleFactory>
    </extension>
