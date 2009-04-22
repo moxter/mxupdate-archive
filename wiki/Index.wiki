@@ -1,0 +1,4 @@
+#summary Index
+
+= MxUpdate Eclipse Plug-In =
+[http://code.google.com/p/mxupdate/wiki/EclipsePluginInstall Installation]
