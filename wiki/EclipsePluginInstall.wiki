@@ -1,0 +1,10 @@
+#summary Installation of the MxUpdate Eclipse Plug-In
+#labels Phase-Deploy
+
+= Download and Install =
+
+Download the plugin zip container from the [http://code.google.com/p/mxupdate/downloads/list Downloads].
+
+Unpack the zip container under ecplipse/plugins folder.
+
+Replace in the lib directory the empty placeholder jar file eMatrixServletRMI.jar from the original MX installation.
