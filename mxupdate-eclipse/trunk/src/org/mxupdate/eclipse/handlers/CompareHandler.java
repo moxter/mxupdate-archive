@@ -96,7 +96,7 @@ public class CompareHandler
 
         /**
          * Dummy method because the method is only needed that
-         * {@link SaveableCompareEditorInput}Êis implemented.
+         * {@link SaveableCompareEditorInput} is implemented.
          */
         @Override
         protected void fireInputChange()
