@@ -1,0 +1,18 @@
+#labels Phase-Deploy
+#sidebar Update_Index
+
+= Introduction =
+
+With the property file the "behavior" of MxUpdate Update is described. With the property file the allowed parameters, descriptions, administration types etc. are defined. In a project a specific property file could be used (see [Update_Installation Installation]).
+
+
+= Format =
+In the property file an entry is a concatenation of a key, a name and a sub key with the following format:
+{{{
+<KEY>.<NAME>.<SUBKEY>
+}}}
+The keys and their related sub keys are described in:
+ * [Update_PropertyFileFormat_Mode Key "Mode"]
+ * [Update_PropertyFileFormat_ParameterDef Key "ParameterDef"]
+ * [Update_PropertyFileFormat_TypeDef Key "TypeDef"]
+ * [Update_PropertyFileFormat_TypeDefGroup Key "TypeDefGroup"]
