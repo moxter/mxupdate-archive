@@ -2,44 +2,39 @@
 #labels Phase-Deploy
 #sidebar Update_Index
 
-= Key "!TypeDef" =
+= Introduction =
 
 Properties with key "!TypeDef" defines all existings administration types which could be imported and
 exported with the MxUpdate Deployment Tool.
 
-== Sub Keys of "!TypeDef" ==
+= Sub Keys of "!TypeDef" =
 
 The sub keys are defined after the "!TypeDef" Key. Following sub keys are interpreted by MxUpdate:
 
 || *Type* || *Description* ||
-|| !AdminSuffix || Suffix for admin administration objects<br/>_E.g. for web tables {{{system}}} must be defined._ ||
+|| !AdminSuffix || Suffix for admin administration objects<p>_E.g. for web tables {{{system}}} must be defined.</p>_ ||
 || !AdminType || Name of the type for admin administration objects ||
 || !BusIgnoreAttributes || Comma separated list of ignored attributes for business administration objects  ||
-|| !BusPolicy || Policy for business administration objects<br/>_With this policy new business objects are created._ ||
+|| !BusPolicy || Policy for business administration objects<p>_With this policy new business objects are created.</p>_ ||
 || !BusRelsBoth || Comma separated list of to / from relationships for business administration objects ||
 || !BusRelsFrom || Comma separated list of from relationships for business administration objects ||
 || !BusRelsTo || Comma separated list of to relationships for business administration objects ||
 || !BusType || Type for business administration objects ||
-|| !BusVault || Vault for business administration objects <br/>_Business objects are created in this vault._ ||
-|| !FileMatchLast || Defines that a match must be done at last (after a file does not match any other "!TypeDef" definition); value must set to *true* <br/>_E.g. if no file prefix and file suffix is defined, a match must be done as last. Otherwise a file matches always.  ||
+|| !BusVault || Vault for business administration objects <p>_Business objects are created in this vault._</p> ||
+|| !FileMatchLast || Defines that a match must be done at last (after a file does not match any other "!TypeDef" definition); value must set to *true* <p>_E.g. if no file prefix and file suffix is defined, a match must be done as last. Otherwise a file matches always._</p>  ||
 || !FilePath || file path used to export ||
 || !FilePrefix || Prefix used for file names ||
 || !FileSuffix || suffix used for file names||
 || JPO || Defines the name of the JPO which implements the export / import ||
 || !ParameterDesc || Description of the parameter ||
-|| !ParameterDescOpposite || Description of the opposite parameters ||
-|| !ParameterList || Comma separated list of parameters ||
-|| !ParameterListOpposite || Comma separated list of opposite parameters ||
+|| !ParameterDescOpposite || Description of the opposite parameters<p>_Opposite parameters are used to define matches file names which must be ignored._</p> ||
+|| !ParameterList || Comma separated list of parameters )<p>_If a parameter contains only one single character, one minus '-' is used as prefix. If the parameter name contains more than one character, two minus '--' are used as prefix._</p> ||
+|| !ParameterListOpposite || Comma separated list of opposite parameters <p>_The list is defined in the same way as the !ParameterList sub key._</p> ||
 || !TextLogging || Text used as logging entry ||
 || !TextTitle || Title entry in the MxUpdate file ||
 || Icon || Path to the icon used from the MxUpdate plugin ||
 
-== Parameters ==
-Depending on the defined !ParameterList and !ParameterListOpposite the allowed parameters for MxUpdate are build. Depending on the length of the parameter only one minus for parameters with one character or two minus for longer parameters are used.
-
-Opposite parameters are used to define matches file names which must be ignored. 
-
-=== Example ===
+== Example ==
 {{{
 TypeDef.Policy.ParameterList = p,pol,policy
 }}}
