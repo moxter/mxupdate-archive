@@ -1,4 +1,8 @@
 #summary Index
 
-= MxUpdate Eclipse Plug-In =
-[http://code.google.com/p/mxupdate/wiki/EclipsePluginInstall Installation]
+= !MxUpdate Update =
+ * [Update_Installation Installation]
+ * [Update_PropertyFileFormat Property File Format]
+
+= !MxUpdate Eclipse Plug-In =
+ * [Eclipse_Installation Installation]
