@@ -1,0 +1,8 @@
+#summary Index for MxUpdate update description.
+
+ * [Index ↑ Home]
+ * [Update MxUpdate]
+     * [Update_PropertyFileFormat MxUpdate Property File Format]
+         * [Update_PropertyFileFormat_TypeDef Key "TypeDef"]
+         * [Update_PropertyFileFormat_TypeDefGroup Key "TypeDefGroup"]
+         * [Update_PropertyFileFormat_ParameterDef Key "ParameterDef"]
