@@ -1,0 +1,14 @@
+#summary Installation of the MxUpdate deployment tool.
+#labels Phase-Deploy
+#sidebar Update_Index
+
+Download the MxUpdate Update deployment tool.
+
+Start MQL.
+
+
+Define the MQL environment variable *{{{ENV_NAME_MXUPDATE_PATH}}}* to the path where the *{{{MxInstall.mql}}}* file is located.
+
+If some additional properties must be defined, the MQL environment variable *{{{ENV_NAME_MAPPING_EXTENSION}}}* could be defined. The value is the path of the file which defines the additional properties.
+
+Run MQL script *{{{MxInstall.mql}}}*.
