@@ -4,6 +4,7 @@
 = !MxUpdate Update =
  * [Update_Installation Installation]
  * [Update_PropertyFileFormat Property File Format]
+ * [Update_Development Development]
 
 = !MxUpdate Eclipse Plug-In =
  * [Eclipse_Installation Installation]
