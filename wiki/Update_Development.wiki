@@ -1,0 +1,18 @@
+#summary Describes how to develop MxUpdate Update development tool
+
+= Install Eclipse Project =
+
+  * In Eclipse create a new SVN project using the {{{trunc}}} directory.
+  * Copy {{{eMatrixServletRMI.jar}}} directly into the new created project directory.
+  * Add this Jar library to the build path.
+  * Define the downloaded {{{src}}} directory as Java source folder.
+
+The Jar file must be copied to defined place. Otherwise the ant task to create the Javadoc could not access the {{{eMatrixServletRMI.jar}}} jar library.
+
+= Upload new Version to Google Code Downloads =
+The ant target "upload" is defined to upload a new !MxUpdate version to the downloads at the !MxUpdate Google Code page. To use this ant task the two property entries
+{{{
+gc.username = tim@.....net
+gc.password = XXXXXXXX
+}}}
+must be defined in the {{{build.properties}}} file .
