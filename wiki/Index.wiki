@@ -1,4 +1,5 @@
 #summary Index
+#labels Featured
 
 = !MxUpdate Update =
  * [Update_Installation Installation]
