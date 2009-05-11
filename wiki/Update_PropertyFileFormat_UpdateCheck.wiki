@@ -5,7 +5,7 @@
 = Introduction =
 Properties with key "!UpdateCheck" defines the allowed parameters which stored information in MX is used if an update is needed.
 
-= Four Different Modes =
+= Two Different Checks =
 The !MxUpdate deployment tool knows currently two different update checks. The different checks are identified by special wording.
 
 || *Type* || *Description* ||
