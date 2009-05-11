@@ -1,0 +1,20 @@
+#summary Description of the Key "!UpdateCheck" within MxUpdate property file.
+#labels Phase-Deploy
+#sidebar Update_Index
+
+= Introduction =
+Properties with key "!UpdateCheck" defines the allowed parameters which stored information in MX is used if an update is needed.
+
+= Four Different Modes =
+The !MxUpdate deployment tool knows currently two different update checks. The different checks are identified by special wording.
+
+|| *Type* || *Description* ||
+|| FILEDATE || Check if an update is required by comparing the defined version against the value of the version property. ||
+|| VERSION || Check if an update is required by comparing the last modified date against the value of the file date property. ||
+
+= Sub Keys of "Mode" =
+The sub keys are defined after the "!UpdateCheck" Key. Following sub keys are interpreted by !MxUpdate:
+
+|| *Type* || *Description* ||
+|| !ParameterDesc || Description used for the help of the !MxUpdate deployment tool.||
+|| !ParameterList ||  Comma separated list of parameter names (without '-' and '--' prefixes)<p>_If a parameter contains only one single character, one minus '-' is used as prefix. If the parameter name contains more than one character, two minus '--' are used as prefix._</p><p>_If no parameter list is defined, the user could not use the parameter within !MxUpdate deployment tool._</p>||
