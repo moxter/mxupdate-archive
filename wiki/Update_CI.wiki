@@ -5,21 +5,6 @@
 Currently within a lot of MX projects the existing configuration (attributes, types, also commands etc.) are handled via MQL update scripts. One good example for that are the installation scripts which are delivered with the installation packages of the different centrals.
 
 = Configuration Items =
-[http://en.wikipedia.org/wiki/Configuration_item Configuration Items]
+As describes in [http://www.wikipedia.org Wikipedia] the term [http://en.wikipedia.org/wiki/Configuration_item Configuration Items] refers to the fundamental structural unit of a configuration management system. In MX the fundamental structure unit are e.g. for the data model attributes, types, policies..., for the user interface e.g. commands, menus, web forms and web tables. So the basic idea behind the "Configuration Item" methodic is to store a complete description of a fundamental structure unit in one single file. This means that each file could be handled easily within a source code repository (like [http://subversion.tigris.org/ Subversion] etc.). 
 
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
-
-
-Ein Delta-Deployment ist nicht sinnvoll, da das Handling von verschieden
-Entwicklungszweige mit dieser Methodik fast nicht handlebar ist.
-Sinnvoller ist es, die sogenannten "Configuration Items"-Methodik zu
-verwenden: Jedes Administrationsobjekt wird komplett in einer
-Sourcecode-Datei beschrieben (Ziel). Diese Dateien können einzeln mit
-Hilfe des SCM-System versioniert werden. D.h. jedes Adminstrationsobjekt
-wird als ein "Stück Software" angesehen und auch als solches behandelt.
-Die "Configuration Item"-Scripts können bei entsprechenden Plugin auch vom
-UML-Modelierungswerkzeug erzeugt werden.
+Instead of described each versions and a delta (like in the XML update files delivered from MX) the idea behind the method is to describe the target of an administration object. E.g. for a command the HRef, all settings and all properties are described in this file. If the command must be changed a developer could see the complete command description. A modification of the command is for the developer than very easy. If then the command is deployed the existing command in MX is updated to the new target description in the file.
