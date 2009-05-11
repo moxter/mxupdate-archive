@@ -1,0 +1,25 @@
+#summary describes the methodic how configuration items could be used within MX
+
+= Introduction =
+
+Currently within a lot of MX projects the existing configuration (attributes, types, also commands etc.) are handled via MQL update scripts. One good example for that are the installation scripts which are delivered with the installation packages of the different centrals.
+
+= Configuration Items =
+[http://en.wikipedia.org/wiki/Configuration_item Configuration Items]
+
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+
+Ein Delta-Deployment ist nicht sinnvoll, da das Handling von verschieden
+Entwicklungszweige mit dieser Methodik fast nicht handlebar ist.
+Sinnvoller ist es, die sogenannten "Configuration Items"-Methodik zu
+verwenden: Jedes Administrationsobjekt wird komplett in einer
+Sourcecode-Datei beschrieben (Ziel). Diese Dateien können einzeln mit
+Hilfe des SCM-System versioniert werden. D.h. jedes Adminstrationsobjekt
+wird als ein "Stück Software" angesehen und auch als solches behandelt.
+Die "Configuration Item"-Scripts können bei entsprechenden Plugin auch vom
+UML-Modelierungswerkzeug erzeugt werden.
