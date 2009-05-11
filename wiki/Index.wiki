@@ -3,6 +3,7 @@
 
 = !MxUpdate Update =
  * [Update_Installation Installation]
+ * [Update_CI Configuration Items]
  * [Update_PropertyFileFormat Property File Format]
  * [Update_Development Development]
 
