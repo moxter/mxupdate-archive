@@ -1,4 +1,5 @@
 #summary Installation of the MxUpdate Eclipse Plug-In
+#sidebar Eclipse_Index
 #labels Phase-Deploy
 
 = Download and Install =

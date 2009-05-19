@@ -1,4 +1,5 @@
 #summary Create eMatrixServletRMI Plug In
+#sidebar Eclipse_Index
 
 First of all a new Plug In from existing jar library must be created. To do that press File -> New -> Other.
 The "New Project" wizard will be opened. Select "Plug-in from existing JAR archive":
