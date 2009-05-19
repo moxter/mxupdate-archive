@@ -1,0 +1,22 @@
+#summary Create eMatrixServletRMI Plug In
+
+First of all a new Plug In from existing jar library must be created. To do that press File -> New -> Other.
+The "New Project" wizard will be opened. Select "Plug-in from existing JAR archive":
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Create_eMatrixServletRMIPlugin-1.jpg
+
+On the next page press "Add External..." and select the eMatrixServletRMI.jar library (e.g. within your deployed web container):
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Create_eMatrixServletRMIPlugin-2.jpg
+
+On the next page put in the project name "eMatrixServletRMI" (this could not be changed!):
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Create_eMatrixServletRMIPlugin-3.jpg
+
+After the finish button is pressed following project structure is created and shown within Eclipse:
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Create_eMatrixServletRMIPlugin-4.jpg
+
+Select the build.properties and there the "Overview" tab. Specify your version (here e.g. the version 10.6.2 is used):
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Create_eMatrixServletRMIPlugin-5.jpg
+
+Click the "Export Wizard" on the right button page of the "Overview" tab. Select in the options the option "Package plug-ins as individual JAR archives":
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Create_eMatrixServletRMIPlugin-6.jpg
+
+After the "Finish" button is pressed the new eMatrixServletRMI plug-in is exported within given directory.
