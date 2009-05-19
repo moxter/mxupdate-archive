@@ -8,4 +8,5 @@
  * [Update_Development Development]
 
 = !MxUpdate Eclipse Plug-In =
+ * [Eclipse_Create_eMatrixServletRMIPlugin Create eMatrixServletRMI Plug In]
  * [Eclipse_Installation Installation]
