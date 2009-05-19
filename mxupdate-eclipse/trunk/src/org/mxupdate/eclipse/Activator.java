@@ -21,7 +21,6 @@
 package org.mxupdate.eclipse;
 
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,8 +31,8 @@ import java.util.Set;
 import matrix.db.Context;
 import matrix.db.MQLCommand;
 import matrix.util.MatrixException;
-import matrix.util.Mime64;
 
+import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.console.ConsolePlugin;
@@ -128,12 +127,7 @@ for (final String admin : admins)  {
     final String suffix = properties.getProperty(admin + ".FileSuffix"); //$NON-NLS-1$
     final String iconStr = properties.getProperty(admin + ".Icon"); //$NON-NLS-1$
 
-    byte[] bin = null;
-    try {
-        bin = Mime64.decode(iconStr);
-    } catch (final IOException e) {
-        e.printStackTrace();
-    }
+    final byte[] bin = Base64.decodeBase64(iconStr.getBytes());
     final InputStream in = new ByteArrayInputStream(bin);
 
     final ImageData ret = new ImageData(in);
