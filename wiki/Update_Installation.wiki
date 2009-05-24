@@ -1,5 +1,5 @@
 #summary Installation of the MxUpdate deployment tool.
-#labels Phase-Deploy
+#labels Phase-Deploy,Featured
 #sidebar Update_Index
 
 Download the MxUpdate Update deployment tool.
@@ -20,10 +20,11 @@ If the used MX version within the project does not support the feature to use al
 {{{
 ParameterDef.DMRelationSupportRelCons.Default = false
 }}}
-Automatically this value is set to {{{true}}}.
+The installed default value is {{{true}}}.
 
 === Role Types ===
 If the used MX version within the project does not support the role type feature, property "!UserRoleSupportRoleType" must be changed and set to {{{false}}}. So following line must be added to the additional property file:
 {{{
 ParameterDef.UserRoleSupportRoleType.Default = false
 }}}
+The installed default value is {{{true}}}.
