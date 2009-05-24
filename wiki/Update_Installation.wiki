@@ -21,3 +21,9 @@ If the used MX version within the project does not support the feature to use al
 ParameterDef.DMRelationSupportRelCons.Default = false
 }}}
 Automatically this value is set to {{{true}}}.
+
+=== Role Types ===
+If the used MX version within the project does not support the role type feature, property "!UserRoleSupportRoleType" must be changed and set to {{{false}}}. So following line must be added to the additional property file:
+{{{
+ParameterDef.UserRoleSupportRoleType.Default = false
+}}}
