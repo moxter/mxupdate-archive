@@ -12,3 +12,12 @@ Define the MQL environment variable *{{{ENV_NAME_MXUPDATE_PATH}}}* to the path w
 If some additional properties must be defined, the MQL environment variable *{{{ENV_NAME_MAPPING_EXTENSION}}}* could be defined. The value is the path of the file which defines the additional properties.
 
 Run MQL script *{{{MxInstall.mql}}}*.
+
+== Support of old MX versions ==
+
+=== Relationship as from / to side for Relationships ===
+If the used MX version within the project does not support the feature to use also relationships as from / to side the property "DMRelationSupportRelCons" must be changed and set to {{{false}}}. So following line must be added to the additional property file:
+{{{
+ParameterDef.DMRelationSupportRelCons.Default = false
+}}}
+Automatically this value is set to {{{true}}}.
