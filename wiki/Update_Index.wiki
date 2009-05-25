@@ -4,6 +4,8 @@
  * [Index ↑ Home]
  * [Update_Installation Installation]
  * [Update_CI Configuration Items]
+     * [Update_CI_JPOs JPOs]
+     * [Update_CI_Programs Programs]
  * [Update_PropertyFileFormat Property File Format]
      * [Update_PropertyFileFormat_Mode Key "Mode"]
      * [Update_PropertyFileFormat_ParameterDef Key "ParameterDef"]
