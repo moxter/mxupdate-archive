@@ -2,16 +2,29 @@
 #labels Phase-Deploy,Featured
 #sidebar Update_Index
 
-Download the MxUpdate Update deployment tool.
+<wiki:toc max_depth="3"/>
+
+= Installation =
+[http://code.google.com/p/mxupdate/downloads/list Download] the !MxUpdate Update deployment tool.
 
 Start MQL.
-
 
 Define the MQL environment variable *{{{ENV_NAME_MXUPDATE_PATH}}}* to the path where the *{{{MxInstall.mql}}}* file is located.
 
 If some additional properties must be defined, the MQL environment variable *{{{ENV_NAME_MAPPING_EXTENSION}}}* could be defined. The value is the path of the file which defines the additional properties.
 
 Run MQL script *{{{MxInstall.mql}}}*.
+
+= Installation FAQ =
+
+== Alternatives to Manually Downloads ==
+
+=== Using SVN External Link ===
+Instead of manually downloading the !MxUpdate Update deployment tool, an external link could be defined if [http://subversion.tigris.org/ Subversion] is used. E.g. following property entry "{{{svn:externals}}}" for a directory must be defined to reference version 0.3.0:
+{{{
+source http://mxupdate.googlecode.com/svn/mxupdate-update/tags/V0.3.0
+}}}
+Also this directory could hold the project specific MQL update script which installs the !MxUpdate Update deployment tool.
 
 == Support of old MX versions ==
 
