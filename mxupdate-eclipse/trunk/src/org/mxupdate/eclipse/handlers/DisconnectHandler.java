@@ -44,7 +44,7 @@ public class DisconnectHandler
      */
     public Object execute(final ExecutionEvent _event)
     {
-        final boolean disconnected = Activator.getDefault().disconnect();
+        final boolean disconnected = Activator.getDefault().getAdapter().disconnect();
         if (!disconnected)  {
             Activator.getDefault()
                     .getConsole().logError(Messages.getString("DisconnectHandler.DisconnectFailed")); //$NON-NLS-1$

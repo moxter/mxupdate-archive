@@ -26,18 +26,17 @@ import org.eclipse.core.resources.IFile;
 import org.mxupdate.eclipse.Activator;
 
 /**
- * Eclipse Handler called from the update command used to update selected TCL
- * update file.
+ * Eclipse Handler called from the update command used to update selected
+ * update files.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class UpdateHandler
         extends AbstractFileHandler
 {
     /**
-     * the command has been executed, so extract extract the needed information
-     * from the application context.
+     *
      *
      * @param _files    set of files for which this handler is called
      * @see Activator#update(String)
@@ -45,8 +44,6 @@ public class UpdateHandler
     @Override
     protected void execute(final List<IFile> _files)
     {
-        for (final IFile file : _files)  {
-            Activator.getDefault().update(file.getLocation().toString());
-        }
+        Activator.getDefault().getAdapter().update(_files);
     }
 }
