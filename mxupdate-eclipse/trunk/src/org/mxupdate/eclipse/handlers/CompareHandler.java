@@ -26,8 +26,6 @@ import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
-import matrix.util.MatrixException;
-
 import org.eclipse.compare.CompareConfiguration;
 import org.eclipse.compare.CompareUI;
 import org.eclipse.compare.IStreamContentAccessor;
@@ -126,9 +124,8 @@ public class CompareHandler
             // get current update code
             final String cur;
             try {
-                cur = Activator.getDefault().execMql("exec prog org.mxupdate.plugin.GetMxUpdateCode '" //$NON-NLS-1$
-                        + this.file.toString() + "'"); //$NON-NLS-1$
-            } catch (final MatrixException ex) {
+                cur = Activator.getDefault().getAdapter().extractCode(this.file);
+            } catch (final Exception ex) {
                 throw new InvocationTargetException(ex);
             }
 

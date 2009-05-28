@@ -20,6 +20,7 @@
 
 package org.mxupdate.eclipse;
 
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
@@ -30,18 +31,17 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * Common preference page for the MxUpdate eclipse plug-in to define URL, name
  * and password for the MX context.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
-public class PreferencePage
+public class MXPreferencePage
         extends FieldEditorPreferencePage
-        implements IWorkbenchPreferencePage
-{
+        implements IWorkbenchPreferencePage{
     /**
      * Initialize the layout of the preference (defined as grid) and defines
      * the preference store from the plug-in activator {@link Activator}.
      */
-    public PreferencePage()
+    public MXPreferencePage()
     {
         super(FieldEditorPreferencePage.GRID);
         this.setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -56,23 +56,25 @@ public class PreferencePage
     {
         final Composite parent = this.getFieldEditorParent();
 
-        final StringFieldEditor urlField = new StringFieldEditor(
-                "url", //$NON-NLS-1$
-                Messages.getString("PreferencePage.Host"), //$NON-NLS-1$
-                parent);
-        this.addField(urlField);
+        this.addField(new StringFieldEditor(
+                MXAdapter.PREF_URL,
+                Messages.getString("MXPreferencePage.Host"), //$NON-NLS-1$
+                parent));
 
-        final StringFieldEditor nameField = new StringFieldEditor(
-                "name", //$NON-NLS-1$
-                Messages.getString("PreferencePage.UserName"), //$NON-NLS-1$
-                parent);
-        this.addField(nameField);
+        this.addField(new StringFieldEditor(
+                MXAdapter.PREF_NAME,
+                Messages.getString("MXPreferencePage.UserName"), //$NON-NLS-1$
+                parent));
 
-        final StringFieldEditor passwdField = new StringFieldEditor(
-                "password", //$NON-NLS-1$
-                Messages.getString("PreferencePage.Password"), //$NON-NLS-1$
-                parent);
-        this.addField(passwdField);
+        this.addField(new StringFieldEditor(
+                MXAdapter.PREF_PASSWORD,
+                Messages.getString("MXPreferencePage.Password"), //$NON-NLS-1$
+                parent));
+
+        this.addField(new BooleanFieldEditor(
+                MXAdapter.PREF_UPDATE_FILE_CONTENT,
+                Messages.getString("MXPreferencePage.UpdateByFileContent"), //$NON-NLS-1$
+                parent));
     }
 
     /**

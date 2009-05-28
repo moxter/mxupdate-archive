@@ -28,10 +28,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import matrix.db.Context;
-import matrix.db.MQLCommand;
-import matrix.util.MatrixException;
-
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.ImageData;
@@ -73,23 +69,8 @@ public class Activator extends AbstractUIPlugin {
      */
     private Console console = null;
 
-    /**
-     * Context to the MX database.
-     *
-     * @see #connected
-     * @see #connect()
-     * @see #disconnect()
-     */
-    private Context mxContext;
+    private IDeploymentAdapter adapter;
 
-    /**
-     * Is {@link #mxContext} connected to the MX database?
-     *
-     * @see #mxContext
-     * @see #connect()
-     * @see #disconnect()
-     */
-    private boolean connected = false;
 
 	/*
 	 * (non-Javadoc)
@@ -144,7 +125,7 @@ for (final String admin : admins)  {
     e.printStackTrace(System.out);
     this.console.logError("ERROR", e); //$NON-NLS-1$
 }
-
+this.adapter = new MXAdapter(this.getPluginPreferences(), this.console);
 
     }
 
@@ -195,115 +176,8 @@ for (final String admin : admins)  {
         ConsolePlugin.getDefault().getConsoleManager().showConsoleView(this.console);
     }
 
-    /**
-     *
-     * @return <i>true</i> if already connected or connect to MX database was
-     *         successfully; otherwise <i>false</i> is returned
-     * @see #connected
-     * @see #mxContext
-     */
-    public boolean connect()
+    public IDeploymentAdapter getAdapter()
     {
-        boolean connect = false;
-        if (this.connected)  {
-            connect = true;
-            this.console.logInfo(Messages.getString("Activator.AlreadyConnected")); //$NON-NLS-1$
-        } else  {
-            final String host =  this.getPluginPreferences().getString("url"); //$NON-NLS-1$
-            final String user =  this.getPluginPreferences().getString("name"); //$NON-NLS-1$
-            final String passwd =  this.getPluginPreferences().getString("password"); //$NON-NLS-1$
-
-            try {
-                this.mxContext = new Context(host);
-                this.mxContext.resetContext(user, passwd, null);
-                this.mxContext.connect();
-                this.connected = this.mxContext.isConnected();
-                connect = true;
-                this.console.logInfo(Messages.getString("Activator.ConnectedTo", host)); //$NON-NLS-1$
-
-                // read properties
-                final String newProps = this.execMql("exec prog org.mxupdate.plugin.GetProperties"); //$NON-NLS-1$
-                final String curProps = this.getPluginPreferences().getString("pluginProperties"); //$NON-NLS-1$
-                if (!newProps.equals(curProps))  {
-                    this.getPluginPreferences().setValue("pluginProperties", newProps); //$NON-NLS-1$
-                    this.console.logInfo(Messages.getString("Activator.PluginPropertiesChanged")); //$NON-NLS-1$
-                }
-
-            } catch (final MatrixException e) {
-                this.console.logError(Messages.getString("Activator.ConnectFailed"), e); //$NON-NLS-1$
-            }
-        }
-        return connect;
-    }
-
-    /**
-    *
-    * @return <i>true</i> if already disconnected or disconnect from MX
-    *         database was successfully; otherwise <i>false</i> is returned
-    * @see #connected
-    * @see #mxContext
-    */
-    public boolean disconnect()
-    {
-        boolean disconnect = false;
-        if (!this.connected)  {
-            this.console.logInfo(Messages.getString("Activator.AlreadyDisconnected")); //$NON-NLS-1$
-            disconnect = true;
-        } else  {
-            try {
-                this.mxContext.disconnect();
-                this.mxContext = null;
-                this.connected = false;
-                disconnect = true;
-                this.console.logInfo(Messages.getString("Activator.Disconnected")); //$NON-NLS-1$
-            } catch (final MatrixException e) {
-                this.console.logError(Messages.getString("Activator.DisconnectFailed"), e); //$NON-NLS-1$
-            }
-        }
-        return disconnect;
-    }
-
-    /**
-     *
-     * @param _file     MxUpdate file which must be updated
-     * @see #execMql(CharSequence)
-     */
-    public void update(final String _file)
-    {
-        try {
-            final String ret = this.execMql(
-                    "exec prog org.mxupdate.plugin.Update '" + _file + "';" //$NON-NLS-1$ //$NON-NLS-2$
-            );
-
-            this.console.logInfo(ret);
-        } catch (final MatrixException e)  {
-            this.console.logError(Messages.getString("Activator.UpdateFailed", _file), e); //$NON-NLS-1$
-        }
-    }
-
-    /**
-     * Executes given MQL command and returns the trimmed result of the MQL
-     * execution. The MX context {@link #mxContext} is connected to the data
-     * base if not already done.
-     *
-     * @param _cmd      MQL command to execute
-     * @return trimmed result of the MQL execution
-     * @throws MatrixException if MQL execution fails
-     * @see #mxContext
-     * @see #connect()
-     */
-    public String execMql(final CharSequence _cmd)
-            throws MatrixException
-    {
-        if (!this.connected)  {
-            this.connect();
-        }
-
-        final MQLCommand mql = new MQLCommand();
-        mql.executeCommand(this.mxContext, _cmd.toString());
-        if ((mql.getError() != null) && !"".equals(mql.getError()))  { //$NON-NLS-1$
-            throw new MatrixException(mql.getError() + "\nMQL command was:\n" + _cmd);
-        }
-        return mql.getResult().trim();
+        return this.adapter;
     }
 }

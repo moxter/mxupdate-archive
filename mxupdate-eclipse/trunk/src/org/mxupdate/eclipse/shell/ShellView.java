@@ -23,8 +23,6 @@ package org.mxupdate.eclipse.shell;
 import java.util.ArrayList;
 import java.util.List;
 
-import matrix.util.MatrixException;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
@@ -254,9 +252,9 @@ public class ShellView
         final StyleRange txtStyleRange = new StyleRange();
         txtStyleRange.start = this.textOutput.getCharCount();
         try {
-            this.textOutput.append(Activator.getDefault().execMql(inputText));
+            this.textOutput.append(Activator.getDefault().getAdapter().execute(inputText));
             txtStyleRange.foreground = this.colorOuput;
-        } catch (final MatrixException e1)  {
+        } catch (final Exception e1)  {
             this.textOutput.append(e1.toString());
             txtStyleRange.foreground = this.colorError;
         }
