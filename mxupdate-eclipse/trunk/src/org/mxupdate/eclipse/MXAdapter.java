@@ -78,6 +78,29 @@ public class MXAdapter
     private final static String PREF_PROPERTIES = "pluginProperties"; //$NON-NLS-1$
 
     /**
+     * Name and place of the manifest file.
+     *
+     * @see #getPlugInVersion()
+     */
+    private final static String MANIFEST_FILE = "META-INF/MANIFEST.MF"; //$NON-NLS-1$
+
+    /**
+     * Label of the bundle version within the <code>META-INF/MANIFEST.MF</code>
+     * file.
+     *
+     * @see #getPlugInVersion()
+     */
+    private final static String TEXT_BUNDLE_VERSION = "Bundle-Version:"; //$NON-NLS-1$
+
+    /**
+     * Length of the label of the bundle version within the
+     * <code>META-INF/MANIFEST.MF</code> file.
+     *
+     * @see #getPlugInVersion()
+     */
+    private final static int LENGTH_BUNDLE_VERSION = TEXT_BUNDLE_VERSION.length();
+
+    /**
      * Holds the link to the preferences.
      */
     private final Preferences preferences;
@@ -121,6 +144,7 @@ public class MXAdapter
      *         successfully; otherwise <i>false</i> is returned
      * @see #connected
      * @see #mxContext
+     * @see #checkVersions()
      */
     public boolean connect()
     {
@@ -145,15 +169,84 @@ public class MXAdapter
                 final String newProps = this.execute("exec prog org.mxupdate.plugin.GetProperties"); //$NON-NLS-1$
                 final String curProps = this.preferences.getString(PREF_PROPERTIES);
                 if (!newProps.equals(curProps))  {
-                    this.preferences.setValue(PREF_PROPERTIES, newProps);
+                    this.preferences.setValue(MXAdapter.PREF_PROPERTIES, newProps);
                     this.console.logInfo(Messages.getString("MXAdapter.PluginPropertiesChanged")); //$NON-NLS-1$
                 }
-
             } catch (final MatrixException e) {
                 this.console.logError(Messages.getString("MXAdapter.ConnectFailed"), e); //$NON-NLS-1$
             }
+
+            // check versions
+            if (this.connected)  {
+                this.checkVersions();
+            }
         }
         return connect;
+    }
+
+    /**
+     * Checks that the version of the MxUpdate Eclipse Plug-In and the version
+     * of the MxUpdate Update Deployment Tool have the same major and minor
+     * number within their versions. If not equal the plug-in automatically
+     * disconnects from MX.
+     *
+     * @see #disconnect()
+     * @see #getPlugInVersion()
+     * @see #connect()
+     */
+    protected void checkVersions()
+    {
+        String pluginVersion = null;
+        try {
+            pluginVersion = this.getPlugInVersion();
+        } catch (final IOException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionGetPlugInVersion"), e); //$NON-NLS-1$
+        }
+
+        String updateVersion = null;
+        try {
+            updateVersion = this.execute("exec prog org.mxupdate.plugin.GetVersion").replaceAll("-", ".");
+        } catch (final MatrixException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionGetUpdateVersion"), e); //$NON-NLS-1$
+        }
+
+        final String[] pluginVersions = (pluginVersion != null) ? pluginVersion.split("\\.") : null;
+        final String[] updateVersions = (updateVersion != null) ? updateVersion.split("\\.") : null;
+        if ((pluginVersion == null) || (pluginVersions.length < 2)
+                || (updateVersion == null) || (updateVersions.length < 2)
+                || !pluginVersions[0].equals(updateVersions[0]) || !pluginVersions[1].equals(updateVersions[1]))  {
+            this.console.logError(Messages.getString("MXAdapter.CheckVersionsNoConnectAllowed", //$NON-NLS-1$
+                                                     pluginVersion,
+                                                     updateVersion));
+            this.disconnect();
+        }
+    }
+
+    /**
+     * Returns for this plug-in the version stored within manifest file.
+     *
+     * @return found plug-in version within manifest file
+     * @throws IOException if the manifest file could not found or not opened
+     * @see #MANIFEST_FILE
+     */
+    protected String getPlugInVersion()
+            throws IOException
+    {
+        final InputStream in = this.getClass().getClassLoader().getResourceAsStream(MXAdapter.MANIFEST_FILE);
+        final byte[] buffer = new byte[in.available()];
+        in.read(buffer);
+        in.close();
+
+        final String manifest = new String(buffer);
+        String version = null;
+        for (final String line : manifest.split("\n"))  {
+            if (line.startsWith(MXAdapter.TEXT_BUNDLE_VERSION))  {
+                version = line.substring(MXAdapter.LENGTH_BUNDLE_VERSION).trim();
+                break;
+            }
+        }
+
+        return version;
     }
 
     /**
