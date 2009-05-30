@@ -191,9 +191,12 @@ public class MXAdapter
      * done).
      *
      * @param _files    MxUpdate file which must be updated
+     * @param _compile  if <i>true</i> all JPOs are compiled; if <i>false</i>
+     *                  no JPOs are compiled, only an update is done
      * @see #execMql(CharSequence)
      */
-    public void update(final List<IFile> _files)
+    public void update(final List<IFile> _files,
+                       final boolean _compile)
     {
         // update by file content
         if (this.preferences.getBoolean(MXAdapter.PREF_UPDATE_FILE_CONTENT))  {
@@ -221,7 +224,10 @@ public class MXAdapter
                 }
             }
             try {
-                this.console.logInfo(this.jpoInvoke("org.mxupdate.plugin.Update", "updateByContent", files));
+                this.console.logInfo(this.jpoInvoke("org.mxupdate.plugin.Update",
+                                                    "updateByContent",
+                                                    files,
+                                                    _compile));
             } catch (Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed",  //$NON-NLS-1$
                                                          files.keySet().toString()),
@@ -234,7 +240,10 @@ public class MXAdapter
                 fileNames.add(file.getLocation().toString());
             }
             try {
-                this.console.logInfo(this.jpoInvoke("org.mxupdate.plugin.Update", "updateByName", fileNames));
+                this.console.logInfo(this.jpoInvoke("org.mxupdate.plugin.Update",
+                                                    "updateByName",
+                                                    fileNames,
+                                                    _compile));
             } catch (Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed", //$NON-NLS-1$
                                                          fileNames.toString()),
@@ -289,7 +298,8 @@ public class MXAdapter
      *
      * @param _jpo          name of JPO to call
      * @param _method       method of the called <code>_jpo</code>
-     * @param _parameter    parameter
+     * @param _parameters   list of all parameters for the <code>_jpo</code>
+     *                      which are automatically encoded encoded
      * @return returned value from the called <code>_jpo</code>
      * @throws IOException      if the parameter could not be encoded
      * @throws MatrixException  if the called <code>_jpo</code> throws an
@@ -299,19 +309,24 @@ public class MXAdapter
      */
     protected String jpoInvoke(final String _jpo,
                                final String _method,
-                               final Object _parameter)
+                               final Object... _parameters)
         throws IOException, MatrixException
     {
         if (!this.connected)  {
             this.connect();
         }
 
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        ObjectOutputStream oos = new ObjectOutputStream(out);
-        oos.writeObject(_parameter);
-        oos.close();
+        // encode parameters
+        final String[] paramStrings = new String[_parameters.length];
+        int idx = 0;
+        for (final Object parameter : _parameters)  {
+            final ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(out);
+            oos.writeObject(parameter);
+            oos.close();
+            paramStrings[idx++] = new String(Base64.encodeBase64(out.toByteArray()));
+        }
 
-        final String enc = new String(Base64.encodeBase64(out.toByteArray()));
-        return (String) JPO.invoke(this.mxContext, _jpo, null, _method, new String[]{enc}, String.class);
+        return (String) JPO.invoke(this.mxContext, _jpo, null, _method, paramStrings, String.class);
     }
 }

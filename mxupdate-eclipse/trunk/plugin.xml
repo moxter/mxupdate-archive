@@ -89,11 +89,19 @@
          </defaultHandler>
       </command>
       <command
+            id="org.mxupdate.eclipse.command.updatecompile"
+            name="%plugin.command.updatecompile.label">
+         <defaultHandler
+               class="org.mxupdate.eclipse.handlers.UpdateCompileHandler">
+         </defaultHandler>
+      </command>
+      <command
             id="org.mxupdate.eclipse.command.compare"
             name="%CompareHandler.Label">
          <defaultHandler class="org.mxupdate.eclipse.handlers.CompareHandler"/>
       </command>
    </extension>
+
    <extension
          point="org.eclipse.ui.bindings">
       <key
@@ -103,6 +111,7 @@
             sequence="M1+6">
       </key>
    </extension>
+
    <extension point="org.eclipse.ui.menus">
       <!-- menu -->
       <menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=additions">
@@ -113,6 +122,11 @@
             <command
                   commandId="org.mxupdate.eclipse.command.update"
                   icon="icons/Update.gif"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.mxupdate.eclipse.command.updatecompile"
+                  icon="icons/UpdateCompile.gif"
                   style="push">
             </command>
             <separator
@@ -138,6 +152,10 @@
                      icon="icons/Update.gif"
                      tooltip="%plugin.command.update.tooltip">
             </command>
+            <command commandId="org.mxupdate.eclipse.command.updatecompile"
+                     icon="icons/UpdateCompile.gif"
+                     tooltip="%plugin.command.updatecompile.tooltip">
+            </command>
          </toolbar>
       </menuContribution>
       <!-- MxUpdate popup menu -->
@@ -145,6 +163,8 @@
          <menu label="%plugin.popup.label">
             <command commandId="org.mxupdate.eclipse.command.update"
                      icon="icons/Update.gif"/>
+            <command commandId="org.mxupdate.eclipse.command.updatecompile"
+                     icon="icons/UpdateCompile.gif"/>
             <command commandId="org.mxupdate.eclipse.command.compare"/>
          </menu>
       </menuContribution>
