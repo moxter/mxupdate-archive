@@ -26,13 +26,13 @@ import org.eclipse.core.resources.IFile;
 import org.mxupdate.eclipse.Activator;
 
 /**
- * Eclipse Handler called from the update command used to update selected
- * update files.
+ * Eclipse Handler called from the update and compile command used to update
+ * and compile selected update files.
  *
  * @author The MxUpdate Team
  * @version $Id$
  */
-public class UpdateHandler
+public class UpdateCompileHandler
         extends AbstractFileHandler
 {
     /**
@@ -44,6 +44,6 @@ public class UpdateHandler
     @Override
     protected void execute(final List<IFile> _files)
     {
-        Activator.getDefault().getAdapter().update(_files, false);
+        Activator.getDefault().getAdapter().update(_files, true);
     }
 }

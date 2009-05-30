@@ -51,8 +51,11 @@ public interface IDeploymentAdapter
      * Updates given update <code>_files</code> in the database.
      *
      * @param _files    update files to update in the database
+     * @param _compile  if <i>true</i> all program files are compiled; if
+     *                  <i>false</i> no files are compiled
      */
-    void update(final List<IFile> _files);
+    void update(final List<IFile> _files,
+                final boolean _compile);
 
     /**
      * Extracts for given <code>_file</code> name the update code from the
