@@ -16,7 +16,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 
- Author:          Tim Moxter
+ Author:          The MxUpdate Team
  Revision:        $Rev$
  Last Changed:    $Date$
  Last Changed By: $Author$
@@ -30,7 +30,7 @@
          point="org.eclipse.ui.decorators">
       <decorator
             adaptable="false"
-            class="org.mxupdate.eclipse.Decorator"
+            class="org.mxupdate.eclipse.MXDecorator"
             id="mxupdate_eclipse.decorator"
             label="MxUpdate Decorator"
             lightweight="true"
@@ -49,7 +49,7 @@
 
     <!-- Preference Pages -->
     <extension point="org.eclipse.ui.preferencePages">
-        <page class="org.mxupdate.eclipse.PreferencePage"
+        <page class="org.mxupdate.eclipse.MXPreferencePage"
               id="EclipsePlugin.page1"
               name="%plugin.settings.label">
         </page>
