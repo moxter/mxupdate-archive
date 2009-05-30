@@ -20,13 +20,26 @@
 
 package org.mxupdate.eclipse;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import matrix.db.Context;
+import matrix.db.JPO;
 import matrix.db.MQLCommand;
 import matrix.util.MatrixException;
 
+import org.apache.commons.codec.binary.Base64;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Preferences;
 import org.mxupdate.eclipse.console.Console;
 
@@ -42,22 +55,27 @@ public class MXAdapter
     /**
      * Key of the URL preference.
      */
-    public final static String PREF_URL = "url";
+    public final static String PREF_URL = "url"; //$NON-NLS-1$
 
     /**
      * Key of the name preference.
      */
-    public final static String PREF_NAME = "name";
+    public final static String PREF_NAME = "name"; //$NON-NLS-1$
 
     /**
      * Key of the password preference.
      */
-    public final static String PREF_PASSWORD = "password";
+    public final static String PREF_PASSWORD = "password"; //$NON-NLS-1$
 
     /**
      * Key of the update by file content preference.
      */
-    public final static String PREF_UPDATE_FILE_CONTENT = "updateByFileContent";
+    public final static String PREF_UPDATE_FILE_CONTENT = "updateByFileContent"; //$NON-NLS-1$
+
+    /**
+     * Key name of the properties stored in the preferences.
+     */
+    private final static String PREF_PROPERTIES = "pluginProperties"; //$NON-NLS-1$
 
     /**
      * Holds the link to the preferences.
@@ -90,13 +108,14 @@ public class MXAdapter
     private boolean connected = false;
 
     MXAdapter(final Preferences _preferences,
-                 final Console _console)
+              final Console _console)
     {
         this.preferences = _preferences;
         this.console = _console;
     }
 
     /**
+     * Connects to the MX database.
      *
      * @return <i>true</i> if already connected or connect to MX database was
      *         successfully; otherwise <i>false</i> is returned
@@ -124,9 +143,9 @@ public class MXAdapter
 
                 // read properties
                 final String newProps = this.execute("exec prog org.mxupdate.plugin.GetProperties"); //$NON-NLS-1$
-                final String curProps = this.preferences.getString("pluginProperties"); //$NON-NLS-1$
+                final String curProps = this.preferences.getString(PREF_PROPERTIES);
                 if (!newProps.equals(curProps))  {
-                    this.preferences.setValue("pluginProperties", newProps); //$NON-NLS-1$
+                    this.preferences.setValue(PREF_PROPERTIES, newProps);
                     this.console.logInfo(Messages.getString("MXAdapter.PluginPropertiesChanged")); //$NON-NLS-1$
                 }
 
@@ -138,6 +157,7 @@ public class MXAdapter
     }
 
     /**
+     * Disconnect from the MX database.
      *
      * @return <i>true</i> if already disconnected or disconnect from MX
      *         database was successfully; otherwise <i>false</i> is returned
@@ -165,21 +185,60 @@ public class MXAdapter
     }
 
     /**
+     * Updates given MX update files in the MX database. If
+     * {@link #PREF_UPDATE_FILE_CONTENT} is set, also the file content is
+     * transfered within the update (e.g. if an update on another server is
+     * done).
      *
      * @param _files    MxUpdate file which must be updated
      * @see #execMql(CharSequence)
      */
     public void update(final List<IFile> _files)
     {
-        for (final IFile file: _files)  {
-            final String fileStr = file.getLocation().toString();
+        // update by file content
+        if (this.preferences.getBoolean(MXAdapter.PREF_UPDATE_FILE_CONTENT))  {
+            final Map<String,String> files = new HashMap<String,String>();
+            for (final IFile file: _files)  {
+                try  {
+                    final InputStream in = new FileInputStream(file.getLocation().toFile());
+                    final byte[] bytes = new byte[in.available()];
+                    in.read(bytes);
+                    in.close();
+                    files.put(file.getLocation().toString(),
+                              new String(bytes, file.getCharset()));
+                } catch (final UnsupportedEncodingException e)  {
+                    this.console.logError(Messages.getString("MXAdapter.ExceptionConvertFileContent", //$NON-NLS-1$
+                                                             file.getLocation().toString()),
+                                          e);
+                } catch (CoreException e) {
+                    this.console.logError(Messages.getString("MXAdapter.ExceptionFileCharSet", //$NON-NLS-1$
+                                                             file.getLocation().toString()),
+                                          e);
+                } catch (IOException e) {
+                    this.console.logError(Messages.getString("MXAdapter.ExceptionReadFileContentFailed", //$NON-NLS-1$
+                                                             file.getLocation().toString()),
+                                          e);
+                }
+            }
             try {
-                final String ret = this.execute(
-                        "exec prog org.mxupdate.plugin.Update '" + fileStr + "';" //$NON-NLS-1$ //$NON-NLS-2$
-                );
-                this.console.logInfo(ret);
-            } catch (final MatrixException e)  {
-                this.console.logError(Messages.getString("MXAdapter.UpdateFailed", fileStr), e); //$NON-NLS-1$
+                this.console.logInfo(this.jpoInvoke("org.mxupdate.plugin.Update", "updateByContent", files));
+            } catch (Exception e)  {
+                this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed",  //$NON-NLS-1$
+                                                         files.keySet().toString()),
+                                      e);
+            }
+        // update by file names
+        } else  {
+            final Set<String> fileNames = new HashSet<String>();
+            for (final IFile file: _files)  {
+                fileNames.add(file.getLocation().toString());
+            }
+            try {
+                this.console.logInfo(this.jpoInvoke("org.mxupdate.plugin.Update", "updateByName", fileNames));
+            } catch (Exception e)  {
+                this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed", //$NON-NLS-1$
+                                                         fileNames.toString()),
+                                      e);
             }
         }
     }
@@ -222,5 +281,37 @@ public class MXAdapter
             throw new MatrixException(mql.getError() + "\nMQL command was:\n" + _command);
         }
         return mql.getResult().trim();
+    }
+
+    /**
+     * Calls given <code>_method</code> in <code>_jpo</code>. The MX context
+     * {@link #mxContext} is connected to the database if not already done.
+     *
+     * @param _jpo          name of JPO to call
+     * @param _method       method of the called <code>_jpo</code>
+     * @param _parameter    parameter
+     * @return returned value from the called <code>_jpo</code>
+     * @throws IOException      if the parameter could not be encoded
+     * @throws MatrixException  if the called <code>_jpo</code> throws an
+     *                          exception
+     * @see #mxContext
+     * @see #connect()
+     */
+    protected String jpoInvoke(final String _jpo,
+                               final String _method,
+                               final Object _parameter)
+        throws IOException, MatrixException
+    {
+        if (!this.connected)  {
+            this.connect();
+        }
+
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(out);
+        oos.writeObject(_parameter);
+        oos.close();
+
+        final String enc = new String(Base64.encodeBase64(out.toByteArray()));
+        return (String) JPO.invoke(this.mxContext, _jpo, null, _method, new String[]{enc}, String.class);
     }
 }
