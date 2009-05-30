@@ -2,15 +2,16 @@
 <feature
       id="org.mxupdate.eclipse"
       label="MxUpdate Eclipse Plug In"
-      version="0.0.7"
+      version="0.4.0"
+      provider-name="The MxUpdate Team"
       plugin="org.mxupdate.eclipse">
 
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
+   <description url="http://www.mxupdate.org">
+      MxUpdate Eclipse Plug-In.
    </description>
 
    <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
+      Copyright by The MxUpdate Team 2008, 2009.
    </copyright>
 
    <license url="http://www.apache.org/licenses/LICENSE-2.0">
@@ -239,7 +240,7 @@
          id="org.mxupdate.eclipse"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="0.4.0"
          unpack="false"/>
 
 </feature>
