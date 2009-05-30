@@ -244,7 +244,7 @@ can be found at http://www.famfamfam.com/lab/icons/silk/.
    </license>
 
    <url>
-      <update label="MxUpdate" url="http://mxupdate.googlecode.com/svn/mxupdate-eclipse-site/trunk"/>
+      <update label="MxUpdate" url="http://mxupdate.googlecode.com/svn/mxupdate-eclipse-site/tags"/>
    </url>
 
    <requires>
