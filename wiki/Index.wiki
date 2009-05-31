@@ -1,7 +1,8 @@
 #summary Index
 
-=== [Start Start Page] ===
-=== [Update_Start MxUpdate Update Deployment Tool] ===
+[Start Start Page]
+
+[Update_Start MxUpdate Update Deployment Tool]
  * [Update_Installation Installation]
  * [Update_CI Configuration Items]
      * [Update_CI_JPOs JPOs]
@@ -14,6 +15,6 @@
      * [Update_PropertyFileFormat_TypeDefGroup Key "TypeDefGroup"]
      * [Update_PropertyFileFormat_UpdateCheck Key "UpdateCheck"]
  * [Update_Development Development]
-=== [Eclipse_Start MxUpdate Eclipse Plug-In] ===
+[Eclipse_Start MxUpdate Eclipse Plug-In]
  * [Eclipse_Create_eMatrixServletRMIPlugin Create eMatrixServletRMI Plug In]
  * [Eclipse_Installation Installation]
