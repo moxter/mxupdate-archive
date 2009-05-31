@@ -1,11 +1,49 @@
 #summary Installation of the MxUpdate Eclipse Plug-In
-#sidebar Index
 #labels Phase-Deploy
+#sidebar Index
 
-= Download and Install =
+<wiki:toc max_depth="3"/>
 
-Download the plugin zip container from the [http://code.google.com/p/mxupdate/downloads/list Downloads].
+= Use !MxUpdate Eclipse Plug-In Site =
 
-Unpack the zip container under ecplipse/plugins folder.
+== Call Software Update ==
+From the Help Menu of Eclipse select "Software Updates":
 
-Replace in the lib directory the empty placeholder jar file eMatrixServletRMI.jar from the original MX installation.
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Installation-1.jpg
+
+== Select Available Software ==
+Press the "Available Software" Tab in the new opened window:
+
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Installation-2.jpg
+
+== Add new Site ==
+Press the "Add Site" button on the right site of the window:
+
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Installation-3.jpg
+
+A new windows pop ups. The new site http://mxupdate.googlecode.com/svn/mxupdate-eclipse-site/tags/ for the !MxUpdate Eclipse Plug-In must be entered:
+
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Installation-4.jpg
+
+== Refresh Sites ==
+
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Installation-5.jpg
+
+== Select and Install ==
+
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Installation-6.jpg
+
+== Confirm Installation ==
+
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Installation-7.jpg
+
+== Accept License ==
+
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Installation-8.jpg
+
+== Restart Eclipse ==
+
+http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Installation-9.jpg
+
+= Alternative: Manual Download and Installation =
+Download the plug-in jar container from the [http://code.google.com/p/mxupdate/downloads/list Downloads]. Put the downloaded jar file into the plug-in directory of the installed Eclipse directory. After Eclipse is started the [Eclipse_Start MxUpdate Eclipse Plug-In] is installed.
