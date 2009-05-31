@@ -1,6 +1,6 @@
 #summary Description of the Key "TypeDef" within MxUpdate property file.
 #labels Phase-Deploy
-#sidebar Update_Index
+#sidebar Index
 
 = Introduction =
 

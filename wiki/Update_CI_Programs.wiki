@@ -1,5 +1,5 @@
 #summary Describes the special handling of Programs as configuration item.
-#sidebar Update_Index
+#sidebar Index
 
 <wiki:toc max_depth="3"/>
 

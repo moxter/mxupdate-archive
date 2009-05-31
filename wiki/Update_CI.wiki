@@ -1,5 +1,5 @@
 #summary describes the methodic how configuration items could be used within MX
-#sidebar Update_Index
+#sidebar Index
 
 = Introduction =
 
