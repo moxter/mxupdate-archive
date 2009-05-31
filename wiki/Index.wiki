@@ -17,5 +17,9 @@
  * [Update_Development Development]
 
 [Eclipse_Start MxUpdate Eclipse Plug-In]
- * [Eclipse_Create_eMatrixServletRMIPlugin Create eMatrixServletRMI Plug In]
- * [Eclipse_Installation Installation]
+ * [Eclipse_Install Installation]
+     * [Eclipse_Install_ADK eMatrixServletRMI Plug-In]
+     * [Eclipse_Install_PlugIn MxUpdate Plug-In]
+     * [Eclipse_Install_Connect Connect to MX]
+     * [Eclipse_Install_Manually Manually Installation]
+     * [Eclipse_Install_Check Check installed Version]
