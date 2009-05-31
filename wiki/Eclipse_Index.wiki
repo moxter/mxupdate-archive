@@ -1,6 +1,0 @@
-#summary Index for MxUpdate Eclipse Plug In description.
-#labels Eclipse Plug In Wiki Sidebar
-
- * [Index ↑ Home]
- * [Eclipse_Create_eMatrixServletRMIPlugin Create eMatrixServletRMI Plugin]
- * [Eclipse_Installation Install MxUpdate Eclipse Plugin]
