@@ -39,7 +39,7 @@ So for a TCL program the source code could look like this:
 ## START NEEDED MQL UPDATE FOR THIS PROGRAM                                     #
 #################################################################################
 #
-#mql mod program "MXPROG"  \
+#mql mod program "MXPROG.TCL"  \
 #    add property "Execute" value "true"
 #
 #################################################################################
@@ -49,6 +49,25 @@ tcl;
 eval  {
   .... SOME CODE ....
 }
+}}}
+
+== XML Program Example ==
+For XML and XSL(T) files the code could be embedded between start comment {{{<!--}}} and end comment {{{-->}}}. So the snippet for a XML program could like this:
+{{{
+<!--
+   Some Comment...
+
+################################################################################
+# START NEEDED MQL UPDATE FOR THIS PROGRAM                                     #
+################################################################################
+
+mql mod program "MXPROG.XML"  \
+    add property "Extension" value "PDF"
+
+################################################################################
+# END NEEDED MQL UPDATE FOR THIS PROGRAM                                       #
+################################################################################
+-->
 }}}
 
 = Parameter Definitions =
