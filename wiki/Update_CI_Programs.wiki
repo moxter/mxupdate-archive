@@ -6,8 +6,16 @@
 = Introduction =
 The source code of programs are handled as configuration item. The name of the configuration item file is the same name as they are used within MX.
 
+= "Standard" Property and Symbolic Name Handling =
+All non "standard" properties are removed before the program is updated and the embedded TCL code is execute. At the end all the "standard" properties "version", "file date", "application" and "author" are updated (depending on the used parameters). The "standard" properties "installer" and "original name" are only set if not already defined.
+
+The symbolic name of the program is the automatically calculated string {{{program_[PROGRAM_NAME]}}}. If the {{{[PROGRAM_NAME]}}} includes some spaces or slashes, they are removed.
+
+
 = Embedded TCL Code =
 Sometimes some further TCL update code is required, e.g. to define a program user, or some properties for the program. The !MxUpdate Update deployment tool could handle this within the same program source code.
+
+Because all non "standard" properties are removed before the embedded TCL code is execute, project specific properties could be set by using {{{add}}}.
 
 == Start and End Markers ==
 To identify the TCL update code some markers must be defined in the source code. For the beginning of TCL update code the marker
