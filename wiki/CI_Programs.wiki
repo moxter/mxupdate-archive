@@ -78,7 +78,7 @@ mql mod program "MXPROG.XML"  \
 }}}
 
 = Parameter Definitions =
-|| Name || Parameter || Default Value || Description ||
+|| Name || Parameter || Default Value || Description ||
 || !ProgramTclUpdateExtension ||  || .xml=,.xsl=,.xslt=,.mql=#,.tcl=# || Defines the list of all file extensions which could embed TCL update code and depending on the extension the related line prefixes. ||
 || !ProgramTclUpdateMarkEnd ||  || _see the end marker_ || Defines the string to mark the end of embedded TCL update code within program source code. ||
 || !ProgramTclUpdateMarkStart ||  || _see the start marker_ || Defines the string to mark the start of embedded TCL update code within program source code. ||
