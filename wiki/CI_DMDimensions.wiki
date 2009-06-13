@@ -1,0 +1,6 @@
+#summary Describes the special handling of Dimensions as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+= Introduction =
+The !MxUpdate update steps for configuration items is typically done by removing all values and add them again. For dimensions this is not possible, because otherwise there is potentially some data lost. So for dimensions a "special" format is defined.

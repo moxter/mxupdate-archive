@@ -1,6 +1,6 @@
 #summary Index
 
- * [Start Start Page]
+ * [Start Introduction]
  * [Update_Start MxUpdate Update Deployment Tool]
      * [Update_Installation Installation]
      * [Update_PropertyFileFormat Property File Format]
@@ -12,6 +12,8 @@
          * [Update_PropertyFileFormat_UpdateCheck UpdateCheck]
      * [Update_Development Development]
  * [CI Configuration Items]
+     * [CI_DMDimensions Dimensions]
+     * [CI_DMPolicies Policies]
      * [CI_JPOs JPOs]
      * [CI_Programs Programs]
  * [Eclipse_Start MxUpdate Eclipse Plug-In]

@@ -1,0 +1,6 @@
+#summary Describes the special handling of Policies as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+= Introduction =
+The !MxUpdate update steps for configuration items is typically done by removing all values and add them again. For policies this is not possible, because otherwise there is potentially some data lost. So for policies a "special" format is defined.
