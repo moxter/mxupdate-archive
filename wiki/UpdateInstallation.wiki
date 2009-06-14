@@ -1,6 +1,5 @@
-#summary Installation of the MxUpdate deployment tool.
+#summary Installation of the MxUpdate Update Deployment Tool.
 #labels Phase-Deploy,Featured
-#sidebar Index
 
 <wiki:toc max_depth="3"/>
 

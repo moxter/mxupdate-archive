@@ -1,5 +1,4 @@
-#summary Describes how to develop MxUpdate Update development tool
-#sidebar Index
+#summary Describes how to develop MxUpdate Update Deployment Tool
 
 = Install Eclipse Project =
 
