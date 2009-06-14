@@ -6,5 +6,5 @@
 The [http://www.mxupdate.org MxUpdate] Tools is based on the [CI Configuration Item] philosophy. This means each administration object in MX is handled with a single update file.
 
 To handle this philosophy the [http://www.mxupdate.org MxUpdate] tool includes two different tools:
- * [Update_Start MxUpdate Update Deployment Tool]
- * [Eclipse_Start MxUpdate Eclipse Plug-In]
+ * !MxUpdate Update Deployment Tool ([UpdateInstallation installation], [UpdateUsage usage])
+ * !MxUpdate Eclipse Plug-In ([Eclipse_Install installation])
