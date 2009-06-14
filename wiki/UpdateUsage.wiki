@@ -19,7 +19,7 @@ to get all parameters with arguments and short description.
 ----
 
 = Export Configuration Items =
-To export configuration items parameter {{{--export}}} (short {{{-e}}}) must be defined. The export path must be defined with {{{--path}}}. At minimum one path must be defined. Because the export must know where to export the configuration items, only one path at maximum could be defined.
+To export configuration items parameter {{{‑‑export}}} (short {{{‑e}}}) must be defined. The export path must be defined with {{{‑‑path}}}. At minimum one path must be defined. Because the export must know where to export the configuration items, only one path at maximum could be defined.
 With the other parameters the configuration item types with matching names are defined.
 
 == Further Export Configurations ==
@@ -51,14 +51,14 @@ exec prog MxUpdate --export --path C:\Temp\DBSchema --jpo * --ignorejpo org*
 ----
 
 = Update Configuration Items =
-To export configuration items parameter {{{--update}}} (short {{{-u}}}) must be defined. Depending on a defined parameter {{{--path}}} two cases exists:
- * If at minimum one path is defined with parameter {{{--path}}} the {{{<MATCH>}}} arguments are patterns used to evaluate matching names names without prefix and suffix.
+To export configuration items parameter {{{‑‑update}}} (short {{{-u}}}) must be defined. Depending on a defined parameter {{{‑‑path}}} two cases exists:
+ * If at minimum one path is defined with parameter {{{‑‑path}}} the {{{<MATCH>}}} arguments are patterns used to evaluate matching names names without prefix and suffix.
  * If no path parameter is defined, the {{{<MATCH>}}} arguments are defined as file names. A defined asterisk '{{{*}}}' is interpreted as file wild card. 
 
 == 'Update is Required' Check ==
 An update of an existing object must not be done always. The default configuration is, that an update is done always.
 || *Parameter*          || *Description* ||
-|| {{{‑‑checkfiledate}}}      || Check if an update is required by comparing the defined version against the value of the version property. E.g. if parameter '--usefiledateasversion' is defined, the last modified date in seconds of the file is used to compare against the version property within database. ||
+|| {{{‑‑checkfiledate}}}      || Check if an update is required by comparing the defined version against the value of the version property. E.g. if parameter '{{{‑‑usefiledateasversion}}}' is defined, the last modified date in seconds of the file is used to compare against the version property within database. ||
 || {{{‑‑checkversion}}}       || Check if an update is required by comparing the last modified date against the value of the file date property.||
 
 == Version Definition ==
@@ -81,4 +81,4 @@ An update of an existing object must not be done always. The default configurati
 ----
 
 = Delete Configuration Items =
-To export configuration items parameter {{{--update}}} (short {{{-u}}}) must be defined. The path of update files which are checked must be defined with parameter {{{--delete}}}. All other parameter defines the matching administration objects. 
+To export configuration items parameter {{{‑‑update}}} (short {{{‑u}}}) must be defined. The path of update files which are checked must be defined with parameter {{{‑‑delete}}}. All other parameter defines the matching administration objects. 
