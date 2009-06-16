@@ -59,7 +59,7 @@ TypeDefGroup.Admin.TypeDefList          = IEFGlobalConfig,\
 TypeDefGroup.DataModel.TypeDefList      = AttributeBoolean,AttributeDate,AttributeInteger,AttributeReal,AttributeString,\
                                           Expression,Format,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type
 }}}
-For an deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_TypeDefGroup TypeDefGroup]" of the property file format. 
+For a deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_TypeDefGroup TypeDefGroup]" of the property file format. 
 
 === Relationship as from / to side for Relationships ===
 If the used MX version within the project does not support the feature to use also relationships as from / to side the property "DMRelationSupportRelCons" must be changed and set to {{{false}}}. So following line must be added to the additional property file:
@@ -74,3 +74,30 @@ If the used MX version within the project does not support the role type feature
 ParameterDef.UserRoleSupportRoleType.Default = false
 }}}
 The installed default value is {{{true}}}.
+
+== Support of emxGerLibUpdate ==
+
+=== Use !MxUpdate Update together with emxGerLibUpdate ===
+"!MxUpdate Update" and "emxGerLibUpdate" could be used together within one installation. The recommendation is to use only one tool.
+
+The Tool "emxGerLibUpdate" uses and installs other attribute and type names to handle administration objects which are business objects. For attributes this belongs to the author, installed date and version. For types it is the process type (which is called in !MxUpdate [CI_DMTriggerGroups trigger group]). So following lines must be defined to use !MxUpdate Update and emxGerLibUpdate together in one environment:
+
+{{{
+# use attribute names from emxGerLibUpdate
+PropertyDef.Author.AttributeName        = emxGerLibUpdateAuthor
+PropertyDef.InstalledDate.AttributeName = emxGerLibUpdateInstalledDate
+PropertyDef.Version.AttributeName       = emxGerLibUpdateVersion
+
+# emxGerLibUpdate calls trigger group "Process"
+TypeDef.TriggerGroup.BusPolicy          = emxGerLibUpdateProcess
+TypeDef.TriggerGroup.BusRelsBoth        = emxGerLibUpdateSubProcess
+TypeDef.TriggerGroup.BusType            = emxGerLibUpdateProcess
+TypeDef.TriggerGroup.FilePath           = datamodel/process
+TypeDef.TriggerGroup.FilePrefix         = PROCESS_
+TypeDef.TriggerGroup.TextLogging        = process
+TypeDef.TriggerGroup.TextTitle          = PROCESS
+TypeDef.TriggerGroup.ParameterDesc      = Export / Import of processes.
+TypeDef.TriggerGroup.ParameterList      = process
+}}}
+For a deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_PropertyDef PropertyDef]" of the property file format. 
+
