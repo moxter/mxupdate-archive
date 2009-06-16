@@ -3,6 +3,8 @@
 
 <wiki:toc max_depth="3"/>
 
+----
+
 = Installation =
 [http://code.google.com/p/mxupdate/downloads/list Download] and uncompress the !MxUpdate Update deployment tool. E.g. the tool is unpacked into directory {{{C:\project\MxUpdate\}}}.
 
@@ -26,6 +28,8 @@ exec prog MxUpdate --help
 }}}
 The short help for all parameters of !MxUpdate is shown.
 
+----
+
 = Installation FAQ =
 
 == Alternatives to Manually Downloads ==
@@ -38,6 +42,24 @@ source http://mxupdate.googlecode.com/svn/mxupdate-update/tags/V0.3.0
 Also this directory could hold the project specific MQL update script which installs the !MxUpdate Update deployment tool.
 
 == Support of old MX versions ==
+
+=== Dimensions ===
+If the used MX version within the project does not support the configuration item "[CI_DMDimensions Dimension]" the parameter list of the type definition "Dimension" and type defintion groups "Admin" and "!DataModel" must be changed that they do not include definitions for the configuration item "[CI_DMDimensions Dimension]". So following lines must be added to the additional property file:
+{{{
+TypeDef.Dimension.ParameterList         =
+TypeDef.Dimension.ParameterListOpposite =
+
+TypeDefGroup.Admin.TypeDefList          = IEFGlobalConfig,\
+                                          JPO,Program,\
+                                          AttributeBoolean,AttributeDate,AttributeInteger,AttributeReal,AttributeString,\
+                                          Expression,Format,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type,\
+                                          Association,Group,Person,PersonAdmin,Role,\
+                                          Channel,Command,Form,Inquiry,Menu,Portal,Table
+
+TypeDefGroup.DataModel.TypeDefList      = AttributeBoolean,AttributeDate,AttributeInteger,AttributeReal,AttributeString,\
+                                          Expression,Format,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type
+}}}
+For an deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_TypeDefGroup TypeDefGroup]" of the property file format. 
 
 === Relationship as from / to side for Relationships ===
 If the used MX version within the project does not support the feature to use also relationships as from / to side the property "DMRelationSupportRelCons" must be changed and set to {{{false}}}. So following line must be added to the additional property file:
