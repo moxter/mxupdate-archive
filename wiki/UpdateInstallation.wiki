@@ -44,20 +44,25 @@ Also this directory could hold the project specific MQL update script which inst
 == Support of old MX versions ==
 
 === Dimensions ===
-If the used MX version within the project does not support the configuration item "[CI_DMDimensions Dimension]" the parameter list of the type definition "Dimension" and type defintion groups "Admin" and "!DataModel" must be changed that they do not include definitions for the configuration item "[CI_DMDimensions Dimension]". So following lines must be added to the additional property file:
+If the used MX version within the project does not support the configuration item "[CI_DMDimensions Dimension]" the parameter list of the type definition "Dimension" and type defintion groups "Admin" and "!DataModel" must be changed that they do not include definitions for the configuration item "[CI_DMDimensions Dimension]". Also the "extra" parameters for the [CI_DMDimensions dimensions] must be removed from the parameter list. So following lines must be added to the additional property file:
 {{{
-TypeDef.Dimension.ParameterList         =
-TypeDef.Dimension.ParameterListOpposite =
+TypeDef.Dimension.ParameterList                     =
+TypeDef.Dimension.ParameterListOpposite             =
 
-TypeDefGroup.Admin.TypeDefList          = IEFGlobalConfig,\
-                                          JPO,Program,\
-                                          AttributeBoolean,AttributeDate,AttributeInteger,AttributeReal,AttributeString,\
-                                          Expression,Format,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type,\
-                                          Association,Group,Person,PersonAdmin,Role,\
-                                          Channel,Command,Form,Inquiry,Menu,Portal,Table
+TypeDefGroup.Admin.TypeDefList                      = IEFGlobalConfig,\
+                                                      JPO,Program,\
+                                                      AttributeBoolean,AttributeDate,AttributeInteger,AttributeReal,AttributeString,\
+                                                      Expression,Format,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type,\
+                                                      Association,Group,Person,PersonAdmin,Role,\
+                                                      Channel,Command,Form,Inquiry,Menu,Portal,Table
 
-TypeDefGroup.DataModel.TypeDefList      = AttributeBoolean,AttributeDate,AttributeInteger,AttributeReal,AttributeString,\
-                                          Expression,Format,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type
+TypeDefGroup.DataModel.TypeDefList                  = AttributeBoolean,AttributeDate,AttributeInteger,AttributeReal,AttributeString,\
+                                                      Expression,Format,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type
+
+ParameterDef.DMDimAllowRemoveUnit.ParameterList     =
+ParameterDef.DMDimAllowUpdateDefUnit.ParameterList  =
+ParameterDef.DMDimAllowUpdateUnitMult.ParameterList =
+ParameterDef.DMDimAllowUpdateUnitOffs.ParameterList =
 }}}
 For a deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_TypeDefGroup TypeDefGroup]" of the property file format. 
 
