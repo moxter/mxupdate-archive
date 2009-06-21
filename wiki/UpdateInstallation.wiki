@@ -37,9 +37,9 @@ The short help for all parameters of !MxUpdate is shown.
 === Using SVN External Link ===
 Instead of manually downloading the !MxUpdate Update deployment tool, an external link could be defined if [http://subversion.tigris.org/ Subversion] is used. E.g. following property entry "{{{svn:externals}}}" for a directory must be defined to reference version 0.3.0:
 {{{
-source http://mxupdate.googlecode.com/svn/mxupdate-update/tags/V0.3.0
+source http://mxupdate.googlecode.com/svn/mxupdate-update/tags/V0.5.0
 }}}
-Also this directory could hold the project specific MQL update script which installs the !MxUpdate Update deployment tool.
+Because for [UpdateDevelopment development] another directory structure is used, the {{{MXUPDATE_PATH}}} must set to the {{{src/main}}} directory. The *{{{MxInstall.mql}}}* is located in {{{src/main/resources}}} sub path. The Script itself checks that a development structure is defined and installs !MxUpdate Update depending on this directory structure. 
 
 == Support of old MX versions ==
 
