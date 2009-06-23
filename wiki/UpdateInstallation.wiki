@@ -52,12 +52,12 @@ TypeDef.Dimension.ParameterListOpposite             =
 TypeDefGroup.Admin.TypeDefList                      = IEFGlobalConfig,\
                                                       JPO,Program,\
                                                       AttributeBoolean,AttributeDate,AttributeInteger,AttributeReal,AttributeString,\
-                                                      Expression,Format,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type,\
+                                                      Expression,Format,Interface,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type,\
                                                       Association,Group,Person,PersonAdmin,Role,\
                                                       Channel,Command,Form,Inquiry,Menu,Portal,Table
 
 TypeDefGroup.DataModel.TypeDefList                  = AttributeBoolean,AttributeDate,AttributeInteger,AttributeReal,AttributeString,\
-                                                      Expression,Format,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type
+                                                      Expression,Format,Interface,NumberGenerator,ObjectGenerator,Policy,Relationship,Rule,Trigger,TriggerGroup,Type
 
 ParameterDef.DMDimAllowRemoveUnit.ParameterList     =
 ParameterDef.DMDimAllowUpdateDefUnit.ParameterList  =
