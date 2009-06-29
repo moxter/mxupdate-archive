@@ -3,13 +3,26 @@
 <repository name='${p2.metadata.repo.name}' type='org.eclipse.equinox.internal.p2.metadata.repository.LocalMetadataRepository' version='1.0.0'>
   <properties size='2'>
     <property name='p2.compressed' value='false'/>
-    <property name='p2.timestamp' value='1246284173248'/>
+    <property name='p2.timestamp' value='1246284840098'/>
   </properties>
   <references size='2'>
     <repository uri='http://mxupdate.googlecode.com/svn/mxupdate-eclipse-site/tags' url='http://mxupdate.googlecode.com/svn/mxupdate-eclipse-site/tags' type='0' options='0'/>
     <repository uri='http://mxupdate.googlecode.com/svn/mxupdate-eclipse-site/tags' url='http://mxupdate.googlecode.com/svn/mxupdate-eclipse-site/tags' type='1' options='0'/>
   </references>
-  <units size='13'>
+  <units size='14'>
+    <unit id='MxUpdate' version='0.0.0.20090629161359'>
+      <properties size='2'>
+        <property name='org.eclipse.equinox.p2.name' value='MxUpdate Eclipse Plugin'/>
+        <property name='org.eclipse.equinox.p2.type.category' value='true'/>
+      </properties>
+      <provides size='1'>
+        <provided namespace='org.eclipse.equinox.p2.iu' name='MxUpdate' version='0.0.0'/>
+      </provides>
+      <requires size='1'>
+        <required namespace='org.eclipse.equinox.p2.iu' name='org.mxupdate.eclipse.feature.group' range='[0.5.0,0.5.0]'/>
+      </requires>
+      <touchpoint id='null' version='0.0.0'/>
+    </unit>
     <unit id='org.mxupdate.eclipse.feature.jar' version='0.4.0'>
       <update id='org.mxupdate.eclipse.feature.jar' range='[0.0.0,0.4.0)' severity='0'/>
       <properties size='5'>
