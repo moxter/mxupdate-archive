@@ -1,0 +1,435 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+
+
+
+
+
+
+
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>MxUpdate Update Deployment Tool - CPD Results</title>
+    <style type="text/css" media="all">
+      @import url("./css/maven-base.css");
+      @import url("./css/maven-theme.css");
+      @import url("./css/site.css");
+    </style>
+    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+      </head>
+  <body class="composite">
+    <div id="banner">
+                    <span id="bannerLeft">
+    
+            MxUpdate Update
+    
+            </span>
+                    <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="breadcrumbs">
+          
+  
+
+  
+    
+  
+  
+    
+            <div class="xleft">
+        Last Published: 29-June-2009
+                      </div>
+            <div class="xright">            <a href="">MxUpdate</a>
+            |
+                <a href="http://maven.apache.org/" class="externalLink">Maven</a>
+            
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+    <div id="leftColumn">
+      <div id="navcolumn">
+           
+  
+
+  
+    
+  
+  
+    
+                   <h5>Main</h5>
+            <ul>
+              
+    <li class="none">
+                    <a href="">MxUpdate@GoogleCode</a>
+          </li>
+          </ul>
+                        <h5>Project Documentation</h5>
+            <ul>
+              
+                
+              
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+        <li class="collapsed">
+                    <a href="project-info.html">Project Information</a>
+                </li>
+              
+                
+              
+            
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+            
+      
+              
+            <li class="expanded">
+                    <a href="project-reports.html">Project Reports</a>
+                  <ul>
+                  
+    <li class="none">
+              <strong>CPD Report</strong>
+        </li>
+                  
+    <li class="none">
+                    <a href="findbugs.html">FindBugs Report</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="apidocs/index.html">JavaDocs</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="pmd.html">PMD Report</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="jxr.html">Source Xref</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="surefire-report.html">Surefire Report</a>
+          </li>
+                  
+    <li class="none">
+                    <a href="testapidocs/index.html">Test JavaDocs</a>
+          </li>
+              </ul>
+        </li>
+          </ul>
+                                                 
+                        
+                        
+            <a href="http://maven.apache.org/" title="Maven" class="poweredBy">
+                            <img alt="Maven" src="http://maven.apache.org/images/logos/maven-feather.png" />
+            </a>
+                               
+  
+
+  
+    
+  
+  
+    
+        </div>
+    </div>
+    <div id="bodyColumn">
+      <div id="contentBox">
+        <div class="section"><h2>CPD Results</h2>
+<p>The following document contains the results of PMD's  <a href="http://pmd.sourceforge.net/cpd.html" class="externalLink">CPD</a>
+ 4.2.2.</p>
+</div>
+<div class="section"><h2>Duplications</h2>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/userinterface/Command_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Command_mxJPO.html#149">149</a>
+</td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/userinterface/Portal_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Portal_mxJPO.html#209">209</a>
+</td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>        }
+    }
+
+    /**
+     * The method overwrites the original method to append the MQL statements
+     * in the &lt;code&gt;_preMQLCode&lt;/code&gt; to reset this portal. Following steps
+     * are done:
+     * &lt;ul&gt;
+     * &lt;li&gt;reset HRef, description, alt and label&lt;/li&gt;
+     * &lt;li&gt;remove all settings and channels&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @param _paramCache       parameter cache
+     * @param _preMQLCode       MQL statements which must be called before the
+     *                          TCL code is executed
+     * @param _postMQLCode      MQL statements which must be called after the
+     *                          TCL code is executed
+     * @param _preTCLCode       TCL code which is defined before the source
+     *                          file is sourced
+     * @param _tclVariables     map of all TCL variables where the key is the
+     *                          name and the value is value of the TCL variable
+     *                          (the value is automatically converted to TCL
+     *                          syntax!)
+     * @param _sourceFile       souce file with the TCL code to update
+     * @throws Exception if the update from derived class failed
+     */
+    @Override
+    protected void update(final ParameterCache_mxJPO _paramCache,
+                          final CharSequence _preMQLCode,
+                          final CharSequence _postMQLCode,
+                          final CharSequence _preTCLCode,
+                          final Map&lt;String,String&gt; _tclVariables,
+                          final File _sourceFile)
+            throws Exception
+    {
+        // HRef, description, alt and label
+        final StringBuilder preMQLCode = new StringBuilder()
+                .append(&quot;mod &quot;).append(this.getTypeDef().getMxAdminName())
+                .append(&quot; \&quot;&quot;).append(this.getName()).append('\&quot;')
+                .append(&quot; href \&quot;\&quot; description \&quot;\&quot; alt \&quot;\&quot; label \&quot;\&quot;&quot;);
+
+        // reset settings
+        for (final AdminProperty_mxJPO prop : this.getPropertiesMap().values())  {
+            if (prop.isSetting())  {
+                preMQLCode.append(&quot; remove setting \&quot;&quot;).append(prop.getName().substring(1)).append('\&quot;');
+            }
+        }</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/userinterface/Channel_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Channel_mxJPO.html#163">163</a>
+</td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/userinterface/Portal_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Portal_mxJPO.html#154">154</a>
+</td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>            sub.put(channelRef.column, channelRef);
+        }
+
+        super.prepare(_paramCache);
+    }
+
+    /**
+     * Writes specific information about the cached portal to the given writer
+     * instance. This includes
+     * &lt;ul&gt;
+     * &lt;li&gt;{@link #label}&lt;/li&gt;
+     * &lt;li&gt;{@link #href}&lt;/li&gt;
+     * &lt;li&gt;{@link #alt}&lt;/li&gt;
+     * &lt;li&gt;settings defined as properties starting with &amp;quot;%&amp;quot; in
+     *     {@link #getPropertiesMap()}&lt;/li&gt;
+     * &lt;li&gt;channel references {@link #orderedChannelRefs}&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @param _paramCache   parameter cache
+     * @param _out          writer instance to the TCL update file
+     * @throws IOException if the TCL update code could not be written
+     */
+    @Override
+    protected void writeObject(final ParameterCache_mxJPO _paramCache,
+                               final Appendable _out)
+            throws IOException
+    {
+        _out.append(&quot; \\\n    label \&quot;&quot;).append(StringUtil_mxJPO.convertTcl(this.label)).append(&quot;\&quot;&quot;);
+        if (this.href != null)  {
+            _out.append(&quot; \\\n    href \&quot;&quot;).append(StringUtil_mxJPO.convertTcl(this.href)).append(&quot;\&quot;&quot;);
+        }
+        if (this.alt != null)  {
+            _out.append(&quot; \\\n    alt \&quot;&quot;).append(StringUtil_mxJPO.convertTcl(this.alt)).append(&quot;\&quot;&quot;);
+        }</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/program/JPO_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/program/JPO_mxJPO.html#116">116</a>
+</td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/program/Program_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/program/Program_mxJPO.html#84">84</a>
+</td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>    public Program_mxJPO(final TypeDef_mxJPO _typeDef,
+                         final String _mxName)
+    {
+        super(_typeDef, _mxName);
+    }
+
+    /**
+     * Searches for all programs which are not JPOs and returns this list.
+     *
+     * @param _paramCache   parameter cache
+     * @return set of all program names (which are not JPOs)
+     * @throws MatrixException if the &amp;quot;&lt;code&gt;list program&lt;/code&gt;&amp;quot;
+     *                         failed which is used to evaluate the JPO names
+     */
+    @Override
+    public Set&lt;String&gt; getMxNames(final ParameterCache_mxJPO _paramCache)
+            throws MatrixException
+    {
+        final StringBuilder cmd = new StringBuilder()
+                .append(&quot;list program * select name isjavaprogram dump \&quot;\t\&quot;&quot;);
+        final Set&lt;String&gt; ret = new TreeSet&lt;String&gt;();
+        for (final String name : MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd).split(&quot;\n&quot;))  {
+            if (!&quot;&quot;.equals(name))  {
+                final String[] nameArr = name.split(&quot;\t&quot;);
+                if (!&quot;TRUE&quot;.equals(nameArr[1]))  {</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/util/StringUtil_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/util/StringUtil_mxJPO.html#167">167</a>
+</td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/util/StringUtil_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/util/StringUtil_mxJPO.html#294">294</a>
+</td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>    public static String joinMql(final char _separator,
+                                 final boolean _quotes,
+                                 final Collection&lt;String&gt; _list,
+                                 final String _emptyString)
+    {
+        final StringBuilder ret = new StringBuilder();
+
+        boolean first = true;
+        if (_list.isEmpty())  {
+            if (_emptyString != null)  {
+                ret.append(_emptyString);
+            }
+        } else  {
+            for (final String elem : _list)  {
+                if (!first)  {
+                    ret.append(_separator);
+                } else  {
+                    first = false;
+                }
+                if (_quotes)  {
+                    ret.append('\&quot;');
+                }
+                ret.append(StringUtil_mxJPO.convertMql(elem));</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/AbstractAdminObject_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/AbstractAdminObject_mxJPO.html#396">396</a>
+</td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/datamodel/AbstractDMWithTriggers_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/datamodel/AbstractDMWithTriggers_mxJPO.html#136">136</a>
+</td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>    }
+
+    /**
+     * The method overwrites the original method to append the MQL statements
+     * in the &lt;code&gt;_preMQLCode&lt;/code&gt; to remove all current assigned triggers.
+     * Then the update method of the super class is called.
+     *
+     * @param _paramCache       parameter cache
+     * @param _preMQLCode       MQL statements which must be called before the
+     *                          TCL code is executed
+     * @param _postMQLCode      MQL statements which must be called after the
+     *                          TCL code is executed
+     * @param _preTCLCode       TCL code which is defined before the source
+     *                          file is sourced
+     * @param _tclVariables     map of all TCL variables where the key is the
+     *                          name and the value is value of the TCL variable
+     *                          (the value is automatically converted to TCL
+     *                          syntax!)
+     * @param _sourceFile       souce file with the TCL code to update
+     * @throws Exception if the update from derived class failed
+     */
+    @Override
+    protected void update(final ParameterCache_mxJPO _paramCache,
+                          final CharSequence _preMQLCode,
+                          final CharSequence _postMQLCode,
+                          final CharSequence _preTCLCode,
+                          final Map&lt;String,String&gt; _tclVariables,
+                          final File _sourceFile)
+            throws Exception
+    {
+        // remove all properties
+        final StringBuilder preMQLCode = new StringBuilder()
+                .append(&quot;mod &quot;).append(this.getTypeDef().getMxAdminName())
+                .append(&quot; \&quot;&quot;).append(this.getName()).append(&quot;\&quot; &quot;)
+                .append(this.getTypeDef().getMxAdminSuffix());
+        for (final Trigger trigger : this.triggers.values())  {</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+</div>
+
+      </div>
+    </div>
+    <div class="clear">
+      <hr/>
+    </div>
+    <div id="footer">
+      <div class="xright">&#169;  
+          2009
+    
+          The MxUpdate Team
+          
+  
+
+  
+    
+  
+  
+    
+  </div>
+      <div class="clear">
+        <hr/>
+      </div>
+    </div>
+  </body>
+</html>
