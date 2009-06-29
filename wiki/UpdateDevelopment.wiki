@@ -2,17 +2,26 @@
 
 = Install Eclipse Project =
 
+  * Use the Maven Eclipse Plug-In
   * In Eclipse create a new SVN project using the {{{trunc}}} directory.
-  * Copy {{{eMatrixServletRMI.jar}}} directly into the new created project directory.
-  * Add this Jar library to the build path.
-  * Define the downloaded {{{src}}} directory as Java source folder.
+  * Copy {{{eMatrixServletRMI.jar}}} and {{{FcsClient.jar}}} from your MX installation into the directory {{{lib}}}.
 
-The Jar file must be copied to defined place. Otherwise the ant task to create the Javadoc could not access the {{{eMatrixServletRMI.jar}}} jar library.
+The Jar file must be copied to defined place. Other Apache Maven could not compile and test the MxUpdate Update tool.
 
 = Upload new Version to Google Code Downloads =
-The ant target "upload" is defined to upload a new !MxUpdate version to the downloads at the !MxUpdate Google Code page. To use this ant task the two property entries
+The Maven goal "{{{gcupload:gcupload}}}" is used to upload a new !MxUpdate Update version to the the downloads at the !MxUpdate Google Code page. To use this Maven goal in the user specific {{{setting.xml}}} file following properties must be defined:
 {{{
-gc.username = tim@.....net
-gc.password = XXXXXXXX
+<settings>
+    :
+  <servers>
+       :
+    <server>
+      <id>googlecode</id>
+      <username>[YOUR_GOOGLE_ACCOUNT_NAME]</username>
+      <password>[SVN_PASSWORD_FROM_PROFILE]</password>
+    </server>
+       :
+  </servers>
+    :
+</settings>
 }}}
-must be defined in the {{{build.properties}}} file .
