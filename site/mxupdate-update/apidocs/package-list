@@ -1,0 +1,13 @@
+
+org.mxupdate.install
+org.mxupdate.mapping
+org.mxupdate.plugin
+org.mxupdate.update
+org.mxupdate.update.datamodel
+org.mxupdate.update.datamodel.dimension
+org.mxupdate.update.datamodel.policy
+org.mxupdate.update.program
+org.mxupdate.update.user
+org.mxupdate.update.userinterface
+org.mxupdate.update.util
+org.mxupdate.util
