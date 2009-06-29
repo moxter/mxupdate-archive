@@ -40,7 +40,7 @@ import matrix.util.MatrixException;
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Preferences;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.mxupdate.eclipse.console.Console;
 
 /**
@@ -103,7 +103,7 @@ public class MXAdapter
     /**
      * Holds the link to the preferences.
      */
-    private final Preferences preferences;
+    private final IPreferenceStore preferences;
 
     /**
      * MxUpdate plug-in console.
@@ -130,7 +130,7 @@ public class MXAdapter
      */
     private boolean connected = false;
 
-    MXAdapter(final Preferences _preferences,
+    MXAdapter(final IPreferenceStore _preferences,
               final Console _console)
     {
         this.preferences = _preferences;
@@ -218,7 +218,6 @@ public class MXAdapter
             this.console.logError(Messages.getString("MXAdapter.CheckVersionsNoConnectAllowed", //$NON-NLS-1$
                                                      pluginVersion,
                                                      updateVersion));
-            this.disconnect();
         }
     }
 

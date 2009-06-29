@@ -43,7 +43,9 @@ import org.osgi.framework.BundleContext;
  * @author Tim Moxter
  * @version $Id$
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator
+    extends AbstractUIPlugin
+{
 
     /**
      * Map used to hold the images for MxUpdate files. The first key is the
@@ -89,7 +91,7 @@ try  {
         ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{this.console});
 
 final Properties properties = new Properties();
-final String propStr = this.getPluginPreferences().getString("pluginProperties"); //$NON-NLS-1$
+final String propStr = this.getPreferenceStore().getString("pluginProperties"); //$NON-NLS-1$
 if (propStr != null)  {
     final InputStream is = new ByteArrayInputStream(propStr.getBytes());
     properties.load(is);
@@ -125,7 +127,7 @@ for (final String admin : admins)  {
     e.printStackTrace(System.out);
     this.console.logError("ERROR", e); //$NON-NLS-1$
 }
-this.adapter = new MXAdapter(this.getPluginPreferences(), this.console);
+this.adapter = new MXAdapter(this.getPreferenceStore(), this.console);
 
     }
 
