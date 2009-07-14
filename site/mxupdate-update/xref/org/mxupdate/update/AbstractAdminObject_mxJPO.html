@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 417 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-06-17 00:00:03 +0200 (Wed, 17. Jun 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -45,9 +45,9 @@
 <a name="36" href="#36">36</a>  <strong>import</strong> org.mxupdate.mapping.PropertyDef_mxJPO;
 <a name="37" href="#37">37</a>  <strong>import</strong> org.mxupdate.mapping.TypeDef_mxJPO;
 <a name="38" href="#38">38</a>  <strong>import</strong> org.mxupdate.update.util.AdminProperty_mxJPO;
-<a name="39" href="#39">39</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
-<a name="40" href="#40">40</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
-<a name="41" href="#41">41</a>  <strong>import</strong> org.mxupdate.util.MqlUtil_mxJPO;
+<a name="39" href="#39">39</a>  <strong>import</strong> org.mxupdate.update.util.MqlUtil_mxJPO;
+<a name="40" href="#40">40</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
+<a name="41" href="#41">41</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
 <a name="42" href="#42">42</a>  <strong>import</strong> org.xml.sax.Attributes;
 <a name="43" href="#43">43</a>  <strong>import</strong> org.xml.sax.InputSource;
 <a name="44" href="#44">44</a>  <strong>import</strong> org.xml.sax.SAXException;
@@ -57,7 +57,7 @@
 <a name="48" href="#48">48</a>  
 <a name="49" href="#49">49</a>  <em>/**<em>*</em></em>
 <a name="50" href="#50">50</a>  <em> * @author The MxUpdate Team</em>
-<a name="51" href="#51">51</a>  <em> * @version $Id: AbstractAdminObject_mxJPO.java 417 2009-06-16 22:00:03Z tim.moxter $</em>
+<a name="51" href="#51">51</a>  <em> * @version $Id: AbstractAdminObject_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
 <a name="52" href="#52">52</a>  <em> */</em>
 <a name="53" href="#53">53</a>  <strong>public</strong> <strong>abstract</strong> <strong>class</strong> AbstractAdminObject_mxJPO
 <a name="54" href="#54">54</a>          <strong>extends</strong> AbstractPropertyObject_mxJPO
@@ -125,7 +125,7 @@
 <a name="116" href="#116">116</a>                 .append(<span class="string">" "</span>)
 <a name="117" href="#117">117</a>                 .append(<strong>this</strong>.getTypeDef().getMxAdminSuffix());
 <a name="118" href="#118">118</a>         <strong>final</strong> Set&lt;String> ret = <strong>new</strong> TreeSet&lt;String>();
-<a name="119" href="#119">119</a>         <strong>for</strong> (<strong>final</strong> String name : MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd).split(<span class="string">"\n"</span>))  {
+<a name="119" href="#119">119</a>         <strong>for</strong> (<strong>final</strong> String name : MqlUtil_mxJPO.execMql(_paramCache, cmd).split(<span class="string">"\n"</span>))  {
 <a name="120" href="#120">120</a>             <strong>if</strong> (!<span class="string">""</span>.equals(name))  {
 <a name="121" href="#121">121</a>                 ret.add(name);
 <a name="122" href="#122">122</a>             }
@@ -155,7 +155,7 @@
 <a name="146" href="#146">146</a>     <strong>protected</strong> <strong>void</strong> parse(<strong>final</strong> ParameterCache_mxJPO _paramCache)
 <a name="147" href="#147">147</a>             throws MatrixException, SAXException, IOException
 <a name="148" href="#148">148</a>     {
-<a name="149" href="#149">149</a>         <strong>final</strong> String xml = MqlUtil_mxJPO.execMql(_paramCache.getContext(), <strong>this</strong>.getExportMQL());
+<a name="149" href="#149">149</a>         <strong>final</strong> String xml = MqlUtil_mxJPO.execMql(_paramCache, <strong>this</strong>.getExportMQL());
 <a name="150" href="#150">150</a> 
 <a name="151" href="#151">151</a>         <em class="comment">// create XML reader</em>
 <a name="152" href="#152">152</a>         <strong>final</strong> XMLReader reader = XMLReaderFactory.createXMLReader();
@@ -384,7 +384,7 @@
 <a name="375" href="#375">375</a>                 .append(<span class="string">"delete "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
 <a name="376" href="#376">376</a>                 .append(<span class="string">" \&quot;"</span>).append(<strong>this</strong>.getName()).append(<span class="string">"\&quot; "</span>)
 <a name="377" href="#377">377</a>                 .append(<strong>this</strong>.getTypeDef().getMxAdminSuffix());
-<a name="378" href="#378">378</a>         MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd);
+<a name="378" href="#378">378</a>         MqlUtil_mxJPO.execMql(_paramCache, cmd);
 <a name="379" href="#379">379</a>     }
 <a name="380" href="#380">380</a> 
 <a name="381" href="#381">381</a>     <em>/**<em>*</em></em>
@@ -401,7 +401,7 @@
 <a name="392" href="#392">392</a>                 .append(<span class="string">"add "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
 <a name="393" href="#393">393</a>                         .append(<span class="string">" \&quot;"</span>).append(<strong>this</strong>.getName()).append(<span class="string">"\&quot; "</span>)
 <a name="394" href="#394">394</a>                         .append(<strong>this</strong>.getTypeDef().getMxAdminSuffix()).append(<span class="string">";"</span>);
-<a name="395" href="#395">395</a>         MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd);
+<a name="395" href="#395">395</a>         MqlUtil_mxJPO.execMql(_paramCache, cmd);
 <a name="396" href="#396">396</a>     }
 <a name="397" href="#397">397</a> 
 <a name="398" href="#398">398</a>     <em>/**<em>*</em></em>

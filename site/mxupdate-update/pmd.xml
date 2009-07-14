@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.2" timestamp="2009-06-29T23:24:46.015">
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/install/InstallDataModel_mxJPO.java">
-<violation beginline="38" endline="38" begincolumn="1" endcolumn="47" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.install" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
-Avoid unused imports such as 'org.mxupdate.plugin.GetProperties_mxJPO'
-</violation>
-</file>
+<pmd version="4.2.2" timestamp="2009-07-14T10:47:09.438">
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/mapping/Mapping_mxJPO.java">
-<violation beginline="34" endline="34" begincolumn="1" endcolumn="53" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.mapping" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
-Avoid unused imports such as 'org.mxupdate.update.util.ParameterCache_mxJPO'
+<violation beginline="31" endline="31" begincolumn="1" endcolumn="25" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.mapping" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'matrix.db.Context'
 </violation>
 </file>
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/plugin/GetProperties_mxJPO.java">
-<violation beginline="28" endline="28" begincolumn="1" endcolumn="51" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.plugin" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
-Avoid unused imports such as 'org.mxupdate.install.InstallDataModel_mxJPO'
-</violation>
-<violation beginline="29" endline="29" begincolumn="1" endcolumn="53" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.plugin" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
-Avoid unused imports such as 'org.mxupdate.update.util.ParameterCache_mxJPO'
+<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/mapping/TypeDef_mxJPO.java">
+<violation beginline="27" endline="27" begincolumn="1" endcolumn="25" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.mapping" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
+Avoid unused imports such as 'matrix.db.Context'
 </violation>
 </file>
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/AbstractAdminObject_mxJPO.java">
@@ -278,7 +270,7 @@ Avoid empty if statements
 <violation beginline="41" endline="41" begincolumn="1" endcolumn="56" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.update.user" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
 Avoid unused imports such as 'org.mxupdate.update.AbstractPropertyObject_mxJPO'
 </violation>
-<violation beginline="212" endline="216" begincolumn="19" endcolumn="9" rule="UselessOverridingMethod" ruleset="Basic Rules" package="org.mxupdate.update.user" class="Person_mxJPO$PersonAdmin" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#UselessOverridingMethod" priority="3">
+<violation beginline="211" endline="215" begincolumn="19" endcolumn="9" rule="UselessOverridingMethod" ruleset="Basic Rules" package="org.mxupdate.update.user" class="Person_mxJPO$PersonAdmin" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#UselessOverridingMethod" priority="3">
 Overriding method merely calls super
 </violation>
 </file>
@@ -315,25 +307,25 @@ Avoid empty if statements
 </violation>
 </file>
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Form_mxJPO.java">
-<violation beginline="87" endline="89" begincolumn="42" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="86" endline="88" begincolumn="42" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
-<violation beginline="89" endline="91" begincolumn="49" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="88" endline="90" begincolumn="49" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
-<violation beginline="91" endline="93" begincolumn="49" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="90" endline="92" begincolumn="49" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
-<violation beginline="93" endline="95" begincolumn="53" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="92" endline="94" begincolumn="53" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
-<violation beginline="95" endline="97" begincolumn="54" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="94" endline="96" begincolumn="54" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
-<violation beginline="97" endline="99" begincolumn="50" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="96" endline="98" begincolumn="50" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
-<violation beginline="99" endline="101" begincolumn="48" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="98" endline="100" begincolumn="48" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>

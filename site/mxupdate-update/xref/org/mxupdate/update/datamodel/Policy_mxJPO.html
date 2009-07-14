@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 443 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-06-23 00:49:42 +0200 (Tue, 23. Jun 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -47,13 +47,13 @@
 <a name="38" href="#38">38</a>  <strong>import</strong> org.mxupdate.mapping.TypeDef_mxJPO;
 <a name="39" href="#39">39</a>  <strong>import</strong> org.mxupdate.update.datamodel.policy.PolicyDefParser_mxJPO;
 <a name="40" href="#40">40</a>  <strong>import</strong> org.mxupdate.update.util.AdminProperty_mxJPO;
-<a name="41" href="#41">41</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
-<a name="42" href="#42">42</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
-<a name="43" href="#43">43</a>  <strong>import</strong> org.mxupdate.util.MqlUtil_mxJPO;
+<a name="41" href="#41">41</a>  <strong>import</strong> org.mxupdate.update.util.MqlUtil_mxJPO;
+<a name="42" href="#42">42</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
+<a name="43" href="#43">43</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
 <a name="44" href="#44">44</a>  
 <a name="45" href="#45">45</a>  <em>/**<em>*</em></em>
 <a name="46" href="#46">46</a>  <em> * @author Tim Moxter</em>
-<a name="47" href="#47">47</a>  <em> * @version $Id: Policy_mxJPO.java 443 2009-06-22 22:49:42Z tim.moxter $</em>
+<a name="47" href="#47">47</a>  <em> * @version $Id: Policy_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
 <a name="48" href="#48">48</a>  <em> */</em>
 <a name="49" href="#49">49</a>  <strong>public</strong> <strong>class</strong> Policy_mxJPO
 <a name="50" href="#50">50</a>          <strong>extends</strong> AbstractDMWithTriggers_mxJPO
@@ -505,13 +505,13 @@
 <a name="496" href="#496">496</a>             }
 <a name="497" href="#497">497</a>         }
 <a name="498" href="#498">498</a> 
-<a name="499" href="#499">499</a>         <strong>final</strong> <strong>boolean</strong> isMqlEscapeOn = MqlUtil_mxJPO.isEscapeOn(_paramCache.getContext());
+<a name="499" href="#499">499</a>         <strong>final</strong> <strong>boolean</strong> isMqlEscapeOn = MqlUtil_mxJPO.isEscapeOn(_paramCache);
 <a name="500" href="#500">500</a>         <strong>try</strong>  {
-<a name="501" href="#501">501</a>             MqlUtil_mxJPO.setEscapeOn(_paramCache.getContext());
-<a name="502" href="#502">502</a>             MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd);
+<a name="501" href="#501">501</a>             MqlUtil_mxJPO.setEscapeOn(_paramCache);
+<a name="502" href="#502">502</a>             MqlUtil_mxJPO.execMql(_paramCache, cmd);
 <a name="503" href="#503">503</a>         } <strong>finally</strong>  {
 <a name="504" href="#504">504</a>             <strong>if</strong> (!isMqlEscapeOn)  {
-<a name="505" href="#505">505</a>                 MqlUtil_mxJPO.setEscapeOff(_paramCache.getContext());
+<a name="505" href="#505">505</a>                 MqlUtil_mxJPO.setEscapeOff(_paramCache);
 <a name="506" href="#506">506</a>             }
 <a name="507" href="#507">507</a>         }
 <a name="508" href="#508">508</a>     }

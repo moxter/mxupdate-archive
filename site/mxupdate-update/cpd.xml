@@ -97,7 +97,7 @@
 ]]>
 </codefragment>
 </duplication>
-<duplication lines="25" tokens="110">
+<duplication lines="25" tokens="106">
 <file line="116" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/JPO_mxJPO.java"/>
 <file line="84" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/Program_mxJPO.java"/>
 <codefragment>
@@ -123,7 +123,7 @@
         final StringBuilder cmd = new StringBuilder()
                 .append("list program * select name isjavaprogram dump \"\t\"");
         final Set<String> ret = new TreeSet<String>();
-        for (final String name : MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd).split("\n"))  {
+        for (final String name : MqlUtil_mxJPO.execMql(_paramCache, cmd).split("\n"))  {
             if (!"".equals(name))  {
                 final String[] nameArr = name.split("\t");
                 if (!"TRUE".equals(nameArr[1]))  {

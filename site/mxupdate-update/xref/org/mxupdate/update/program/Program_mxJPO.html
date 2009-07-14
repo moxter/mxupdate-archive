@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 357 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-05-30 13:27:24 +0200 (Sat, 30. May 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -38,12 +38,12 @@
 <a name="29" href="#29">29</a>  <strong>import</strong> matrix.util.MatrixException;
 <a name="30" href="#30">30</a>  
 <a name="31" href="#31">31</a>  <strong>import</strong> org.mxupdate.mapping.TypeDef_mxJPO;
-<a name="32" href="#32">32</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
-<a name="33" href="#33">33</a>  <strong>import</strong> org.mxupdate.util.MqlUtil_mxJPO;
+<a name="32" href="#32">32</a>  <strong>import</strong> org.mxupdate.update.util.MqlUtil_mxJPO;
+<a name="33" href="#33">33</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
 <a name="34" href="#34">34</a>  
 <a name="35" href="#35">35</a>  <em>/**<em>*</em></em>
 <a name="36" href="#36">36</a>  <em> * @author The MxUpdate Team</em>
-<a name="37" href="#37">37</a>  <em> * @version $Id: Program_mxJPO.java 357 2009-05-30 11:27:24Z tim.moxter $</em>
+<a name="37" href="#37">37</a>  <em> * @version $Id: Program_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
 <a name="38" href="#38">38</a>  <em> */</em>
 <a name="39" href="#39">39</a>  <strong>public</strong> <strong>class</strong> Program_mxJPO
 <a name="40" href="#40">40</a>          <strong>extends</strong> AbstractProgram_mxJPO
@@ -111,7 +111,7 @@
 <a name="102" href="#102">102</a>         <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
 <a name="103" href="#103">103</a>                 .append(<span class="string">"list program * select name isjavaprogram dump \&quot;\t\&quot;"</span>);
 <a name="104" href="#104">104</a>         <strong>final</strong> Set&lt;String> ret = <strong>new</strong> TreeSet&lt;String>();
-<a name="105" href="#105">105</a>         <strong>for</strong> (<strong>final</strong> String name : MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd).split(<span class="string">"\n"</span>))  {
+<a name="105" href="#105">105</a>         <strong>for</strong> (<strong>final</strong> String name : MqlUtil_mxJPO.execMql(_paramCache, cmd).split(<span class="string">"\n"</span>))  {
 <a name="106" href="#106">106</a>             <strong>if</strong> (!<span class="string">""</span>.equals(name))  {
 <a name="107" href="#107">107</a>                 <strong>final</strong> String[] nameArr = name.split(<span class="string">"\t"</span>);
 <a name="108" href="#108">108</a>                 <strong>if</strong> (!<span class="string">"TRUE"</span>.equals(nameArr[1]))  {
@@ -138,7 +138,7 @@
 <a name="129" href="#129">129</a>     {
 <a name="130" href="#130">130</a>         <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
 <a name="131" href="#131">131</a>                 .append(<span class="string">"print program \&quot;"</span>).append(<strong>this</strong>.getName()).append(<span class="string">"\&quot; select code dump"</span>);
-<a name="132" href="#132">132</a>         _out.append(MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd));
+<a name="132" href="#132">132</a>         _out.append(MqlUtil_mxJPO.execMql(_paramCache, cmd));
 <a name="133" href="#133">133</a>     }
 <a name="134" href="#134">134</a> 
 <a name="135" href="#135">135</a>     <em>/**<em>*</em></em>
@@ -154,7 +154,7 @@
 <a name="145" href="#145">145</a>         <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
 <a name="146" href="#146">146</a>                 .append(<span class="string">"add "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
 <a name="147" href="#147">147</a>                 .append(<span class="string">" \&quot;"</span>).append(<strong>this</strong>.getName()).append('\&quot;');
-<a name="148" href="#148">148</a>         MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd);
+<a name="148" href="#148">148</a>         MqlUtil_mxJPO.execMql(_paramCache, cmd);
 <a name="149" href="#149">149</a>     }
 <a name="150" href="#150">150</a> 
 <a name="151" href="#151">151</a>     <em>/**<em>*</em></em>
