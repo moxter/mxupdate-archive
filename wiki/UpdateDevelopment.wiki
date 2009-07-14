@@ -6,7 +6,7 @@
   * In Eclipse create a new SVN project using the {{{trunc}}} directory.
   * Copy {{{eMatrixServletRMI.jar}}} and {{{FcsClient.jar}}} from your MX installation into the directory {{{lib}}}.
 
-The Jar file must be copied to defined place. Other Apache Maven could not compile and test the MxUpdate Update tool.
+The Jar file must be copied to defined place, or Apache Maven could not compile and test the MxUpdate Update tool.
 
 = Upload new Version to Google Code Downloads =
 The Maven goal "{{{gcupload:gcupload}}}" is used to upload a new !MxUpdate Update version to the the downloads at the !MxUpdate Google Code page. To use this Maven goal in the user specific {{{setting.xml}}} file following properties must be defined:
