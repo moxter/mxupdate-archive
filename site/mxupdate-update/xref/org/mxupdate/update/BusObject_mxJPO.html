@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 311 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-05-03 23:14:26 +0200 (Sun, 03. May 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -52,13 +52,13 @@
 <a name="43" href="#43">43</a>  
 <a name="44" href="#44">44</a>  <strong>import</strong> org.mxupdate.mapping.PropertyDef_mxJPO;
 <a name="45" href="#45">45</a>  <strong>import</strong> org.mxupdate.mapping.TypeDef_mxJPO;
-<a name="46" href="#46">46</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
-<a name="47" href="#47">47</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
-<a name="48" href="#48">48</a>  <strong>import</strong> org.mxupdate.util.MqlUtil_mxJPO;
+<a name="46" href="#46">46</a>  <strong>import</strong> org.mxupdate.update.util.MqlUtil_mxJPO;
+<a name="47" href="#47">47</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
+<a name="48" href="#48">48</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
 <a name="49" href="#49">49</a>  
 <a name="50" href="#50">50</a>  <em>/**<em>*</em></em>
 <a name="51" href="#51">51</a>  <em> * @author The MxUpdate Team</em>
-<a name="52" href="#52">52</a>  <em> * @version $Id: BusObject_mxJPO.java 311 2009-05-03 21:14:26Z tim.moxter $</em>
+<a name="52" href="#52">52</a>  <em> * @version $Id: BusObject_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
 <a name="53" href="#53">53</a>  <em> */</em>
 <a name="54" href="#54">54</a>  <strong>public</strong> <strong>class</strong> BusObject_mxJPO
 <a name="55" href="#55">55</a>          <strong>extends</strong> AbstractPropertyObject_mxJPO
@@ -367,7 +367,7 @@
 <a name="358" href="#358">358</a>             attrs = <strong>new</strong> HashMap&lt;String,String>();
 <a name="359" href="#359">359</a>             cache.put(_relation, attrs);
 <a name="360" href="#360">360</a> 
-<a name="361" href="#361">361</a>             <strong>final</strong> String attrStr = MqlUtil_mxJPO.execMql(_paramCache.getContext(),
+<a name="361" href="#361">361</a>             <strong>final</strong> String attrStr = MqlUtil_mxJPO.execMql(_paramCache,
 <a name="362" href="#362">362</a>                     <strong>new</strong> StringBuilder(<span class="string">"escape print rel \&quot;"</span>).append(_relation)
 <a name="363" href="#363">363</a>                             .append(<span class="string">"\&quot; select attribute dump '\n'"</span>));
 <a name="364" href="#364">364</a>             <strong>if</strong> (!<span class="string">""</span>.equals(attrStr))  {
@@ -530,7 +530,7 @@
 <a name="521" href="#521">521</a>         <strong>for</strong> (<strong>final</strong> AttributeValue attr : <strong>this</strong>.attrValuesSorted)  {
 <a name="522" href="#522">522</a>             <strong>if</strong> (!ignoreAttrs.contains(attr.name))  {
 <a name="523" href="#523">523</a>                 <strong>if</strong> (!defaultAttrValues.containsKey(attr.name))  {
-<a name="524" href="#524">524</a>                     <strong>final</strong> String def = MqlUtil_mxJPO.execMql(_paramCache.getContext(),
+<a name="524" href="#524">524</a>                     <strong>final</strong> String def = MqlUtil_mxJPO.execMql(_paramCache,
 <a name="525" href="#525">525</a>                                                <strong>new</strong> StringBuilder().append(<span class="string">"print attr '"</span>)
 <a name="526" href="#526">526</a>                                                        .append(attr.name).append(<span class="string">"' select default dump"</span>));
 <a name="527" href="#527">527</a>                     defaultAttrValues.put(attr.name, def);
@@ -602,10 +602,10 @@
 <a name="593" href="#593">593</a> 
 <a name="594" href="#594">594</a>         <em class="comment">// update must be done with history off (because not required...)</em>
 <a name="595" href="#595">595</a>         <strong>try</strong>  {
-<a name="596" href="#596">596</a>             MqlUtil_mxJPO.setHistoryOff(_paramCache.getContext());
+<a name="596" href="#596">596</a>             MqlUtil_mxJPO.setHistoryOff(_paramCache);
 <a name="597" href="#597">597</a>             <strong>super</strong>.update(_paramCache, preMQLCode, postMQLCode, _preTCLCode, tclVariables, _sourceFile);
 <a name="598" href="#598">598</a>         } <strong>finally</strong>  {
-<a name="599" href="#599">599</a>             MqlUtil_mxJPO.setHistoryOn(_paramCache.getContext());
+<a name="599" href="#599">599</a>             MqlUtil_mxJPO.setHistoryOn(_paramCache);
 <a name="600" href="#600">600</a>         }
 <a name="601" href="#601">601</a>     }
 <a name="602" href="#602">602</a> 

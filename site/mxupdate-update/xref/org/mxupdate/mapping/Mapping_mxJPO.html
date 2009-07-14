@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 410 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-06-15 22:52:35 +0200 (Mon, 15. Jun 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -40,15 +40,15 @@
 <a name="31" href="#31">31</a>  <strong>import</strong> matrix.db.Context;
 <a name="32" href="#32">32</a>  <strong>import</strong> matrix.util.MatrixException;
 <a name="33" href="#33">33</a>  
-<a name="34" href="#34">34</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
-<a name="35" href="#35">35</a>  <strong>import</strong> org.mxupdate.util.MqlUtil_mxJPO;
+<a name="34" href="#34">34</a>  <strong>import</strong> org.mxupdate.update.util.MqlUtil_mxJPO;
+<a name="35" href="#35">35</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
 <a name="36" href="#36">36</a>  
 <a name="37" href="#37">37</a>  <em>/**<em>*</em></em>
 <a name="38" href="#38">38</a>  <em> * The class is used to map from used names within the MxUpdate JPOs and the</em>
 <a name="39" href="#39">39</a>  <em> * internal used names within MX.</em>
 <a name="40" href="#40">40</a>  <em> *</em>
 <a name="41" href="#41">41</a>  <em> * @author The MxUpdate Team</em>
-<a name="42" href="#42">42</a>  <em> * @version $Id: Mapping_mxJPO.java 410 2009-06-15 20:52:35Z tim.moxter $</em>
+<a name="42" href="#42">42</a>  <em> * @version $Id: Mapping_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
 <a name="43" href="#43">43</a>  <em> */</em>
 <a name="44" href="#44">44</a>  <strong>public</strong> <strong>class</strong> Mapping_mxJPO
 <a name="45" href="#45">45</a>  {
@@ -168,15 +168,15 @@
 <a name="159" href="#159">159</a> 
 <a name="160" href="#160">160</a>     <em>/**<em>*</em></em>
 <a name="161" href="#161">161</a> <em>     *</em>
-<a name="162" href="#162">162</a> <em>     * @param _context  context for this request</em>
+<a name="162" href="#162">162</a> <em>     * @param _paramCache   parameter cache</em>
 <a name="163" href="#163">163</a> <em>     * @throws MatrixException if the property program {@link #PROP_NAME} could</em>
 <a name="164" href="#164">164</a> <em>     *                         not be read</em>
 <a name="165" href="#165">165</a> <em>     * @throws IOException     if the properties could not be parsed</em>
 <a name="166" href="#166">166</a> <em>     */</em>
-<a name="167" href="#167">167</a>     <strong>public</strong> Mapping_mxJPO(<strong>final</strong> Context _context)
+<a name="167" href="#167">167</a>     <strong>public</strong> Mapping_mxJPO(<strong>final</strong> ParameterCache_mxJPO _paramCache)
 <a name="168" href="#168">168</a>             throws MatrixException, IOException, Exception
 <a name="169" href="#169">169</a>     {
-<a name="170" href="#170">170</a>         <strong>this</strong>.properties.putAll(<strong>this</strong>.readProperties(_context));
+<a name="170" href="#170">170</a>         <strong>this</strong>.properties.putAll(<strong>this</strong>.readProperties(_paramCache));
 <a name="171" href="#171">171</a> 
 <a name="172" href="#172">172</a>         <em class="comment">// map attributes and types</em>
 <a name="173" href="#173">173</a>         <strong>for</strong> (<strong>final</strong> Map.Entry&lt;Object, Object> entry : <strong>this</strong>.properties.entrySet())  {
@@ -189,7 +189,7 @@
 <a name="180" href="#180">180</a>             } <strong>else</strong> <strong>if</strong> (key.startsWith(Mapping_mxJPO.PREFIX_PROPERTYDEF))  {
 <a name="181" href="#181">181</a>                 PropertyDef_mxJPO.defineValue(<strong>this</strong>, key.substring(Mapping_mxJPO.LENGTH_PROPERTYDEF), value);
 <a name="182" href="#182">182</a>             } <strong>else</strong> <strong>if</strong> (key.startsWith(<span class="string">"TypeDef."</span>))  {
-<a name="183" href="#183">183</a>                 TypeDef_mxJPO.defineValue(_context, <strong>this</strong>, key.substring(8), value);
+<a name="183" href="#183">183</a>                 TypeDef_mxJPO.defineValue(_paramCache, <strong>this</strong>, key.substring(8), value);
 <a name="184" href="#184">184</a>             } <strong>else</strong> <strong>if</strong> (key.startsWith(<span class="string">"TypeDefGroup."</span>))  {
 <a name="185" href="#185">185</a>                 TypeDefGroup_mxJPO.defineValue(<strong>this</strong>, key.substring(13), value);
 <a name="186" href="#186">186</a>             } <strong>else</strong> <strong>if</strong> (key.startsWith(<span class="string">"UpdateCheck."</span>))  {
@@ -202,17 +202,17 @@
 <a name="193" href="#193">193</a> <em>     * Reads the code of the program {@link #PROP_NAME} and evaluates the code</em>
 <a name="194" href="#194">194</a> <em>     * of the program as properties.</em>
 <a name="195" href="#195">195</a> <em>     *</em>
-<a name="196" href="#196">196</a> <em>     * @param _context  MX context for this request</em>
+<a name="196" href="#196">196</a> <em>     * @param _paramCache   parameter cache</em>
 <a name="197" href="#197">197</a> <em>     * @return read properties from MX</em>
 <a name="198" href="#198">198</a> <em>     * @throws MatrixException  if the program could not be read</em>
 <a name="199" href="#199">199</a> <em>     * @throws IOException      if the code of the program could not be parsed</em>
 <a name="200" href="#200">200</a> <em>     *                          as properties</em>
 <a name="201" href="#201">201</a> <em>     * @see #PROP_NAME</em>
 <a name="202" href="#202">202</a> <em>     */</em>
-<a name="203" href="#203">203</a>     <strong>protected</strong> Properties readProperties(<strong>final</strong> Context _context)
+<a name="203" href="#203">203</a>     <strong>protected</strong> Properties readProperties(<strong>final</strong> ParameterCache_mxJPO _paramCache)
 <a name="204" href="#204">204</a>         throws MatrixException, IOException
 <a name="205" href="#205">205</a>     {
-<a name="206" href="#206">206</a>         <strong>final</strong> String code = MqlUtil_mxJPO.execMql(_context,
+<a name="206" href="#206">206</a>         <strong>final</strong> String code = MqlUtil_mxJPO.execMql(_paramCache.getContext(),
 <a name="207" href="#207">207</a>                 <strong>new</strong> StringBuilder()
 <a name="208" href="#208">208</a>                         .append(<span class="string">"print prog \&quot;"</span>).append(Mapping_mxJPO.PROP_NAME)
 <a name="209" href="#209">209</a>                         .append(<span class="string">"\&quot; select code dump"</span>),

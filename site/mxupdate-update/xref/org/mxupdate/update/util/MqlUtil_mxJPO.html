@@ -2,10 +2,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" /><title>MqlUtil_mxJPO xref</title>
-<link type="text/css" rel="stylesheet" href="../../../stylesheet.css" />
+<link type="text/css" rel="stylesheet" href="../../../../stylesheet.css" />
 </head>
 <body>
-<div id="overview"><a href="../../../../../../../../../../../apidocs/org/mxupdate/util/MqlUtil_mxJPO.html">View Javadoc</a></div><pre>
+<div id="overview"><a href="../../../../../../../../../../../../../apidocs/org/mxupdate/update/util/MqlUtil_mxJPO.html">View Javadoc</a></div><pre>
 
 <a name="1" href="#1">1</a>   <em class="comment">/*</em>
 <a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2009 The MxUpdate Team</em>
@@ -22,12 +22,12 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 410 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-06-15 22:52:35 +0200 (Mon, 15. Jun 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
-<a name="21" href="#21">21</a>  <strong>package</strong> org.mxupdate.util;
+<a name="21" href="#21">21</a>  <strong>package</strong> org.mxupdate.update.util;
 <a name="22" href="#22">22</a>  
 <a name="23" href="#23">23</a>  <strong>import</strong> matrix.db.Context;
 <a name="24" href="#24">24</a>  <strong>import</strong> matrix.db.MQLCommand;
@@ -37,7 +37,7 @@
 <a name="28" href="#28">28</a>  <em> * The JPO class holds utilities for easy MQL access.</em>
 <a name="29" href="#29">29</a>  <em> *</em>
 <a name="30" href="#30">30</a>  <em> * @author The MxUpdate Team</em>
-<a name="31" href="#31">31</a>  <em> * @version $Id: MqlUtil_mxJPO.java 410 2009-06-15 20:52:35Z tim.moxter $</em>
+<a name="31" href="#31">31</a>  <em> * @version $Id: MqlUtil_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
 <a name="32" href="#32">32</a>  <em> */</em>
 <a name="33" href="#33">33</a>  <strong>public</strong> <strong>final</strong> <strong>class</strong> MqlUtil_mxJPO
 <a name="34" href="#34">34</a>  {
@@ -53,16 +53,16 @@
 <a name="44" href="#44">44</a>  <em>     * Executes given MQL command and returns the trimmed result of the MQL</em>
 <a name="45" href="#45">45</a>  <em>     * execution.</em>
 <a name="46" href="#46">46</a>  <em>     *</em>
-<a name="47" href="#47">47</a>  <em>     * @param _context  MX context for this request</em>
-<a name="48" href="#48">48</a>  <em>     * @param _cmd      MQL command to execute</em>
+<a name="47" href="#47">47</a>  <em>     * @param _paramCache   parameter cache</em>
+<a name="48" href="#48">48</a>  <em>     * @param _cmd          MQL command to execute</em>
 <a name="49" href="#49">49</a>  <em>     * @return trimmed result of the MQL execution</em>
 <a name="50" href="#50">50</a>  <em>     * @throws MatrixException if MQL execution failed</em>
 <a name="51" href="#51">51</a>  <em>     */</em>
-<a name="52" href="#52">52</a>      <strong>public</strong> <strong>static</strong> String execMql(<strong>final</strong> Context _context,
+<a name="52" href="#52">52</a>      <strong>public</strong> <strong>static</strong> String execMql(<strong>final</strong> ParameterCache_mxJPO _paramCache,
 <a name="53" href="#53">53</a>                                   <strong>final</strong> CharSequence _cmd)
 <a name="54" href="#54">54</a>              throws MatrixException
 <a name="55" href="#55">55</a>      {
-<a name="56" href="#56">56</a>          <strong>return</strong> execMql(_context, _cmd, <strong>true</strong>);
+<a name="56" href="#56">56</a>          <strong>return</strong> MqlUtil_mxJPO.execMql(_paramCache.getContext(), _cmd, <strong>true</strong>);
 <a name="57" href="#57">57</a>      }
 <a name="58" href="#58">58</a>  
 <a name="59" href="#59">59</a>      <em>/**<em>*</em></em>
@@ -95,64 +95,67 @@
 <a name="86" href="#86">86</a>      <em>/**<em>*</em></em>
 <a name="87" href="#87">87</a>  <em>     * Checks if the escape is on.</em>
 <a name="88" href="#88">88</a>  <em>     *</em>
-<a name="89" href="#89">89</a>  <em>     * @param _context  context for this request</em>
+<a name="89" href="#89">89</a>  <em>     * @param _paramCache       parameter cache</em>
 <a name="90" href="#90">90</a>  <em>     * @return &lt;i>true&lt;/i> if the escape is on; otherwise &lt;i>false&lt;/i></em>
 <a name="91" href="#91">91</a>  <em>     * @throws MatrixException if check failed</em>
 <a name="92" href="#92">92</a>  <em>     */</em>
-<a name="93" href="#93">93</a>      <strong>public</strong> <strong>static</strong> <strong>boolean</strong> isEscapeOn(<strong>final</strong> Context _context)
-<a name="94" href="#94">94</a>              throws MatrixException
-<a name="95" href="#95">95</a>      {
-<a name="96" href="#96">96</a>          <strong>return</strong> <span class="string">"Escape processing is on"</span>.equals(execMql(_context, <span class="string">"print escape"</span>));
-<a name="97" href="#97">97</a>      }
-<a name="98" href="#98">98</a>  
-<a name="99" href="#99">99</a>      <em>/**<em>*</em></em>
-<a name="100" href="#100">100</a> <em>     * Sets the escape on.</em>
-<a name="101" href="#101">101</a> <em>     *</em>
-<a name="102" href="#102">102</a> <em>     * @param _context  context for this request</em>
-<a name="103" href="#103">103</a> <em>     * @throws MatrixException if the escape could not be set to on</em>
-<a name="104" href="#104">104</a> <em>     */</em>
-<a name="105" href="#105">105</a>     <strong>public</strong> <strong>static</strong> <strong>void</strong> setEscapeOn(<strong>final</strong> Context _context)
-<a name="106" href="#106">106</a>             throws MatrixException
-<a name="107" href="#107">107</a>     {
-<a name="108" href="#108">108</a>         execMql(_context, <span class="string">"set escape on"</span>);
-<a name="109" href="#109">109</a>     }
-<a name="110" href="#110">110</a> 
-<a name="111" href="#111">111</a>     <em>/**<em>*</em></em>
-<a name="112" href="#112">112</a> <em>     * Sets the escape off.</em>
-<a name="113" href="#113">113</a> <em>     *</em>
-<a name="114" href="#114">114</a> <em>     * @param _context  context for this request</em>
-<a name="115" href="#115">115</a> <em>     * @throws MatrixException if the escape could not be set to off</em>
-<a name="116" href="#116">116</a> <em>     */</em>
-<a name="117" href="#117">117</a>     <strong>public</strong> <strong>static</strong> <strong>void</strong> setEscapeOff(<strong>final</strong> Context _context)
-<a name="118" href="#118">118</a>             throws MatrixException
-<a name="119" href="#119">119</a>     {
-<a name="120" href="#120">120</a>         execMql(_context, <span class="string">"set escape off"</span>);
-<a name="121" href="#121">121</a>     }
-<a name="122" href="#122">122</a> 
-<a name="123" href="#123">123</a>     <em>/**<em>*</em></em>
-<a name="124" href="#124">124</a> <em>     * Sets the history on.</em>
-<a name="125" href="#125">125</a> <em>     *</em>
-<a name="126" href="#126">126</a> <em>     * @param _context  context for this request</em>
-<a name="127" href="#127">127</a> <em>     * @throws MatrixException if the history could not be set to on</em>
-<a name="128" href="#128">128</a> <em>     */</em>
-<a name="129" href="#129">129</a>     <strong>public</strong> <strong>static</strong> <strong>void</strong> setHistoryOn(<strong>final</strong> Context _context)
-<a name="130" href="#130">130</a>             throws MatrixException
-<a name="131" href="#131">131</a>     {
-<a name="132" href="#132">132</a>         execMql(_context, <span class="string">"history on"</span>);
-<a name="133" href="#133">133</a>     }
-<a name="134" href="#134">134</a> 
-<a name="135" href="#135">135</a>     <em>/**<em>*</em></em>
-<a name="136" href="#136">136</a> <em>     * Sets the history off.</em>
-<a name="137" href="#137">137</a> <em>     *</em>
-<a name="138" href="#138">138</a> <em>     * @param _context  context for this request</em>
-<a name="139" href="#139">139</a> <em>     * @throws MatrixException if the history could not be set to off</em>
-<a name="140" href="#140">140</a> <em>     */</em>
-<a name="141" href="#141">141</a>     <strong>public</strong> <strong>static</strong> <strong>void</strong> setHistoryOff(<strong>final</strong> Context _context)
-<a name="142" href="#142">142</a>             throws MatrixException
-<a name="143" href="#143">143</a>     {
-<a name="144" href="#144">144</a>         execMql(_context, <span class="string">"history off"</span>);
-<a name="145" href="#145">145</a>     }
-<a name="146" href="#146">146</a> }
+<a name="93" href="#93">93</a>      @Deprecated()
+<a name="94" href="#94">94</a>      <strong>public</strong> <strong>static</strong> <strong>boolean</strong> isEscapeOn(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="95" href="#95">95</a>              throws MatrixException
+<a name="96" href="#96">96</a>      {
+<a name="97" href="#97">97</a>          <strong>return</strong> <span class="string">"Escape processing is on"</span>.equals(MqlUtil_mxJPO.execMql(_paramCache, <span class="string">"print escape"</span>));
+<a name="98" href="#98">98</a>      }
+<a name="99" href="#99">99</a>  
+<a name="100" href="#100">100</a>     <em>/**<em>*</em></em>
+<a name="101" href="#101">101</a> <em>     * Sets the escape on.</em>
+<a name="102" href="#102">102</a> <em>     *</em>
+<a name="103" href="#103">103</a> <em>     * @param _paramCache       parameter cache</em>
+<a name="104" href="#104">104</a> <em>     * @throws MatrixException if the escape could not be set to on</em>
+<a name="105" href="#105">105</a> <em>     */</em>
+<a name="106" href="#106">106</a>     @Deprecated()
+<a name="107" href="#107">107</a>     <strong>public</strong> <strong>static</strong> <strong>void</strong> setEscapeOn(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="108" href="#108">108</a>             throws MatrixException
+<a name="109" href="#109">109</a>     {
+<a name="110" href="#110">110</a>         MqlUtil_mxJPO.execMql(_paramCache, <span class="string">"set escape on"</span>);
+<a name="111" href="#111">111</a>     }
+<a name="112" href="#112">112</a> 
+<a name="113" href="#113">113</a>     <em>/**<em>*</em></em>
+<a name="114" href="#114">114</a> <em>     * Sets the escape off.</em>
+<a name="115" href="#115">115</a> <em>     *</em>
+<a name="116" href="#116">116</a> <em>     * @param _paramCache       parameter cache</em>
+<a name="117" href="#117">117</a> <em>     * @throws MatrixException if the escape could not be set to off</em>
+<a name="118" href="#118">118</a> <em>     */</em>
+<a name="119" href="#119">119</a>     @Deprecated()
+<a name="120" href="#120">120</a>     <strong>public</strong> <strong>static</strong> <strong>void</strong> setEscapeOff(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="121" href="#121">121</a>             throws MatrixException
+<a name="122" href="#122">122</a>     {
+<a name="123" href="#123">123</a>         MqlUtil_mxJPO.execMql(_paramCache, <span class="string">"set escape off"</span>);
+<a name="124" href="#124">124</a>     }
+<a name="125" href="#125">125</a> 
+<a name="126" href="#126">126</a>     <em>/**<em>*</em></em>
+<a name="127" href="#127">127</a> <em>     * Sets the history on.</em>
+<a name="128" href="#128">128</a> <em>     *</em>
+<a name="129" href="#129">129</a> <em>     * @param _paramCache       parameter cache</em>
+<a name="130" href="#130">130</a> <em>     * @throws MatrixException if the history could not be set to on</em>
+<a name="131" href="#131">131</a> <em>     */</em>
+<a name="132" href="#132">132</a>     <strong>public</strong> <strong>static</strong> <strong>void</strong> setHistoryOn(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="133" href="#133">133</a>             throws MatrixException
+<a name="134" href="#134">134</a>     {
+<a name="135" href="#135">135</a>         MqlUtil_mxJPO.execMql(_paramCache, <span class="string">"history on"</span>);
+<a name="136" href="#136">136</a>     }
+<a name="137" href="#137">137</a> 
+<a name="138" href="#138">138</a>     <em>/**<em>*</em></em>
+<a name="139" href="#139">139</a> <em>     * Sets the history off.</em>
+<a name="140" href="#140">140</a> <em>     *</em>
+<a name="141" href="#141">141</a> <em>     * @param _paramCache       parameter cache</em>
+<a name="142" href="#142">142</a> <em>     * @throws MatrixException if the history could not be set to off</em>
+<a name="143" href="#143">143</a> <em>     */</em>
+<a name="144" href="#144">144</a>     <strong>public</strong> <strong>static</strong> <strong>void</strong> setHistoryOff(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="145" href="#145">145</a>             throws MatrixException
+<a name="146" href="#146">146</a>     {
+<a name="147" href="#147">147</a>         MqlUtil_mxJPO.execMql(_paramCache, <span class="string">"history off"</span>);
+<a name="148" href="#148">148</a>     }
+<a name="149" href="#149">149</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

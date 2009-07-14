@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 344 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-05-24 23:52:37 +0200 (Sun, 24. May 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -39,16 +39,16 @@
 <a name="30" href="#30">30</a>  <strong>import</strong> matrix.util.MatrixException;
 <a name="31" href="#31">31</a>  
 <a name="32" href="#32">32</a>  <strong>import</strong> org.mxupdate.mapping.TypeDef_mxJPO;
-<a name="33" href="#33">33</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
-<a name="34" href="#34">34</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
-<a name="35" href="#35">35</a>  <strong>import</strong> org.mxupdate.util.MqlUtil_mxJPO;
+<a name="33" href="#33">33</a>  <strong>import</strong> org.mxupdate.update.util.MqlUtil_mxJPO;
+<a name="34" href="#34">34</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
+<a name="35" href="#35">35</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
 <a name="36" href="#36">36</a>  
 <a name="37" href="#37">37</a>  <em>/**<em>*</em></em>
 <a name="38" href="#38">38</a>  <em> * The class is used to evaluate information from attributes within MX used to</em>
 <a name="39" href="#39">39</a>  <em> * export, delete and update an attribute.</em>
 <a name="40" href="#40">40</a>  <em> *</em>
 <a name="41" href="#41">41</a>  <em> * @author The MxUpdate Team</em>
-<a name="42" href="#42">42</a>  <em> * @version $Id: AbstractAttribute_mxJPO.java 344 2009-05-24 21:52:37Z tim.moxter $</em>
+<a name="42" href="#42">42</a>  <em> * @version $Id: AbstractAttribute_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
 <a name="43" href="#43">43</a>  <em> */</em>
 <a name="44" href="#44">44</a>  <strong>abstract</strong> <strong>class</strong> AbstractAttribute_mxJPO
 <a name="45" href="#45">45</a>          <strong>extends</strong> AbstractDMWithTriggers_mxJPO
@@ -209,7 +209,7 @@
 <a name="200" href="#200">200</a>     {
 <a name="201" href="#201">201</a>         <strong>final</strong> Set&lt;String> ret = <strong>new</strong> TreeSet&lt;String>();
 <a name="202" href="#202">202</a>         <strong>final</strong> <strong>int</strong> length = <strong>this</strong>.attrTypeList.length();
-<a name="203" href="#203">203</a>         <strong>for</strong> (<strong>final</strong> String name : MqlUtil_mxJPO.execMql(_paramCache.getContext(),
+<a name="203" href="#203">203</a>         <strong>for</strong> (<strong>final</strong> String name : MqlUtil_mxJPO.execMql(_paramCache,
 <a name="204" href="#204">204</a>                                                        AbstractAttribute_mxJPO.SELECT_ATTRS).split(<span class="string">"\n"</span>))  {
 <a name="205" href="#205">205</a>             <strong>if</strong> (!<span class="string">""</span>.equals(name))  {
 <a name="206" href="#206">206</a>                 <strong>if</strong> (name.startsWith(<strong>this</strong>.attrTypeList))  {
@@ -368,7 +368,7 @@
 <a name="359" href="#359">359</a>                 .append(<span class="string">"add "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
 <a name="360" href="#360">360</a>                 .append(<span class="string">" \&quot;"</span>).append(<strong>this</strong>.getName()).append(<span class="string">"\&quot; "</span>)
 <a name="361" href="#361">361</a>                 .append(<span class="string">" type "</span>).append(<strong>this</strong>.attrTypeCreate);
-<a name="362" href="#362">362</a>         MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd);
+<a name="362" href="#362">362</a>         MqlUtil_mxJPO.execMql(_paramCache, cmd);
 <a name="363" href="#363">363</a>     }
 <a name="364" href="#364">364</a> 
 <a name="365" href="#365">365</a>     <em>/**<em>*</em></em>
@@ -498,7 +498,7 @@
 <a name="489" href="#489">489</a>         <strong>if</strong> ((<strong>this</strong>.dimension == <strong>null</strong>) || <span class="string">""</span>.equals(<strong>this</strong>.dimension))  {
 <a name="490" href="#490">490</a>             <strong>if</strong> (!<span class="string">""</span>.equals(_dimension))  {
 <a name="491" href="#491">491</a>                 _paramCache.logDebug(<span class="string">"    - set dimension '"</span> + _dimension + <span class="string">"'"</span>);
-<a name="492" href="#492">492</a>                 MqlUtil_mxJPO.execMql(_paramCache.getContext(),
+<a name="492" href="#492">492</a>                 MqlUtil_mxJPO.execMql(_paramCache,
 <a name="493" href="#493">493</a>                         <strong>new</strong> StringBuilder().append(<span class="string">"escape mod attribute \&quot;"</span>)
 <a name="494" href="#494">494</a>                         .append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName()))
 <a name="495" href="#495">495</a>                         .append(<span class="string">"\&quot; add dimension \&quot;"</span>)

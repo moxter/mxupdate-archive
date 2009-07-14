@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 430 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-06-21 12:17:09 +0200 (So, 21 Jun 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -52,9 +52,9 @@
 <a name="43" href="#43">43</a>  <strong>import</strong> org.mxupdate.mapping.TypeDef_mxJPO;
 <a name="44" href="#44">44</a>  <strong>import</strong> org.mxupdate.mapping.UpdateCheck_mxJPO;
 <a name="45" href="#45">45</a>  <strong>import</strong> org.mxupdate.update.AbstractObject_mxJPO;
-<a name="46" href="#46">46</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
-<a name="47" href="#47">47</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
-<a name="48" href="#48">48</a>  <strong>import</strong> org.mxupdate.util.MqlUtil_mxJPO;
+<a name="46" href="#46">46</a>  <strong>import</strong> org.mxupdate.update.util.MqlUtil_mxJPO;
+<a name="47" href="#47">47</a>  <strong>import</strong> org.mxupdate.update.util.ParameterCache_mxJPO;
+<a name="48" href="#48">48</a>  <strong>import</strong> org.mxupdate.update.util.StringUtil_mxJPO;
 <a name="49" href="#49">49</a>  
 <a name="50" href="#50">50</a>  <em>/**<em>*</em></em>
 <a name="51" href="#51">51</a>  <em> * &lt;tr></em>
@@ -62,7 +62,7 @@
 <a name="53" href="#53">53</a>  <em> * &lt;tr></em>
 <a name="54" href="#54">54</a>  <em> *</em>
 <a name="55" href="#55">55</a>  <em> * @author The MxUpdate Team</em>
-<a name="56" href="#56">56</a>  <em> * @version $Id: MxUpdate_mxJPO.java 430 2009-06-21 10:17:09Z tim.moxter $</em>
+<a name="56" href="#56">56</a>  <em> * @version $Id: MxUpdate_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
 <a name="57" href="#57">57</a>  <em> */</em>
 <a name="58" href="#58">58</a>  <strong>public</strong> <strong>class</strong> MxUpdate_mxJPO
 <a name="59" href="#59">59</a>  {
@@ -269,7 +269,7 @@
 <a name="260" href="#260">260</a>         <em class="comment">// first create list all type definitions which could be used...</em>
 <a name="261" href="#261">261</a>         <strong>final</strong> Set&lt;TypeDef_mxJPO> all = <strong>new</strong> HashSet&lt;TypeDef_mxJPO>();
 <a name="262" href="#262">262</a>         <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : _paramCache.getMapping().getAllTypeDefs())  {
-<a name="263" href="#263">263</a>             <strong>if</strong> (!typeDef.isBusCheckExists() || typeDef.existsBusType(_paramCache.getContext()))  {
+<a name="263" href="#263">263</a>             <strong>if</strong> (!typeDef.isBusCheckExists() || typeDef.existsBusType(_paramCache))  {
 <a name="264" href="#264">264</a>                 all.add(typeDef);
 <a name="265" href="#265">265</a>                 <strong>if</strong> (typeDef.getParameterList() != <strong>null</strong>)  {
 <a name="266" href="#266">266</a>                     <strong>this</strong>.defineParameter(<strong>null</strong>,
@@ -423,7 +423,7 @@
 <a name="414" href="#414">414</a>             <strong>this</strong>.prepareParams(paramCache);
 <a name="415" href="#415">415</a> 
 <a name="416" href="#416">416</a>             <em class="comment">// to be sure....</em>
-<a name="417" href="#417">417</a>             MqlUtil_mxJPO.execMql(_context, <span class="string">"verbose off"</span>);
+<a name="417" href="#417">417</a>             MqlUtil_mxJPO.execMql(_context, <span class="string">"verbose off"</span>, false);
 <a name="418" href="#418">418</a> 
 <a name="419" href="#419">419</a>             Mode_mxJPO mode = <strong>null</strong>;
 <a name="420" href="#420">420</a> 

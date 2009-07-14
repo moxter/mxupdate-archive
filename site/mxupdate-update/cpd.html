@@ -42,7 +42,7 @@
   
     
             <div class="xleft">
-        Last Published: 29-June-2009
+        Last Published: 14-July-2009
                       </div>
             <div class="xright">            <a href="">MxUpdate</a>
             |
@@ -312,7 +312,7 @@
         final StringBuilder cmd = new StringBuilder()
                 .append(&quot;list program * select name isjavaprogram dump \&quot;\t\&quot;&quot;);
         final Set&lt;String&gt; ret = new TreeSet&lt;String&gt;();
-        for (final String name : MqlUtil_mxJPO.execMql(_paramCache.getContext(), cmd).split(&quot;\n&quot;))  {
+        for (final String name : MqlUtil_mxJPO.execMql(_paramCache, cmd).split(&quot;\n&quot;))  {
             if (!&quot;&quot;.equals(name))  {
                 final String[] nameArr = name.split(&quot;\t&quot;);
                 if (!&quot;TRUE&quot;.equals(nameArr[1]))  {</pre>
