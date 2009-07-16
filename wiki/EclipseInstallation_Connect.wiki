@@ -7,26 +7,26 @@
 
 == Open Preference Page ==
 
-http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Install_Connect-1.jpg
+http://mxupdate.googlecode.com/svn/wiki/images/EclipseInstallation_Connect-1.jpg
 
 == Enter Connection Information =
 
-http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Install_Connect-2.jpg
+http://mxupdate.googlecode.com/svn/wiki/images/EclipseInstallation_Connect-2.jpg
 
 == Connect to MX ==
 
-http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Install_Connect-3.jpg
+http://mxupdate.googlecode.com/svn/wiki/images/EclipseInstallation_Connect-3.jpg
 
 The !MxUpdate Console is automatically opened and shows a successful connect:
 
-http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Install_Connect-4.jpg
+http://mxupdate.googlecode.com/svn/wiki/images/EclipseInstallation_Connect-4.jpg
 
 == Restart Eclipse ==
 Because the !MxUpdate Eclipse Plug-In always loads the current configuration from the installed !MxUpdate Update Deployment tool, Eclipse must be restarted. A restart is always needed if the configuration of !MxUpdate Update Deployment tool is changed (in this case a message is shown to the user in the console).
 
 After Eclipse is restarted a connected again following message should be shown in the console:
 
-http://mxupdate.googlecode.com/svn/wiki/images/Eclipse_Install_Connect-5.jpg
+http://mxupdate.googlecode.com/svn/wiki/images/EclipseInstallation_Connect-5.jpg
 
 = Connection Settings =
 
