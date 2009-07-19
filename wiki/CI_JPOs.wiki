@@ -5,11 +5,15 @@
 = Introduction =
 The source code of JPOs are handled as configuration item. The name of the configuration item file is the name as used within MX appended by suffix {{{_mxJPO.java}}}. If the JPO name includes points ('.'), this points are interpreted as package name and the name of the file is the text after the last point appended {{{_mxJPO.java}}}.
 
+----
+
 == Example without Package ==
 JPO with name {{{emxPart}}} has the configuration item file name {{{emxPart_mxJPO.java}}}.
 
 == Example with Package ==
 JPO with name {{{org.mxupdate.Update}}} has the file name {{{Update_mxJPO.java}}} (in sub directory {{{org/mxupdate}}}).
+
+----
 
 = Package Handling of JPOs =
 Package names of JPOs are not handled like normal Java code.
@@ -19,6 +23,8 @@ If a JPO is updated or inserted, the name of the package is set in the front of 
 
 == Extract JPOs ==
 If the JPO is extracted, the MX name of the JPO is used to extract the package name and the file name of the JPO. The code for the package is automatically added to the JPO source code (in the beginning of the source code).
+
+----
 
 = "Standard" Property and Symbolic Name Handling =
 All non "standard" properties are removed before the JPO is updated and the embedded TCL code is execute. At the end all the "standard" properties "version", "file date", "application" and "author" are updated (depending on the used parameters). The "standard" properties "installer" and "original name" are only set if not already defined.
@@ -60,10 +66,13 @@ mql mod program "JPO"  \
 */
 }}}
 
+----
+
 = Parameter Definitions =
-|| Name || Parameter || Default Value || Description ||
-|| JPOTclUpdateMarkEnd ||  || _see the end marker_ || Defines the string to mark the end of embedded TCL update code within JPO source code. ||
-|| JPOTclUpdateMarkStart ||  || _see the start marker_ || Defines the string to mark the start of embedded TCL update code within JPO source code. ||
-|| JPOTclUpdateNeeded || ‑‑nojpotclupdateneeded || true || Embedded TCL update code within a JPO is not executed. Instead a warning is shown because of existing TCL update code. *Attention!* The default value is true, but if the parameter is defined the flag will be false! ||
+|| Name                  || Parameter              || Default Value          || Description ||
+|| Compile               || ‑‑compile              || false                  || Compiles all updated JPO programs. ||
+|| JPOTclUpdateMarkEnd   ||                        || _see the end marker_   || Defines the string to mark the end of embedded TCL update code within JPO source code. ||
+|| JPOTclUpdateMarkStart ||                        || _see the start marker_ || Defines the string to mark the start of embedded TCL update code within JPO source code. ||
+|| JPOTclUpdateNeeded    || ‑‑nojpotclupdateneeded || true                   || Embedded TCL update code within a JPO is not executed. Instead a warning is shown because of existing TCL update code. *Attention!* The default value is true, but if the parameter is defined the flag will be false! ||
 
 The parameters could be changed depending on project needs. For further information see the [UpdatePropertyFileFormat_ParameterDef Parameter Definition Format].
