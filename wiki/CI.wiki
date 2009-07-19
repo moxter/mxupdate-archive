@@ -1,10 +1,26 @@
 #summary describes the methodic how configuration items could be used within MX
 
+<wiki:toc max_depth="3"/>
+
 = Introduction =
 
 Currently within a lot of MX projects the existing configuration (attributes, types, also commands etc.) are handled via MQL update scripts. One good example for that are the installation scripts which are delivered with the installation packages of the different centrals.
 
+----
+
 = Configuration Items =
-As describes in [http://www.wikipedia.org Wikipedia] the term [http://en.wikipedia.org/wiki/Configuration_item Configuration Items] refers to the fundamental structural unit of a configuration management system. In MX the fundamental structure unit are e.g. for the data model attributes, types, policies..., for the user interface e.g. commands, menus, web forms and web tables. So the basic idea behind the "Configuration Item" methodic is to store a complete description of a fundamental structure unit in one single file. This means that each file could be handled easily within a source code repository (like [http://subversion.tigris.org/ Subversion] etc.). 
+As describes in [http://www.wikipedia.org Wikipedia] the term [http://en.wikipedia.org/wiki/Configuration_item Configuration Items] refers to the fundamental structural unit of a configuration management system. In MX the fundamental structure unit are e.g. for the data model attributes, types, policies..., for the user interface e.g. commands, menus, web forms and web tables. So the basic idea behind the "Configuration Item" methodic is to store a complete description of a fundamental structure unit in one single file. This means that each file could be handled easily within a source code repository (like [http://subversion.tigris.org/ Subversion] etc.).
 
 Instead of described each versions and a delta (like in the XML update files delivered from MX) the idea behind the method is to describe the target of an administration object. E.g. for a command the HRef, all settings and all properties are described in this file. If the command must be changed a developer could see the complete command description. A modification of the command is for the developer than very easy. If then the command is deployed the existing command in MX is updated to the new target description in the file.
+
+----
+
+= Common Parameter Definitions =
+A lot of parameters for the !MxUpdate Update tool could be defined. Some parameters could as default only defined within the property file.
+
+== Symbolic Names ==
+The parameters are used to control the behavior related to symbolic names. Symbolic names are used within MX for referencing administration objects so that the real name could be changed without changing the code where the administration object is referenced.
+|| *Name*                  || *Parameter*              || *Default Value*                   || *Description* ||
+|| !CalcSymbolicNames      || ‑‑calculatesymbolicnames || false                             || With this parameter the symbolic names are always calculated and not extracted from the !MxUpdate file header. This is e.g. useful if symbolic names in the header of !MxUpdate files are not defined correctly. ||
+|| !CalcSymbolicNameRegExp ||                          || allowed are numbers, upper or lower case characters, percent sign {{{%}}}, ampersand {{{&}}}, left {{{(}}} or right {{{)}}} parenthesis, plus {{{+}}} or minus {{{-}}}, colon {{{:}}}, equal sign {{{=}}}, caret {{{^}}}, underscore {{{_}}} and tilde {{{~}}} || Defines the regular expression for special characters which are not allowed for symbolic names. This special characters are replaced "nothing", means by zero length string. ||
+|| !RegisterSymbolicNames  ||                          || eServiceSchemaVariableMapping.tcl || Defines the name of the program where all administration objects are registered with symbolic names. ||
