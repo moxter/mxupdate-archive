@@ -1,7 +1,25 @@
-#Sat Jun 20 17:18:09 CEST 2009
+#Sun Jul 19 16:08:48 CEST 2009
 eclipse.preferences.version=1
+encoding/CI.wiki=UTF-8
 encoding/CI_DMDimensions.wiki=UTF-8
+encoding/CI_DMPolicies.wiki=UTF-8
 encoding/CI_JPOs.wiki=UTF-8
 encoding/CI_Programs.wiki=UTF-8
+encoding/EclipseInstallation.wiki=UTF-8
+encoding/EclipseInstallation_ADK.wiki=UTF-8
+encoding/EclipseInstallation_Check.wiki=UTF-8
+encoding/EclipseInstallation_Connect.wiki=UTF-8
+encoding/EclipseInstallation_Manually.wiki=UTF-8
+encoding/EclipseInstallation_PlugIn.wiki=UTF-8
+encoding/Index.wiki=UTF-8
+encoding/Start.wiki=UTF-8
+encoding/UpdateDevelopment.wiki=UTF-8
 encoding/UpdateInstallation.wiki=UTF-8
+encoding/UpdatePropertyFileFormat.wiki=UTF-8
+encoding/UpdatePropertyFileFormat_Mode.wiki=UTF-8
+encoding/UpdatePropertyFileFormat_ParameterDef.wiki=UTF-8
+encoding/UpdatePropertyFileFormat_PropertyDef.wiki=UTF-8
+encoding/UpdatePropertyFileFormat_TypeDef.wiki=UTF-8
+encoding/UpdatePropertyFileFormat_TypeDefGroup.wiki=UTF-8
+encoding/UpdatePropertyFileFormat_UpdateCheck.wiki=UTF-8
 encoding/UpdateUsage.wiki=UTF-8
