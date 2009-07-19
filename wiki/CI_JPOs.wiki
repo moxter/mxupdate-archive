@@ -31,6 +31,8 @@ All non "standard" properties are removed before the JPO is updated and the embe
 
 The symbolic name of the JPO is the automatically calculated string {{{program_[PROGRAM_NAME]}}}. If the {{{[PROGRAM_NAME]}}} includes some spaces or slashes, they are removed.
 
+----
+
 = Embedded TCL Code =
 Sometimes some further TCL update code is required, e.g. to define a program user, or some properties for the JPO. The !MxUpdate Update deployment tool could handle this within the same JPO source code.
 
