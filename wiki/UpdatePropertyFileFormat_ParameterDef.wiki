@@ -1,18 +1,23 @@
 #summary Description of the Key "ParameterDef" within MxUpdate property file.
 #labels Phase-Deploy
 
+<wiki:toc max_depth="3"/>
+
 = Introduction =
 
 Properties with key "!ParameterDef" defines additional parameters and default values used from the
 MxUpdate Deployment Tool.
 
+----
+
 = Sub Keys of "!ParameterDef" =
 
 The sub keys are defined after the "!ParameterDef" Key. Following sub keys are interpreted by MxUpdate?:
 
-|| *Type* || *Description* ||
-|| Type || Defines the type of the parameter. Possible values are <ul><li>Boolean</li> <li>Integer</li> <li>List</li> <li>Map</li> <li>String</li></ul> || 
+|| *Type*         || *Description* ||
+|| Type           || Defines the type of the parameter. Possible values are <ul><li>Boolean</li> <li>Integer</li> <li>List</li> <li>Map</li> <li>String</li></ul> ||
 || !ParameterDesc || Description used for the help of the MxUpdate deployment tool.||
 || !ParameterList ||  Comma separated list of parameter names (without '-' and '--' prefixes)<p>_If a parameter contains only one single character, one minus '-' is used as prefix. If the parameter name contains more than one character, two minus '--' are used as prefix._</p><p>_If no parameter list is defined, the user could not use the parameter within MxUpdate deployment tool._</p>||
-|| !ParameterArgs || Parameter Argument <p>_Only for parameters from type Integer, List and String could an argument defined._</p>|| 
-|| Default || Default value of the parameter.||
+|| !ParameterArgs || Parameter Argument <p>_Only for parameters from type Integer, List and String could an argument defined._</p>||
+|| Default        || Default value of the parameter.||
+|| Wiki           || Defines a reference to the description in the Wiki. Multiple references must be separated by a space. ||
