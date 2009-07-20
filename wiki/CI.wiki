@@ -15,6 +15,38 @@ Instead of described each versions and a delta (like in the XML update files del
 
 ----
 
+= File Names =
+Each file name of a configuration item has a prefix and a suffix. The suffix
+itself is always {{{.tcl}}}. The prefix depends on the configuration item type
+(e.g. for a command the prefix {{{COMMAND_}}} is used). As an exception from
+this rule are the program configuration items [CI_JPO JPO's] and
+[CI_Program MQL Program's].
+
+== Encoding Rules ==
+Within MX a configuration item could use some special characters which are not
+handled from the file system. Therefore this special characters are encoded.
+
+This characters are not encoded:
+    * numbers
+    * alphabetic characters (lower and upper case)
+    * left or right parenthesis
+    * plus '+' or minus '-'
+    * commas ',' or points '.'
+    * spaces
+    * equals signs '='
+    * underscores '_'
+
+All other characters are converted with the algorithm:
+    * the "at symbol" '@' will be converted to double at symbol '@@'
+    * if a character is in the range of 0 and 254 (ASCII character), then the character is converted to a two characters long hexa-decimal code with '@' as prefix (e.g. double quotes '=' is converted to '@22')
+    * characters greater than 254 are converted to a four characters long hexa-decimal code with '@u' as prefix (e.g. the euro sign '€' is converted to '@u20AC')
+
+== Error Codes ==
+|| *Error Code* || *Description* ||
+|| 90602        || The file name is not correct defined and could not be converted back to a configuration item name. The exception could occur within updates. ||
+
+----
+
 = Common Parameter Definitions =
 A lot of parameters for the !MxUpdate Update tool could be defined. Some parameters could as default only defined within the property file.
 
