@@ -8,6 +8,7 @@
      * [EclipseInstallation_Connect Connect]
      * [EclipseInstallation_Manually Manually]
      * [EclipseInstallation_Check Check]
+ * [NewProject New Project From Scratch]
  * [UpdateUsage MxUpdate Usage]
  * [CI Configuration Items]
      * [CI_DMDimensions Dimensions]
