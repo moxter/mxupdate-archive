@@ -10,10 +10,9 @@ This section describes the setup of a new development project with Eclipse.
 
 == Prerequisites ==
 
-The following prerequisites are needed before continuing:
+The following prerequisites are needed:
   * Install Eclipse
   * Create new workspace in Eclipse
-  * Automatic links to other wiki pages
   * Install MxUpdate
   * Install MxUpdate Eclipse Plug-In
 
@@ -24,12 +23,15 @@ Create new project in Eclipse by selecting _File/New/Project_
 == Create folder vendor for source-data ==
 
 Create new folder _vendor_ inside the new project.
+
 This folder will contain the source-files.
 
 Create new folder _JPOs_ inside the _vendor_-Folder.
+
 This folder will contain the source-JPOs.
 
 Create new folder _lib_ inside the _vendor_-Folder.
+
 This folder will contain the libraries.
 
 == Export source JPOs via MQL ==
@@ -48,8 +50,10 @@ Delete folder *org* and file *MxUpdate_mxJPO.java*.
 == Set build path for JPOs in Eclipse ==
 
 In Eclipse select project with right mouse-click.
+
 In Pop-Up-Menu select _Build Path\Configure Build Path_.
-Select *Add Folder* and defined folder *\vendor\JPOs*.
+
+Select *Add Folder* and define folder *\vendor\JPOs*.
 
 == Copy libraries needed in new Eclipse-Project ==
 
@@ -60,9 +64,13 @@ Copy file *servlet-api.jar* from Application Server, e.g. *c:\tomcat\lib*, to *\
 == Defined libraries needed in new Eclipse-Project ==
 
 In Eclipse select project with right mouse-click.
+
 In Pop-Up-Menu select _Build Path\Add Library\User Library_.
+
 Create new *User Library*.
+
 Mark new *User Library* and select *Add JARs*
+
 Select folder *\vendor\lib* and add all JARs from this folder.
 
 == Create folder-structure for Project-Files  ==
