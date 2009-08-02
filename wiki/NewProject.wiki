@@ -1,10 +1,10 @@
-#summary One-sentence summary of this page.
+#summary Step-By-Step description of how to setup a new development-project from scratch.
 
 <wiki:toc max_depth="3"/>
 
 ----
 
-= How to setup a new development-project from scratch =
+= Steps to setup a new development-project from scratch =
 
 This section describes the setup of a new development project with Eclipse.
 
