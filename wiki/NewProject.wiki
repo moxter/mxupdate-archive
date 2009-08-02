@@ -4,14 +4,114 @@
 
 ----
 
-= Introduction =
+= How to setup a new development-project from scratch =
 
-Add your content here.
+This section describes the setup of a new development project with Eclipse.
 
+== Prerequisites ==
 
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
+The following prerequisites are needed before continuing:
+  * Install Eclipse
+  * Create new workspace in Eclipse
   * Automatic links to other wiki pages
+  * Install MxUpdate
+  * Install MxUpdate Eclipse Plug-In
+
+== Create new project in Eclipse ==
+
+Create new project in Eclipse by selecting _File/New/Project_
+
+== Create folder vendor for source-data ==
+
+Create new folder _vendor_ inside the new project.
+This folder will contain the source-files.
+
+Create new folder _JPOs_ inside the _vendor_-Folder.
+This folder will contain the source-JPOs.
+
+Create new folder _lib_ inside the _vendor_-Folder.
+This folder will contain the libraries.
+
+== Export source JPOs via MQL ==
+
+Start RMI-MQL.
+
+Export all JPOs with the following command to *C:\TEMP\JPOs*:
+{{{
+exec prog MxUpdate --export --jpo * --path C:\TEMP\JPOs;
+}}}
+
+Move all files and folders from *C:\TEMP\JPOs\jpo* to *\vendor\JPOs* in the new project-structure.
+
+Delete folder *org* and file *MxUpdate_mxJPO.java*.
+
+== Set build path for JPOs in Eclipse ==
+
+In Eclipse select project with right mouse-click.
+In Pop-Up-Menu select _Build Path\Configure Build Path_.
+Select *Add Folder* and defined folder *\vendor\JPOs*.
+
+== Copy libraries needed in new Eclipse-Project ==
+
+Copy all library-files from Application Server, e.g. *c:\tomcat\WEB-INF\lib*, to folder *\vendor\lib*.
+
+Copy file *servlet-api.jar* from Application Server, e.g. *c:\tomcat\lib*, to *\vendor\lib*.
+
+== Defined libraries needed in new Eclipse-Project ==
+
+In Eclipse select project with right mouse-click.
+In Pop-Up-Menu select _Build Path\Add Library\User Library_.
+Create new *User Library*.
+Mark new *User Library* and select *Add JARs*
+Select folder *\vendor\lib* and add all JARs from this folder.
+
+== Create folder-structure for Project-Files  ==
+
+Create following folder-structure under project-root:
+  * _\10_pre_environment_
+  * _\20_environment_
+  * _\30_pre_mxupdate_
+  * _\40_mxupdate_
+  * _\40_mxupdate\datamodel_
+  * _\40_mxupdate\datamodel\attribute_
+  * _\40_mxupdate\datamodel\dimension_
+  * _\40_mxupdate\datamodel\expression_
+  * _\40_mxupdate\datamodel\format_
+  * _\40_mxupdate\datamodel\interface_
+  * _\40_mxupdate\datamodel\numbergenerator_
+  * _\40_mxupdate\datamodel\objectgenerator_
+  * _\40_mxupdate\datamodel\policy_
+  * _\40_mxupdate\datamodel\relationship_
+  * _\40_mxupdate\datamodel\rule_
+  * _\40_mxupdate\datamodel\trigger_
+  * _\40_mxupdate\datamodel\triggergroup_
+  * _\40_mxupdate\datamodel\type_
+  * _\40_mxupdate\integration_
+  * _\40_mxupdate\program_
+  * _\40_mxupdate\program\csharp_
+  * _\40_mxupdate\program\jpo_
+  * _\40_mxupdate\program\mql_
+  * _\40_mxupdate\program\page_
+  * _\40_mxupdate\user_
+  * _\40_mxupdate\user\association_
+  * _\40_mxupdate\user\group_
+  * _\40_mxupdate\user\person_
+  * _\40_mxupdate\user\role_
+  * _\40_mxupdate\userinterface_
+  * _\40_mxupdate\userinterface\channel_
+  * _\40_mxupdate\userinterface\command_
+  * _\40_mxupdate\userinterface\form_
+  * _\40_mxupdate\userinterface\inquiry_
+  * _\40_mxupdate\userinterface\menu_
+  * _\40_mxupdate\userinterface\portal_
+  * _\40_mxupdate\userinterface\table_
+  * _\50_post_mxupdate_
+  * _\60_environment_
+  * _\70_post_environment_
+
+== Define JPO-Folder of project as source folder in Eclipse ==
+
+In Eclipse select folder *\40_mxupdate\program\jpo* with right mouse-click.
+In Pop-Up-Menu select _Build Path\Use as Source Folder_.
+
+
