@@ -42,7 +42,7 @@
   
     
             <div class="xleft">
-        Last Published: 14-July-2009
+        Last Published: 10-August-2009
                       </div>
             <div class="xright">            <a href="">MxUpdate</a>
             |
@@ -174,67 +174,6 @@
 <p><table class="bodyTable"><tr class="a"><th>File</th>
 <th>Line</th>
 </tr>
-<tr class="b"><td>org/mxupdate/update/userinterface/Command_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/userinterface/Command_mxJPO.html#149">149</a>
-</td>
-</tr>
-<tr class="a"><td>org/mxupdate/update/userinterface/Portal_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/userinterface/Portal_mxJPO.html#209">209</a>
-</td>
-</tr>
-<tr class="b"><td colspan='2'><div class="source"><pre>        }
-    }
-
-    /**
-     * The method overwrites the original method to append the MQL statements
-     * in the &lt;code&gt;_preMQLCode&lt;/code&gt; to reset this portal. Following steps
-     * are done:
-     * &lt;ul&gt;
-     * &lt;li&gt;reset HRef, description, alt and label&lt;/li&gt;
-     * &lt;li&gt;remove all settings and channels&lt;/li&gt;
-     * &lt;/ul&gt;
-     *
-     * @param _paramCache       parameter cache
-     * @param _preMQLCode       MQL statements which must be called before the
-     *                          TCL code is executed
-     * @param _postMQLCode      MQL statements which must be called after the
-     *                          TCL code is executed
-     * @param _preTCLCode       TCL code which is defined before the source
-     *                          file is sourced
-     * @param _tclVariables     map of all TCL variables where the key is the
-     *                          name and the value is value of the TCL variable
-     *                          (the value is automatically converted to TCL
-     *                          syntax!)
-     * @param _sourceFile       souce file with the TCL code to update
-     * @throws Exception if the update from derived class failed
-     */
-    @Override
-    protected void update(final ParameterCache_mxJPO _paramCache,
-                          final CharSequence _preMQLCode,
-                          final CharSequence _postMQLCode,
-                          final CharSequence _preTCLCode,
-                          final Map&lt;String,String&gt; _tclVariables,
-                          final File _sourceFile)
-            throws Exception
-    {
-        // HRef, description, alt and label
-        final StringBuilder preMQLCode = new StringBuilder()
-                .append(&quot;mod &quot;).append(this.getTypeDef().getMxAdminName())
-                .append(&quot; \&quot;&quot;).append(this.getName()).append('\&quot;')
-                .append(&quot; href \&quot;\&quot; description \&quot;\&quot; alt \&quot;\&quot; label \&quot;\&quot;&quot;);
-
-        // reset settings
-        for (final AdminProperty_mxJPO prop : this.getPropertiesMap().values())  {
-            if (prop.isSetting())  {
-                preMQLCode.append(&quot; remove setting \&quot;&quot;).append(prop.getName().substring(1)).append('\&quot;');
-            }
-        }</pre>
-</div>
-</td></tr>
-<table class="bodyTable"></p>
-<p><table class="bodyTable"><tr class="a"><th>File</th>
-<th>Line</th>
-</tr>
 <tr class="b"><td>org/mxupdate/update/userinterface/Channel_mxJPO.java</td>
 <td><a href="./xref/org/mxupdate/update/userinterface/Channel_mxJPO.html#163">163</a>
 </td>
@@ -284,7 +223,7 @@
 <th>Line</th>
 </tr>
 <tr class="b"><td>org/mxupdate/update/program/JPO_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/program/JPO_mxJPO.html#116">116</a>
+<td><a href="./xref/org/mxupdate/update/program/JPO_mxJPO.html#117">117</a>
 </td>
 </tr>
 <tr class="a"><td>org/mxupdate/update/program/Program_mxJPO.java</td>
@@ -323,11 +262,11 @@
 <th>Line</th>
 </tr>
 <tr class="b"><td>org/mxupdate/update/util/StringUtil_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/util/StringUtil_mxJPO.html#167">167</a>
+<td><a href="./xref/org/mxupdate/update/util/StringUtil_mxJPO.html#291">291</a>
 </td>
 </tr>
 <tr class="a"><td>org/mxupdate/update/util/StringUtil_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/util/StringUtil_mxJPO.html#294">294</a>
+<td><a href="./xref/org/mxupdate/update/util/StringUtil_mxJPO.html#418">418</a>
 </td>
 </tr>
 <tr class="b"><td colspan='2'><div class="source"><pre>    public static String joinMql(final char _separator,
@@ -353,56 +292,6 @@
                     ret.append('\&quot;');
                 }
                 ret.append(StringUtil_mxJPO.convertMql(elem));</pre>
-</div>
-</td></tr>
-<table class="bodyTable"></p>
-<p><table class="bodyTable"><tr class="a"><th>File</th>
-<th>Line</th>
-</tr>
-<tr class="b"><td>org/mxupdate/update/AbstractAdminObject_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/AbstractAdminObject_mxJPO.html#396">396</a>
-</td>
-</tr>
-<tr class="a"><td>org/mxupdate/update/datamodel/AbstractDMWithTriggers_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/datamodel/AbstractDMWithTriggers_mxJPO.html#136">136</a>
-</td>
-</tr>
-<tr class="b"><td colspan='2'><div class="source"><pre>    }
-
-    /**
-     * The method overwrites the original method to append the MQL statements
-     * in the &lt;code&gt;_preMQLCode&lt;/code&gt; to remove all current assigned triggers.
-     * Then the update method of the super class is called.
-     *
-     * @param _paramCache       parameter cache
-     * @param _preMQLCode       MQL statements which must be called before the
-     *                          TCL code is executed
-     * @param _postMQLCode      MQL statements which must be called after the
-     *                          TCL code is executed
-     * @param _preTCLCode       TCL code which is defined before the source
-     *                          file is sourced
-     * @param _tclVariables     map of all TCL variables where the key is the
-     *                          name and the value is value of the TCL variable
-     *                          (the value is automatically converted to TCL
-     *                          syntax!)
-     * @param _sourceFile       souce file with the TCL code to update
-     * @throws Exception if the update from derived class failed
-     */
-    @Override
-    protected void update(final ParameterCache_mxJPO _paramCache,
-                          final CharSequence _preMQLCode,
-                          final CharSequence _postMQLCode,
-                          final CharSequence _preTCLCode,
-                          final Map&lt;String,String&gt; _tclVariables,
-                          final File _sourceFile)
-            throws Exception
-    {
-        // remove all properties
-        final StringBuilder preMQLCode = new StringBuilder()
-                .append(&quot;mod &quot;).append(this.getTypeDef().getMxAdminName())
-                .append(&quot; \&quot;&quot;).append(this.getName()).append(&quot;\&quot; &quot;)
-                .append(this.getTypeDef().getMxAdminSuffix());
-        for (final Trigger trigger : this.triggers.values())  {</pre>
 </div>
 </td></tr>
 <table class="bodyTable"></p>
