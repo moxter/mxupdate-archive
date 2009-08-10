@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.mxupdate.eclipse_0.6.0.jar" id="org.mxupdate.eclipse" version="0.6.0">
+      <category name="MxUpdate"/>
+   </feature>
+   <category-def name="MxUpdate" label="MxUpdate Eclipse Plugin"/>
+</site>
