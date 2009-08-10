@@ -22,7 +22,7 @@
 <feature
       id="org.mxupdate.eclipse"
       label="MxUpdate Eclipse Plug In"
-      version="0.5.0"
+      version="0.6.0"
       provider-name="The MxUpdate Team"
       plugin="org.mxupdate.eclipse">
 
@@ -265,7 +265,7 @@ can be found at http://www.famfamfam.com/lab/icons/silk/.
          id="org.mxupdate.eclipse"
          download-size="0"
          install-size="0"
-         version="0.5.0"
+         version="0.6.0"
          unpack="false"/>
 
 </feature>
