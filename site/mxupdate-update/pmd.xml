@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.2" timestamp="2009-07-14T10:47:09.438">
+<pmd version="4.2.2" timestamp="2009-08-10T14:46:32.823">
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/mapping/Mapping_mxJPO.java">
 <violation beginline="31" endline="31" begincolumn="1" endcolumn="25" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.mapping" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
 Avoid unused imports such as 'matrix.db.Context'
@@ -11,28 +11,7 @@ Avoid unused imports such as 'matrix.db.Context'
 </violation>
 </file>
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/AbstractAdminObject_mxJPO.java">
-<violation beginline="192" endline="194" begincolumn="47" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update" class="AbstractAdminObject_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="194" endline="196" begincolumn="67" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update" class="AbstractAdminObject_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="196" endline="198" begincolumn="76" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update" class="AbstractAdminObject_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="198" endline="200" begincolumn="71" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update" class="AbstractAdminObject_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="200" endline="202" begincolumn="80" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update" class="AbstractAdminObject_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="202" endline="204" begincolumn="59" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update" class="AbstractAdminObject_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="209" endline="211" begincolumn="67" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update" class="AbstractAdminObject_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="646" endline="651" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.mxupdate.update" class="AbstractAdminObject_mxJPO$PadSaxHandler" method="characters" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+<violation beginline="673" endline="678" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.mxupdate.update" class="AbstractAdminObject_mxJPO$PadSaxHandler" method="characters" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
 </violation>
 </file>
@@ -42,23 +21,12 @@ An empty statement (semicolon) not part of a loop
 </violation>
 </file>
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/AbstractAttribute_mxJPO.java">
-<violation beginline="206" endline="208" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="AbstractAttribute_mxJPO" method="getMxNames" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
+<violation beginline="218" endline="220" begincolumn="17" endcolumn="17" rule="CollapsibleIfStatements" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="AbstractAttribute_mxJPO" method="getMxNames" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#CollapsibleIfStatements" priority="3">
 These nested if statements could be combined
-</violation>
-<violation beginline="245" endline="247" begincolumn="48" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="AbstractAttribute_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="260" endline="262" begincolumn="51" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="AbstractAttribute_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
 </violation>
 </file>
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/AbstractDMWithAttributes_mxJPO.java">
-<violation beginline="151" endline="153" begincolumn="51" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="AbstractDMWithAttributes_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-</file>
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/AbstractDMWithTriggers_mxJPO.java">
-<violation beginline="87" endline="89" begincolumn="43" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="AbstractDMWithTriggers_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
+<violation beginline="172" endline="174" begincolumn="51" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="AbstractDMWithAttributes_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>
@@ -69,62 +37,6 @@ Avoid empty if statements
 </file>
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Format_mxJPO.java">
 <violation beginline="103" endline="105" begincolumn="50" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Format_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-</file>
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Policy_mxJPO.java">
-<violation beginline="140" endline="142" begincolumn="45" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="144" endline="146" begincolumn="52" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="157" endline="159" begincolumn="50" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="164" endline="166" begincolumn="51" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="179" endline="181" begincolumn="72" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="181" endline="183" begincolumn="79" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="188" endline="190" begincolumn="73" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="190" endline="192" begincolumn="80" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="197" endline="199" begincolumn="75" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="203" endline="205" begincolumn="93" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="213" endline="215" begincolumn="77" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="223" endline="225" begincolumn="106" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="227" endline="229" begincolumn="105" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="231" endline="233" begincolumn="105" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="236" endline="238" begincolumn="74" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="243" endline="245" begincolumn="73" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="252" endline="254" begincolumn="70" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="257" endline="259" begincolumn="72" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Policy_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>
@@ -189,17 +101,6 @@ Avoid empty if statements
 Avoid empty if statements
 </violation>
 <violation beginline="118" endline="120" begincolumn="71" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Rule_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-</file>
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Type_mxJPO.java">
-<violation beginline="95" endline="97" begincolumn="50" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Type_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="97" endline="99" begincolumn="62" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Type_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="102" endline="104" begincolumn="49" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Type_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>
@@ -295,17 +196,6 @@ Avoid empty if statements
 Avoid empty if statements
 </violation>
 </file>
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Command_mxJPO.java">
-<violation beginline="109" endline="111" begincolumn="43" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Command_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="113" endline="115" begincolumn="44" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Command_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="117" endline="119" begincolumn="50" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Command_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-</file>
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Form_mxJPO.java">
 <violation beginline="86" endline="88" begincolumn="42" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
@@ -326,14 +216,6 @@ Avoid empty if statements
 Avoid empty if statements
 </violation>
 <violation beginline="98" endline="100" begincolumn="48" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Form_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-</file>
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Menu_mxJPO.java">
-<violation beginline="88" endline="90" begincolumn="46" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Menu_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-<violation beginline="99" endline="101" begincolumn="50" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Menu_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>

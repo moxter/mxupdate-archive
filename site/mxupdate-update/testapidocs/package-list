@@ -1,4 +1,11 @@
 org.mxupdate.test
+org.mxupdate.test.ci
+org.mxupdate.test.ci.datamodel
+org.mxupdate.test.ci.userinterface
+org.mxupdate.test.data
+org.mxupdate.test.data.datamodel
+org.mxupdate.test.data.program
+org.mxupdate.test.data.userinterface
 org.mxupdate.test.export.datamodel
 org.mxupdate.test.export.program
 org.mxupdate.test.update.datamodel
