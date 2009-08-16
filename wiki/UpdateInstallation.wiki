@@ -1,5 +1,4 @@
 #summary Installation of the MxUpdate Update Deployment Tool.
-#labels Phase-Deploy,Featured
 
 <wiki:toc max_depth="3"/>
 
@@ -30,6 +29,22 @@ The short help for all parameters of !MxUpdate is shown.
 
 ----
 
+= Environment Variables =
+Following environment variables could be defined and are supported from
+{{{MxInstall.mql}}}:
+|| *Name*                      || *Description* ||
+|| {{{MXUPDATE_PATH}}}         || Defines the root path of the !MxUpdate installation folder where the {{{MxInstall.mql}}} is located. If !MxUpdate installation is defined as SVN external link, the path must be defined to the directory {{{src/main}}}. ||
+|| {{{MXUPDATE_MAPPING_FILE}}} || Defines additional properties which overwrites the original defined properties of !MxUpdate. ||
+|| {{{MXUPDATE_DEVELOPMENT}}}  || If the value is set to {{{true}}}, the new installed JPOs are not recompiled. Instead only a "standard" compile is done. ||
+
+The environment variables could be defined as MQL or as shell variables and are
+evaluated in this order:
+  * as MQL environment variable
+  * as global environment variable
+  * or as shell variable
+
+----
+
 = Installation FAQ =
 
 == Alternatives to Manually Downloads ==
@@ -39,7 +54,7 @@ Instead of manually downloading the !MxUpdate Update deployment tool, an externa
 {{{
 source http://mxupdate.googlecode.com/svn/mxupdate-update/tags/V0.5.0
 }}}
-Because for [UpdateDevelopment development] another directory structure is used, the {{{MXUPDATE_PATH}}} must set to the {{{src/main}}} directory. The *{{{MxInstall.mql}}}* is located in {{{src/main/resources}}} sub path. The Script itself checks that a development structure is defined and installs !MxUpdate Update depending on this directory structure. 
+Because for [UpdateDevelopment development] another directory structure is used, the {{{MXUPDATE_PATH}}} must set to the {{{src/main}}} directory. The *{{{MxInstall.mql}}}* is located in {{{src/main/resources}}} sub path. The Script itself checks that a development structure is defined and installs !MxUpdate Update depending on this directory structure.
 
 == Support of old MX versions ==
 
@@ -64,7 +79,7 @@ ParameterDef.DMDimAllowUpdateDefUnit.ParameterList  =
 ParameterDef.DMDimAllowUpdateUnitMult.ParameterList =
 ParameterDef.DMDimAllowUpdateUnitOffs.ParameterList =
 }}}
-For a deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_TypeDefGroup TypeDefGroup]" of the property file format. 
+For a deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_TypeDefGroup TypeDefGroup]" of the property file format.
 
 === Relationship as from / to side for Relationships ===
 If the used MX version within the project does not support the feature to use also relationships as from / to side the property "DMRelationSupportRelCons" must be changed and set to {{{false}}}. So following line must be added to the additional property file:
@@ -104,5 +119,4 @@ TypeDef.TriggerGroup.TextTitle          = PROCESS
 TypeDef.TriggerGroup.ParameterDesc      = Export / Import of processes.
 TypeDef.TriggerGroup.ParameterList      = process
 }}}
-For a deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_PropertyDef PropertyDef]" of the property file format. 
-
+For a deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_PropertyDef PropertyDef]" of the property file format.
