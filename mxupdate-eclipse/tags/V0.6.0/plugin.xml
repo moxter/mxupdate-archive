@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+ Copyright 2008-2009 The MxUpdate Team
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+ Author:          The MxUpdate Team
+ Revision:        $Rev$
+ Last Changed:    $Date$
+ Last Changed By: $Author$
+
+-->
+
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         id="decorators"
+         point="org.eclipse.ui.decorators">
+      <decorator
+            adaptable="false"
+            class="org.mxupdate.eclipse.MXDecorator"
+            id="mxupdate_eclipse.decorator"
+            label="MxUpdate Decorator"
+            lightweight="true"
+            state="true">
+         <enablement>
+             <objectClass name="org.eclipse.core.resources.IFile"/>
+         </enablement>
+      </decorator>
+   </extension>
+
+    <extension point="org.eclipse.core.runtime.preferences">
+        <!-- <scope name="foo" class="com.example.FooPrefs"/>-->
+        <initializer class="org.mxupdate.eclipse.console.ConsolePreferencesInitializer"/>
+        <initializer class="org.mxupdate.eclipse.shell.ShellPreferencesInitializer"/>
+    </extension>
+
+    <!-- Preference Pages -->
+    <extension point="org.eclipse.ui.preferencePages">
+        <page class="org.mxupdate.eclipse.MXPreferencePage"
+              id="EclipsePlugin.page1"
+              name="%plugin.settings.label">
+        </page>
+        <page id="org.mxupdate.eclipse.console.ConsolePreferencesPage"
+              name="%ConsolePreference.PreferencePageLabel"
+              class="org.mxupdate.eclipse.console.ConsolePreferencesPage"
+              category="EclipsePlugin.page1">
+        </page>
+        <page id="org.mxupdate.eclipse.shell.ShellPreferencesPage"
+              name="%ShellPreference.PreferencePageLabel"
+              class="org.mxupdate.eclipse.shell.ShellPreferencesPage"
+              category="EclipsePlugin.page1">
+        </page>
+   </extension>
+
+   <!-- definition of all commands -->
+   <extension point="org.eclipse.ui.commands">
+      <command
+            id="org.mxupdate.eclipse.command.connect"
+            name="%plugin.command.connect.label">
+         <defaultHandler
+               class="org.mxupdate.eclipse.handlers.ConnectHandler">
+         </defaultHandler>
+      </command>
+      <command
+            id="org.mxupdate.eclipse.command.disconnect"
+            name="%plugin.command.disconnect.label">
+         <defaultHandler
+               class="org.mxupdate.eclipse.handlers.DisconnectHandler">
+         </defaultHandler>
+      </command>
+      <command
+            id="org.mxupdate.eclipse.command.update"
+            name="%plugin.command.update.label">
+         <defaultHandler
+               class="org.mxupdate.eclipse.handlers.UpdateHandler">
+         </defaultHandler>
+      </command>
+      <command
+            id="org.mxupdate.eclipse.command.updatecompile"
+            name="%plugin.command.updatecompile.label">
+         <defaultHandler
+               class="org.mxupdate.eclipse.handlers.UpdateCompileHandler">
+         </defaultHandler>
+      </command>
+      <command
+            id="org.mxupdate.eclipse.command.compare"
+            name="%CompareHandler.Label">
+         <defaultHandler class="org.mxupdate.eclipse.handlers.CompareHandler"/>
+      </command>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="org.mxupdate.eclipse.command.update"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+6">
+      </key>
+   </extension>
+
+   <extension point="org.eclipse.ui.menus">
+      <!-- menu -->
+      <menuContribution locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="org.mxupdate.eclipse.menus.menu"
+               label="%plugin.menu.label"
+               mnemonic="M">
+            <command
+                  commandId="org.mxupdate.eclipse.command.update"
+                  icon="icons/Update.gif"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.mxupdate.eclipse.command.updatecompile"
+                  icon="icons/UpdateCompile.gif"
+                  style="push">
+            </command>
+            <separator
+                  name="org.mxupdate.eclipse.menus.separator"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.mxupdate.eclipse.command.connect"
+                  icon="icons/Connect.gif"
+                  style="push">
+            </command>
+            <command
+                  commandId="org.mxupdate.eclipse.command.disconnect"
+                  icon="icons/Disconnect.gif"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+      <!-- update command for the action toolbar -->
+      <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar id="org.mxupdate.eclipse.toolbars.toolbar">
+            <command commandId="org.mxupdate.eclipse.command.update"
+                     icon="icons/Update.gif"
+                     tooltip="%plugin.command.update.tooltip">
+            </command>
+            <command commandId="org.mxupdate.eclipse.command.updatecompile"
+                     icon="icons/UpdateCompile.gif"
+                     tooltip="%plugin.command.updatecompile.tooltip">
+            </command>
+         </toolbar>
+      </menuContribution>
+      <!-- MxUpdate popup menu -->
+      <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
+         <menu label="%plugin.popup.label">
+            <command commandId="org.mxupdate.eclipse.command.update"
+                     icon="icons/Update.gif"/>
+            <command commandId="org.mxupdate.eclipse.command.updatecompile"
+                     icon="icons/UpdateCompile.gif"/>
+            <command commandId="org.mxupdate.eclipse.command.compare"/>
+         </menu>
+      </menuContribution>
+   </extension>
+
+   <!-- MxUpdate console -->
+   <extension
+         point="org.eclipse.ui.console.consoleFactories">
+      <consoleFactory
+            class="org.mxupdate.eclipse.console.ConsoleFactory"
+            label="%plugin.console.label">
+      </consoleFactory>
+   </extension>
+
+    <!-- MQL shell -->
+    <extension point="org.eclipse.ui.views">
+        <category id="org.mxupdate.eclipse.views.category"
+                  name="%plugin.views.category"/>
+        <view id="org.mxupdate.eclipse.shell.ShellView"
+              name="%plugin.views.view.mql"
+              class="org.mxupdate.eclipse.shell.ShellView"
+              category="org.mxupdate.eclipse.views.category"
+              icon="icons/Shell.gif">
+        </view>
+    </extension>
+
+</plugin>
