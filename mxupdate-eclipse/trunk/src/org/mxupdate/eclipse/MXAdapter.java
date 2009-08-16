@@ -55,34 +55,34 @@ public class MXAdapter
     /**
      * Key of the URL preference.
      */
-    public final static String PREF_URL = "url"; //$NON-NLS-1$
+    public static final String PREF_URL = "url"; //$NON-NLS-1$
 
     /**
      * Key of the name preference.
      */
-    public final static String PREF_NAME = "name"; //$NON-NLS-1$
+    public static final String PREF_NAME = "name"; //$NON-NLS-1$
 
     /**
      * Key of the password preference.
      */
-    public final static String PREF_PASSWORD = "password"; //$NON-NLS-1$
+    public static final String PREF_PASSWORD = "password"; //$NON-NLS-1$
 
     /**
      * Key of the update by file content preference.
      */
-    public final static String PREF_UPDATE_FILE_CONTENT = "updateByFileContent"; //$NON-NLS-1$
+    public static final String PREF_UPDATE_FILE_CONTENT = "updateByFileContent"; //$NON-NLS-1$
 
     /**
      * Key name of the properties stored in the preferences.
      */
-    private final static String PREF_PROPERTIES = "pluginProperties"; //$NON-NLS-1$
+    private static final String PREF_PROPERTIES = "pluginProperties"; //$NON-NLS-1$
 
     /**
      * Name and place of the manifest file.
      *
      * @see #getPlugInVersion()
      */
-    private final static String MANIFEST_FILE = "META-INF/MANIFEST.MF"; //$NON-NLS-1$
+    private static final String MANIFEST_FILE = "META-INF/MANIFEST.MF"; //$NON-NLS-1$
 
     /**
      * Label of the bundle version within the <code>META-INF/MANIFEST.MF</code>
@@ -90,7 +90,7 @@ public class MXAdapter
      *
      * @see #getPlugInVersion()
      */
-    private final static String TEXT_BUNDLE_VERSION = "Bundle-Version:"; //$NON-NLS-1$
+    private static final String TEXT_BUNDLE_VERSION = "Bundle-Version:"; //$NON-NLS-1$
 
     /**
      * Length of the label of the bundle version within the
@@ -98,7 +98,7 @@ public class MXAdapter
      *
      * @see #getPlugInVersion()
      */
-    private final static int LENGTH_BUNDLE_VERSION = TEXT_BUNDLE_VERSION.length();
+    private static final int LENGTH_BUNDLE_VERSION = MXAdapter.TEXT_BUNDLE_VERSION.length();
 
     /**
      * Holds the link to the preferences.
@@ -130,6 +130,12 @@ public class MXAdapter
      */
     private boolean connected = false;
 
+    /**
+     * Initializes the MX adapter.
+     *
+     * @param _preferences  preference store
+     * @param _console      console used for logging purposes
+     */
     MXAdapter(final IPreferenceStore _preferences,
               final Console _console)
     {
@@ -153,9 +159,9 @@ public class MXAdapter
             connect = true;
             this.console.logInfo(Messages.getString("MXAdapter.AlreadyConnected")); //$NON-NLS-1$
         } else  {
-            final String host =  this.preferences.getString(PREF_URL);
-            final String user =  this.preferences.getString(PREF_NAME);
-            final String passwd =  this.preferences.getString(PREF_PASSWORD);
+            final String host =  this.preferences.getString(MXAdapter.PREF_URL);
+            final String user =  this.preferences.getString(MXAdapter.PREF_NAME);
+            final String passwd =  this.preferences.getString(MXAdapter.PREF_PASSWORD);
 
             try {
                 this.mxContext = new Context(host);
@@ -167,7 +173,7 @@ public class MXAdapter
 
                 // read properties
                 final String newProps = this.execute("exec prog org.mxupdate.plugin.GetProperties"); //$NON-NLS-1$
-                final String curProps = this.preferences.getString(PREF_PROPERTIES);
+                final String curProps = this.preferences.getString(MXAdapter.PREF_PROPERTIES);
                 if (!newProps.equals(curProps))  {
                     this.preferences.setValue(MXAdapter.PREF_PROPERTIES, newProps);
                     this.console.logInfo(Messages.getString("MXAdapter.PluginPropertiesChanged")); //$NON-NLS-1$
@@ -305,11 +311,11 @@ public class MXAdapter
                     this.console.logError(Messages.getString("MXAdapter.ExceptionConvertFileContent", //$NON-NLS-1$
                                                              file.getLocation().toString()),
                                           e);
-                } catch (CoreException e) {
+                } catch (final CoreException e) {
                     this.console.logError(Messages.getString("MXAdapter.ExceptionFileCharSet", //$NON-NLS-1$
                                                              file.getLocation().toString()),
                                           e);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     this.console.logError(Messages.getString("MXAdapter.ExceptionReadFileContentFailed", //$NON-NLS-1$
                                                              file.getLocation().toString()),
                                           e);
@@ -320,7 +326,7 @@ public class MXAdapter
                                                     "updateByContent",
                                                     files,
                                                     _compile));
-            } catch (Exception e)  {
+            } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed",  //$NON-NLS-1$
                                                          files.keySet().toString()),
                                       e);
@@ -336,7 +342,7 @@ public class MXAdapter
                                                     "updateByName",
                                                     fileNames,
                                                     _compile));
-            } catch (Exception e)  {
+            } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed", //$NON-NLS-1$
                                                          fileNames.toString()),
                                       e);
@@ -349,6 +355,8 @@ public class MXAdapter
      *
      * @param _file     name of the update file for which the TCL update code
      *                  within MX must be extracted
+     * @return configuration item update code for given <code>_file</code>
+     * @throws MatrixException if update code could not be extracted
      */
     public String extractCode(final IFile _file)
             throws MatrixException
@@ -413,7 +421,7 @@ public class MXAdapter
         int idx = 0;
         for (final Object parameter : _parameters)  {
             final ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ObjectOutputStream oos = new ObjectOutputStream(out);
+            final ObjectOutputStream oos = new ObjectOutputStream(out);
             oos.writeObject(parameter);
             oos.close();
             paramStrings[idx++] = new String(Base64.encodeBase64(out.toByteArray()));
