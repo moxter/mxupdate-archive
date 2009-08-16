@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.2" timestamp="2009-08-10T14:46:32.823">
+<pmd version="4.2.2" timestamp="2009-08-16T17:46:50.112">
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/mapping/Mapping_mxJPO.java">
 <violation beginline="31" endline="31" begincolumn="1" endcolumn="25" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.mapping" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
 Avoid unused imports such as 'matrix.db.Context'
@@ -237,5 +237,5 @@ Avoid empty catch blocks
 Avoid empty if statements
 </violation>
 </file>
-<suppressedviolation filename="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/JPO_mxJPO.java" suppressiontype="annotation" msg="Avoid unused private fields such as 'JPO_REPLACE_TEST'." usermsg=""/>
+<suppressedviolation filename="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/JPOProgram_mxJPO.java" suppressiontype="annotation" msg="Avoid unused private fields such as 'JPO_REPLACE_TEST'." usermsg=""/>
 </pmd>

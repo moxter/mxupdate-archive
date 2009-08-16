@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 519 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-08-16 17:35:42 +0200 (So, 16 Aug 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -53,7 +53,7 @@
 <a name="44" href="#44">44</a>  <em> * JPO classes, the complete MQL insert is rewritten.</em>
 <a name="45" href="#45">45</a>  <em> *</em>
 <a name="46" href="#46">46</a>  <em> * @author The MxUpdate Team</em>
-<a name="47" href="#47">47</a>  <em> * @version $Id: Insert_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
+<a name="47" href="#47">47</a>  <em> * @version $Id: Insert_mxJPO.java 519 2009-08-16 15:35:42Z tim.moxter $</em>
 <a name="48" href="#48">48</a>  <em> */</em>
 <a name="49" href="#49">49</a>  <strong>public</strong> <strong>class</strong> Insert_mxJPO
 <a name="50" href="#50">50</a>  {
@@ -63,211 +63,223 @@
 <a name="54" href="#54">54</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String PROP_FILEDATE = <span class="string">"file date"</span>;
 <a name="55" href="#55">55</a>  
 <a name="56" href="#56">56</a>      <em>/**<em>*</em></em>
-<a name="57" href="#57">57</a>  <em>     * MQL command line to list the installed MxUpdate JPOs and the depending</em>
-<a name="58" href="#58">58</a>  <em>     * last modified date of the installed file.</em>
-<a name="59" href="#59">59</a>  <em>     *</em>
-<a name="60" href="#60">60</a>  <em>     * @see #evaluteInstalledJPOs(Context)</em>
-<a name="61" href="#61">61</a>  <em>     */</em>
-<a name="62" href="#62">62</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String CMD_LISTJPOS
-<a name="63" href="#63">63</a>              = <span class="string">"list prog \&quot;MxUpdate,org.mxupdate.*,net.sourceforge.mxupdate.*\&quot; "</span>
-<a name="64" href="#64">64</a>                      + <span class="string">"select name isjavaprogram property["</span> + Insert_mxJPO.PROP_FILEDATE + <span class="string">"].value "</span>
-<a name="65" href="#65">65</a>                      + <span class="string">"dump \&quot;\t\&quot;"</span>;
-<a name="66" href="#66">66</a>  
-<a name="67" href="#67">67</a>      <em>/**<em>*</em></em>
-<a name="68" href="#68">68</a>  <em>     * Defines the date / time format used for the MxUpdate JPOs.</em>
-<a name="69" href="#69">69</a>  <em>     */</em>
-<a name="70" href="#70">70</a>      <strong>static</strong> <strong>final</strong> SimpleDateFormat DATE_FORMAT = <strong>new</strong> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);
-<a name="71" href="#71">71</a>      <strong>static</strong>  {
-<a name="72" href="#72">72</a>          Insert_mxJPO.DATE_FORMAT.setTimeZone(TimeZone.getTimeZone(<span class="string">"GMT+00"</span>));
-<a name="73" href="#73">73</a>      }
-<a name="74" href="#74">74</a>  
-<a name="75" href="#75">75</a>      <em>/**<em>*</em></em>
-<a name="76" href="#76">76</a>  <em>     * Defines the date format used for the installation date.</em>
-<a name="77" href="#77">77</a>  <em>     */</em>
-<a name="78" href="#78">78</a>      <strong>static</strong> <strong>final</strong> SimpleDateFormat DATE_INSTALLED = <strong>new</strong> SimpleDateFormat(<span class="string">"MM-dd-yyyy"</span>);
-<a name="79" href="#79">79</a>      <strong>static</strong>  {
-<a name="80" href="#80">80</a>          Insert_mxJPO.DATE_INSTALLED.setTimeZone(TimeZone.getTimeZone(<span class="string">"GMT+00"</span>));
-<a name="81" href="#81">81</a>      }
-<a name="82" href="#82">82</a>  
-<a name="83" href="#83">83</a>      <em>/**<em>*</em></em>
-<a name="84" href="#84">84</a>  <em>     *</em>
-<a name="85" href="#85">85</a>  <em>     * @param _context  context for this request</em>
-<a name="86" href="#86">86</a>  <em>     * @param _args     arguements from the MX console including as first</em>
-<a name="87" href="#87">87</a>  <em>     *                  parameter the root path and as second parameter the</em>
-<a name="88" href="#88">88</a>  <em>     *                  MxUpdate version</em>
-<a name="89" href="#89">89</a>  <em>     * @throws Exception if installation of the MxUpdate JPOs failed</em>
-<a name="90" href="#90">90</a>  <em>     */</em>
-<a name="91" href="#91">91</a>      <strong>public</strong> <strong>void</strong> mxMain(<strong>final</strong> Context _context,
-<a name="92" href="#92">92</a>                         <strong>final</strong> String[] _args)
-<a name="93" href="#93">93</a>              throws Exception
-<a name="94" href="#94">94</a>      {
-<a name="95" href="#95">95</a>          <strong>final</strong> File rootPath = <strong>new</strong> File(_args[0]);
-<a name="96" href="#96">96</a>          <strong>final</strong> String version = _args[1];
-<a name="97" href="#97">97</a>  
-<a name="98" href="#98">98</a>          <em class="comment">// get installed JPOs</em>
-<a name="99" href="#99">99</a>          <strong>final</strong> Map&lt;String,Date> installedProgs = <strong>this</strong>.evaluteInstalledJPOs(_context);
-<a name="100" href="#100">100</a> 
-<a name="101" href="#101">101</a>         <strong>final</strong> org.mxupdate.util.JPOHandler_mxJPO jpoHandler
-<a name="102" href="#102">102</a>                 = <strong>new</strong> org.mxupdate.util.JPOHandler_mxJPO(rootPath);
-<a name="103" href="#103">103</a> 
-<a name="104" href="#104">104</a>         <em class="comment">// delete obsolete JPOs</em>
-<a name="105" href="#105">105</a>         <strong>final</strong> Set&lt;String> newJPOs = jpoHandler.getJpoNames();
-<a name="106" href="#106">106</a>         <strong>for</strong> (<strong>final</strong> String progName : installedProgs.keySet())  {
-<a name="107" href="#107">107</a>             <strong>if</strong> (!newJPOs.contains(progName))  {
-<a name="108" href="#108">108</a> System.out.println(<span class="string">"delete jpo '"</span> + progName + <span class="string">"'"</span>);
-<a name="109" href="#109">109</a>                 <strong>this</strong>.execMql(_context,
-<a name="110" href="#110">110</a>                         <strong>new</strong> StringBuilder()
-<a name="111" href="#111">111</a>                                 .append(<span class="string">"delete program \&quot;"</span>).append(<strong>this</strong>.convertMql(progName)).append('\&quot;'));
-<a name="112" href="#112">112</a>             }
-<a name="113" href="#113">113</a>         }
-<a name="114" href="#114">114</a> 
-<a name="115" href="#115">115</a>         <em class="comment">// create new / update JPOs</em>
-<a name="116" href="#116">116</a>         <strong>for</strong> (<strong>final</strong> ClassFile classFile : jpoHandler.getClassFiles())  {
-<a name="117" href="#117">117</a>             <em class="comment">// install all JPOs from current package</em>
-<a name="118" href="#118">118</a>             <strong>if</strong> (!installedProgs.containsKey(classFile.getJpoName()))  {
-<a name="119" href="#119">119</a> System.out.println(<span class="string">"install jpo '"</span> + classFile.getJpoName() + <span class="string">"'"</span>);
-<a name="120" href="#120">120</a>                 <strong>this</strong>.update(_context, classFile, version);
-<a name="121" href="#121">121</a>             } <strong>else</strong>  {
-<a name="122" href="#122">122</a>                 <strong>final</strong> Date mxDate = installedProgs.get(classFile.getJpoName());
-<a name="123" href="#123">123</a>                 <strong>if</strong> ((mxDate == <strong>null</strong>) || !mxDate.equals(classFile.getLastMod<strong>if</strong>ied()))  {
-<a name="124" href="#124">124</a> System.out.println(<span class="string">"update jpo '"</span> + classFile.getJpoName() + <span class="string">"'"</span>);
-<a name="125" href="#125">125</a>                     <strong>this</strong>.update(_context, classFile, version);
-<a name="126" href="#126">126</a>                 }
-<a name="127" href="#127">127</a>             }
-<a name="128" href="#128">128</a>         }
-<a name="129" href="#129">129</a>     }
-<a name="130" href="#130">130</a> 
-<a name="131" href="#131">131</a>     <em>/**<em>*</em></em>
-<a name="132" href="#132">132</a> <em>     * Searches for the installed JPOs and returns them including the</em>
-<a name="133" href="#133">133</a> <em>     * information about the last modified date of the installed file. If a</em>
-<a name="134" href="#134">134</a> <em>     * program is found which is not a JPO and does not have the extension</em>
-<a name="135" href="#135">135</a> <em>     * &lt;code>.properties&lt;/code>, an information is printed that the program is</em>
-<a name="136" href="#136">136</a> <em>     * ignored.</em>
-<a name="137" href="#137">137</a> <em>     *</em>
-<a name="138" href="#138">138</a> <em>     * @param _context  context for this request</em>
-<a name="139" href="#139">139</a> <em>     * @return map of already installed JPOs and the last modified date of the</em>
-<a name="140" href="#140">140</a> <em>     *         installed file</em>
-<a name="141" href="#141">141</a> <em>     * @throws MatrixException if the installed JPOs could not be evaluated</em>
-<a name="142" href="#142">142</a> <em>     * @see #CMD_LISTJPOS</em>
-<a name="143" href="#143">143</a> <em>     */</em>
-<a name="144" href="#144">144</a>     <strong>protected</strong> Map&lt;String,Date> evaluteInstalledJPOs(<strong>final</strong> Context _context)
-<a name="145" href="#145">145</a>             throws MatrixException
-<a name="146" href="#146">146</a>     {
-<a name="147" href="#147">147</a>         <strong>final</strong> String jpos = <strong>this</strong>.execMql(_context, Insert_mxJPO.CMD_LISTJPOS);
-<a name="148" href="#148">148</a>         <strong>final</strong> Map&lt;String,Date> installedProgs = <strong>new</strong> TreeMap&lt;String,Date>();
-<a name="149" href="#149">149</a>         <strong>for</strong> (<strong>final</strong> String oneJPO : jpos.split(<span class="string">"\n"</span>))  {
-<a name="150" href="#150">150</a>             <strong>final</strong> String[] oneJPOArr = oneJPO.split(<span class="string">"\t"</span>);
-<a name="151" href="#151">151</a>             <strong>final</strong> String name = oneJPOArr[0];
-<a name="152" href="#152">152</a>             <strong>final</strong> String isJava = (oneJPOArr.length > 1) ? oneJPOArr[1].trim() : <span class="string">""</span>;
-<a name="153" href="#153">153</a>             <strong>final</strong> String modDate = (oneJPOArr.length > 2) ? oneJPOArr[2] : <span class="string">""</span>;
-<a name="154" href="#154">154</a>             <strong>if</strong> (<span class="string">"TRUE"</span>.equalsIgnoreCase(isJava))  {
-<a name="155" href="#155">155</a>                 Date mxDate;
-<a name="156" href="#156">156</a>                 <strong>try</strong>  {
-<a name="157" href="#157">157</a>                     mxDate = Insert_mxJPO.DATE_FORMAT.parse(modDate);
-<a name="158" href="#158">158</a>                 } <strong>catch</strong> (<strong>final</strong> ParseException e)  {
-<a name="159" href="#159">159</a>                     mxDate = <strong>null</strong>;
-<a name="160" href="#160">160</a>                 }
-<a name="161" href="#161">161</a>                 installedProgs.put(name, mxDate);
-<a name="162" href="#162">162</a>             } <strong>else</strong> <strong>if</strong> (!name.endsWith(<span class="string">".properties"</span>)) {
-<a name="163" href="#163">163</a> System.out.println(<span class="string">"program '"</span> + name + <span class="string">"' is ignored because not a JPO"</span>);
-<a name="164" href="#164">164</a>             }
-<a name="165" href="#165">165</a>         }
-<a name="166" href="#166">166</a>         <strong>return</strong> installedProgs;
-<a name="167" href="#167">167</a>     }
-<a name="168" href="#168">168</a> 
-<a name="169" href="#169">169</a>     <em>/**<em>*</em></em>
-<a name="170" href="#170">170</a> <em>     * Because there is a different behavior for backslashes between MX</em>
-<a name="171" href="#171">171</a> <em>     * versions, the JPO program must be included. So the source code is</em>
-<a name="172" href="#172">172</a> <em>     * only updated so that the source code includes for all used classes</em>
-<a name="173" href="#173">173</a> <em>     * the depending package names.</em>
-<a name="174" href="#174">174</a> <em>     *</em>
-<a name="175" href="#175">175</a> <em>     * @param _context      context for this request</em>
-<a name="176" href="#176">176</a> <em>     * @param _classFile    class file instance (represents the JPO which must</em>
-<a name="177" href="#177">177</a> <em>     *                      be updates)</em>
-<a name="178" href="#178">178</a> <em>     * @param _version      application version</em>
-<a name="179" href="#179">179</a> <em>     * @throws IOException if the JPO file could not be read</em>
-<a name="180" href="#180">180</a> <em>     * @throws MatrixException if the JPO could not updated</em>
-<a name="181" href="#181">181</a> <em>     * @see #getCode(Map)</em>
-<a name="182" href="#182">182</a> <em>     */</em>
-<a name="183" href="#183">183</a>     <strong>public</strong> <strong>void</strong> update(<strong>final</strong> Context _context,
-<a name="184" href="#184">184</a>                        <strong>final</strong> ClassFile _classFile,
-<a name="185" href="#185">185</a>                        <strong>final</strong> String _version)
-<a name="186" href="#186">186</a>             throws IOException, MatrixException
-<a name="187" href="#187">187</a>     {
-<a name="188" href="#188">188</a>         <strong>final</strong> CharSequence code = _classFile.getCode();
-<a name="189" href="#189">189</a> 
-<a name="190" href="#190">190</a>         <strong>final</strong> File tmpInqFile = File.createTempFile(_classFile.getJpoFileName(), <span class="string">""</span>);
-<a name="191" href="#191">191</a>         <strong>try</strong>  {
-<a name="192" href="#192">192</a>             tmpInqFile.delete();
-<a name="193" href="#193">193</a>             tmpInqFile.mkdir();
-<a name="194" href="#194">194</a> 
-<a name="195" href="#195">195</a>             <strong>final</strong> File file = <strong>new</strong> File(tmpInqFile, _classFile.getJpoFileName());
+<a name="57" href="#57">57</a>  <em>     * Name of the JPO property holding the information if a MxUpdate JPO is</em>
+<a name="58" href="#58">58</a>  <em>     * already compiled. The value &lt;i>false&lt;/i> means that a complete compile</em>
+<a name="59" href="#59">59</a>  <em>     * with force update must be done.</em>
+<a name="60" href="#60">60</a>  <em>     */</em>
+<a name="61" href="#61">61</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String PROP_COMPILED = <span class="string">"compiled"</span>;
+<a name="62" href="#62">62</a>  
+<a name="63" href="#63">63</a>      <em>/**<em>*</em></em>
+<a name="64" href="#64">64</a>  <em>     * MQL command line to list the installed MxUpdate JPOs and the depending</em>
+<a name="65" href="#65">65</a>  <em>     * last modified date of the installed file.</em>
+<a name="66" href="#66">66</a>  <em>     *</em>
+<a name="67" href="#67">67</a>  <em>     * @see #evaluteInstalledJPOs(Context)</em>
+<a name="68" href="#68">68</a>  <em>     */</em>
+<a name="69" href="#69">69</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String CMD_LISTJPOS
+<a name="70" href="#70">70</a>              = <span class="string">"list prog \&quot;MxUpdate,org.mxupdate.*,net.sourceforge.mxupdate.*\&quot; "</span>
+<a name="71" href="#71">71</a>                      + <span class="string">"select name isjavaprogram property["</span> + Insert_mxJPO.PROP_FILEDATE + <span class="string">"].value "</span>
+<a name="72" href="#72">72</a>                      + <span class="string">"dump \&quot;\t\&quot;"</span>;
+<a name="73" href="#73">73</a>  
+<a name="74" href="#74">74</a>      <em>/**<em>*</em></em>
+<a name="75" href="#75">75</a>  <em>     * Defines the date / time format used for the MxUpdate JPOs.</em>
+<a name="76" href="#76">76</a>  <em>     */</em>
+<a name="77" href="#77">77</a>      <strong>static</strong> <strong>final</strong> SimpleDateFormat DATE_FORMAT = <strong>new</strong> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>);
+<a name="78" href="#78">78</a>      <strong>static</strong>  {
+<a name="79" href="#79">79</a>          Insert_mxJPO.DATE_FORMAT.setTimeZone(TimeZone.getTimeZone(<span class="string">"GMT+00"</span>));
+<a name="80" href="#80">80</a>      }
+<a name="81" href="#81">81</a>  
+<a name="82" href="#82">82</a>      <em>/**<em>*</em></em>
+<a name="83" href="#83">83</a>  <em>     * Defines the date format used for the installation date.</em>
+<a name="84" href="#84">84</a>  <em>     */</em>
+<a name="85" href="#85">85</a>      <strong>static</strong> <strong>final</strong> SimpleDateFormat DATE_INSTALLED = <strong>new</strong> SimpleDateFormat(<span class="string">"MM-dd-yyyy"</span>);
+<a name="86" href="#86">86</a>      <strong>static</strong>  {
+<a name="87" href="#87">87</a>          Insert_mxJPO.DATE_INSTALLED.setTimeZone(TimeZone.getTimeZone(<span class="string">"GMT+00"</span>));
+<a name="88" href="#88">88</a>      }
+<a name="89" href="#89">89</a>  
+<a name="90" href="#90">90</a>      <em>/**<em>*</em></em>
+<a name="91" href="#91">91</a>  <em>     *</em>
+<a name="92" href="#92">92</a>  <em>     * @param _context  context for this request</em>
+<a name="93" href="#93">93</a>  <em>     * @param _args     arguements from the MX console including as first</em>
+<a name="94" href="#94">94</a>  <em>     *                  parameter the root path and as second parameter the</em>
+<a name="95" href="#95">95</a>  <em>     *                  MxUpdate version</em>
+<a name="96" href="#96">96</a>  <em>     * @throws Exception if installation of the MxUpdate JPOs failed</em>
+<a name="97" href="#97">97</a>  <em>     */</em>
+<a name="98" href="#98">98</a>      <strong>public</strong> <strong>void</strong> mxMain(<strong>final</strong> Context _context,
+<a name="99" href="#99">99</a>                         <strong>final</strong> String[] _args)
+<a name="100" href="#100">100</a>             throws Exception
+<a name="101" href="#101">101</a>     {
+<a name="102" href="#102">102</a>         <strong>final</strong> File rootPath = <strong>new</strong> File(_args[0]);
+<a name="103" href="#103">103</a>         <strong>final</strong> String version = _args[1];
+<a name="104" href="#104">104</a> 
+<a name="105" href="#105">105</a>         <em class="comment">// get installed JPOs</em>
+<a name="106" href="#106">106</a>         <strong>final</strong> Map&lt;String,Date> installedProgs = <strong>this</strong>.evaluteInstalledJPOs(_context);
+<a name="107" href="#107">107</a> 
+<a name="108" href="#108">108</a>         <strong>final</strong> org.mxupdate.util.JPOHandler_mxJPO jpoHandler
+<a name="109" href="#109">109</a>                 = <strong>new</strong> org.mxupdate.util.JPOHandler_mxJPO(rootPath);
+<a name="110" href="#110">110</a> 
+<a name="111" href="#111">111</a>         <em class="comment">// delete obsolete JPOs</em>
+<a name="112" href="#112">112</a>         <strong>final</strong> Set&lt;String> newJPOs = jpoHandler.getJpoNames();
+<a name="113" href="#113">113</a>         <strong>for</strong> (<strong>final</strong> String progName : installedProgs.keySet())  {
+<a name="114" href="#114">114</a>             <strong>if</strong> (!newJPOs.contains(progName))  {
+<a name="115" href="#115">115</a> System.out.println(<span class="string">"delete jpo '"</span> + progName + <span class="string">"'"</span>);
+<a name="116" href="#116">116</a>                 <strong>this</strong>.execMql(_context,
+<a name="117" href="#117">117</a>                         <strong>new</strong> StringBuilder()
+<a name="118" href="#118">118</a>                                 .append(<span class="string">"delete program \&quot;"</span>).append(<strong>this</strong>.convertMql(progName)).append('\&quot;'));
+<a name="119" href="#119">119</a>             }
+<a name="120" href="#120">120</a>         }
+<a name="121" href="#121">121</a> 
+<a name="122" href="#122">122</a>         <em class="comment">// create new / update JPOs</em>
+<a name="123" href="#123">123</a>         <strong>for</strong> (<strong>final</strong> ClassFile classFile : jpoHandler.getClassFiles())  {
+<a name="124" href="#124">124</a>             <em class="comment">// install all JPOs from current package</em>
+<a name="125" href="#125">125</a>             <strong>if</strong> (!installedProgs.containsKey(classFile.getJpoName()))  {
+<a name="126" href="#126">126</a> System.out.println(<span class="string">"install jpo '"</span> + classFile.getJpoName() + <span class="string">"'"</span>);
+<a name="127" href="#127">127</a>                 <strong>this</strong>.update(_context, classFile, version);
+<a name="128" href="#128">128</a>             } <strong>else</strong>  {
+<a name="129" href="#129">129</a>                 <strong>final</strong> Date mxDate = installedProgs.get(classFile.getJpoName());
+<a name="130" href="#130">130</a>                 <strong>if</strong> ((mxDate == <strong>null</strong>) || !mxDate.equals(classFile.getLastMod<strong>if</strong>ied()))  {
+<a name="131" href="#131">131</a> System.out.println(<span class="string">"update jpo '"</span> + classFile.getJpoName() + <span class="string">"'"</span>);
+<a name="132" href="#132">132</a>                     <strong>this</strong>.update(_context, classFile, version);
+<a name="133" href="#133">133</a>                 }
+<a name="134" href="#134">134</a>             }
+<a name="135" href="#135">135</a>         }
+<a name="136" href="#136">136</a>     }
+<a name="137" href="#137">137</a> 
+<a name="138" href="#138">138</a>     <em>/**<em>*</em></em>
+<a name="139" href="#139">139</a> <em>     * Searches for the installed JPOs and returns them including the</em>
+<a name="140" href="#140">140</a> <em>     * information about the last modified date of the installed file. If a</em>
+<a name="141" href="#141">141</a> <em>     * program is found which is not a JPO and does not have the extension</em>
+<a name="142" href="#142">142</a> <em>     * &lt;code>.properties&lt;/code>, an information is printed that the program is</em>
+<a name="143" href="#143">143</a> <em>     * ignored.</em>
+<a name="144" href="#144">144</a> <em>     *</em>
+<a name="145" href="#145">145</a> <em>     * @param _context  context for this request</em>
+<a name="146" href="#146">146</a> <em>     * @return map of already installed JPOs and the last modified date of the</em>
+<a name="147" href="#147">147</a> <em>     *         installed file</em>
+<a name="148" href="#148">148</a> <em>     * @throws MatrixException if the installed JPOs could not be evaluated</em>
+<a name="149" href="#149">149</a> <em>     * @see #CMD_LISTJPOS</em>
+<a name="150" href="#150">150</a> <em>     */</em>
+<a name="151" href="#151">151</a>     <strong>protected</strong> Map&lt;String,Date> evaluteInstalledJPOs(<strong>final</strong> Context _context)
+<a name="152" href="#152">152</a>             throws MatrixException
+<a name="153" href="#153">153</a>     {
+<a name="154" href="#154">154</a>         <strong>final</strong> String jpos = <strong>this</strong>.execMql(_context, Insert_mxJPO.CMD_LISTJPOS);
+<a name="155" href="#155">155</a>         <strong>final</strong> Map&lt;String,Date> installedProgs = <strong>new</strong> TreeMap&lt;String,Date>();
+<a name="156" href="#156">156</a>         <strong>for</strong> (<strong>final</strong> String oneJPO : jpos.split(<span class="string">"\n"</span>))  {
+<a name="157" href="#157">157</a>             <strong>final</strong> String[] oneJPOArr = oneJPO.split(<span class="string">"\t"</span>);
+<a name="158" href="#158">158</a>             <strong>final</strong> String name = oneJPOArr[0];
+<a name="159" href="#159">159</a>             <strong>final</strong> String isJava = (oneJPOArr.length > 1) ? oneJPOArr[1].trim() : <span class="string">""</span>;
+<a name="160" href="#160">160</a>             <strong>final</strong> String modDate = (oneJPOArr.length > 2) ? oneJPOArr[2] : <span class="string">""</span>;
+<a name="161" href="#161">161</a>             <strong>if</strong> (<span class="string">"TRUE"</span>.equalsIgnoreCase(isJava))  {
+<a name="162" href="#162">162</a>                 Date mxDate;
+<a name="163" href="#163">163</a>                 <strong>try</strong>  {
+<a name="164" href="#164">164</a>                     mxDate = Insert_mxJPO.DATE_FORMAT.parse(modDate);
+<a name="165" href="#165">165</a>                 } <strong>catch</strong> (<strong>final</strong> ParseException e)  {
+<a name="166" href="#166">166</a>                     mxDate = <strong>null</strong>;
+<a name="167" href="#167">167</a>                 }
+<a name="168" href="#168">168</a>                 installedProgs.put(name, mxDate);
+<a name="169" href="#169">169</a>             } <strong>else</strong> <strong>if</strong> (!name.endsWith(<span class="string">".properties"</span>)) {
+<a name="170" href="#170">170</a> System.out.println(<span class="string">"program '"</span> + name + <span class="string">"' is ignored because not a JPO"</span>);
+<a name="171" href="#171">171</a>             }
+<a name="172" href="#172">172</a>         }
+<a name="173" href="#173">173</a>         <strong>return</strong> installedProgs;
+<a name="174" href="#174">174</a>     }
+<a name="175" href="#175">175</a> 
+<a name="176" href="#176">176</a>     <em>/**<em>*</em></em>
+<a name="177" href="#177">177</a> <em>     * Because there is a different behavior for backslashes between MX</em>
+<a name="178" href="#178">178</a> <em>     * versions, the JPO program must be included. So the source code is</em>
+<a name="179" href="#179">179</a> <em>     * only updated so that the source code includes for all used classes</em>
+<a name="180" href="#180">180</a> <em>     * the depending package names.</em>
+<a name="181" href="#181">181</a> <em>     *</em>
+<a name="182" href="#182">182</a> <em>     * @param _context      context for this request</em>
+<a name="183" href="#183">183</a> <em>     * @param _classFile    class file instance (represents the JPO which must</em>
+<a name="184" href="#184">184</a> <em>     *                      be updates)</em>
+<a name="185" href="#185">185</a> <em>     * @param _version      application version</em>
+<a name="186" href="#186">186</a> <em>     * @throws IOException if the JPO file could not be read</em>
+<a name="187" href="#187">187</a> <em>     * @throws MatrixException if the JPO could not updated</em>
+<a name="188" href="#188">188</a> <em>     * @see #getCode(Map)</em>
+<a name="189" href="#189">189</a> <em>     */</em>
+<a name="190" href="#190">190</a>     <strong>public</strong> <strong>void</strong> update(<strong>final</strong> Context _context,
+<a name="191" href="#191">191</a>                        <strong>final</strong> ClassFile _classFile,
+<a name="192" href="#192">192</a>                        <strong>final</strong> String _version)
+<a name="193" href="#193">193</a>             throws IOException, MatrixException
+<a name="194" href="#194">194</a>     {
+<a name="195" href="#195">195</a>         <strong>final</strong> CharSequence code = _classFile.getCode();
 <a name="196" href="#196">196</a> 
-<a name="197" href="#197">197</a>             <strong>try</strong>  {
-<a name="198" href="#198">198</a>                 <strong>final</strong> Writer outTCL = <strong>new</strong> FileWriter(file);
-<a name="199" href="#199">199</a>                 outTCL.append(code.toString().trim());
-<a name="200" href="#200">200</a>                 outTCL.flush();
-<a name="201" href="#201">201</a>                 outTCL.close();
-<a name="202" href="#202">202</a> 
-<a name="203" href="#203">203</a>                 <strong>this</strong>.execMql(_context,
-<a name="204" href="#204">204</a>                         <strong>new</strong> StringBuilder()
-<a name="205" href="#205">205</a>                             .append(<span class="string">"escape insert program \&quot;"</span>)
-<a name="206" href="#206">206</a>                                             .append(<strong>this</strong>.convertMql(file.toString().replaceAll(<span class="string">"&#47;&#47;&#47;&#47;"</span>, <span class="string">"/"</span>)))
-<a name="207" href="#207">207</a>                                             .append(<span class="string">"\&quot;;"</span>)
-<a name="208" href="#208">208</a>                             .append(<span class="string">"escape mod program \&quot;"</span>)
-<a name="209" href="#209">209</a>                                             .append(<strong>this</strong>.convertMql(_classFile.getJpoName())).append('\&quot;')
-<a name="210" href="#210">210</a>                                     .append(<span class="string">" add property \&quot;"</span>)
-<a name="211" href="#211">211</a>                                             .append(<strong>this</strong>.convertMql(Insert_mxJPO.PROP_FILEDATE)).append(<span class="string">"\&quot; value \&quot;"</span>)
-<a name="212" href="#212">212</a>                                             .append(<strong>this</strong>.convertMql(Insert_mxJPO.DATE_FORMAT
-<a name="213" href="#213">213</a>                                                     .format(_classFile.getLastModified())))
-<a name="214" href="#214">214</a>                                             .append('\&quot;'));
-<a name="215" href="#215">215</a>             } <strong>finally</strong>  {
-<a name="216" href="#216">216</a>                 file.delete();
-<a name="217" href="#217">217</a>             }
-<a name="218" href="#218">218</a>         } <strong>finally</strong>  {
-<a name="219" href="#219">219</a>             tmpInqFile.delete();
-<a name="220" href="#220">220</a>         }
-<a name="221" href="#221">221</a>     }
-<a name="222" href="#222">222</a> 
-<a name="223" href="#223">223</a>     <em>/**<em>*</em></em>
-<a name="224" href="#224">224</a> <em>     * Executes given MQL command and returns the trimmed result of the MQL</em>
-<a name="225" href="#225">225</a> <em>     * execution.</em>
-<a name="226" href="#226">226</a> <em>     *</em>
-<a name="227" href="#227">227</a> <em>     * @param _context              MX context for this request</em>
-<a name="228" href="#228">228</a> <em>     * @param _cmd                  MQL command to execute</em>
-<a name="229" href="#229">229</a> <em>     * @return trimmed result of the MQL execution</em>
-<a name="230" href="#230">230</a> <em>     * @throws MatrixException if MQL execution failed; includes the MQL</em>
-<a name="231" href="#231">231</a> <em>     *                         command if &lt;code>_includeMQLCommand&lt;/code> is</em>
-<a name="232" href="#232">232</a> <em>     *                         set to &lt;i>true&lt;/i></em>
-<a name="233" href="#233">233</a> <em>     */</em>
-<a name="234" href="#234">234</a>     <strong>protected</strong> String execMql(<strong>final</strong> Context _context,
-<a name="235" href="#235">235</a>                              <strong>final</strong> CharSequence _cmd)
-<a name="236" href="#236">236</a>             throws MatrixException
-<a name="237" href="#237">237</a>     {
-<a name="238" href="#238">238</a>         <strong>final</strong> MQLCommand mql = <strong>new</strong> MQLCommand();
-<a name="239" href="#239">239</a>         mql.executeCommand(_context, _cmd.toString());
-<a name="240" href="#240">240</a>         <strong>if</strong> ((mql.getError() != <strong>null</strong>) &amp;&amp; !<span class="string">""</span>.equals(mql.getError()))  {
-<a name="241" href="#241">241</a>             <strong>throw</strong> <strong>new</strong> MatrixException(mql.getError()
-<a name="242" href="#242">242</a>                     + <span class="string">"\nMQL command was:\n"</span> + _cmd);
-<a name="243" href="#243">243</a>         }
-<a name="244" href="#244">244</a>         <strong>return</strong> mql.getResult().trim();
-<a name="245" href="#245">245</a>     }
-<a name="246" href="#246">246</a> 
-<a name="247" href="#247">247</a>     <em>/**<em>*</em></em>
-<a name="248" href="#248">248</a> <em>     * Converts given string by escaping the &amp;quot; so that in escape mode on</em>
-<a name="249" href="#249">249</a> <em>     * string could be handled with &amp;quot; and '.</em>
-<a name="250" href="#250">250</a> <em>     *</em>
-<a name="251" href="#251">251</a> <em>     * @param _text     character stream to convert</em>
-<a name="252" href="#252">252</a> <em>     * @return converted string</em>
-<a name="253" href="#253">253</a> <em>     */</em>
-<a name="254" href="#254">254</a>     <strong>public</strong> String convertMql(<strong>final</strong> CharSequence _text)
-<a name="255" href="#255">255</a>     {
-<a name="256" href="#256">256</a>         <strong>return</strong> (_text != <strong>null</strong>)
-<a name="257" href="#257">257</a>                ? _text.toString().replaceAll(<span class="string">"&#47;&#47;&#47;&#47;"</span>, <span class="string">"&#47;&#47;&#47;&#47;&#47;&#47;&#47;&#47;"</span>)
-<a name="258" href="#258">258</a>                                  .replaceAll(<span class="string">"&#47;&#47;\&quot;"</span>, <span class="string">"&#47;&#47;&#47;&#47;\&quot;"</span>)
-<a name="259" href="#259">259</a>                : <span class="string">""</span>;
-<a name="260" href="#260">260</a>     }
-<a name="261" href="#261">261</a> }
+<a name="197" href="#197">197</a>         <strong>final</strong> File tmpInqFile = File.createTempFile(_classFile.getJpoFileName(), <span class="string">""</span>);
+<a name="198" href="#198">198</a>         <strong>try</strong>  {
+<a name="199" href="#199">199</a>             tmpInqFile.delete();
+<a name="200" href="#200">200</a>             tmpInqFile.mkdir();
+<a name="201" href="#201">201</a> 
+<a name="202" href="#202">202</a>             <strong>final</strong> File file = <strong>new</strong> File(tmpInqFile, _classFile.getJpoFileName());
+<a name="203" href="#203">203</a> 
+<a name="204" href="#204">204</a>             <strong>try</strong>  {
+<a name="205" href="#205">205</a>                 <strong>final</strong> Writer outTCL = <strong>new</strong> FileWriter(file);
+<a name="206" href="#206">206</a>                 outTCL.append(code.toString().trim());
+<a name="207" href="#207">207</a>                 outTCL.flush();
+<a name="208" href="#208">208</a>                 outTCL.close();
+<a name="209" href="#209">209</a> 
+<a name="210" href="#210">210</a>                 <strong>this</strong>.execMql(_context,
+<a name="211" href="#211">211</a>                         <strong>new</strong> StringBuilder()
+<a name="212" href="#212">212</a>                             .append(<span class="string">"escape insert program \&quot;"</span>)
+<a name="213" href="#213">213</a>                                             .append(<strong>this</strong>.convertMql(file.toString().replaceAll(<span class="string">"&#47;&#47;&#47;&#47;"</span>, <span class="string">"/"</span>)))
+<a name="214" href="#214">214</a>                                             .append(<span class="string">"\&quot;;"</span>)
+<a name="215" href="#215">215</a>                             .append(<span class="string">"escape mod program \&quot;"</span>)
+<a name="216" href="#216">216</a>                                             .append(<strong>this</strong>.convertMql(_classFile.getJpoName())).append('\&quot;')
+<a name="217" href="#217">217</a>                                     .append(<span class="string">" add property \&quot;"</span>)
+<a name="218" href="#218">218</a>                                             .append(<strong>this</strong>.convertMql(Insert_mxJPO.PROP_COMPILED))
+<a name="219" href="#219">219</a>                                             .append(<span class="string">"\&quot; value \&quot;false\&quot;;"</span>)
+<a name="220" href="#220">220</a>                             .append(<span class="string">"escape mod program \&quot;"</span>)
+<a name="221" href="#221">221</a>                                             .append(<strong>this</strong>.convertMql(_classFile.getJpoName())).append('\&quot;')
+<a name="222" href="#222">222</a>                                     .append(<span class="string">" add property \&quot;"</span>)
+<a name="223" href="#223">223</a>                                             .append(<strong>this</strong>.convertMql(Insert_mxJPO.PROP_FILEDATE)).append(<span class="string">"\&quot; value \&quot;"</span>)
+<a name="224" href="#224">224</a>                                             .append(<strong>this</strong>.convertMql(Insert_mxJPO.DATE_FORMAT
+<a name="225" href="#225">225</a>                                                     .format(_classFile.getLastModified())))
+<a name="226" href="#226">226</a>                                             .append('\&quot;'));
+<a name="227" href="#227">227</a>             } <strong>finally</strong>  {
+<a name="228" href="#228">228</a>                 file.delete();
+<a name="229" href="#229">229</a>             }
+<a name="230" href="#230">230</a>         } <strong>finally</strong>  {
+<a name="231" href="#231">231</a>             tmpInqFile.delete();
+<a name="232" href="#232">232</a>         }
+<a name="233" href="#233">233</a>     }
+<a name="234" href="#234">234</a> 
+<a name="235" href="#235">235</a>     <em>/**<em>*</em></em>
+<a name="236" href="#236">236</a> <em>     * Executes given MQL command and returns the trimmed result of the MQL</em>
+<a name="237" href="#237">237</a> <em>     * execution.</em>
+<a name="238" href="#238">238</a> <em>     *</em>
+<a name="239" href="#239">239</a> <em>     * @param _context              MX context for this request</em>
+<a name="240" href="#240">240</a> <em>     * @param _cmd                  MQL command to execute</em>
+<a name="241" href="#241">241</a> <em>     * @return trimmed result of the MQL execution</em>
+<a name="242" href="#242">242</a> <em>     * @throws MatrixException if MQL execution failed; includes the MQL</em>
+<a name="243" href="#243">243</a> <em>     *                         command if &lt;code>_includeMQLCommand&lt;/code> is</em>
+<a name="244" href="#244">244</a> <em>     *                         set to &lt;i>true&lt;/i></em>
+<a name="245" href="#245">245</a> <em>     */</em>
+<a name="246" href="#246">246</a>     <strong>protected</strong> String execMql(<strong>final</strong> Context _context,
+<a name="247" href="#247">247</a>                              <strong>final</strong> CharSequence _cmd)
+<a name="248" href="#248">248</a>             throws MatrixException
+<a name="249" href="#249">249</a>     {
+<a name="250" href="#250">250</a>         <strong>final</strong> MQLCommand mql = <strong>new</strong> MQLCommand();
+<a name="251" href="#251">251</a>         mql.executeCommand(_context, _cmd.toString());
+<a name="252" href="#252">252</a>         <strong>if</strong> ((mql.getError() != <strong>null</strong>) &amp;&amp; !<span class="string">""</span>.equals(mql.getError()))  {
+<a name="253" href="#253">253</a>             <strong>throw</strong> <strong>new</strong> MatrixException(mql.getError()
+<a name="254" href="#254">254</a>                     + <span class="string">"\nMQL command was:\n"</span> + _cmd);
+<a name="255" href="#255">255</a>         }
+<a name="256" href="#256">256</a>         <strong>return</strong> mql.getResult().trim();
+<a name="257" href="#257">257</a>     }
+<a name="258" href="#258">258</a> 
+<a name="259" href="#259">259</a>     <em>/**<em>*</em></em>
+<a name="260" href="#260">260</a> <em>     * Converts given string by escaping the &amp;quot; so that in escape mode on</em>
+<a name="261" href="#261">261</a> <em>     * string could be handled with &amp;quot; and '.</em>
+<a name="262" href="#262">262</a> <em>     *</em>
+<a name="263" href="#263">263</a> <em>     * @param _text     character stream to convert</em>
+<a name="264" href="#264">264</a> <em>     * @return converted string</em>
+<a name="265" href="#265">265</a> <em>     */</em>
+<a name="266" href="#266">266</a>     <strong>public</strong> String convertMql(<strong>final</strong> CharSequence _text)
+<a name="267" href="#267">267</a>     {
+<a name="268" href="#268">268</a>         <strong>return</strong> (_text != <strong>null</strong>)
+<a name="269" href="#269">269</a>                ? _text.toString().replaceAll(<span class="string">"&#47;&#47;&#47;&#47;"</span>, <span class="string">"&#47;&#47;&#47;&#47;&#47;&#47;&#47;&#47;"</span>)
+<a name="270" href="#270">270</a>                                  .replaceAll(<span class="string">"&#47;&#47;\&quot;"</span>, <span class="string">"&#47;&#47;&#47;&#47;\&quot;"</span>)
+<a name="271" href="#271">271</a>                : <span class="string">""</span>;
+<a name="272" href="#272">272</a>     }
+<a name="273" href="#273">273</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
