@@ -68,6 +68,11 @@ public class MXAdapter
     public static final String PREF_PASSWORD = "password"; //$NON-NLS-1$
 
     /**
+     * Key of the preference if password could be stored.
+     */
+    public static final String PREF_STORE_PASSWORD = "storePassword"; //$NON-NLS-1$
+
+    /**
      * Key of the update by file content preference.
      */
     public static final String PREF_UPDATE_FILE_CONTENT = "updateByFileContent"; //$NON-NLS-1$
@@ -159,32 +164,48 @@ public class MXAdapter
             connect = true;
             this.console.logInfo(Messages.getString("MXAdapter.AlreadyConnected")); //$NON-NLS-1$
         } else  {
+            final boolean connectAllowed;
+            final String user;
+            final String passwd;
             final String host =  this.preferences.getString(MXAdapter.PREF_URL);
-            final String user =  this.preferences.getString(MXAdapter.PREF_NAME);
-            final String passwd =  this.preferences.getString(MXAdapter.PREF_PASSWORD);
 
-            try {
-                this.mxContext = new Context(host);
-                this.mxContext.resetContext(user, passwd, null);
-                this.mxContext.connect();
-                this.connected = this.mxContext.isConnected();
-                connect = true;
-                this.console.logInfo(Messages.getString("MXAdapter.ConnectedTo", host)); //$NON-NLS-1$
-
-                // read properties
-                final String newProps = this.execute("exec prog org.mxupdate.plugin.GetProperties"); //$NON-NLS-1$
-                final String curProps = this.preferences.getString(MXAdapter.PREF_PROPERTIES);
-                if (!newProps.equals(curProps))  {
-                    this.preferences.setValue(MXAdapter.PREF_PROPERTIES, newProps);
-                    this.console.logInfo(Messages.getString("MXAdapter.PluginPropertiesChanged")); //$NON-NLS-1$
-                }
-            } catch (final MatrixException e) {
-                this.console.logError(Messages.getString("MXAdapter.ConnectFailed"), e); //$NON-NLS-1$
+            if (!this.preferences.getBoolean(MXAdapter.PREF_STORE_PASSWORD))  {
+                final MXLoginPage loginPage = new MXLoginPage(host, this.preferences.getString(MXAdapter.PREF_NAME));
+                loginPage.open();
+                connectAllowed = loginPage.isOkPressed();
+                user = loginPage.getUserName();
+                passwd = loginPage.getPassword();
+            } else  {
+                connectAllowed = true;
+                user =  this.preferences.getString(MXAdapter.PREF_NAME);
+                passwd =  this.preferences.getString(MXAdapter.PREF_PASSWORD);
             }
 
-            // check versions
-            if (this.connected)  {
-                this.checkVersions();
+            if (connectAllowed)  {
+
+                try {
+                    this.mxContext = new Context(host);
+                    this.mxContext.resetContext(user, passwd, null);
+                    this.mxContext.connect();
+                    this.connected = this.mxContext.isConnected();
+                    connect = true;
+                    this.console.logInfo(Messages.getString("MXAdapter.ConnectedTo", host)); //$NON-NLS-1$
+
+                    // read properties
+                    final String newProps = this.execute("exec prog org.mxupdate.plugin.GetProperties"); //$NON-NLS-1$
+                    final String curProps = this.preferences.getString(MXAdapter.PREF_PROPERTIES);
+                    if (!newProps.equals(curProps))  {
+                        this.preferences.setValue(MXAdapter.PREF_PROPERTIES, newProps);
+                        this.console.logInfo(Messages.getString("MXAdapter.PluginPropertiesChanged")); //$NON-NLS-1$
+                    }
+                } catch (final MatrixException e) {
+                    this.console.logError(Messages.getString("MXAdapter.ConnectFailed"), e); //$NON-NLS-1$
+                }
+
+                // check versions
+                if (this.connected)  {
+                    this.checkVersions();
+                }
             }
         }
         return connect;

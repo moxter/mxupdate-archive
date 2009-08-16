@@ -79,6 +79,11 @@ public class MXPreferencePage
                 parent));
 
         this.addField(new BooleanFieldEditor(
+                MXAdapter.PREF_STORE_PASSWORD,
+                Messages.getString("MXPreferencePage.StorePassword"), //$NON-NLS-1$
+                parent));
+
+        this.addField(new BooleanFieldEditor(
                 MXAdapter.PREF_UPDATE_FILE_CONTENT,
                 Messages.getString("MXPreferencePage.UpdateByFileContent"), //$NON-NLS-1$
                 parent));
