@@ -23,7 +23,13 @@ package org.mxupdate.eclipse;
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
@@ -36,7 +42,8 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  */
 public class MXPreferencePage
         extends FieldEditorPreferencePage
-        implements IWorkbenchPreferencePage{
+        implements IWorkbenchPreferencePage
+{
     /**
      * Initialize the layout of the preference (defined as grid) and defines
      * the preference store from the plug-in activator {@link Activator}.
@@ -66,7 +73,7 @@ public class MXPreferencePage
                 Messages.getString("MXPreferencePage.UserName"), //$NON-NLS-1$
                 parent));
 
-        this.addField(new StringFieldEditor(
+        this.addField(new PasswordFieldEditor(
                 MXAdapter.PREF_PASSWORD,
                 Messages.getString("MXPreferencePage.Password"), //$NON-NLS-1$
                 parent));
@@ -83,5 +90,66 @@ public class MXPreferencePage
      */
     public void init(final IWorkbench _workbench)
     {
+    }
+
+    /**
+     * A field editor for a password type preference. This is essentially
+     * a StringFieldEditor, but will replace each character in the input
+     * box with an '*'.
+     */
+    private static class PasswordFieldEditor
+        extends StringFieldEditor
+    {
+        /**
+         * The text field, or <code>null</code> if none.
+         */
+        private Text textField;
+
+        /**
+         * Creates a password field editor of unlimited width.
+         *
+         * @param _name         name of the preference this field editor works
+         *                      on
+         * @param _labelText    label text of the field editor
+         * @param _parent       parent of the field editor's control
+         */
+        public PasswordFieldEditor(final String _name,
+                                   final String _labelText,
+                                   final Composite _parent)
+        {
+            super(_name, _labelText, _parent);
+        }
+
+        /**
+         * Returns this field editor's text control. The control is created if
+         * it does not yet exist
+         *
+         * @param _parent       parent composite
+         * @return text control
+         */
+        @Override
+        public Text getTextControl(final Composite _parent)
+        {
+            if (this.textField == null) {
+                this.textField = new Text(_parent, SWT.PASSWORD | SWT.SINGLE | SWT.BORDER);
+                this.textField.setFont(_parent.getFont());
+                this.textField.addKeyListener(new KeyAdapter()  {
+                    @Override
+                    public void keyReleased(final KeyEvent _event)
+                    {
+                        MXPreferencePage.PasswordFieldEditor.this.valueChanged();
+                    }
+                });
+                this.textField.addDisposeListener(new DisposeListener()  {
+                    public void widgetDisposed(final DisposeEvent _event)
+                    {
+                        MXPreferencePage.PasswordFieldEditor.this.textField = null;
+                    }
+                });
+            } else  {
+                this.checkParent(this.textField, _parent);
+            }
+            return this.textField;
+        }
     }
 }
