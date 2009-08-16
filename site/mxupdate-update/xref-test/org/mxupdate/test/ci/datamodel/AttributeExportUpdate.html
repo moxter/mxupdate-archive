@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 495 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-27 20:00:10 +0200 (Mo, 27 Jul 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 515 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-08-16 16:08:51 +0200 (So, 16 Aug 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -37,7 +37,7 @@
 <a name="28" href="#28">28</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractAttribute;
 <a name="29" href="#29">29</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractDataWithTrigger;
 <a name="30" href="#30">30</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AttributeString;
-<a name="31" href="#31">31</a>  <strong>import</strong> org.mxupdate.test.data.program.AbstractProgram;
+<a name="31" href="#31">31</a>  <strong>import</strong> org.mxupdate.test.data.program.AbstractProgramData;
 <a name="32" href="#32">32</a>  <strong>import</strong> org.testng.annotations.AfterClass;
 <a name="33" href="#33">33</a>  <strong>import</strong> org.testng.annotations.BeforeMethod;
 <a name="34" href="#34">34</a>  <strong>import</strong> org.testng.annotations.DataProvider;
@@ -47,7 +47,7 @@
 <a name="38" href="#38">38</a>  <em> * Test cases for the update and export of attributes.</em>
 <a name="39" href="#39">39</a>  <em> *</em>
 <a name="40" href="#40">40</a>  <em> * @author The MxUpdate Team</em>
-<a name="41" href="#41">41</a>  <em> * @version $Id: AttributeExportUpdate.java 495 2009-07-27 18:00:10Z tim.moxter $</em>
+<a name="41" href="#41">41</a>  <em> * @version $Id: AttributeExportUpdate.java 515 2009-08-16 14:08:51Z tim.moxter $</em>
 <a name="42" href="#42">42</a>  <em> */</em>
 <a name="43" href="#43">43</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/datamodel/AttributeExportUpdate.html">AttributeExportUpdate</a>
 <a name="44" href="#44">44</a>      <strong>extends</strong> <a href="../../../../../org/mxupdate/test/AbstractTest.html">AbstractTest</a>
@@ -125,51 +125,47 @@
 <a name="116" href="#116">116</a> 
 <a name="117" href="#117">117</a>         <strong>for</strong> (<strong>final</strong> AbstractAttribute&lt;?> attribute : _data.getAttributes())  {
 <a name="118" href="#118">118</a>             <em class="comment">// create and export</em>
-<a name="119" href="#119">119</a>             <strong>final</strong> Export export = <strong>this</strong>.export(attribute);
-<a name="120" href="#120">120</a>             <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = <strong>new</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a>(attribute.getCI(), export);
-<a name="121" href="#121">121</a>             attribute.checkExport(exportParser);
-<a name="122" href="#122">122</a> 
-<a name="123" href="#123">123</a>             <em class="comment">// make update with exported CI file and check result again</em>
-<a name="124" href="#124">124</a>             <strong>this</strong>.update(attribute.getCIFileName(), export.getCode());
-<a name="125" href="#125">125</a>             <strong>final</strong> Export export2 = <strong>this</strong>.export(attribute);
-<a name="126" href="#126">126</a>             <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser2 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a>(attribute.getCI(), export2);
-<a name="127" href="#127">127</a>             attribute.checkExport(exportParser2);
-<a name="128" href="#128">128</a>         }
-<a name="129" href="#129">129</a>     }
-<a name="130" href="#130">130</a> 
-<a name="131" href="#131">131</a> 
-<a name="132" href="#132">132</a>     <em>/**<em>*</em></em>
-<a name="133" href="#133">133</a> <em>     * Tests an update of non existing attributes. The result is tested with by</em>
-<a name="134" href="#134">134</a> <em>     * exporting the command and checking the result.</em>
-<a name="135" href="#135">135</a> <em>     *</em>
-<a name="136" href="#136">136</a> <em>     * @param _data     collection with data to test</em>
-<a name="137" href="#137">137</a> <em>     * @throws Exception if test failed</em>
-<a name="138" href="#138">138</a> <em>     */</em>
-<a name="139" href="#139">139</a>     @Test(dataProvider = <span class="string">"attributes"</span>, description = <span class="string">"test update of non existing attribute"</span>)
-<a name="140" href="#140">140</a>     <strong>public</strong> <strong>void</strong> testUpdate(<strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> _data)
-<a name="141" href="#141">141</a>         throws Exception
-<a name="142" href="#142">142</a>     {
-<a name="143" href="#143">143</a>         <strong>for</strong> (<strong>final</strong> AbstractProgram&lt;?> program : _data.getPrograms())  {
-<a name="144" href="#144">144</a>             program.create();
-<a name="145" href="#145">145</a>         }
-<a name="146" href="#146">146</a> 
-<a name="147" href="#147">147</a>         <strong>for</strong> (<strong>final</strong> AbstractAttribute&lt;?> attribute : _data.getAttributes())  {
-<a name="148" href="#148">148</a>             <em class="comment">// update with non existing attribute</em>
-<a name="149" href="#149">149</a>             <strong>this</strong>.update(attribute);
-<a name="150" href="#150">150</a> 
-<a name="151" href="#151">151</a>             <em class="comment">// export and check</em>
-<a name="152" href="#152">152</a>             <strong>final</strong> Export export = <strong>this</strong>.export(attribute);
-<a name="153" href="#153">153</a>             <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = <strong>new</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a>(attribute.getCI(), export);
-<a name="154" href="#154">154</a>             attribute.checkExport(exportParser);
-<a name="155" href="#155">155</a> 
-<a name="156" href="#156">156</a>             <em class="comment">// update with exported file and check again</em>
-<a name="157" href="#157">157</a>             <strong>this</strong>.update(attribute.getCIFileName(), export.getCode());
-<a name="158" href="#158">158</a>             <strong>final</strong> Export export2 = <strong>this</strong>.export(attribute);
-<a name="159" href="#159">159</a>             <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser2 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a>(attribute.getCI(), export2);
-<a name="160" href="#160">160</a>             attribute.checkExport(exportParser2);
-<a name="161" href="#161">161</a>         }
-<a name="162" href="#162">162</a>     }
-<a name="163" href="#163">163</a> }
+<a name="119" href="#119">119</a>             <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = attribute.export();
+<a name="120" href="#120">120</a>             attribute.checkExport(exportParser);
+<a name="121" href="#121">121</a> 
+<a name="122" href="#122">122</a>             <em class="comment">// make update with exported CI file and check result again</em>
+<a name="123" href="#123">123</a>             <strong>this</strong>.update(attribute.getCIFileName(), exportParser.getOrigCode());
+<a name="124" href="#124">124</a>             <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser2 = attribute.export();
+<a name="125" href="#125">125</a>             attribute.checkExport(exportParser2);
+<a name="126" href="#126">126</a>         }
+<a name="127" href="#127">127</a>     }
+<a name="128" href="#128">128</a> 
+<a name="129" href="#129">129</a> 
+<a name="130" href="#130">130</a>     <em>/**<em>*</em></em>
+<a name="131" href="#131">131</a> <em>     * Tests an update of non existing attributes. The result is tested with by</em>
+<a name="132" href="#132">132</a> <em>     * exporting the command and checking the result.</em>
+<a name="133" href="#133">133</a> <em>     *</em>
+<a name="134" href="#134">134</a> <em>     * @param _data     collection with data to test</em>
+<a name="135" href="#135">135</a> <em>     * @throws Exception if test failed</em>
+<a name="136" href="#136">136</a> <em>     */</em>
+<a name="137" href="#137">137</a>     @Test(dataProvider = <span class="string">"attributes"</span>, description = <span class="string">"test update of non existing attribute"</span>)
+<a name="138" href="#138">138</a>     <strong>public</strong> <strong>void</strong> testUpdate(<strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> _data)
+<a name="139" href="#139">139</a>         throws Exception
+<a name="140" href="#140">140</a>     {
+<a name="141" href="#141">141</a>         <strong>for</strong> (<strong>final</strong> AbstractProgramData&lt;?> program : _data.getPrograms())  {
+<a name="142" href="#142">142</a>             program.create();
+<a name="143" href="#143">143</a>         }
+<a name="144" href="#144">144</a> 
+<a name="145" href="#145">145</a>         <strong>for</strong> (<strong>final</strong> AbstractAttribute&lt;?> attribute : _data.getAttributes())  {
+<a name="146" href="#146">146</a>             <em class="comment">// update with non existing attribute</em>
+<a name="147" href="#147">147</a>             <strong>this</strong>.update(attribute);
+<a name="148" href="#148">148</a> 
+<a name="149" href="#149">149</a>             <em class="comment">// export and check</em>
+<a name="150" href="#150">150</a>             <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = attribute.export();
+<a name="151" href="#151">151</a>             attribute.checkExport(exportParser);
+<a name="152" href="#152">152</a> 
+<a name="153" href="#153">153</a>             <em class="comment">// update with exported file and check again</em>
+<a name="154" href="#154">154</a>             <strong>this</strong>.update(attribute.getCIFileName(), exportParser.getOrigCode());
+<a name="155" href="#155">155</a>             <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser2 = attribute.export();
+<a name="156" href="#156">156</a>             attribute.checkExport(exportParser2);
+<a name="157" href="#157">157</a>         }
+<a name="158" href="#158">158</a>     }
+<a name="159" href="#159">159</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 503 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-08-09 21:16:18 +0200 (So, 09 Aug 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 515 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-08-16 16:08:51 +0200 (So, 16 Aug 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -35,7 +35,7 @@
 <a name="26" href="#26">26</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractAttribute;
 <a name="27" href="#27">27</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractDataWithTrigger;
 <a name="28" href="#28">28</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.TypeData;
-<a name="29" href="#29">29</a>  <strong>import</strong> org.mxupdate.test.data.program.AbstractProgram;
+<a name="29" href="#29">29</a>  <strong>import</strong> org.mxupdate.test.data.program.AbstractProgramData;
 <a name="30" href="#30">30</a>  <strong>import</strong> org.testng.Assert;
 <a name="31" href="#31">31</a>  <strong>import</strong> org.testng.annotations.AfterMethod;
 <a name="32" href="#32">32</a>  <strong>import</strong> org.testng.annotations.BeforeMethod;
@@ -46,7 +46,7 @@
 <a name="37" href="#37">37</a>  <em> * Class is used to test type updates.</em>
 <a name="38" href="#38">38</a>  <em> *</em>
 <a name="39" href="#39">39</a>  <em> * @author The MxUpdate Team</em>
-<a name="40" href="#40">40</a>  <em> * @version $Id: TypeExportUpdate.java 503 2009-08-09 19:16:18Z tim.moxter $</em>
+<a name="40" href="#40">40</a>  <em> * @version $Id: TypeExportUpdate.java 515 2009-08-16 14:08:51Z tim.moxter $</em>
 <a name="41" href="#41">41</a>  <em> */</em>
 <a name="42" href="#42">42</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/datamodel/TypeExportUpdate.html">TypeExportUpdate</a>
 <a name="43" href="#43">43</a>      <strong>extends</strong> <a href="../../../../../org/mxupdate/test/AbstractTest.html">AbstractTest</a>
@@ -121,192 +121,181 @@
 <a name="112" href="#112">112</a> 
 <a name="113" href="#113">113</a>         _data.create();
 <a name="114" href="#114">114</a> 
-<a name="115" href="#115">115</a>         <strong>final</strong> Export export = <strong>this</strong>.export(CI.TYPE, type.getName());
-<a name="116" href="#116">116</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = <strong>new</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a>(CI.TYPE, export);
-<a name="117" href="#117">117</a>         type.checkExport(exportParser);
-<a name="118" href="#118">118</a>     }
-<a name="119" href="#119">119</a> 
-<a name="120" href="#120">120</a>     <em>/**<em>*</em></em>
-<a name="121" href="#121">121</a> <em>     * Tests an update of non existing command. The result is tested with by</em>
-<a name="122" href="#122">122</a> <em>     * exporting the command and checking the result.</em>
-<a name="123" href="#123">123</a> <em>     *</em>
-<a name="124" href="#124">124</a> <em>     * @param _data         data collection</em>
-<a name="125" href="#125">125</a> <em>     * @param _name         name of type to test</em>
-<a name="126" href="#126">126</a> <em>     * @throws Exception if test failed</em>
-<a name="127" href="#127">127</a> <em>     */</em>
-<a name="128" href="#128">128</a>     @Test(dataProvider = <span class="string">"types"</span>, description = <span class="string">"test update of non existing types"</span>)
-<a name="129" href="#129">129</a>     <strong>public</strong> <strong>void</strong> testUpdate(<strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> _data,
-<a name="130" href="#130">130</a>                            <strong>final</strong> String _name)
-<a name="131" href="#131">131</a>         throws Exception
-<a name="132" href="#132">132</a>     {
-<a name="133" href="#133">133</a>         <em class="comment">// create referenced attributes</em>
-<a name="134" href="#134">134</a>         <strong>for</strong> (<strong>final</strong> AbstractAttribute&lt;?> attribute : _data.getAttributes())  {
-<a name="135" href="#135">135</a>             attribute.create();
-<a name="136" href="#136">136</a>         }
-<a name="137" href="#137">137</a>         <em class="comment">// create referenced methods</em>
-<a name="138" href="#138">138</a>         <strong>for</strong> (<strong>final</strong> AbstractProgram&lt;?> method : _data.getPrograms())  {
-<a name="139" href="#139">139</a>             method.create();
-<a name="140" href="#140">140</a>         }
-<a name="141" href="#141">141</a> 
-<a name="142" href="#142">142</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = _data.getType(_name);
-<a name="143" href="#143">143</a> 
-<a name="144" href="#144">144</a>         <strong>this</strong>.update(type);
-<a name="145" href="#145">145</a>         <strong>final</strong> Export export = <strong>this</strong>.export(CI.TYPE, type.getName());
-<a name="146" href="#146">146</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = <strong>new</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a>(CI.TYPE, export);
-<a name="147" href="#147">147</a>         type.checkExport(exportParser);
-<a name="148" href="#148">148</a>     }
-<a name="149" href="#149">149</a> 
-<a name="150" href="#150">150</a>     <em>/**<em>*</em></em>
-<a name="151" href="#151">151</a> <em>     * Test update for existing type with no method and as target no method.</em>
-<a name="152" href="#152">152</a> <em>     *</em>
-<a name="153" href="#153">153</a> <em>     * @throws Exception if test failed</em>
-<a name="154" href="#154">154</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
-<a name="155" href="#155">155</a> <em>     */</em>
-<a name="156" href="#156">156</a>     @Test(description = <span class="string">"update type with no method for existing type with no method"</span>)
-<a name="157" href="#157">157</a>     <strong>public</strong> <strong>void</strong> updateNoMethod4ExistingTypeWithNoMethod()
-<a name="158" href="#158">158</a>         throws Exception
-<a name="159" href="#159">159</a>     {
-<a name="160" href="#160">160</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
-<a name="161" href="#161">161</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
-<a name="162" href="#162">162</a>         data1.create();
+<a name="115" href="#115">115</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = type.export();
+<a name="116" href="#116">116</a>         type.checkExport(exportParser);
+<a name="117" href="#117">117</a>     }
+<a name="118" href="#118">118</a> 
+<a name="119" href="#119">119</a>     <em>/**<em>*</em></em>
+<a name="120" href="#120">120</a> <em>     * Tests an update of non existing command. The result is tested with by</em>
+<a name="121" href="#121">121</a> <em>     * exporting the command and checking the result.</em>
+<a name="122" href="#122">122</a> <em>     *</em>
+<a name="123" href="#123">123</a> <em>     * @param _data         data collection</em>
+<a name="124" href="#124">124</a> <em>     * @param _name         name of type to test</em>
+<a name="125" href="#125">125</a> <em>     * @throws Exception if test failed</em>
+<a name="126" href="#126">126</a> <em>     */</em>
+<a name="127" href="#127">127</a>     @Test(dataProvider = <span class="string">"types"</span>, description = <span class="string">"test update of non existing types"</span>)
+<a name="128" href="#128">128</a>     <strong>public</strong> <strong>void</strong> testUpdate(<strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> _data,
+<a name="129" href="#129">129</a>                            <strong>final</strong> String _name)
+<a name="130" href="#130">130</a>         throws Exception
+<a name="131" href="#131">131</a>     {
+<a name="132" href="#132">132</a>         <em class="comment">// create referenced attributes</em>
+<a name="133" href="#133">133</a>         <strong>for</strong> (<strong>final</strong> AbstractAttribute&lt;?> attribute : _data.getAttributes())  {
+<a name="134" href="#134">134</a>             attribute.create();
+<a name="135" href="#135">135</a>         }
+<a name="136" href="#136">136</a>         <em class="comment">// create referenced methods</em>
+<a name="137" href="#137">137</a>         <strong>for</strong> (<strong>final</strong> AbstractProgramData&lt;?> method : _data.getPrograms())  {
+<a name="138" href="#138">138</a>             method.create();
+<a name="139" href="#139">139</a>         }
+<a name="140" href="#140">140</a> 
+<a name="141" href="#141">141</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = _data.getType(_name);
+<a name="142" href="#142">142</a> 
+<a name="143" href="#143">143</a>         <strong>this</strong>.update(type);
+<a name="144" href="#144">144</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = type.export();
+<a name="145" href="#145">145</a>         type.checkExport(exportParser);
+<a name="146" href="#146">146</a>     }
+<a name="147" href="#147">147</a> 
+<a name="148" href="#148">148</a>     <em>/**<em>*</em></em>
+<a name="149" href="#149">149</a> <em>     * Test update for existing type with no method and as target no method.</em>
+<a name="150" href="#150">150</a> <em>     *</em>
+<a name="151" href="#151">151</a> <em>     * @throws Exception if test failed</em>
+<a name="152" href="#152">152</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
+<a name="153" href="#153">153</a> <em>     */</em>
+<a name="154" href="#154">154</a>     @Test(description = <span class="string">"update type with no method for existing type with no method"</span>)
+<a name="155" href="#155">155</a>     <strong>public</strong> <strong>void</strong> updateNoMethod4ExistingTypeWithNoMethod()
+<a name="156" href="#156">156</a>         throws Exception
+<a name="157" href="#157">157</a>     {
+<a name="158" href="#158">158</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
+<a name="159" href="#159">159</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
+<a name="160" href="#160">160</a>         data1.create();
+<a name="161" href="#161">161</a> 
+<a name="162" href="#162">162</a>         <strong>this</strong>.update(type);
 <a name="163" href="#163">163</a> 
-<a name="164" href="#164">164</a>         <strong>this</strong>.update(type);
-<a name="165" href="#165">165</a> 
-<a name="166" href="#166">166</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"print type '"</span> + type.getName() + <span class="string">"' select method dump"</span>),
-<a name="167" href="#167">167</a>                             <span class="string">""</span>,
-<a name="168" href="#168">168</a>                             <span class="string">"check that no method is defined"</span>);
-<a name="169" href="#169">169</a>     }
-<a name="170" href="#170">170</a> 
-<a name="171" href="#171">171</a>     <em>/**<em>*</em></em>
-<a name="172" href="#172">172</a> <em>     * Test for an update for an existing type with one method, but after the</em>
-<a name="173" href="#173">173</a> <em>     * update without method.</em>
-<a name="174" href="#174">174</a> <em>     *</em>
-<a name="175" href="#175">175</a> <em>     * @throws Exception if test failed</em>
-<a name="176" href="#176">176</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
-<a name="177" href="#177">177</a> <em>     */</em>
-<a name="178" href="#178">178</a>     @Test(description = <span class="string">"update type with no method for existing type with one method"</span>)
-<a name="179" href="#179">179</a>     <strong>public</strong> <strong>void</strong> updateNoMethod4ExistingTypeWithOneMethod()
-<a name="180" href="#180">180</a>         throws Exception
-<a name="181" href="#181">181</a>     {
-<a name="182" href="#182">182</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
-<a name="183" href="#183">183</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
-<a name="184" href="#184">184</a>         <strong>final</strong> AbstractProgram&lt;?> method = data1.getMQLProgram(<span class="string">"TestProg1"</span>);
-<a name="185" href="#185">185</a>         data1.create();
-<a name="186" href="#186">186</a>         <strong>this</strong>.mql(<span class="string">"mod type \&quot;"</span> + AbstractTest.convertMql(type.getName())
-<a name="187" href="#187">187</a>                 + <span class="string">"\&quot; add method \&quot;"</span> + AbstractTest.convertMql(method.getName()) + <span class="string">"\&quot;"</span>);
+<a name="164" href="#164">164</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"print type '"</span> + type.getName() + <span class="string">"' select method dump"</span>),
+<a name="165" href="#165">165</a>                             <span class="string">""</span>,
+<a name="166" href="#166">166</a>                             <span class="string">"check that no method is defined"</span>);
+<a name="167" href="#167">167</a>     }
+<a name="168" href="#168">168</a> 
+<a name="169" href="#169">169</a>     <em>/**<em>*</em></em>
+<a name="170" href="#170">170</a> <em>     * Test for an update for an existing type with one method, but after the</em>
+<a name="171" href="#171">171</a> <em>     * update without method.</em>
+<a name="172" href="#172">172</a> <em>     *</em>
+<a name="173" href="#173">173</a> <em>     * @throws Exception if test failed</em>
+<a name="174" href="#174">174</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
+<a name="175" href="#175">175</a> <em>     */</em>
+<a name="176" href="#176">176</a>     @Test(description = <span class="string">"update type with no method for existing type with one method"</span>)
+<a name="177" href="#177">177</a>     <strong>public</strong> <strong>void</strong> updateNoMethod4ExistingTypeWithOneMethod()
+<a name="178" href="#178">178</a>         throws Exception
+<a name="179" href="#179">179</a>     {
+<a name="180" href="#180">180</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
+<a name="181" href="#181">181</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
+<a name="182" href="#182">182</a>         <strong>final</strong> AbstractProgramData&lt;?> method = data1.getMQLProgram(<span class="string">"TestProg1"</span>);
+<a name="183" href="#183">183</a>         data1.create();
+<a name="184" href="#184">184</a>         <strong>this</strong>.mql(<span class="string">"mod type \&quot;"</span> + AbstractTest.convertMql(type.getName())
+<a name="185" href="#185">185</a>                 + <span class="string">"\&quot; add method \&quot;"</span> + AbstractTest.convertMql(method.getName()) + <span class="string">"\&quot;"</span>);
+<a name="186" href="#186">186</a> 
+<a name="187" href="#187">187</a>         <strong>this</strong>.update(type);
 <a name="188" href="#188">188</a> 
-<a name="189" href="#189">189</a>         <strong>this</strong>.update(type);
-<a name="190" href="#190">190</a> 
-<a name="191" href="#191">191</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"print type '"</span> + AbstractTest.convertMql(type.getName()) + <span class="string">"' select method dump"</span>),
-<a name="192" href="#192">192</a>                             <span class="string">""</span>,
-<a name="193" href="#193">193</a>                             <span class="string">"check that no method is defined"</span>);
-<a name="194" href="#194">194</a>     }
-<a name="195" href="#195">195</a> 
-<a name="196" href="#196">196</a>     <em>/**<em>*</em></em>
-<a name="197" href="#197">197</a> <em>     * Test an update for an existing type with no method, but after the update</em>
-<a name="198" href="#198">198</a> <em>     * with one method.</em>
-<a name="199" href="#199">199</a> <em>     *</em>
-<a name="200" href="#200">200</a> <em>     * @throws Exception if test failed</em>
-<a name="201" href="#201">201</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
-<a name="202" href="#202">202</a> <em>     */</em>
-<a name="203" href="#203">203</a>     @Test(description = <span class="string">"update type with method for existing type with no method"</span>)
-<a name="204" href="#204">204</a>     <strong>public</strong> <strong>void</strong> updateOneMethod4ExistingTypeWithNoMethod()
-<a name="205" href="#205">205</a>         throws Exception
-<a name="206" href="#206">206</a>     {
-<a name="207" href="#207">207</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
-<a name="208" href="#208">208</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
-<a name="209" href="#209">209</a>         <strong>final</strong> AbstractProgram&lt;?> method = data1.getMQLProgram(<span class="string">"TestProg1"</span>);
-<a name="210" href="#210">210</a>         data1.create();
-<a name="211" href="#211">211</a>         <em class="comment">// method must be defined after create (to test the update..)</em>
-<a name="212" href="#212">212</a>         type.addMethod(method);
+<a name="189" href="#189">189</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"print type '"</span> + AbstractTest.convertMql(type.getName()) + <span class="string">"' select method dump"</span>),
+<a name="190" href="#190">190</a>                             <span class="string">""</span>,
+<a name="191" href="#191">191</a>                             <span class="string">"check that no method is defined"</span>);
+<a name="192" href="#192">192</a>     }
+<a name="193" href="#193">193</a> 
+<a name="194" href="#194">194</a>     <em>/**<em>*</em></em>
+<a name="195" href="#195">195</a> <em>     * Test an update for an existing type with no method, but after the update</em>
+<a name="196" href="#196">196</a> <em>     * with one method.</em>
+<a name="197" href="#197">197</a> <em>     *</em>
+<a name="198" href="#198">198</a> <em>     * @throws Exception if test failed</em>
+<a name="199" href="#199">199</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
+<a name="200" href="#200">200</a> <em>     */</em>
+<a name="201" href="#201">201</a>     @Test(description = <span class="string">"update type with method for existing type with no method"</span>)
+<a name="202" href="#202">202</a>     <strong>public</strong> <strong>void</strong> updateOneMethod4ExistingTypeWithNoMethod()
+<a name="203" href="#203">203</a>         throws Exception
+<a name="204" href="#204">204</a>     {
+<a name="205" href="#205">205</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
+<a name="206" href="#206">206</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
+<a name="207" href="#207">207</a>         <strong>final</strong> AbstractProgramData&lt;?> method = data1.getMQLProgram(<span class="string">"TestProg1"</span>);
+<a name="208" href="#208">208</a>         data1.create();
+<a name="209" href="#209">209</a>         <em class="comment">// method must be defined after create (to test the update..)</em>
+<a name="210" href="#210">210</a>         type.addMethod(method);
+<a name="211" href="#211">211</a> 
+<a name="212" href="#212">212</a>         <strong>this</strong>.update(type);
 <a name="213" href="#213">213</a> 
-<a name="214" href="#214">214</a>         <strong>this</strong>.update(type);
-<a name="215" href="#215">215</a> 
-<a name="216" href="#216">216</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"print type '"</span> + AbstractTest.convertMql(type.getName()) + <span class="string">"' select method dump"</span>),
-<a name="217" href="#217">217</a>                             AbstractTest.convertMql(method.getName()),
-<a name="218" href="#218">218</a>                             <span class="string">"check that one method is defined"</span>);
-<a name="219" href="#219">219</a>     }
-<a name="220" href="#220">220</a> 
-<a name="221" href="#221">221</a> 
-<a name="222" href="#222">222</a>     <em>/**<em>*</em></em>
-<a name="223" href="#223">223</a> <em>     * Tests that a type without method is exported correctly.</em>
-<a name="224" href="#224">224</a> <em>     *</em>
-<a name="225" href="#225">225</a> <em>     * @throws Exception if test failed</em>
-<a name="226" href="#226">226</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
-<a name="227" href="#227">227</a> <em>     */</em>
-<a name="228" href="#228">228</a>     @Test(description = <span class="string">"export type without method"</span>)
-<a name="229" href="#229">229</a>     <strong>public</strong> <strong>void</strong> exportWithoutMethod()
-<a name="230" href="#230">230</a>         throws Exception
-<a name="231" href="#231">231</a>     {
-<a name="232" href="#232">232</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
-<a name="233" href="#233">233</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
-<a name="234" href="#234">234</a>         data1.create();
-<a name="235" href="#235">235</a> 
-<a name="236" href="#236">236</a>         <strong>this</strong>.exportType(type);
-<a name="237" href="#237">237</a>     }
-<a name="238" href="#238">238</a> 
-<a name="239" href="#239">239</a>     <em>/**<em>*</em></em>
-<a name="240" href="#240">240</a> <em>     * Tests that a type with one method is exported correctly.</em>
-<a name="241" href="#241">241</a> <em>     *</em>
-<a name="242" href="#242">242</a> <em>     * @throws Exception if test failed</em>
-<a name="243" href="#243">243</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
-<a name="244" href="#244">244</a> <em>     */</em>
-<a name="245" href="#245">245</a>     @Test(enabled=false,description = <span class="string">"export type with one method"</span>)
-<a name="246" href="#246">246</a>     <strong>public</strong> <strong>void</strong> exportWithOneMethod()
-<a name="247" href="#247">247</a>         throws Exception
-<a name="248" href="#248">248</a>     {
-<a name="249" href="#249">249</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
-<a name="250" href="#250">250</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
-<a name="251" href="#251">251</a>         type.addMethod(data1.getMQLProgram(<span class="string">"Test Program"</span>));
-<a name="252" href="#252">252</a>         data1.create();
-<a name="253" href="#253">253</a> 
-<a name="254" href="#254">254</a>         <strong>this</strong>.exportType(type);
-<a name="255" href="#255">255</a>     }
-<a name="256" href="#256">256</a> 
-<a name="257" href="#257">257</a>     <em>/**<em>*</em></em>
-<a name="258" href="#258">258</a> <em>     * Tests that a type with two method is exported correctly.</em>
-<a name="259" href="#259">259</a> <em>     *</em>
-<a name="260" href="#260">260</a> <em>     * @throws Exception if test failed</em>
-<a name="261" href="#261">261</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
-<a name="262" href="#262">262</a> <em>     */</em>
-<a name="263" href="#263">263</a>     @Test(description = <span class="string">"export type with two methods"</span>)
-<a name="264" href="#264">264</a>     <strong>public</strong> <strong>void</strong> exportWithTwoMethods()
-<a name="265" href="#265">265</a>         throws Exception
-<a name="266" href="#266">266</a>     {
-<a name="267" href="#267">267</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
-<a name="268" href="#268">268</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
-<a name="269" href="#269">269</a>         type.addMethod(data1.getMQLProgram(<span class="string">"Test Program 1"</span>));
-<a name="270" href="#270">270</a>         type.addMethod(data1.getMQLProgram(<span class="string">"Test Program 2"</span>));
-<a name="271" href="#271">271</a>         data1.create();
-<a name="272" href="#272">272</a> 
-<a name="273" href="#273">273</a>         <strong>this</strong>.exportType(type);
-<a name="274" href="#274">274</a>     }
-<a name="275" href="#275">275</a> 
-<a name="276" href="#276">276</a>     <em>/**<em>*</em></em>
-<a name="277" href="#277">277</a> <em>     * Exports test type {@link #TYPE_NAME}, checks the exports and returns the</em>
-<a name="278" href="#278">278</a> <em>     * related parsed export.</em>
-<a name="279" href="#279">279</a> <em>     *</em>
-<a name="280" href="#280">280</a> <em>     * @param _type     type to export</em>
-<a name="281" href="#281">281</a> <em>     * @return parsed export of the exported type</em>
-<a name="282" href="#282">282</a> <em>     * @throws Exception if export failed</em>
-<a name="283" href="#283">283</a> <em>     */</em>
-<a name="284" href="#284">284</a>     <strong>private</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportType(<strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> _type)
-<a name="285" href="#285">285</a>         throws Exception
-<a name="286" href="#286">286</a>     {
-<a name="287" href="#287">287</a>         <strong>final</strong> Export export = <strong>this</strong>.export(_type.getCI(), _type.getName());
-<a name="288" href="#288">288</a> 
-<a name="289" href="#289">289</a>         Assert.assertEquals(export.getPath(), <span class="string">"datamodel/type"</span>, <span class="string">"path is not correct"</span>);
-<a name="290" href="#290">290</a>         Assert.assertEquals(export.getFileName(),
-<a name="291" href="#291">291</a>                             _type.getCIFileName(),
-<a name="292" href="#292">292</a>                             <span class="string">"check that the correct file name is returned"</span>);
-<a name="293" href="#293">293</a> 
-<a name="294" href="#294">294</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = <strong>new</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a>(_type.getCI(), export);
-<a name="295" href="#295">295</a> 
-<a name="296" href="#296">296</a>         _type.checkExport(exportParser);
-<a name="297" href="#297">297</a> 
-<a name="298" href="#298">298</a>         <strong>return</strong> exportParser;
-<a name="299" href="#299">299</a>     }
-<a name="300" href="#300">300</a> }
+<a name="214" href="#214">214</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"print type '"</span> + AbstractTest.convertMql(type.getName()) + <span class="string">"' select method dump"</span>),
+<a name="215" href="#215">215</a>                             AbstractTest.convertMql(method.getName()),
+<a name="216" href="#216">216</a>                             <span class="string">"check that one method is defined"</span>);
+<a name="217" href="#217">217</a>     }
+<a name="218" href="#218">218</a> 
+<a name="219" href="#219">219</a> 
+<a name="220" href="#220">220</a>     <em>/**<em>*</em></em>
+<a name="221" href="#221">221</a> <em>     * Tests that a type without method is exported correctly.</em>
+<a name="222" href="#222">222</a> <em>     *</em>
+<a name="223" href="#223">223</a> <em>     * @throws Exception if test failed</em>
+<a name="224" href="#224">224</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
+<a name="225" href="#225">225</a> <em>     */</em>
+<a name="226" href="#226">226</a>     @Test(description = <span class="string">"export type without method"</span>)
+<a name="227" href="#227">227</a>     <strong>public</strong> <strong>void</strong> exportWithoutMethod()
+<a name="228" href="#228">228</a>         throws Exception
+<a name="229" href="#229">229</a>     {
+<a name="230" href="#230">230</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
+<a name="231" href="#231">231</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
+<a name="232" href="#232">232</a>         data1.create();
+<a name="233" href="#233">233</a> 
+<a name="234" href="#234">234</a>         <strong>this</strong>.exportType(type);
+<a name="235" href="#235">235</a>     }
+<a name="236" href="#236">236</a> 
+<a name="237" href="#237">237</a>     <em>/**<em>*</em></em>
+<a name="238" href="#238">238</a> <em>     * Tests that a type with one method is exported correctly.</em>
+<a name="239" href="#239">239</a> <em>     *</em>
+<a name="240" href="#240">240</a> <em>     * @throws Exception if test failed</em>
+<a name="241" href="#241">241</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
+<a name="242" href="#242">242</a> <em>     */</em>
+<a name="243" href="#243">243</a>     @Test(enabled=false,description = <span class="string">"export type with one method"</span>)
+<a name="244" href="#244">244</a>     <strong>public</strong> <strong>void</strong> exportWithOneMethod()
+<a name="245" href="#245">245</a>         throws Exception
+<a name="246" href="#246">246</a>     {
+<a name="247" href="#247">247</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
+<a name="248" href="#248">248</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
+<a name="249" href="#249">249</a>         type.addMethod(data1.getMQLProgram(<span class="string">"Test Program"</span>));
+<a name="250" href="#250">250</a>         data1.create();
+<a name="251" href="#251">251</a> 
+<a name="252" href="#252">252</a>         <strong>this</strong>.exportType(type);
+<a name="253" href="#253">253</a>     }
+<a name="254" href="#254">254</a> 
+<a name="255" href="#255">255</a>     <em>/**<em>*</em></em>
+<a name="256" href="#256">256</a> <em>     * Tests that a type with two method is exported correctly.</em>
+<a name="257" href="#257">257</a> <em>     *</em>
+<a name="258" href="#258">258</a> <em>     * @throws Exception if test failed</em>
+<a name="259" href="#259">259</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
+<a name="260" href="#260">260</a> <em>     */</em>
+<a name="261" href="#261">261</a>     @Test(description = <span class="string">"export type with two methods"</span>)
+<a name="262" href="#262">262</a>     <strong>public</strong> <strong>void</strong> exportWithTwoMethods()
+<a name="263" href="#263">263</a>         throws Exception
+<a name="264" href="#264">264</a>     {
+<a name="265" href="#265">265</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data1 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
+<a name="266" href="#266">266</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> type = data1.getType(<span class="string">"TestType"</span>);
+<a name="267" href="#267">267</a>         type.addMethod(data1.getMQLProgram(<span class="string">"Test Program 1"</span>));
+<a name="268" href="#268">268</a>         type.addMethod(data1.getMQLProgram(<span class="string">"Test Program 2"</span>));
+<a name="269" href="#269">269</a>         data1.create();
+<a name="270" href="#270">270</a> 
+<a name="271" href="#271">271</a>         <strong>this</strong>.exportType(type);
+<a name="272" href="#272">272</a>     }
+<a name="273" href="#273">273</a> 
+<a name="274" href="#274">274</a>     <em>/**<em>*</em></em>
+<a name="275" href="#275">275</a> <em>     * Exports test type {@link #TYPE_NAME}, checks the exports and returns the</em>
+<a name="276" href="#276">276</a> <em>     * related parsed export.</em>
+<a name="277" href="#277">277</a> <em>     *</em>
+<a name="278" href="#278">278</a> <em>     * @param _type     type to export</em>
+<a name="279" href="#279">279</a> <em>     * @return parsed export of the exported type</em>
+<a name="280" href="#280">280</a> <em>     * @throws Exception if export failed</em>
+<a name="281" href="#281">281</a> <em>     */</em>
+<a name="282" href="#282">282</a>     <strong>private</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportType(<strong>final</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/TypeData.html">TypeData</a> _type)
+<a name="283" href="#283">283</a>         throws Exception
+<a name="284" href="#284">284</a>     {
+<a name="285" href="#285">285</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _type.export();
+<a name="286" href="#286">286</a>         _type.checkExport(exportParser);
+<a name="287" href="#287">287</a>         <strong>return</strong> exportParser;
+<a name="288" href="#288">288</a>     }
+<a name="289" href="#289">289</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

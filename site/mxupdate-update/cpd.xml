@@ -43,11 +43,11 @@
 </codefragment>
 </duplication>
 <duplication lines="25" tokens="106">
-<file line="117" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/JPO_mxJPO.java"/>
-<file line="84" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/Program_mxJPO.java"/>
+<file line="117" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/JPOProgram_mxJPO.java"/>
+<file line="87" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/MQLProgram_mxJPO.java"/>
 <codefragment>
 <![CDATA[
-    public Program_mxJPO(final TypeDef_mxJPO _typeDef,
+    public MQLProgram_mxJPO(final TypeDef_mxJPO _typeDef,
                          final String _mxName)
     {
         super(_typeDef, _mxName);
