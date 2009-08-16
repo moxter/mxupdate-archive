@@ -19,8 +19,8 @@ Instead of described each versions and a delta (like in the XML update files del
 Each file name of a configuration item has a prefix and a suffix. The suffix
 itself is always {{{.tcl}}}. The prefix depends on the configuration item type
 (e.g. for a command the prefix {{{COMMAND_}}} is used). As an exception from
-this rule are the program configuration items [CI_JPO JPO's] and
-[CI_Program MQL Program's].
+this rule are the program configuration items [CI_ProgramJPO JPO's] and
+[CI_ProgramMQL MQL Program's].
 
 == Encoding Rules ==
 Within MX a configuration item could use some special characters which are not
