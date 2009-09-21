@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.2" timestamp="2009-08-16T17:46:50.112">
+<pmd version="4.2.2" timestamp="2009-09-21T09:03:09.209">
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/mapping/Mapping_mxJPO.java">
 <violation beginline="31" endline="31" begincolumn="1" endcolumn="25" rule="UnusedImports" ruleset="Import Statement Rules" package="org.mxupdate.mapping" externalInfoUrl="http://pmd.sourceforge.net/rules/imports.html#UnusedImports" priority="4">
 Avoid unused imports such as 'matrix.db.Context'
