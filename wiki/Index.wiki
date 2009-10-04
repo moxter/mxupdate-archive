@@ -13,6 +13,7 @@
  * [CI Configuration Items]
      * [CI_DMDimensions Dimensions]
      * [CI_DMPolicies Policies]
+     * [CI_DMTriggerGroup Trigger Groups]
      * [CI_ProgramJPO JPO Programs]
      * [CI_ProgramMQL MQL Programs]
      * [CI_UIInquiry Inquiries]
