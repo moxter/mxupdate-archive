@@ -8,8 +8,8 @@ Trigger Groups could be used to group trigger parameter definitions. So they are
 ----
 
 = Parameter Definitions =
-|| *Name*                          || *Parameter* || *Default Value*                                 || *Description* ||
-|| InstallTriggerGroupPolicyDesc   ||             || Policy used to group trigger definitions.       || Defines the description which is used for the policy of trigger groups. ||
-|| InstallTriggerGroupRelationDesc ||             || Relationship used to group trigger definitions. || Defines the description which is used for the relationship of trigger groups. ||
-|| InstallTriggerGroupTypeDesc     ||             || Type used to group trigger definitions.         || Defines the description which is used for the type of trigger groups. ||
+|| *Name*                           || *Parameter* || *Default Value*                                 || *Description* ||
+|| !InstallTriggerGroupPolicyDesc   ||             || Policy used to group trigger definitions.       || Defines the description which is used for the policy of trigger groups. ||
+|| !InstallTriggerGroupRelationDesc ||             || Relationship used to group trigger definitions. || Defines the description which is used for the relationship of trigger groups. ||
+|| !InstallTriggerGroupTypeDesc     ||             || Type used to group trigger definitions.         || Defines the description which is used for the type of trigger groups. ||
 
