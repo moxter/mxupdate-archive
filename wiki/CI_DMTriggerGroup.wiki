@@ -1,0 +1,15 @@
+#summary Describes the special handling of Trigger Groups as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+= Introduction =
+Trigger Groups could be used to group trigger parameter definitions. So they are used as documentation.
+
+----
+
+= Parameter Definitions =
+|| *Name*                          || *Parameter* || *Default Value*                                 || *Description* ||
+|| InstallTriggerGroupPolicyDesc   ||             || Policy used to group trigger definitions.       || Defines the description which is used for the policy of trigger groups. ||
+|| InstallTriggerGroupRelationDesc ||             || Relationship used to group trigger definitions. || Defines the description which is used for the relationship of trigger groups. ||
+|| InstallTriggerGroupTypeDesc     ||             || Type used to group trigger definitions.         || Defines the description which is used for the type of trigger groups. ||
+
