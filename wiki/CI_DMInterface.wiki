@@ -1,0 +1,18 @@
+#summary Describes the special handling of Interfaces as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+= Introduction =
+
+----
+= Parameter Definitions =
+|| *Name*                   || *Parameter*                              || *Default Value* || *Description* ||
+|| DMWithAttrIgnoreIntAttr  || ‑‑ignoreinterfaceattributes {{{[MATCH]}}}||                 || Pattern defining the match of attributes which are ignored within the test attributes of interfaces. ||
+|| DMWithAttrRemoveIntAttr  || ‑‑removeinterfaceattributes {{{[MATCH]}}}||                 || Pattern defining the match of attributes which are removed if not defined anymore within the test attributes of interfaces. ||
+
+----
+= Explanation of Update Error Codes =
+|| *Error Code* || *Description* ||
+|| 10901        || A wrong parameter was given the the called TCL procedure {{{testParents}}} which defines the derived interfaces. ||
+|| 10902        || The name of the interface which calls the TCL procedure {{{testParents}}} and which is defined within the call as parameter is not equal. ||
+|| 10903        || An interface is already derived from another interface, but within the update this derived interface must be removed. This could end in potentially losing data and so this action is not allowed. ||
