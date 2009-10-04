@@ -12,6 +12,7 @@
  * [UpdateUsage MxUpdate Usage]
  * [CI Configuration Items]
      * [CI_DMDimensions Dimensions]
+     * [CI_DMInterface Interfaces]
      * [CI_DMPolicies Policies]
      * [CI_DMTriggerGroup Trigger Groups]
      * [CI_ProgramJPO JPO Programs]
