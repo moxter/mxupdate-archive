@@ -1,0 +1,25 @@
+#summary Describes the special handling of administration persons as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+= Introduction =
+Administration Persons are persons in MX for which no related business
+object exists (unlike [CI_User_Person "standard" persons]). Good examples for
+such persons are the already standard installed "guest" and "creator" account.
+If the related person business object does not exists an user could not login
+into the web application. This means that such persons typically used only for
+administration.
+
+----
+
+= Comments of Persons =
+Internally comments of persons are handled in the same way as descriptions of
+other administration objects. Further the MQL keyword {{{description}}} works
+also for person. To be near to other administration objects MxUpdate uses for
+persons also {{{description}}} instead of {{{comment}}}.
+
+----
+
+= Parameter Definitions =
+|| *Name*                   || *Parameter*                                          || *Default Value* || *Description* ||
+|| UserIgnoreWSO4Persons    || ‑‑ignoreworkspaceobjectsforperson, ‑‑ignorewso4person||                 || Defines the match of persons for which workspace objects are not handled (neither exported nor updated). Attention! A workspace object defined in the TCL update file are not ignored and will be created! ||
