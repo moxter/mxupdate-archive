@@ -1,0 +1,10 @@
+#summary Describes the special handling of persons as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+= Introduction =
+
+A standard MX person is separated into two parts. First the part defined within
+the business administration and the other part defined as business objects. For
+the business administration part the same functionality is used as for
+[CI_User_PersonAdmin administration persons].

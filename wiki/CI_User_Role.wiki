@@ -1,0 +1,12 @@
+#summary Describes the special handling of roles as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+= Introduction =
+
+----
+
+= Parameter Definitions =
+|| *Name*                   || *Parameter*                                          || *Default Value* || *Description* ||
+|| UserIgnoreWSO4Roles      || ‑‑ignoreworkspaceobjectsforrole, ‑‑ignorewso4role    ||                 || Defines the match of roles for which workspace objects are not handled (neither exported nor updated). Attention! A workspace object defined in the TCL update file are not ignored and will be created! ||
+|| !UserRoleSupportRoleType ||                                                      || true            || Are from current MX version role types supported? This is a V6 feature and so as default set to true. If an older MX version is used which does not support role types the value must be set to false. ||
