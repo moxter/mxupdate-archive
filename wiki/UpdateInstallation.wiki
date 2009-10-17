@@ -53,7 +53,7 @@ of files, the date format differs from that used from !MxUpdate for the update
 of configuration items. The date within the installation must be formatted in
 TCL and Java. For the same date the result must be equal in TCL and Java.
 
-For a explanation how to change this property see also the
+For an explanation how to change this properties see also the
 [UpdatePropertyFileFormat property file format] description.
 
 || *Name*                       || *Default Value*              || *Description* ||
