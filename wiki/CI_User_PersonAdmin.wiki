@@ -20,6 +20,21 @@ persons also {{{description}}} instead of {{{comment}}}.
 
 ----
 
+= Steps of the Update Flow =
+Following steps are done before the TCL update file is executed:
+  * all access on business objects are removed
+  * all access on business administration objects are removed
+  * comment / description, fax number, phone number, email address, address and full name is reset (to a zero length string)
+  * all assigned roles / groups are removed
+  * person is set to not hidden
+  * assigned default application is removed
+  * assigned site is removed
+  * person specific workspace objects are deleted (depends on the parameters *UserIgnoreWSO4Persons* and *UserIgnoreWS4Users*)
+  * password of the person expires (depends on the parameter *!UserPersonIgnorePswdNeverExpires*)
+
+----
+
 = Parameter Definitions =
-|| *Name*                   || *Parameter*                                          || *Default Value* || *Description* ||
-|| UserIgnoreWSO4Persons    || ‑‑ignoreworkspaceobjectsforperson, ‑‑ignorewso4person||                 || Defines the match of persons for which workspace objects are not handled (neither exported nor updated). Attention! A workspace object defined in the TCL update file are not ignored and will be created! ||
+|| *Name*                            || *Parameter*                                          || *Default Value*  || *Description* ||
+|| UserIgnoreWSO4Persons             || ‑‑ignoreworkspaceobjectsforperson, ‑‑ignorewso4person||                  || Defines the match of persons for which workspace objects are not handled (neither exported nor updated). Attention! A workspace object defined in the TCL update file are not ignored and will be created! ||
+|| !UserPersonIgnorePswdNeverExpires || ‑‑ignorepersonpasswordneverexpires                   || false            || If set the 'password never expires' - flag for persons is ignored. This means that the flag is not managed anymore from the MxUpdate Update tool and must (could be) managed e.g. in separate MQL update scripts. ||
