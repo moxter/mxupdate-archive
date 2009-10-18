@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 515 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-08-16 16:08:51 +0200 (So, 16 Aug 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 585 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-18 10:11:43 +0200 (So, 18 Okt 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -32,7 +32,7 @@
 <a name="23" href="#23">23</a>  <strong>import</strong> org.mxupdate.test.AbstractTest;
 <a name="24" href="#24">24</a>  <strong>import</strong> org.mxupdate.test.ExportParser;
 <a name="25" href="#25">25</a>  <strong>import</strong> org.mxupdate.test.data.DataCollection;
-<a name="26" href="#26">26</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractAttribute;
+<a name="26" href="#26">26</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractAttributeData;
 <a name="27" href="#27">27</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractDataWithTrigger;
 <a name="28" href="#28">28</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.TypeData;
 <a name="29" href="#29">29</a>  <strong>import</strong> org.mxupdate.test.data.program.AbstractProgramData;
@@ -46,7 +46,7 @@
 <a name="37" href="#37">37</a>  <em> * Class is used to test type updates.</em>
 <a name="38" href="#38">38</a>  <em> *</em>
 <a name="39" href="#39">39</a>  <em> * @author The MxUpdate Team</em>
-<a name="40" href="#40">40</a>  <em> * @version $Id: TypeExportUpdate.java 515 2009-08-16 14:08:51Z tim.moxter $</em>
+<a name="40" href="#40">40</a>  <em> * @version $Id: TypeExportUpdate.java 585 2009-10-18 08:11:43Z tim.moxter $</em>
 <a name="41" href="#41">41</a>  <em> */</em>
 <a name="42" href="#42">42</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/datamodel/TypeExportUpdate.html">TypeExportUpdate</a>
 <a name="43" href="#43">43</a>      <strong>extends</strong> <a href="../../../../../org/mxupdate/test/AbstractTest.html">AbstractTest</a>
@@ -95,13 +95,13 @@
 <a name="86" href="#86">86</a>      <strong>public</strong> <strong>void</strong> cleanup()
 <a name="87" href="#87">87</a>          throws Exception
 <a name="88" href="#88">88</a>      {
-<a name="89" href="#89">89</a>          <strong>this</strong>.cleanup(AbstractTest.CI.MQL_PROGRAM);
-<a name="90" href="#90">90</a>          <strong>this</strong>.cleanup(AbstractTest.CI.ATTRIBUTE_BOOLEAN);
-<a name="91" href="#91">91</a>          <strong>this</strong>.cleanup(AbstractTest.CI.ATTRIBUTE_DATE);
-<a name="92" href="#92">92</a>          <strong>this</strong>.cleanup(AbstractTest.CI.ATTRIBUTE_INTEGER);
-<a name="93" href="#93">93</a>          <strong>this</strong>.cleanup(AbstractTest.CI.ATTRIBUTE_REAL);
-<a name="94" href="#94">94</a>          <strong>this</strong>.cleanup(AbstractTest.CI.ATTRIBUTE_STRING);
-<a name="95" href="#95">95</a>          <strong>this</strong>.cleanup(AbstractTest.CI.TYPE);
+<a name="89" href="#89">89</a>          <strong>this</strong>.cleanup(AbstractTest.CI.PRG_MQL_PROGRAM);
+<a name="90" href="#90">90</a>          <strong>this</strong>.cleanup(AbstractTest.CI.DM_ATTRIBUTE_BOOLEAN);
+<a name="91" href="#91">91</a>          <strong>this</strong>.cleanup(AbstractTest.CI.DM_ATTRIBUTE_DATE);
+<a name="92" href="#92">92</a>          <strong>this</strong>.cleanup(AbstractTest.CI.DM_ATTRIBUTE_INTEGER);
+<a name="93" href="#93">93</a>          <strong>this</strong>.cleanup(AbstractTest.CI.DM_ATTRIBUTE_REAL);
+<a name="94" href="#94">94</a>          <strong>this</strong>.cleanup(AbstractTest.CI.DM_ATTRIBUTE_STRING);
+<a name="95" href="#95">95</a>          <strong>this</strong>.cleanup(AbstractTest.CI.DM_TYPE);
 <a name="96" href="#96">96</a>      }
 <a name="97" href="#97">97</a>  
 <a name="98" href="#98">98</a>  
@@ -139,7 +139,7 @@
 <a name="130" href="#130">130</a>         throws Exception
 <a name="131" href="#131">131</a>     {
 <a name="132" href="#132">132</a>         <em class="comment">// create referenced attributes</em>
-<a name="133" href="#133">133</a>         <strong>for</strong> (<strong>final</strong> AbstractAttribute&lt;?> attribute : _data.getAttributes())  {
+<a name="133" href="#133">133</a>         <strong>for</strong> (<strong>final</strong> AbstractAttributeData&lt;?> attribute : _data.getAttributes())  {
 <a name="134" href="#134">134</a>             attribute.create();
 <a name="135" href="#135">135</a>         }
 <a name="136" href="#136">136</a>         <em class="comment">// create referenced methods</em>
@@ -249,7 +249,7 @@
 <a name="240" href="#240">240</a> <em>     * @throws Exception if test failed</em>
 <a name="241" href="#241">241</a> <em>     * @see <a href="http://code.google.com/p/mxupdate/issues/detail?id=36" target="alexandria_uri">http://code.google.com/p/mxupdate/issues/detail?id=36</a></em>
 <a name="242" href="#242">242</a> <em>     */</em>
-<a name="243" href="#243">243</a>     @Test(enabled=false,description = <span class="string">"export type with one method"</span>)
+<a name="243" href="#243">243</a>     @Test(description = <span class="string">"export type with one method"</span>)
 <a name="244" href="#244">244</a>     <strong>public</strong> <strong>void</strong> exportWithOneMethod()
 <a name="245" href="#245">245</a>         throws Exception
 <a name="246" href="#246">246</a>     {

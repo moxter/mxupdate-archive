@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 417 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-06-17 00:00:03 +0200 (Wed, 17. Jun 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 559 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-11 21:16:59 +0200 (So, 11 Okt 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -37,7 +37,7 @@
 <a name="28" href="#28">28</a>  <em> * is only used within administration objects (not business objects).</em>
 <a name="29" href="#29">29</a>  <em> *</em>
 <a name="30" href="#30">30</a>  <em> * @author The MxUpdate Team</em>
-<a name="31" href="#31">31</a>  <em> * @version $Id: AdminProperty_mxJPO.java 417 2009-06-16 22:00:03Z tim.moxter $</em>
+<a name="31" href="#31">31</a>  <em> * @version $Id: AdminProperty_mxJPO.java 559 2009-10-11 19:16:59Z tim.moxter $</em>
 <a name="32" href="#32">32</a>  <em> */</em>
 <a name="33" href="#33">33</a>  <strong>public</strong> <strong>class</strong> AdminProperty_mxJPO
 <a name="34" href="#34">34</a>          implements Serializable, Comparable&lt;AdminProperty_mxJPO>
@@ -159,65 +159,75 @@
 <a name="150" href="#150">150</a>     }
 <a name="151" href="#151">151</a> 
 <a name="152" href="#152">152</a>     <em>/**<em>*</em></em>
-<a name="153" href="#153">153</a> <em>     * &lt;p>Compares this administration property instance with</em>
-<a name="154" href="#154">154</a> <em>     * &lt;code>_toCompare&lt;/code> administration property. The algorithm uses</em>
-<a name="155" href="#155">155</a> <em>     * &lt;ul></em>
-<a name="156" href="#156">156</a> <em>     * &lt;li>{@link #refAdminType}&lt;/li></em>
-<a name="157" href="#157">157</a> <em>     * &lt;li>{@link #refAdminName}&lt;/li></em>
-<a name="158" href="#158">158</a> <em>     * &lt;li>{@link #name}&lt;/li></em>
-<a name="159" href="#159">159</a> <em>     * &lt;li>{@link #value}&lt;/li></em>
-<a name="160" href="#160">160</a> <em>     * &lt;/ul></em>
-<a name="161" href="#161">161</a> <em>     * in the defined order to compare this administration property against</em>
-<a name="162" href="#162">162</a> <em>     * &lt;code>_toCompare&lt;/code>. A &lt;code>null&lt;/code> value is always lower than</em>
-<a name="163" href="#163">163</a> <em>     * a non &lt;code>null&lt;/code> value.&lt;/p></em>
-<a name="164" href="#164">164</a> <em>     *</em>
-<a name="165" href="#165">165</a> <em>     * @param _toCompare    admin property instance which must be compared to</em>
-<a name="166" href="#166">166</a> <em>     * @return &amp;quot;0&amp;quot; if both administration properties are equal;</em>
-<a name="167" href="#167">167</a> <em>     *         &amp;quot;1&amp;quot; if greater; otherwise &amp;quot;-1&amp;quot;</em>
-<a name="168" href="#168">168</a> <em>     */</em>
-<a name="169" href="#169">169</a>     <strong>public</strong> <strong>int</strong> compareTo(<strong>final</strong> AdminProperty_mxJPO _toCompare)
-<a name="170" href="#170">170</a>     {
-<a name="171" href="#171">171</a>         <strong>return</strong> ((<strong>this</strong>.refAdminType != <strong>null</strong>) &amp;&amp; (<strong>this</strong>.refAdminName != <strong>null</strong>))
-<a name="172" href="#172">172</a>                ? ((_toCompare.refAdminType != <strong>null</strong>) &amp;&amp; (_toCompare.refAdminName != <strong>null</strong>))
-<a name="173" href="#173">173</a>                        ? <strong>this</strong>.refAdminType.equals(_toCompare.refAdminType)
-<a name="174" href="#174">174</a>                                ? <strong>this</strong>.refAdminName.equals(_toCompare.refAdminName)
-<a name="175" href="#175">175</a>                                        ? <strong>this</strong>.name.equals(_toCompare.name)
-<a name="176" href="#176">176</a>                                                ? (<strong>this</strong>.value != <strong>null</strong>)
-<a name="177" href="#177">177</a>                                                        ? (_toCompare.value != <strong>null</strong>)
-<a name="178" href="#178">178</a>                                                                ? <strong>this</strong>.value.compareTo(_toCompare.value)
-<a name="179" href="#179">179</a>                                                                : 1
-<a name="180" href="#180">180</a>                                                        : (_toCompare.value != <strong>null</strong>)
-<a name="181" href="#181">181</a>                                                                ? -1
-<a name="182" href="#182">182</a>                                                                : 0
-<a name="183" href="#183">183</a>                                                : <strong>this</strong>.name.compareTo(_toCompare.name)
-<a name="184" href="#184">184</a>                                        : <strong>this</strong>.refAdminName.compareTo(_toCompare.refAdminName)
-<a name="185" href="#185">185</a>                                : <strong>this</strong>.refAdminType.compareTo(_toCompare.refAdminType)
-<a name="186" href="#186">186</a>                        : 1
-<a name="187" href="#187">187</a>                : ((_toCompare.refAdminType != <strong>null</strong>) &amp;&amp; (_toCompare.refAdminName != <strong>null</strong>))
-<a name="188" href="#188">188</a>                        ? -1
-<a name="189" href="#189">189</a>                        : <strong>this</strong>.name.equals(_toCompare.name)
-<a name="190" href="#190">190</a>                                ? (<strong>this</strong>.value != <strong>null</strong>)
-<a name="191" href="#191">191</a>                                        ? (_toCompare.value != <strong>null</strong>)
-<a name="192" href="#192">192</a>                                                ? <strong>this</strong>.value.compareTo(_toCompare.value)
-<a name="193" href="#193">193</a>                                                : 1
-<a name="194" href="#194">194</a>                                        : (_toCompare.value != <strong>null</strong>)
-<a name="195" href="#195">195</a>                                                ? -1
-<a name="196" href="#196">196</a>                                                : 0
-<a name="197" href="#197">197</a>                                : <strong>this</strong>.name.compareTo(_toCompare.name);
-<a name="198" href="#198">198</a>     }
-<a name="199" href="#199">199</a> 
-<a name="200" href="#200">200</a>     <em>/**<em>*</em></em>
-<a name="201" href="#201">201</a> <em>     * Returns the string representation of a property including the</em>
-<a name="202" href="#202">202</a> <em>     * {@link #name}, {@link #value} and {@link #flags}.</em>
-<a name="203" href="#203">203</a> <em>     *</em>
-<a name="204" href="#204">204</a> <em>     * @return string representation of a property</em>
-<a name="205" href="#205">205</a> <em>     */</em>
-<a name="206" href="#206">206</a>     @Override
-<a name="207" href="#207">207</a>     <strong>public</strong> String toString()
-<a name="208" href="#208">208</a>     {
-<a name="209" href="#209">209</a>         <strong>return</strong> <span class="string">"[name="</span> + <strong>this</strong>.name + <span class="string">", value="</span> + <strong>this</strong>.value + <span class="string">", flags="</span> + <strong>this</strong>.flags + <span class="string">"]"</span>;
-<a name="210" href="#210">210</a>     }
-<a name="211" href="#211">211</a> }
+<a name="153" href="#153">153</a> <em>     * Getter method for instance variable {@link #flags}.</em>
+<a name="154" href="#154">154</a> <em>     *</em>
+<a name="155" href="#155">155</a> <em>     * @return value of instance variable {@link #flags}.</em>
+<a name="156" href="#156">156</a> <em>     */</em>
+<a name="157" href="#157">157</a>     <strong>public</strong> String getFlags()
+<a name="158" href="#158">158</a>     {
+<a name="159" href="#159">159</a>         <strong>return</strong> <strong>this</strong>.flags;
+<a name="160" href="#160">160</a>     }
+<a name="161" href="#161">161</a> 
+<a name="162" href="#162">162</a>     <em>/**<em>*</em></em>
+<a name="163" href="#163">163</a> <em>     * &lt;p>Compares this administration property instance with</em>
+<a name="164" href="#164">164</a> <em>     * &lt;code>_toCompare&lt;/code> administration property. The algorithm uses</em>
+<a name="165" href="#165">165</a> <em>     * &lt;ul></em>
+<a name="166" href="#166">166</a> <em>     * &lt;li>{@link #refAdminType}&lt;/li></em>
+<a name="167" href="#167">167</a> <em>     * &lt;li>{@link #refAdminName}&lt;/li></em>
+<a name="168" href="#168">168</a> <em>     * &lt;li>{@link #name}&lt;/li></em>
+<a name="169" href="#169">169</a> <em>     * &lt;li>{@link #value}&lt;/li></em>
+<a name="170" href="#170">170</a> <em>     * &lt;/ul></em>
+<a name="171" href="#171">171</a> <em>     * in the defined order to compare this administration property against</em>
+<a name="172" href="#172">172</a> <em>     * &lt;code>_toCompare&lt;/code>. A &lt;code>null&lt;/code> value is always lower than</em>
+<a name="173" href="#173">173</a> <em>     * a non &lt;code>null&lt;/code> value.&lt;/p></em>
+<a name="174" href="#174">174</a> <em>     *</em>
+<a name="175" href="#175">175</a> <em>     * @param _toCompare    admin property instance which must be compared to</em>
+<a name="176" href="#176">176</a> <em>     * @return &amp;quot;0&amp;quot; if both administration properties are equal;</em>
+<a name="177" href="#177">177</a> <em>     *         &amp;quot;1&amp;quot; if greater; otherwise &amp;quot;-1&amp;quot;</em>
+<a name="178" href="#178">178</a> <em>     */</em>
+<a name="179" href="#179">179</a>     <strong>public</strong> <strong>int</strong> compareTo(<strong>final</strong> AdminProperty_mxJPO _toCompare)
+<a name="180" href="#180">180</a>     {
+<a name="181" href="#181">181</a>         <strong>return</strong> ((<strong>this</strong>.refAdminType != <strong>null</strong>) &amp;&amp; (<strong>this</strong>.refAdminName != <strong>null</strong>))
+<a name="182" href="#182">182</a>                ? ((_toCompare.refAdminType != <strong>null</strong>) &amp;&amp; (_toCompare.refAdminName != <strong>null</strong>))
+<a name="183" href="#183">183</a>                        ? <strong>this</strong>.refAdminType.equals(_toCompare.refAdminType)
+<a name="184" href="#184">184</a>                                ? <strong>this</strong>.refAdminName.equals(_toCompare.refAdminName)
+<a name="185" href="#185">185</a>                                        ? <strong>this</strong>.name.equals(_toCompare.name)
+<a name="186" href="#186">186</a>                                                ? (<strong>this</strong>.value != <strong>null</strong>)
+<a name="187" href="#187">187</a>                                                        ? (_toCompare.value != <strong>null</strong>)
+<a name="188" href="#188">188</a>                                                                ? <strong>this</strong>.value.compareTo(_toCompare.value)
+<a name="189" href="#189">189</a>                                                                : 1
+<a name="190" href="#190">190</a>                                                        : (_toCompare.value != <strong>null</strong>)
+<a name="191" href="#191">191</a>                                                                ? -1
+<a name="192" href="#192">192</a>                                                                : 0
+<a name="193" href="#193">193</a>                                                : <strong>this</strong>.name.compareTo(_toCompare.name)
+<a name="194" href="#194">194</a>                                        : <strong>this</strong>.refAdminName.compareTo(_toCompare.refAdminName)
+<a name="195" href="#195">195</a>                                : <strong>this</strong>.refAdminType.compareTo(_toCompare.refAdminType)
+<a name="196" href="#196">196</a>                        : 1
+<a name="197" href="#197">197</a>                : ((_toCompare.refAdminType != <strong>null</strong>) &amp;&amp; (_toCompare.refAdminName != <strong>null</strong>))
+<a name="198" href="#198">198</a>                        ? -1
+<a name="199" href="#199">199</a>                        : <strong>this</strong>.name.equals(_toCompare.name)
+<a name="200" href="#200">200</a>                                ? (<strong>this</strong>.value != <strong>null</strong>)
+<a name="201" href="#201">201</a>                                        ? (_toCompare.value != <strong>null</strong>)
+<a name="202" href="#202">202</a>                                                ? <strong>this</strong>.value.compareTo(_toCompare.value)
+<a name="203" href="#203">203</a>                                                : 1
+<a name="204" href="#204">204</a>                                        : (_toCompare.value != <strong>null</strong>)
+<a name="205" href="#205">205</a>                                                ? -1
+<a name="206" href="#206">206</a>                                                : 0
+<a name="207" href="#207">207</a>                                : <strong>this</strong>.name.compareTo(_toCompare.name);
+<a name="208" href="#208">208</a>     }
+<a name="209" href="#209">209</a> 
+<a name="210" href="#210">210</a>     <em>/**<em>*</em></em>
+<a name="211" href="#211">211</a> <em>     * Returns the string representation of a property including the</em>
+<a name="212" href="#212">212</a> <em>     * {@link #name}, {@link #value} and {@link #flags}.</em>
+<a name="213" href="#213">213</a> <em>     *</em>
+<a name="214" href="#214">214</a> <em>     * @return string representation of a property</em>
+<a name="215" href="#215">215</a> <em>     */</em>
+<a name="216" href="#216">216</a>     @Override()
+<a name="217" href="#217">217</a>     <strong>public</strong> String toString()
+<a name="218" href="#218">218</a>     {
+<a name="219" href="#219">219</a>         <strong>return</strong> <span class="string">"[name="</span> + <strong>this</strong>.name + <span class="string">", value="</span> + <strong>this</strong>.value + <span class="string">", flags="</span> + <strong>this</strong>.flags + <span class="string">"]"</span>;
+<a name="220" href="#220">220</a>     }
+<a name="221" href="#221">221</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

@@ -8,6 +8,7 @@ org.mxupdate.update.datamodel.dimension
 org.mxupdate.update.datamodel.policy
 org.mxupdate.update.program
 org.mxupdate.update.user
+org.mxupdate.update.user.workspace
 org.mxupdate.update.userinterface
 org.mxupdate.update.util
 org.mxupdate.util

@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 465 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-12 21:46:26 +0200 (So, 12 Jul 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 564 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-12 00:42:53 +0200 (Mo, 12 Okt 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -62,7 +62,7 @@
 <a name="53" href="#53">53</a>  <em> * &lt;tr></em>
 <a name="54" href="#54">54</a>  <em> *</em>
 <a name="55" href="#55">55</a>  <em> * @author The MxUpdate Team</em>
-<a name="56" href="#56">56</a>  <em> * @version $Id: MxUpdate_mxJPO.java 465 2009-07-12 19:46:26Z tim.moxter $</em>
+<a name="56" href="#56">56</a>  <em> * @version $Id: MxUpdate_mxJPO.java 564 2009-10-11 22:42:53Z tim.moxter $</em>
 <a name="57" href="#57">57</a>  <em> */</em>
 <a name="58" href="#58">58</a>  <strong>public</strong> <strong>class</strong> MxUpdate_mxJPO
 <a name="59" href="#59">59</a>  {
@@ -562,7 +562,7 @@
 <a name="553" href="#553">553</a>                 } <strong>else</strong>  {
 <a name="554" href="#554">554</a>                     out.append(line).append('\n');
 <a name="555" href="#555">555</a>                     line = <strong>new</strong> StringBuilder().append(prefix);
-<a name="556" href="#556">556</a>                     <strong>for</strong> (<strong>int</strong> i = 1; i &lt; lengthParam; i++)  {
+<a name="556" href="#556">556</a>                     <strong>for</strong> (<strong>int</strong> i = 0; i &lt; lengthParam; i++)  {
 <a name="557" href="#557">557</a>                         line.append(' ');
 <a name="558" href="#558">558</a>                     }
 <a name="559" href="#559">559</a>                 }
@@ -571,7 +571,7 @@
 <a name="562" href="#562">562</a>                         <strong>if</strong> (line.length() > lengthLine)  {
 <a name="563" href="#563">563</a>                             out.append(line).append('\n');
 <a name="564" href="#564">564</a>                             line = <strong>new</strong> StringBuilder().append(prefix);
-<a name="565" href="#565">565</a>                             <strong>for</strong> (<strong>int</strong> i = 1; i &lt; lengthParam; i++)  {
+<a name="565" href="#565">565</a>                             <strong>for</strong> (<strong>int</strong> i = 0; i &lt; lengthParam; i++)  {
 <a name="566" href="#566">566</a>                                 line.append(' ');
 <a name="567" href="#567">567</a>                             }
 <a name="568" href="#568">568</a>                         }
