@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 490 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-07-20 18:13:41 +0200 (Mo, 20 Jul 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 543 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-05 02:10:01 +0200 (Mo, 05 Okt 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -54,7 +54,7 @@
 <a name="45" href="#45">45</a>  <em> * administration (business) objects.</em>
 <a name="46" href="#46">46</a>  <em> *</em>
 <a name="47" href="#47">47</a>  <em> * @author The MxUpdate Team</em>
-<a name="48" href="#48">48</a>  <em> * @version $Id: AbstractObject_mxJPO.java 490 2009-07-20 16:13:41Z tim.moxter $</em>
+<a name="48" href="#48">48</a>  <em> * @version $Id: AbstractObject_mxJPO.java 543 2009-10-05 00:10:01Z tim.moxter $</em>
 <a name="49" href="#49">49</a>  <em> */</em>
 <a name="50" href="#50">50</a>  <strong>public</strong> <strong>abstract</strong> <strong>class</strong> AbstractObject_mxJPO
 <a name="51" href="#51">51</a>          implements Serializable
@@ -417,8 +417,8 @@
 <a name="408" href="#408">408</a>         <em class="comment">// check for existing administration type...</em>
 <a name="409" href="#409">409</a>         <strong>if</strong> (<strong>this</strong>.getTypeDef().getMxAdminName() != <strong>null</strong>)  {
 <a name="410" href="#410">410</a>             <strong>final</strong> String tmp = MqlUtil_mxJPO.execMql(_paramCache, <strong>new</strong> StringBuilder()
-<a name="411" href="#411">411</a>                     .append(<span class="string">"print "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
-<a name="412" href="#412">412</a>                     .append(<span class="string">" \&quot;"</span>).append(<strong>this</strong>.getName()).append(<span class="string">"\&quot; "</span>)
+<a name="411" href="#411">411</a>                     .append(<span class="string">"escape print "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
+<a name="412" href="#412">412</a>                     .append(<span class="string">" \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName())).append(<span class="string">"\&quot; "</span>)
 <a name="413" href="#413">413</a>                     .append(<strong>this</strong>.getTypeDef().getMxAdminSuffix())
 <a name="414" href="#414">414</a>                     .append(<span class="string">" select property["</span>).append(_prop.getPropName(_paramCache)).append(<span class="string">"] dump"</span>));
 <a name="415" href="#415">415</a>             <strong>final</strong> <strong>int</strong> length = 7 + _prop.getPropName(_paramCache).length();

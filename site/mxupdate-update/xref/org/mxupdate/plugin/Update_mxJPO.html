@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 433 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-06-21 14:43:48 +0200 (So, 21 Jun 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 543 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-05 02:10:01 +0200 (Mo, 05 Okt 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -50,7 +50,7 @@
 <a name="41" href="#41">41</a>  <em> * through given MX update files.</em>
 <a name="42" href="#42">42</a>  <em> *</em>
 <a name="43" href="#43">43</a>  <em> * @author The MxUpdate Team</em>
-<a name="44" href="#44">44</a>  <em> * @version $Id: Update_mxJPO.java 433 2009-06-21 12:43:48Z tim.moxter $</em>
+<a name="44" href="#44">44</a>  <em> * @version $Id: Update_mxJPO.java 543 2009-10-05 00:10:01Z tim.moxter $</em>
 <a name="45" href="#45">45</a>  <em> */</em>
 <a name="46" href="#46">46</a>  <strong>public</strong> <strong>class</strong> Update_mxJPO
 <a name="47" href="#47">47</a>          <strong>extends</strong> AbstractPlugin_mxJPO
@@ -149,132 +149,137 @@
 <a name="140" href="#140">140</a>                                   <strong>final</strong> String[] _args)
 <a name="141" href="#141">141</a>             throws Exception
 <a name="142" href="#142">142</a>     {
-<a name="143" href="#143">143</a>         String ret = <span class="string">""</span>;
-<a name="144" href="#144">144</a> 
-<a name="145" href="#145">145</a>         <strong>final</strong> Map&lt;String,String> files = <strong>this</strong>.&lt;Map&lt;String,String>>decode(_args, 0);
-<a name="146" href="#146">146</a>         <strong>final</strong> <strong>boolean</strong> compile = <strong>this</strong>.&lt;Boolean>decode(_args, 1, false);
-<a name="147" href="#147">147</a>         <strong>final</strong> Map&lt;String,String> paramValues = <strong>this</strong>.&lt;Map&lt;String,String>>decode(_args, 2, <strong>null</strong>);
-<a name="148" href="#148">148</a> 
-<a name="149" href="#149">149</a>         <em class="comment">// create temporary directory</em>
-<a name="150" href="#150">150</a>         <strong>final</strong> File tmpDir = File.createTempFile(<span class="string">"Update"</span>, <span class="string">"tmp"</span>);
-<a name="151" href="#151">151</a>         tmpDir.delete();
-<a name="152" href="#152">152</a>         tmpDir.mkdir();
-<a name="153" href="#153">153</a> 
-<a name="154" href="#154">154</a>         <strong>final</strong> Set&lt;File> localFiles = <strong>new</strong> HashSet&lt;File>();
-<a name="155" href="#155">155</a>         <strong>try</strong>  {
-<a name="156" href="#156">156</a>             <em class="comment">// store all files in temporary directory</em>
-<a name="157" href="#157">157</a>             <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> fileEntry : files.entrySet())  {
-<a name="158" href="#158">158</a>                 <strong>final</strong> String fileName = (<strong>new</strong> File(fileEntry.getKey())).getName();
-<a name="159" href="#159">159</a> 
-<a name="160" href="#160">160</a>                 <strong>final</strong> File localFile = <strong>new</strong> File(tmpDir, fileName);
-<a name="161" href="#161">161</a>                 <strong>final</strong> Writer writer = <strong>new</strong> FileWriter(localFile);
-<a name="162" href="#162">162</a>                 writer.write(fileEntry.getValue());
-<a name="163" href="#163">163</a>                 writer.close();
-<a name="164" href="#164">164</a> 
-<a name="165" href="#165">165</a>                 localFiles.add(localFile);
-<a name="166" href="#166">166</a>             }
-<a name="167" href="#167">167</a> 
-<a name="168" href="#168">168</a>             <em class="comment">// and call update</em>
-<a name="169" href="#169">169</a>             ret = <strong>this</strong>.updateFiles(_context, paramValues, localFiles, compile);
-<a name="170" href="#170">170</a>         } <strong>finally</strong>  {
-<a name="171" href="#171">171</a>             <em class="comment">// at least remove all temporary stuff</em>
-<a name="172" href="#172">172</a>             <strong>for</strong> (<strong>final</strong> File localFile : localFiles)  {
-<a name="173" href="#173">173</a>                 localFile.delete();
-<a name="174" href="#174">174</a>             }
-<a name="175" href="#175">175</a>             tmpDir.delete();
-<a name="176" href="#176">176</a>         }
-<a name="177" href="#177">177</a> 
-<a name="178" href="#178">178</a>         <strong>return</strong> ret;
-<a name="179" href="#179">179</a>     }
-<a name="180" href="#180">180</a> 
-<a name="181" href="#181">181</a>     <em>/**<em>*</em></em>
-<a name="182" href="#182">182</a> <em>     * Updates all configurations items specified through given set of MX</em>
-<a name="183" href="#183">183</a> <em>     * update files.</em>
-<a name="184" href="#184">184</a> <em>     *</em>
-<a name="185" href="#185">185</a> <em>     * @param _context      MX context for this request</em>
-<a name="186" href="#186">186</a> <em>     * @param _paramValues  predefined parameters</em>
-<a name="187" href="#187">187</a> <em>     * @param _files        set of all files to update</em>
-<a name="188" href="#188">188</a> <em>     * @param _compile      if &lt;i>true&lt;/i> related JPOs are compiled; if</em>
-<a name="189" href="#189">189</a> <em>     *                      &lt;i>false&lt;/i> no JPOs are compiled</em>
-<a name="190" href="#190">190</a> <em>     * @return logging information from the update</em>
-<a name="191" href="#191">191</a> <em>     * @throws Exception if update for the &lt;code>_files&lt;/code> failed</em>
-<a name="192" href="#192">192</a> <em>     */</em>
-<a name="193" href="#193">193</a>     <strong>protected</strong> String updateFiles(<strong>final</strong> Context _context,
-<a name="194" href="#194">194</a>                                  <strong>final</strong> Map&lt;String,String> _paramValues,
-<a name="195" href="#195">195</a>                                  <strong>final</strong> Set&lt;File> _files,
-<a name="196" href="#196">196</a>                                  <strong>final</strong> <strong>boolean</strong> _compile)
-<a name="197" href="#197">197</a>             throws Exception
-<a name="198" href="#198">198</a>     {
-<a name="199" href="#199">199</a>         <em class="comment">// initialize mapping</em>
-<a name="200" href="#200">200</a>         <strong>final</strong> ParameterCache_mxJPO paramCache = <strong>new</strong> ParameterCache_mxJPO(_context, <strong>true</strong>, _paramValues);
-<a name="201" href="#201">201</a> 
-<a name="202" href="#202">202</a>         <em class="comment">// first found related type definition instances</em>
-<a name="203" href="#203">203</a>         <strong>final</strong> Map&lt;File,AbstractObject_mxJPO> instances = <strong>new</strong> TreeMap&lt;File,AbstractObject_mxJPO>();
-<a name="204" href="#204">204</a>         <strong>for</strong> (<strong>final</strong> File file : _files)  {
-<a name="205" href="#205">205</a>             <strong>boolean</strong> found = false;
-<a name="206" href="#206">206</a>             <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : paramCache.getMapping().getAllTypeDefs())  {
-<a name="207" href="#207">207</a>                 <strong>if</strong> (!typeDef.isFileMatchLast())  {
-<a name="208" href="#208">208</a>                     <strong>final</strong> AbstractObject_mxJPO instance = typeDef.newTypeInstance(<strong>null</strong>);
-<a name="209" href="#209">209</a>                     <strong>final</strong> String mxName = instance.extractMxName(paramCache, file);
-<a name="210" href="#210">210</a>                     <strong>if</strong> (mxName != <strong>null</strong>)  {
-<a name="211" href="#211">211</a>                         instances.put(file, typeDef.newTypeInstance(mxName));
-<a name="212" href="#212">212</a>                         found  = <strong>true</strong>;
-<a name="213" href="#213">213</a>                         <strong>break</strong>;
-<a name="214" href="#214">214</a>                     }
-<a name="215" href="#215">215</a>                 }
-<a name="216" href="#216">216</a>             }
-<a name="217" href="#217">217</a>             <strong>if</strong> (!found)  {
-<a name="218" href="#218">218</a>                 <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : paramCache.getMapping().getAllTypeDefs())  {
-<a name="219" href="#219">219</a>                     <strong>if</strong> (typeDef.isFileMatchLast())  {
-<a name="220" href="#220">220</a>                         <strong>final</strong> AbstractObject_mxJPO instance = typeDef.newTypeInstance(<strong>null</strong>);
-<a name="221" href="#221">221</a>                         <strong>final</strong> String mxName = instance.extractMxName(paramCache, file);
-<a name="222" href="#222">222</a>                         <strong>if</strong> (mxName != <strong>null</strong>)  {
-<a name="223" href="#223">223</a>                             instances.put(file, typeDef.newTypeInstance(mxName));
-<a name="224" href="#224">224</a>                             found = <strong>true</strong>;
-<a name="225" href="#225">225</a>                             <strong>break</strong>;
-<a name="226" href="#226">226</a>                         }
-<a name="227" href="#227">227</a>                     }
-<a name="228" href="#228">228</a>                 }
-<a name="229" href="#229">229</a>             }
-<a name="230" href="#230">230</a>         }
-<a name="231" href="#231">231</a> 
-<a name="232" href="#232">232</a>         <em class="comment">// check if objects must be created</em>
-<a name="233" href="#233">233</a>         <strong>final</strong> Map&lt;TypeDef_mxJPO,Set&lt;String>> allMxNames = <strong>new</strong> HashMap&lt;TypeDef_mxJPO,Set&lt;String>>();
-<a name="234" href="#234">234</a>         <strong>for</strong> (<strong>final</strong> AbstractObject_mxJPO instance : instances.values())  {
-<a name="235" href="#235">235</a>             <strong>if</strong> (!allMxNames.containsKey(instance.getTypeDef()))  {
-<a name="236" href="#236">236</a>                 allMxNames.put(instance.getTypeDef(), instance.getMxNames(paramCache));
-<a name="237" href="#237">237</a>             }
-<a name="238" href="#238">238</a>             <strong>if</strong> (!allMxNames.get(instance.getTypeDef()).contains(instance.getName()))  {
-<a name="239" href="#239">239</a>                 paramCache.logInfo(<span class="string">"created "</span> + instance.getTypeDef().getLogging() + <span class="string">" '"</span> + instance.getName() + <span class="string">"'"</span>);
-<a name="240" href="#240">240</a>                 instance.create(paramCache);
-<a name="241" href="#241">241</a>             }
-<a name="242" href="#242">242</a>         }
-<a name="243" href="#243">243</a> 
-<a name="244" href="#244">244</a>         <em class="comment">// update</em>
-<a name="245" href="#245">245</a>         <strong>for</strong> (<strong>final</strong> Map.Entry&lt;File,AbstractObject_mxJPO> instanceEntry : instances.entrySet())  {
-<a name="246" href="#246">246</a>             paramCache.logInfo(<span class="string">"updated "</span> + instanceEntry.getValue().getTypeDef().getLogging()
-<a name="247" href="#247">247</a>                     + <span class="string">" '"</span> + instanceEntry.getValue().getName() + <span class="string">"'"</span>);
-<a name="248" href="#248">248</a>             instanceEntry.getValue().update(paramCache, instanceEntry.getKey(), <span class="string">""</span>);
-<a name="249" href="#249">249</a>         }
-<a name="250" href="#250">250</a> 
-<a name="251" href="#251">251</a>         <em class="comment">// at least compile (to be sure that all JPOs are updated)</em>
-<a name="252" href="#252">252</a>         <strong>if</strong> (_compile)  {
-<a name="253" href="#253">253</a>             <strong>for</strong> (<strong>final</strong> Map.Entry&lt;File,AbstractObject_mxJPO> instanceEntry : instances.entrySet())  {
-<a name="254" href="#254">254</a>                 <strong>try</strong>  {
-<a name="255" href="#255">255</a>                     <strong>if</strong> (instanceEntry.getValue().compile(paramCache))  {
-<a name="256" href="#256">256</a>                         paramCache.logInfo(<span class="string">"compiled "</span> + instanceEntry.getValue().getTypeDef().getLogging()
-<a name="257" href="#257">257</a>                                 + <span class="string">" '"</span> + instanceEntry.getValue().getName() + <span class="string">"'"</span>);
-<a name="258" href="#258">258</a>                     }
-<a name="259" href="#259">259</a>                 } <strong>catch</strong> (<strong>final</strong> Exception e)  {
-<a name="260" href="#260">260</a>                     paramCache.logInfo(<span class="string">"compile of "</span> + instanceEntry.getValue().getTypeDef().getLogging()
-<a name="261" href="#261">261</a>                             + <span class="string">" '"</span> + instanceEntry.getValue().getName() + <span class="string">"' failed:\n"</span> + e.toString());
-<a name="262" href="#262">262</a>                 }
-<a name="263" href="#263">263</a>             }
-<a name="264" href="#264">264</a>         }
-<a name="265" href="#265">265</a> 
-<a name="266" href="#266">266</a>         <strong>return</strong> paramCache.getLogString();
-<a name="267" href="#267">267</a>     }
-<a name="268" href="#268">268</a> }
+<a name="143" href="#143">143</a> <strong>try</strong> {
+<a name="144" href="#144">144</a>         String ret = <span class="string">""</span>;
+<a name="145" href="#145">145</a> 
+<a name="146" href="#146">146</a>         <strong>final</strong> Map&lt;String,String> files = <strong>this</strong>.&lt;Map&lt;String,String>>decode(_args, 0);
+<a name="147" href="#147">147</a>         <strong>final</strong> <strong>boolean</strong> compile = <strong>this</strong>.&lt;Boolean>decode(_args, 1, false);
+<a name="148" href="#148">148</a>         <strong>final</strong> Map&lt;String,String> paramValues = <strong>this</strong>.&lt;Map&lt;String,String>>decode(_args, 2, <strong>null</strong>);
+<a name="149" href="#149">149</a> 
+<a name="150" href="#150">150</a>         <em class="comment">// create temporary directory</em>
+<a name="151" href="#151">151</a>         <strong>final</strong> File tmpDir = File.createTempFile(<span class="string">"Update"</span>, <span class="string">"tmp"</span>);
+<a name="152" href="#152">152</a>         tmpDir.delete();
+<a name="153" href="#153">153</a>         tmpDir.mkdir();
+<a name="154" href="#154">154</a> 
+<a name="155" href="#155">155</a>         <strong>final</strong> Set&lt;File> localFiles = <strong>new</strong> HashSet&lt;File>();
+<a name="156" href="#156">156</a>         <strong>try</strong>  {
+<a name="157" href="#157">157</a>             <em class="comment">// store all files in temporary directory</em>
+<a name="158" href="#158">158</a>             <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> fileEntry : files.entrySet())  {
+<a name="159" href="#159">159</a>                 <strong>final</strong> String fileName = (<strong>new</strong> File(fileEntry.getKey())).getName();
+<a name="160" href="#160">160</a> 
+<a name="161" href="#161">161</a>                 <strong>final</strong> File localFile = <strong>new</strong> File(tmpDir, fileName);
+<a name="162" href="#162">162</a>                 <strong>final</strong> Writer writer = <strong>new</strong> FileWriter(localFile);
+<a name="163" href="#163">163</a>                 writer.write(fileEntry.getValue());
+<a name="164" href="#164">164</a>                 writer.close();
+<a name="165" href="#165">165</a> 
+<a name="166" href="#166">166</a>                 localFiles.add(localFile);
+<a name="167" href="#167">167</a>             }
+<a name="168" href="#168">168</a> 
+<a name="169" href="#169">169</a>             <em class="comment">// and call update</em>
+<a name="170" href="#170">170</a>             ret = <strong>this</strong>.updateFiles(_context, paramValues, localFiles, compile);
+<a name="171" href="#171">171</a>         } <strong>finally</strong>  {
+<a name="172" href="#172">172</a>             <em class="comment">// at least remove all temporary stuff</em>
+<a name="173" href="#173">173</a>             <strong>for</strong> (<strong>final</strong> File localFile : localFiles)  {
+<a name="174" href="#174">174</a>                 localFile.delete();
+<a name="175" href="#175">175</a>             }
+<a name="176" href="#176">176</a>             tmpDir.delete();
+<a name="177" href="#177">177</a>         }
+<a name="178" href="#178">178</a> 
+<a name="179" href="#179">179</a>         <strong>return</strong> ret;
+<a name="180" href="#180">180</a> } <strong>catch</strong> (<strong>final</strong> Exception e)  {
+<a name="181" href="#181">181</a>     e.printStackTrace();
+<a name="182" href="#182">182</a>     <strong>throw</strong> e;
+<a name="183" href="#183">183</a> }
+<a name="184" href="#184">184</a>     }
+<a name="185" href="#185">185</a> 
+<a name="186" href="#186">186</a>     <em>/**<em>*</em></em>
+<a name="187" href="#187">187</a> <em>     * Updates all configurations items specified through given set of MX</em>
+<a name="188" href="#188">188</a> <em>     * update files.</em>
+<a name="189" href="#189">189</a> <em>     *</em>
+<a name="190" href="#190">190</a> <em>     * @param _context      MX context for this request</em>
+<a name="191" href="#191">191</a> <em>     * @param _paramValues  predefined parameters</em>
+<a name="192" href="#192">192</a> <em>     * @param _files        set of all files to update</em>
+<a name="193" href="#193">193</a> <em>     * @param _compile      if &lt;i>true&lt;/i> related JPOs are compiled; if</em>
+<a name="194" href="#194">194</a> <em>     *                      &lt;i>false&lt;/i> no JPOs are compiled</em>
+<a name="195" href="#195">195</a> <em>     * @return logging information from the update</em>
+<a name="196" href="#196">196</a> <em>     * @throws Exception if update for the &lt;code>_files&lt;/code> failed</em>
+<a name="197" href="#197">197</a> <em>     */</em>
+<a name="198" href="#198">198</a>     <strong>protected</strong> String updateFiles(<strong>final</strong> Context _context,
+<a name="199" href="#199">199</a>                                  <strong>final</strong> Map&lt;String,String> _paramValues,
+<a name="200" href="#200">200</a>                                  <strong>final</strong> Set&lt;File> _files,
+<a name="201" href="#201">201</a>                                  <strong>final</strong> <strong>boolean</strong> _compile)
+<a name="202" href="#202">202</a>             throws Exception
+<a name="203" href="#203">203</a>     {
+<a name="204" href="#204">204</a>         <em class="comment">// initialize mapping</em>
+<a name="205" href="#205">205</a>         <strong>final</strong> ParameterCache_mxJPO paramCache = <strong>new</strong> ParameterCache_mxJPO(_context, <strong>true</strong>, _paramValues);
+<a name="206" href="#206">206</a> 
+<a name="207" href="#207">207</a>         <em class="comment">// first found related type definition instances</em>
+<a name="208" href="#208">208</a>         <strong>final</strong> Map&lt;File,AbstractObject_mxJPO> instances = <strong>new</strong> TreeMap&lt;File,AbstractObject_mxJPO>();
+<a name="209" href="#209">209</a>         <strong>for</strong> (<strong>final</strong> File file : _files)  {
+<a name="210" href="#210">210</a>             <strong>boolean</strong> found = false;
+<a name="211" href="#211">211</a>             <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : paramCache.getMapping().getAllTypeDefs())  {
+<a name="212" href="#212">212</a>                 <strong>if</strong> (!typeDef.isFileMatchLast())  {
+<a name="213" href="#213">213</a>                     <strong>final</strong> AbstractObject_mxJPO instance = typeDef.newTypeInstance(<strong>null</strong>);
+<a name="214" href="#214">214</a>                     <strong>final</strong> String mxName = instance.extractMxName(paramCache, file);
+<a name="215" href="#215">215</a>                     <strong>if</strong> (mxName != <strong>null</strong>)  {
+<a name="216" href="#216">216</a>                         instances.put(file, typeDef.newTypeInstance(mxName));
+<a name="217" href="#217">217</a>                         found  = <strong>true</strong>;
+<a name="218" href="#218">218</a>                         <strong>break</strong>;
+<a name="219" href="#219">219</a>                     }
+<a name="220" href="#220">220</a>                 }
+<a name="221" href="#221">221</a>             }
+<a name="222" href="#222">222</a>             <strong>if</strong> (!found)  {
+<a name="223" href="#223">223</a>                 <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : paramCache.getMapping().getAllTypeDefs())  {
+<a name="224" href="#224">224</a>                     <strong>if</strong> (typeDef.isFileMatchLast())  {
+<a name="225" href="#225">225</a>                         <strong>final</strong> AbstractObject_mxJPO instance = typeDef.newTypeInstance(<strong>null</strong>);
+<a name="226" href="#226">226</a>                         <strong>final</strong> String mxName = instance.extractMxName(paramCache, file);
+<a name="227" href="#227">227</a>                         <strong>if</strong> (mxName != <strong>null</strong>)  {
+<a name="228" href="#228">228</a>                             instances.put(file, typeDef.newTypeInstance(mxName));
+<a name="229" href="#229">229</a>                             found = <strong>true</strong>;
+<a name="230" href="#230">230</a>                             <strong>break</strong>;
+<a name="231" href="#231">231</a>                         }
+<a name="232" href="#232">232</a>                     }
+<a name="233" href="#233">233</a>                 }
+<a name="234" href="#234">234</a>             }
+<a name="235" href="#235">235</a>         }
+<a name="236" href="#236">236</a> 
+<a name="237" href="#237">237</a>         <em class="comment">// check if objects must be created</em>
+<a name="238" href="#238">238</a>         <strong>final</strong> Map&lt;TypeDef_mxJPO,Set&lt;String>> allMxNames = <strong>new</strong> HashMap&lt;TypeDef_mxJPO,Set&lt;String>>();
+<a name="239" href="#239">239</a>         <strong>for</strong> (<strong>final</strong> AbstractObject_mxJPO instance : instances.values())  {
+<a name="240" href="#240">240</a>             <strong>if</strong> (!allMxNames.containsKey(instance.getTypeDef()))  {
+<a name="241" href="#241">241</a>                 allMxNames.put(instance.getTypeDef(), instance.getMxNames(paramCache));
+<a name="242" href="#242">242</a>             }
+<a name="243" href="#243">243</a>             <strong>if</strong> (!allMxNames.get(instance.getTypeDef()).contains(instance.getName()))  {
+<a name="244" href="#244">244</a>                 paramCache.logInfo(<span class="string">"created "</span> + instance.getTypeDef().getLogging() + <span class="string">" '"</span> + instance.getName() + <span class="string">"'"</span>);
+<a name="245" href="#245">245</a>                 instance.create(paramCache);
+<a name="246" href="#246">246</a>             }
+<a name="247" href="#247">247</a>         }
+<a name="248" href="#248">248</a> 
+<a name="249" href="#249">249</a>         <em class="comment">// update</em>
+<a name="250" href="#250">250</a>         <strong>for</strong> (<strong>final</strong> Map.Entry&lt;File,AbstractObject_mxJPO> instanceEntry : instances.entrySet())  {
+<a name="251" href="#251">251</a>             paramCache.logInfo(<span class="string">"updated "</span> + instanceEntry.getValue().getTypeDef().getLogging()
+<a name="252" href="#252">252</a>                     + <span class="string">" '"</span> + instanceEntry.getValue().getName() + <span class="string">"'"</span>);
+<a name="253" href="#253">253</a>             instanceEntry.getValue().update(paramCache, instanceEntry.getKey(), <span class="string">""</span>);
+<a name="254" href="#254">254</a>         }
+<a name="255" href="#255">255</a> 
+<a name="256" href="#256">256</a>         <em class="comment">// at least compile (to be sure that all JPOs are updated)</em>
+<a name="257" href="#257">257</a>         <strong>if</strong> (_compile)  {
+<a name="258" href="#258">258</a>             <strong>for</strong> (<strong>final</strong> Map.Entry&lt;File,AbstractObject_mxJPO> instanceEntry : instances.entrySet())  {
+<a name="259" href="#259">259</a>                 <strong>try</strong>  {
+<a name="260" href="#260">260</a>                     <strong>if</strong> (instanceEntry.getValue().compile(paramCache))  {
+<a name="261" href="#261">261</a>                         paramCache.logInfo(<span class="string">"compiled "</span> + instanceEntry.getValue().getTypeDef().getLogging()
+<a name="262" href="#262">262</a>                                 + <span class="string">" '"</span> + instanceEntry.getValue().getName() + <span class="string">"'"</span>);
+<a name="263" href="#263">263</a>                     }
+<a name="264" href="#264">264</a>                 } <strong>catch</strong> (<strong>final</strong> Exception e)  {
+<a name="265" href="#265">265</a>                     paramCache.logInfo(<span class="string">"compile of "</span> + instanceEntry.getValue().getTypeDef().getLogging()
+<a name="266" href="#266">266</a>                             + <span class="string">" '"</span> + instanceEntry.getValue().getName() + <span class="string">"' failed:\n"</span> + e.toString());
+<a name="267" href="#267">267</a>                 }
+<a name="268" href="#268">268</a>             }
+<a name="269" href="#269">269</a>         }
+<a name="270" href="#270">270</a> 
+<a name="271" href="#271">271</a>         <strong>return</strong> paramCache.getLogString();
+<a name="272" href="#272">272</a>     }
+<a name="273" href="#273">273</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

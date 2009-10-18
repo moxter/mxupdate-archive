@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 448 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-06-24 19:05:23 +0200 (Mi, 24 Jun 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 585 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-18 10:11:43 +0200 (So, 18 Okt 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -39,7 +39,7 @@
 <a name="30" href="#30">30</a>  <em> * Test class for policy exports.</em>
 <a name="31" href="#31">31</a>  <em> *</em>
 <a name="32" href="#32">32</a>  <em> * @author The MxUpdate Team</em>
-<a name="33" href="#33">33</a>  <em> * @version $Id: Policy.java 448 2009-06-24 17:05:23Z tim.moxter $</em>
+<a name="33" href="#33">33</a>  <em> * @version $Id: Policy.java 585 2009-10-18 08:11:43Z tim.moxter $</em>
 <a name="34" href="#34">34</a>  <em> */</em>
 <a name="35" href="#35">35</a>  @Test
 <a name="36" href="#36">36</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/export/datamodel/Policy.html">Policy</a>
@@ -76,7 +76,7 @@
 <a name="67" href="#67">67</a>      {
 <a name="68" href="#68">68</a>          <strong>this</strong>.mql(<span class="string">"add policy "</span> + Policy.POLICY_NAME + <span class="string">" type all"</span>);
 <a name="69" href="#69">69</a>  
-<a name="70" href="#70">70</a>          <strong>final</strong> Export export = <strong>this</strong>.export(CI.POLICY, Policy.POLICY_NAME);
+<a name="70" href="#70">70</a>          <strong>final</strong> Export export = <strong>this</strong>.export(CI.DM_POLICY, Policy.POLICY_NAME);
 <a name="71" href="#71">71</a>  
 <a name="72" href="#72">72</a>          Assert.assertEquals(export.getPath(), <span class="string">"datamodel/policy"</span>, <span class="string">"path is not correct"</span>);
 <a name="73" href="#73">73</a>          Assert.assertEquals(export.getFileName(),
@@ -99,7 +99,7 @@
 <a name="90" href="#90">90</a>          <strong>this</strong>.mql(<span class="string">"add policy "</span> + Policy.POLICY_NAME
 <a name="91" href="#91">91</a>                  + <span class="string">" state create"</span>);
 <a name="92" href="#92">92</a>  
-<a name="93" href="#93">93</a>          <strong>final</strong> Export export = <strong>this</strong>.export(CI.POLICY, Policy.POLICY_NAME);
+<a name="93" href="#93">93</a>          <strong>final</strong> Export export = <strong>this</strong>.export(CI.DM_POLICY, Policy.POLICY_NAME);
 <a name="94" href="#94">94</a>  
 <a name="95" href="#95">95</a>          Assert.assertEquals(export.getPath(), <span class="string">"datamodel/policy"</span>, <span class="string">"path is not correct"</span>);
 <a name="96" href="#96">96</a>          Assert.assertEquals(export.getFileName(),
@@ -124,7 +124,7 @@
 <a name="115" href="#115">115</a>         <strong>this</strong>.mql(<span class="string">"add policy "</span> + Policy.POLICY_NAME
 <a name="116" href="#116">116</a>                 + <span class="string">" state create property state_create value create"</span>);
 <a name="117" href="#117">117</a> 
-<a name="118" href="#118">118</a>         <strong>final</strong> Export export = <strong>this</strong>.export(CI.POLICY, Policy.POLICY_NAME);
+<a name="118" href="#118">118</a>         <strong>final</strong> Export export = <strong>this</strong>.export(CI.DM_POLICY, Policy.POLICY_NAME);
 <a name="119" href="#119">119</a> 
 <a name="120" href="#120">120</a>         Assert.assertEquals(export.getPath(), <span class="string">"datamodel/policy"</span>, <span class="string">"path is not correct"</span>);
 <a name="121" href="#121">121</a>         Assert.assertEquals(export.getFileName(),
@@ -148,7 +148,7 @@
 <a name="139" href="#139">139</a>         <strong>this</strong>.mql(<span class="string">"add policy "</span> + Policy.POLICY_NAME
 <a name="140" href="#140">140</a>                 + <span class="string">" state create property state_create value create property state_exists value create"</span>);
 <a name="141" href="#141">141</a> 
-<a name="142" href="#142">142</a>         <strong>final</strong> Export export = <strong>this</strong>.export(CI.POLICY, Policy.POLICY_NAME);
+<a name="142" href="#142">142</a>         <strong>final</strong> Export export = <strong>this</strong>.export(CI.DM_POLICY, Policy.POLICY_NAME);
 <a name="143" href="#143">143</a> 
 <a name="144" href="#144">144</a>         Assert.assertEquals(export.getPath(), <span class="string">"datamodel/policy"</span>, <span class="string">"path is not correct"</span>);
 <a name="145" href="#145">145</a>         Assert.assertEquals(export.getFileName(),

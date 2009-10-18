@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 515 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-08-16 16:08:51 +0200 (So, 16 Aug 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 585 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-18 10:11:43 +0200 (So, 18 Okt 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -34,9 +34,9 @@
 <a name="25" href="#25">25</a>  <strong>import</strong> org.mxupdate.test.AbstractTest;
 <a name="26" href="#26">26</a>  <strong>import</strong> org.mxupdate.test.ExportParser;
 <a name="27" href="#27">27</a>  <strong>import</strong> org.mxupdate.test.data.DataCollection;
-<a name="28" href="#28">28</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractAttribute;
+<a name="28" href="#28">28</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractAttributeData;
 <a name="29" href="#29">29</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AbstractDataWithTrigger;
-<a name="30" href="#30">30</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AttributeString;
+<a name="30" href="#30">30</a>  <strong>import</strong> org.mxupdate.test.data.datamodel.AttributeStringData;
 <a name="31" href="#31">31</a>  <strong>import</strong> org.mxupdate.test.data.program.AbstractProgramData;
 <a name="32" href="#32">32</a>  <strong>import</strong> org.testng.annotations.AfterClass;
 <a name="33" href="#33">33</a>  <strong>import</strong> org.testng.annotations.BeforeMethod;
@@ -47,7 +47,7 @@
 <a name="38" href="#38">38</a>  <em> * Test cases for the update and export of attributes.</em>
 <a name="39" href="#39">39</a>  <em> *</em>
 <a name="40" href="#40">40</a>  <em> * @author The MxUpdate Team</em>
-<a name="41" href="#41">41</a>  <em> * @version $Id: AttributeExportUpdate.java 515 2009-08-16 14:08:51Z tim.moxter $</em>
+<a name="41" href="#41">41</a>  <em> * @version $Id: AttributeExportUpdate.java 585 2009-10-18 08:11:43Z tim.moxter $</em>
 <a name="42" href="#42">42</a>  <em> */</em>
 <a name="43" href="#43">43</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/datamodel/AttributeExportUpdate.html">AttributeExportUpdate</a>
 <a name="44" href="#44">44</a>      <strong>extends</strong> <a href="../../../../../org/mxupdate/test/AbstractTest.html">AbstractTest</a>
@@ -77,9 +77,9 @@
 <a name="68" href="#68">68</a>  
 <a name="69" href="#69">69</a>          <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data6 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
 <a name="70" href="#70">70</a>          data5.getAttributeString(<span class="string">"Test"</span>)
-<a name="71" href="#71">71</a>                  .addRange(<strong>new</strong> AttributeString.Range(<span class="string">"="</span>, <span class="string">""</span>))
-<a name="72" href="#72">72</a>                  .addRange(<strong>new</strong> AttributeString.Range(<span class="string">"="</span>, <span class="string">"\&quot;"</span>))
-<a name="73" href="#73">73</a>                  .addRange(<strong>new</strong> AttributeString.Range(<span class="string">"="</span>, <span class="string">"Test"</span>))
+<a name="71" href="#71">71</a>                  .addRange(<strong>new</strong> AttributeStringData.Range(<span class="string">"="</span>, <span class="string">""</span>))
+<a name="72" href="#72">72</a>                  .addRange(<strong>new</strong> AttributeStringData.Range(<span class="string">"="</span>, <span class="string">"\&quot;"</span>))
+<a name="73" href="#73">73</a>                  .addRange(<strong>new</strong> AttributeStringData.Range(<span class="string">"="</span>, <span class="string">"Test"</span>))
 <a name="74" href="#74">74</a>                  .addTrigger(<strong>new</strong> AbstractDataWithTrigger.TriggerAction(<span class="string">"modify"</span>, data5.getMQLProgram(<span class="string">"Test Program"</span>)));
 <a name="75" href="#75">75</a>  
 <a name="76" href="#76">76</a>          <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a> data7 = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/DataCollection.html">DataCollection</a>(<strong>this</strong>);
@@ -107,8 +107,8 @@
 <a name="98" href="#98">98</a>      <strong>public</strong> <strong>void</strong> cleanup()
 <a name="99" href="#99">99</a>          throws MatrixException
 <a name="100" href="#100">100</a>     {
-<a name="101" href="#101">101</a>         <strong>this</strong>.cleanup(CI.ATTRIBUTE_STRING);
-<a name="102" href="#102">102</a>         <strong>this</strong>.cleanup(CI.MQL_PROGRAM);
+<a name="101" href="#101">101</a>         <strong>this</strong>.cleanup(CI.DM_ATTRIBUTE_STRING);
+<a name="102" href="#102">102</a>         <strong>this</strong>.cleanup(CI.PRG_MQL_PROGRAM);
 <a name="103" href="#103">103</a>     }
 <a name="104" href="#104">104</a> 
 <a name="105" href="#105">105</a>     <em>/**<em>*</em></em>
@@ -123,7 +123,7 @@
 <a name="114" href="#114">114</a>     {
 <a name="115" href="#115">115</a>         _data.create();
 <a name="116" href="#116">116</a> 
-<a name="117" href="#117">117</a>         <strong>for</strong> (<strong>final</strong> AbstractAttribute&lt;?> attribute : _data.getAttributes())  {
+<a name="117" href="#117">117</a>         <strong>for</strong> (<strong>final</strong> AbstractAttributeData&lt;?> attribute : _data.getAttributes())  {
 <a name="118" href="#118">118</a>             <em class="comment">// create and export</em>
 <a name="119" href="#119">119</a>             <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = attribute.export();
 <a name="120" href="#120">120</a>             attribute.checkExport(exportParser);
@@ -151,7 +151,7 @@
 <a name="142" href="#142">142</a>             program.create();
 <a name="143" href="#143">143</a>         }
 <a name="144" href="#144">144</a> 
-<a name="145" href="#145">145</a>         <strong>for</strong> (<strong>final</strong> AbstractAttribute&lt;?> attribute : _data.getAttributes())  {
+<a name="145" href="#145">145</a>         <strong>for</strong> (<strong>final</strong> AbstractAttributeData&lt;?> attribute : _data.getAttributes())  {
 <a name="146" href="#146">146</a>             <em class="comment">// update with non existing attribute</em>
 <a name="147" href="#147">147</a>             <strong>this</strong>.update(attribute);
 <a name="148" href="#148">148</a> 
