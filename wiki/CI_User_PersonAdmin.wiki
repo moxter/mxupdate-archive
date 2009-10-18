@@ -31,10 +31,14 @@ Following steps are done before the TCL update file is executed:
   * assigned site is removed
   * person specific workspace objects are deleted (depends on the parameters *UserIgnoreWSO4Persons* and *UserIgnoreWS4Users*)
   * password of the person expires (depends on the parameter *!UserPersonIgnorePswdNeverExpires*)
+  * disables that the person wants email (depends on the parameter *!UserPersonIgnoreWantsEmail*)
+  * enables that the person wants icon mail (depends on the parameter *!UserPersonIgnoreWantsIconMail*)
 
 ----
 
 = Parameter Definitions =
-|| *Name*                            || *Parameter*                                          || *Default Value*  || *Description* ||
-|| UserIgnoreWSO4Persons             || ‑‑ignoreworkspaceobjectsforperson, ‑‑ignorewso4person||                  || Defines the match of persons for which workspace objects are not handled (neither exported nor updated). Attention! A workspace object defined in the TCL update file are not ignored and will be created! ||
-|| !UserPersonIgnorePswdNeverExpires || ‑‑ignorepersonpasswordneverexpires                   || false            || If set the 'password never expires' - flag for persons is ignored. This means that the flag is not managed anymore from the MxUpdate Update tool and must (could be) managed e.g. in separate MQL update scripts. ||
+|| *Name*                            || *Parameter*                                                                || *Default Value* || *Description* ||
+|| UserIgnoreWSO4Persons             || ‑‑ignoreworkspaceobjectsforperson, ‑‑ignorewso4person {{{[PERSON_MATCH]}}} ||                 || Defines the match of persons for which workspace objects are not handled (neither exported nor updated). Attention! A workspace object defined in the TCL update file are not ignored and will be created! ||
+|| !UserPersonIgnorePswdNeverExpires || ‑‑ignorepersonpasswordneverexpires {{{[PERSON_MATCH]}}}                    ||                 || Defines the match of persons for whom the 'password never expires' - flag is not handled from the MxUpdate Update tool. They could be managed then e.g. in separate MQL update scripts. ||
+|| !UserPersonIgnoreWantsEmail       || ‑‑ignorepersonwantsemail {{{[PERSON_MATCH]}}}                              ||                 || Defines the match of persons for whom the 'wants email' - flag is not handled from the MxUpdate Update tool. They could be managed then e.g. in separate MQL update scripts. ||
+|| !UserPersonIgnoreWantsIconMail    || ‑‑ignorepersonwantsiconmail {{{[PERSON_MATCH]}}}                           ||                 || Defines the match of persons for whom the 'wants icon mail' - flag is not handled from the MxUpdate Update tool. They could be managed then e.g. in separate MQL update scripts. ||
