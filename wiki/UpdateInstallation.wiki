@@ -81,7 +81,7 @@ If the used MX version within the project does not support the configuration ite
 TypeDef.Dimension.ParameterList                     =
 TypeDef.Dimension.ParameterListOpposite             =
 
-TypeDefGroup.Admin.TypeDefList                      = IEFGlobalConfig,\
+TypeDefGroup.Admin.TypeDefList                      = IEFGlobalConfig,IEFGlobalRegistry,\
                                                       JPO,Program,\
                                                       AttributeBoolean,AttributeDate,AttributeString,\
                                                       AttributeInteger,AttributeReal,\
