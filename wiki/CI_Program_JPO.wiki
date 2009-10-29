@@ -2,10 +2,10 @@
 
 <wiki:toc max_depth="3"/>
 
+----
+
 = Introduction =
 The source code of JPOs are handled as configuration item. The name of the configuration item file is the name as used within MX appended by suffix {{{_mxJPO.java}}}. If the JPO name includes points ('.'), this points are interpreted as package name and the name of the file is the text after the last point appended {{{_mxJPO.java}}}.
-
-----
 
 == Example without Package ==
 JPO with name {{{emxPart}}} has the configuration item file name {{{emxPart_mxJPO.java}}}.
@@ -51,21 +51,21 @@ is used. At the end, the marker
 }}}
 must be defined.
 
+Each line of the TCL update code and the markers starts with double slashes '{{{//}}}'.
+
 == Example ==
 The following TCL update code defines an extra property "Execute" with the value "true". The code could be added e.g. in the Java file header.
 {{{
-/*
-################################################################################
-# START NEEDED MQL UPDATE FOR THIS JPO PROGRAM                                 #
-################################################################################
-
-mql mod program "JPO"  \
-    add property "Execute" value "true"
-
-################################################################################
-# END NEEDED MQL UPDATE FOR THIS JPO PROGRAM                                   #
-################################################################################
-*/
+//################################################################################
+//# START NEEDED MQL UPDATE FOR THIS JPO PROGRAM                                 #
+//################################################################################
+//
+//mql mod program "${NAME}"  \
+//    add property "Execute" value "true"
+//
+//################################################################################
+//# END NEEDED MQL UPDATE FOR THIS JPO PROGRAM                                   #
+//################################################################################
 }}}
 
 ----

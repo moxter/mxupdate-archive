@@ -1,0 +1,1 @@
+#summary Describes the special handling of all Programs as configuration item.

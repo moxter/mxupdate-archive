@@ -1,0 +1,14 @@
+#summary Describes the special handling of Pages as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+----
+
+= Introduction =
+
+----
+
+= MX related Limitations =
+Pages could not be linked with properties. This means that symbolic names could
+not be defined. A defined symbolic name in the configuration item file is
+ignored.
