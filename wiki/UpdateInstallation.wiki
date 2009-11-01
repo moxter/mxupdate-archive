@@ -84,11 +84,11 @@ script itself checks that a development structure is defined and installs
 
 === Dimensions ===
 If the used MX version within the project does not support the configuration
-item "[CI_DMDimensions Dimension]" the parameter list of the type definition
+item "[CI_DM_Dimension Dimension]" the parameter list of the type definition
 "Dimension" and type defintion groups "Admin" and "!DataModel" must be changed
 that they do not include definitions for the configuration item
-"[CI_DMDimensions Dimension]". Also the "extra" parameters for the
-[CI_DMDimensions dimensions] must be removed from the parameter list. So
+"[CI_DM_Dimension Dimension]". Also the "extra" parameters for the
+[CI_DM_Dimension dimensions] must be removed from the parameter list. So
 following lines must be added to the additional property file:
 {{{
 TypeDef.Dimension.ParameterList                     =
@@ -149,7 +149,7 @@ The installed default value is {{{true}}}.
 === Use !MxUpdate Update together with emxGerLibUpdate ===
 "!MxUpdate Update" and "emxGerLibUpdate" could be used together within one installation. The recommendation is to use only one tool.
 
-The Tool "emxGerLibUpdate" uses and installs other attribute and type names to handle administration objects which are business objects. For attributes this belongs to the author, installed date and version. For types it is the process type (which is called in !MxUpdate [CI_DMTriggerGroups trigger group]). So following lines must be defined to use !MxUpdate Update and emxGerLibUpdate together in one environment:
+The Tool "emxGerLibUpdate" uses and installs other attribute and type names to handle administration objects which are business objects. For attributes this belongs to the author, installed date and version. For types it is the process type (which is called in !MxUpdate [CI_DM_TriggerGroup trigger group]). So following lines must be defined to use !MxUpdate Update and emxGerLibUpdate together in one environment:
 
 {{{
 # use attribute names from emxGerLibUpdate
