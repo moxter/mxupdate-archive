@@ -67,22 +67,35 @@ For an explanation how to change this properties see also the
 == Alternatives to Manually Downloads ==
 
 === Using SVN External Link ===
-Instead of manually downloading the !MxUpdate Update deployment tool, an external link could be defined if [http://subversion.tigris.org/ Subversion] is used. E.g. following property entry "{{{svn:externals}}}" for a directory must be defined to reference version 0.3.0:
+Instead of manually downloading the !MxUpdate Update deployment tool, an
+external link could be defined if [http://subversion.tigris.org/ Subversion] is
+used. E.g. following property entry "{{{svn:externals}}}" for a directory must
+be defined to reference version 0.5.0:
 {{{
 source http://mxupdate.googlecode.com/svn/mxupdate-update/tags/V0.5.0
 }}}
-Because for [UpdateDevelopment development] another directory structure is used, the {{{MXUPDATE_PATH}}} must set to the {{{src/main}}} directory. The *{{{MxInstall.mql}}}* is located in {{{src/main/resources}}} sub path. The Script itself checks that a development structure is defined and installs !MxUpdate Update depending on this directory structure.
+Because for [UpdateDevelopment development] another directory structure is used,
+the {{{MXUPDATE_PATH}}} must set to the {{{src/main}}} directory.
+The *{{{MxInstall.mql}}}* is located in {{{src/main/resources}}} sub path. The
+script itself checks that a development structure is defined and installs
+!MxUpdate Update depending on this directory structure.
 
 == Support of old MX versions ==
 
 === Dimensions ===
-If the used MX version within the project does not support the configuration item "[CI_DMDimensions Dimension]" the parameter list of the type definition "Dimension" and type defintion groups "Admin" and "!DataModel" must be changed that they do not include definitions for the configuration item "[CI_DMDimensions Dimension]". Also the "extra" parameters for the [CI_DMDimensions dimensions] must be removed from the parameter list. So following lines must be added to the additional property file:
+If the used MX version within the project does not support the configuration
+item "[CI_DMDimensions Dimension]" the parameter list of the type definition
+"Dimension" and type defintion groups "Admin" and "!DataModel" must be changed
+that they do not include definitions for the configuration item
+"[CI_DMDimensions Dimension]". Also the "extra" parameters for the
+[CI_DMDimensions dimensions] must be removed from the parameter list. So
+following lines must be added to the additional property file:
 {{{
 TypeDef.Dimension.ParameterList                     =
 TypeDef.Dimension.ParameterListOpposite             =
 
 TypeDefGroup.Admin.TypeDefList                      = IEFGlobalConfig,IEFGlobalRegistry,\
-                                                      JPO,Program,\
+                                                      JPO,Program,Page,\
                                                       AttributeBoolean,AttributeDate,AttributeString,\
                                                       AttributeInteger,AttributeReal,\
                                                       Expression,Format,Interface,Policy,Relationship,Rule,Type,\
@@ -103,6 +116,19 @@ ParameterDef.DMDimAllowUpdateUnitMult.ParameterList =
 ParameterDef.DMDimAllowUpdateUnitOffs.ParameterList =
 }}}
 For a deeper explanation see key "[UpdatePropertyFileFormat_TypeDef TypeDef]" and key "[UpdatePropertyFileFormat_TypeDefGroup TypeDefGroup]" of the property file format.
+
+=== Encoding Issue of Programs ===
+Old MX versions does not encodes for programs double closing square brackets
+correct. In this case following error is shown:
+{{{
+    org.xml.sax.SAXParseException: The content of elements must consist of well-formed character data or markup.
+}}}
+Then the encoding work-around for programs must be activated:
+{{{
+ParameterDef.ProgramUseEncodingWorkAround.Default = true
+}}}
+For more information see the documentation for the
+[CI_Program program configuration item].
 
 === Relationship as from / to side for Relationships ===
 If the used MX version within the project does not support the feature to use also relationships as from / to side the property "DMRelationSupportRelCons" must be changed and set to {{{false}}}. So following line must be added to the additional property file:
