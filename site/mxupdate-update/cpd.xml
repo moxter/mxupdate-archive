@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
-<duplication lines="34" tokens="115">
-<file line="163" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Channel_mxJPO.java"/>
-<file line="154" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Portal_mxJPO.java"/>
+<duplication lines="34" tokens="117">
+<file line="158" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Channel_mxJPO.java"/>
+<file line="149" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Portal_mxJPO.java"/>
 <codefragment>
 <![CDATA[
             sub.put(channelRef.column, channelRef);
@@ -27,10 +27,10 @@
      * @param _out          writer instance to the TCL update file
      * @throws IOException if the TCL update code could not be written
      */
-    @Override
+    @Override()
     protected void writeObject(final ParameterCache_mxJPO _paramCache,
                                final Appendable _out)
-            throws IOException
+        throws IOException
     {
         _out.append(" \\\n    label \"").append(StringUtil_mxJPO.convertTcl(this.label)).append("\"");
         if (this.href != null)  {
@@ -42,9 +42,42 @@
 ]]>
 </codefragment>
 </duplication>
+<duplication lines="25" tokens="108">
+<file line="127" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/JPOProgram_mxJPO.java"/>
+<file line="100" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/MQLProgram_mxJPO.java"/>
+<codefragment>
+<![CDATA[
+    public MQLProgram_mxJPO(final TypeDef_mxJPO _typeDef,
+                            final String _mxName)
+    {
+        super(_typeDef, _mxName);
+    }
+
+    /**
+     * Searches for all programs which are not JPOs and returns this list.
+     *
+     * @param _paramCache   parameter cache
+     * @return set of all program names (which are not JPOs)
+     * @throws MatrixException if the &quot;<code>list program</code>&quot;
+     *                         failed which is used to evaluate the JPO names
+     */
+    @Override()
+    public Set<String> getMxNames(final ParameterCache_mxJPO _paramCache)
+        throws MatrixException
+    {
+        final StringBuilder cmd = new StringBuilder()
+                .append("list program * select name isjavaprogram dump \"\t\"");
+        final Set<String> ret = new TreeSet<String>();
+        for (final String name : MqlUtil_mxJPO.execMql(_paramCache, cmd).split("\n"))  {
+            if (!"".equals(name))  {
+                final String[] nameArr = name.split("\t");
+                if (!"TRUE".equals(nameArr[1]))  {
+]]>
+</codefragment>
+</duplication>
 <duplication lines="44" tokens="107">
-<file line="127" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/user/Group_mxJPO.java"/>
-<file line="195" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/user/Role_mxJPO.java"/>
+<file line="122" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/user/Group_mxJPO.java"/>
+<file line="190" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/user/Role_mxJPO.java"/>
 <codefragment>
 <![CDATA[
                 .append(StringUtil_mxJPO.convertTcl(role))
@@ -94,39 +127,6 @@
 ]]>
 </codefragment>
 </duplication>
-<duplication lines="25" tokens="106">
-<file line="117" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/JPOProgram_mxJPO.java"/>
-<file line="87" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/MQLProgram_mxJPO.java"/>
-<codefragment>
-<![CDATA[
-    public MQLProgram_mxJPO(final TypeDef_mxJPO _typeDef,
-                         final String _mxName)
-    {
-        super(_typeDef, _mxName);
-    }
-
-    /**
-     * Searches for all programs which are not JPOs and returns this list.
-     *
-     * @param _paramCache   parameter cache
-     * @return set of all program names (which are not JPOs)
-     * @throws MatrixException if the &quot;<code>list program</code>&quot;
-     *                         failed which is used to evaluate the JPO names
-     */
-    @Override
-    public Set<String> getMxNames(final ParameterCache_mxJPO _paramCache)
-            throws MatrixException
-    {
-        final StringBuilder cmd = new StringBuilder()
-                .append("list program * select name isjavaprogram dump \"\t\"");
-        final Set<String> ret = new TreeSet<String>();
-        for (final String name : MqlUtil_mxJPO.execMql(_paramCache, cmd).split("\n"))  {
-            if (!"".equals(name))  {
-                final String[] nameArr = name.split("\t");
-                if (!"TRUE".equals(nameArr[1]))  {
-]]>
-</codefragment>
-</duplication>
 <duplication lines="23" tokens="105">
 <file line="292" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/util/StringUtil_mxJPO.java"/>
 <file line="417" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/util/StringUtil_mxJPO.java"/>
@@ -155,6 +155,59 @@
                     ret.append('\"');
                 }
                 ret.append(StringUtil_mxJPO.convertMql(elem));
+]]>
+</codefragment>
+</duplication>
+<duplication lines="45" tokens="103">
+<file line="364" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/AbstractAttribute_mxJPO.java"/>
+<file line="162" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Form_mxJPO.java"/>
+<codefragment>
+<![CDATA[
+                        .append(" \"").append(StringUtil_mxJPO.convertMql(this.getName())).append("\" web;");
+        MqlUtil_mxJPO.execMql(_paramCache, cmd);
+    }
+
+    /**
+     * The method overwrites the original method to append the MQL statements
+     * in the <code>_preMQLCode</code> to reset this form. Following steps are
+     * done:
+     * <ul>
+     * <li>remove all fields of the web form</li>
+     * <li>set to not hidden</li>
+     * </ul>
+     * The update of web forms works sometimes not correctly for the correct
+     * order of fields. Because of that, the TCL update code is includes a
+     * {@link #ORDER_PROC procedure} to order the form fields.
+     *
+     * @param _paramCache       parameter cache
+     * @param _preMQLCode       MQL statements which must be called before the
+     *                          TCL code is executed
+     * @param _postMQLCode      MQL statements which must be called after the
+     *                          TCL code is executed
+     * @param _preTCLCode       TCL code which is defined before the source
+     *                          file is sourced
+     * @param _tclVariables     map of all TCL variables where the key is the
+     *                          name and the value is value of the TCL variable
+     *                          (the value is automatically converted to TCL
+     *                          syntax!)
+     * @param _sourceFile       souce file with the TCL code to update
+     * @throws Exception if the update from derived class failed
+     * @see #ORDER_PROC
+     */
+    @Override()
+    protected void update(final ParameterCache_mxJPO _paramCache,
+                          final CharSequence _preMQLCode,
+                          final CharSequence _postMQLCode,
+                          final CharSequence _preTCLCode,
+                          final Map<String,String> _tclVariables,
+                          final File _sourceFile)
+        throws Exception
+    {
+        // reset HRef, description, alt and label
+        final StringBuilder preMQLCode = new StringBuilder()
+                .append("escape mod ").append(this.getTypeDef().getMxAdminName())
+                .append(" \"").append(StringUtil_mxJPO.convertMql(this.getName())).append('\"')
+                .append(" !hidden");
 ]]>
 </codefragment>
 </duplication>

@@ -42,7 +42,7 @@
   
     
             <div class="xleft">
-        Last Published: 19-October-2009
+        Last Published: 02-November-2009
                       </div>
             <div class="xright">            <a href="http://code.google.com/p/mxupdate/" class="externalLink">MxUpdate</a>
             |
@@ -167,17 +167,17 @@
     <div id="bodyColumn">
       <div id="contentBox">
         <div class="section"><h2>CPD Results</h2>
-<p>The following document contains the results of PMD's  <a class="externalLink" href="http://pmd.sourceforge.net/cpd.html">CPD</a> 4.2.2.</p>
+<p>The following document contains the results of PMD's  <a href="http://pmd.sourceforge.net/cpd.html" class="externalLink">CPD</a> 4.2.2.</p>
 </div>
 <div class="section"><h2>Duplications</h2>
 <p><table class="bodyTable"><tr class="a"><th>File</th>
 <th>Line</th>
 </tr>
 <tr class="b"><td>org/mxupdate/update/userinterface/Channel_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/userinterface/Channel_mxJPO.html#163">163</a></td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Channel_mxJPO.html#158">158</a></td>
 </tr>
 <tr class="a"><td>org/mxupdate/update/userinterface/Portal_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/userinterface/Portal_mxJPO.html#154">154</a></td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Portal_mxJPO.html#149">149</a></td>
 </tr>
 <tr class="b"><td colspan='2'><div class="source"><pre>            sub.put(channelRef.column, channelRef);
         }
@@ -201,10 +201,10 @@
      * @param _out          writer instance to the TCL update file
      * @throws IOException if the TCL update code could not be written
      */
-    @Override
+    @Override()
     protected void writeObject(final ParameterCache_mxJPO _paramCache,
                                final Appendable _out)
-            throws IOException
+        throws IOException
     {
         _out.append(&quot; \\\n    label \&quot;&quot;).append(StringUtil_mxJPO.convertTcl(this.label)).append(&quot;\&quot;&quot;);
         if (this.href != null)  {
@@ -219,11 +219,48 @@
 <p><table class="bodyTable"><tr class="a"><th>File</th>
 <th>Line</th>
 </tr>
+<tr class="b"><td>org/mxupdate/update/program/JPOProgram_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/program/JPOProgram_mxJPO.html#127">127</a></td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/program/MQLProgram_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/program/MQLProgram_mxJPO.html#100">100</a></td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>    public MQLProgram_mxJPO(final TypeDef_mxJPO _typeDef,
+                            final String _mxName)
+    {
+        super(_typeDef, _mxName);
+    }
+
+    /**
+     * Searches for all programs which are not JPOs and returns this list.
+     *
+     * @param _paramCache   parameter cache
+     * @return set of all program names (which are not JPOs)
+     * @throws MatrixException if the &amp;quot;&lt;code&gt;list program&lt;/code&gt;&amp;quot;
+     *                         failed which is used to evaluate the JPO names
+     */
+    @Override()
+    public Set&lt;String&gt; getMxNames(final ParameterCache_mxJPO _paramCache)
+        throws MatrixException
+    {
+        final StringBuilder cmd = new StringBuilder()
+                .append(&quot;list program * select name isjavaprogram dump \&quot;\t\&quot;&quot;);
+        final Set&lt;String&gt; ret = new TreeSet&lt;String&gt;();
+        for (final String name : MqlUtil_mxJPO.execMql(_paramCache, cmd).split(&quot;\n&quot;))  {
+            if (!&quot;&quot;.equals(name))  {
+                final String[] nameArr = name.split(&quot;\t&quot;);
+                if (!&quot;TRUE&quot;.equals(nameArr[1]))  {</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
 <tr class="b"><td>org/mxupdate/update/user/Group_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/user/Group_mxJPO.html#127">127</a></td>
+<td><a href="./xref/org/mxupdate/update/user/Group_mxJPO.html#122">122</a></td>
 </tr>
 <tr class="a"><td>org/mxupdate/update/user/Role_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/user/Role_mxJPO.html#195">195</a></td>
+<td><a href="./xref/org/mxupdate/update/user/Role_mxJPO.html#190">190</a></td>
 </tr>
 <tr class="b"><td colspan='2'><div class="source"><pre>                .append(StringUtil_mxJPO.convertTcl(role))
                 .append(&quot;\&quot; child \&quot;${NAME}\&quot;&quot;);
@@ -275,43 +312,6 @@
 <p><table class="bodyTable"><tr class="a"><th>File</th>
 <th>Line</th>
 </tr>
-<tr class="b"><td>org/mxupdate/update/program/JPOProgram_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/program/JPOProgram_mxJPO.html#117">117</a></td>
-</tr>
-<tr class="a"><td>org/mxupdate/update/program/MQLProgram_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/program/MQLProgram_mxJPO.html#87">87</a></td>
-</tr>
-<tr class="b"><td colspan='2'><div class="source"><pre>    public MQLProgram_mxJPO(final TypeDef_mxJPO _typeDef,
-                         final String _mxName)
-    {
-        super(_typeDef, _mxName);
-    }
-
-    /**
-     * Searches for all programs which are not JPOs and returns this list.
-     *
-     * @param _paramCache   parameter cache
-     * @return set of all program names (which are not JPOs)
-     * @throws MatrixException if the &amp;quot;&lt;code&gt;list program&lt;/code&gt;&amp;quot;
-     *                         failed which is used to evaluate the JPO names
-     */
-    @Override
-    public Set&lt;String&gt; getMxNames(final ParameterCache_mxJPO _paramCache)
-            throws MatrixException
-    {
-        final StringBuilder cmd = new StringBuilder()
-                .append(&quot;list program * select name isjavaprogram dump \&quot;\t\&quot;&quot;);
-        final Set&lt;String&gt; ret = new TreeSet&lt;String&gt;();
-        for (final String name : MqlUtil_mxJPO.execMql(_paramCache, cmd).split(&quot;\n&quot;))  {
-            if (!&quot;&quot;.equals(name))  {
-                final String[] nameArr = name.split(&quot;\t&quot;);
-                if (!&quot;TRUE&quot;.equals(nameArr[1]))  {</pre>
-</div>
-</td></tr>
-<table class="bodyTable"></p>
-<p><table class="bodyTable"><tr class="a"><th>File</th>
-<th>Line</th>
-</tr>
 <tr class="b"><td>org/mxupdate/update/util/StringUtil_mxJPO.java</td>
 <td><a href="./xref/org/mxupdate/update/util/StringUtil_mxJPO.html#292">292</a></td>
 </tr>
@@ -341,6 +341,63 @@
                     ret.append('\&quot;');
                 }
                 ret.append(StringUtil_mxJPO.convertMql(elem));</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/datamodel/AbstractAttribute_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/datamodel/AbstractAttribute_mxJPO.html#364">364</a></td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/userinterface/Form_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Form_mxJPO.html#162">162</a></td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>                        .append(&quot; \&quot;&quot;).append(StringUtil_mxJPO.convertMql(this.getName())).append(&quot;\&quot; web;&quot;);
+        MqlUtil_mxJPO.execMql(_paramCache, cmd);
+    }
+
+    /**
+     * The method overwrites the original method to append the MQL statements
+     * in the &lt;code&gt;_preMQLCode&lt;/code&gt; to reset this form. Following steps are
+     * done:
+     * &lt;ul&gt;
+     * &lt;li&gt;remove all fields of the web form&lt;/li&gt;
+     * &lt;li&gt;set to not hidden&lt;/li&gt;
+     * &lt;/ul&gt;
+     * The update of web forms works sometimes not correctly for the correct
+     * order of fields. Because of that, the TCL update code is includes a
+     * {@link #ORDER_PROC procedure} to order the form fields.
+     *
+     * @param _paramCache       parameter cache
+     * @param _preMQLCode       MQL statements which must be called before the
+     *                          TCL code is executed
+     * @param _postMQLCode      MQL statements which must be called after the
+     *                          TCL code is executed
+     * @param _preTCLCode       TCL code which is defined before the source
+     *                          file is sourced
+     * @param _tclVariables     map of all TCL variables where the key is the
+     *                          name and the value is value of the TCL variable
+     *                          (the value is automatically converted to TCL
+     *                          syntax!)
+     * @param _sourceFile       souce file with the TCL code to update
+     * @throws Exception if the update from derived class failed
+     * @see #ORDER_PROC
+     */
+    @Override()
+    protected void update(final ParameterCache_mxJPO _paramCache,
+                          final CharSequence _preMQLCode,
+                          final CharSequence _postMQLCode,
+                          final CharSequence _preTCLCode,
+                          final Map&lt;String,String&gt; _tclVariables,
+                          final File _sourceFile)
+        throws Exception
+    {
+        // reset HRef, description, alt and label
+        final StringBuilder preMQLCode = new StringBuilder()
+                .append(&quot;escape mod &quot;).append(this.getTypeDef().getMxAdminName())
+                .append(&quot; \&quot;&quot;).append(StringUtil_mxJPO.convertMql(this.getName())).append('\&quot;')
+                .append(&quot; !hidden&quot;);</pre>
 </div>
 </td></tr>
 <table class="bodyTable"></p>

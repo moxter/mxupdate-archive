@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 572 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-17 13:17:34 +0200 (Sa, 17 Okt 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 609 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-11-01 23:42:53 +0100 (So, 01 Nov 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -45,7 +45,7 @@
 <a name="36" href="#36">36</a>  <em> * Test cases for the export and update of inquiries.</em>
 <a name="37" href="#37">37</a>  <em> *</em>
 <a name="38" href="#38">38</a>  <em> * @author The MxUpdate Team</em>
-<a name="39" href="#39">39</a>  <em> * @version $Id: InquiryExportUpdate.java 572 2009-10-17 11:17:34Z tim.moxter $</em>
+<a name="39" href="#39">39</a>  <em> * @version $Id: InquiryExportUpdate.java 609 2009-11-01 22:42:53Z tim.moxter $</em>
 <a name="40" href="#40">40</a>  <em> */</em>
 <a name="41" href="#41">41</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/userinterface/InquiryExportUpdate.html">InquiryExportUpdate</a>
 <a name="42" href="#42">42</a>      <strong>extends</strong> AbstractDataExportUpdate&lt;InquiryData>
@@ -70,7 +70,7 @@
 <a name="61" href="#61">61</a>      @DataProvider(name = <span class="string">"inquires"</span>)
 <a name="62" href="#62">62</a>      <strong>public</strong> Object[][] getInquiries()
 <a name="63" href="#63">63</a>      {
-<a name="64" href="#64">64</a>          <strong>return</strong> <strong>this</strong>.prepareData(<span class="string">"command"</span>,
+<a name="64" href="#64">64</a>          <strong>return</strong> <strong>this</strong>.prepareData(<span class="string">"inquiry"</span>,
 <a name="65" href="#65">65</a>                  <strong>new</strong> Object[]{
 <a name="66" href="#66">66</a>                          <span class="string">"complex inquiry with all values and three arguments"</span>,
 <a name="67" href="#67">67</a>                          <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/userinterface/InquiryData.html">InquiryData</a>(<strong>this</strong>, <span class="string">"Test1"</span>)
@@ -115,45 +115,47 @@
 <a name="106" href="#106">106</a> <em>     * @param _inquiry      inquiry to test</em>
 <a name="107" href="#107">107</a> <em>     * @throws Exception if test failed</em>
 <a name="108" href="#108">108</a> <em>     */</em>
-<a name="109" href="#109">109</a>     @Test(dataProvider = <span class="string">"inquires"</span>, description = <span class="string">"test export of new created inquires"</span>)
-<a name="110" href="#110">110</a>     <strong>public</strong> <strong>void</strong> testExport(<strong>final</strong> String _description,
-<a name="111" href="#111">111</a>                            <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/userinterface/InquiryData.html">InquiryData</a> _inquiry)
-<a name="112" href="#112">112</a>         throws Exception
-<a name="113" href="#113">113</a>     {
-<a name="114" href="#114">114</a>         _inquiry.create();
-<a name="115" href="#115">115</a>         _inquiry.checkExport(_inquiry.export());
-<a name="116" href="#116">116</a>     }
-<a name="117" href="#117">117</a> 
-<a name="118" href="#118">118</a>     <em>/**<em>*</em></em>
-<a name="119" href="#119">119</a> <em>     * Tests an update of non existing inquiry. The result is tested by</em>
-<a name="120" href="#120">120</a> <em>     * exporting the inquiry and checking the result.</em>
-<a name="121" href="#121">121</a> <em>     *</em>
-<a name="122" href="#122">122</a> <em>     * @param _description  description of the test case</em>
-<a name="123" href="#123">123</a> <em>     * @param _inquiry      inquiry to test</em>
-<a name="124" href="#124">124</a> <em>     * @throws Exception if test failed</em>
-<a name="125" href="#125">125</a> <em>     */</em>
-<a name="126" href="#126">126</a>     @Test(dataProvider = <span class="string">"inquires"</span>, description = <span class="string">"test update of non existing inquiry"</span>)
-<a name="127" href="#127">127</a>     <strong>public</strong> <strong>void</strong> testUpdate(<strong>final</strong> String _description,
-<a name="128" href="#128">128</a>                            <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/userinterface/InquiryData.html">InquiryData</a> _inquiry)
-<a name="129" href="#129">129</a>         throws Exception
-<a name="130" href="#130">130</a>     {
-<a name="131" href="#131">131</a>         <em class="comment">// create referenced property value</em>
-<a name="132" href="#132">132</a>         <strong>for</strong> (<strong>final</strong> PropertyDef prop : _inquiry.getProperties())  {
-<a name="133" href="#133">133</a>             <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="134" href="#134">134</a>                 prop.getTo().create();
-<a name="135" href="#135">135</a>             }
-<a name="136" href="#136">136</a>         }
-<a name="137" href="#137">137</a> 
-<a name="138" href="#138">138</a>         <em class="comment">// first update with original content</em>
-<a name="139" href="#139">139</a>         <strong>this</strong>.update(_inquiry);
-<a name="140" href="#140">140</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _inquiry.export();
-<a name="141" href="#141">141</a>         _inquiry.checkExport(exportParser);
-<a name="142" href="#142">142</a> 
-<a name="143" href="#143">143</a>         <em class="comment">// second update with delivered content</em>
-<a name="144" href="#144">144</a>         <strong>this</strong>.update(_inquiry.getCIFileName(), exportParser.getOrigCode());
-<a name="145" href="#145">145</a>         _inquiry.checkExport(_inquiry.export());
-<a name="146" href="#146">146</a>     }
-<a name="147" href="#147">147</a> }
+<a name="109" href="#109">109</a>     @Test(dataProvider = <span class="string">"inquires"</span>,
+<a name="110" href="#110">110</a>           description = <span class="string">"test export of new created inquires"</span>)
+<a name="111" href="#111">111</a>     <strong>public</strong> <strong>void</strong> simpleExport(<strong>final</strong> String _description,
+<a name="112" href="#112">112</a>                              <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/userinterface/InquiryData.html">InquiryData</a> _inquiry)
+<a name="113" href="#113">113</a>         throws Exception
+<a name="114" href="#114">114</a>     {
+<a name="115" href="#115">115</a>         _inquiry.create();
+<a name="116" href="#116">116</a>         _inquiry.checkExport(_inquiry.export());
+<a name="117" href="#117">117</a>     }
+<a name="118" href="#118">118</a> 
+<a name="119" href="#119">119</a>     <em>/**<em>*</em></em>
+<a name="120" href="#120">120</a> <em>     * Tests an update of non existing inquiry. The result is tested by</em>
+<a name="121" href="#121">121</a> <em>     * exporting the inquiry and checking the result.</em>
+<a name="122" href="#122">122</a> <em>     *</em>
+<a name="123" href="#123">123</a> <em>     * @param _description  description of the test case</em>
+<a name="124" href="#124">124</a> <em>     * @param _inquiry      inquiry to test</em>
+<a name="125" href="#125">125</a> <em>     * @throws Exception if test failed</em>
+<a name="126" href="#126">126</a> <em>     */</em>
+<a name="127" href="#127">127</a>     @Test(dataProvider = <span class="string">"inquires"</span>,
+<a name="128" href="#128">128</a>           description = <span class="string">"test update of non existing inquiry"</span>)
+<a name="129" href="#129">129</a>     <strong>public</strong> <strong>void</strong> simpleUpdate(<strong>final</strong> String _description,
+<a name="130" href="#130">130</a>                              <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/userinterface/InquiryData.html">InquiryData</a> _inquiry)
+<a name="131" href="#131">131</a>         throws Exception
+<a name="132" href="#132">132</a>     {
+<a name="133" href="#133">133</a>         <em class="comment">// create referenced property value</em>
+<a name="134" href="#134">134</a>         <strong>for</strong> (<strong>final</strong> PropertyDef prop : _inquiry.getProperties())  {
+<a name="135" href="#135">135</a>             <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="136" href="#136">136</a>                 prop.getTo().create();
+<a name="137" href="#137">137</a>             }
+<a name="138" href="#138">138</a>         }
+<a name="139" href="#139">139</a> 
+<a name="140" href="#140">140</a>         <em class="comment">// first update with original content</em>
+<a name="141" href="#141">141</a>         <strong>this</strong>.update(_inquiry);
+<a name="142" href="#142">142</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _inquiry.export();
+<a name="143" href="#143">143</a>         _inquiry.checkExport(exportParser);
+<a name="144" href="#144">144</a> 
+<a name="145" href="#145">145</a>         <em class="comment">// second update with delivered content</em>
+<a name="146" href="#146">146</a>         <strong>this</strong>.update(_inquiry.getCIFileName(), exportParser.getOrigCode());
+<a name="147" href="#147">147</a>         _inquiry.checkExport(_inquiry.export());
+<a name="148" href="#148">148</a>     }
+<a name="149" href="#149">149</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

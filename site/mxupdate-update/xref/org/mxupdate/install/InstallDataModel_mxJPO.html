@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 576 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-17 15:16:03 +0200 (Sa, 17 Okt 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 593 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-19 09:31:58 +0200 (Mo, 19 Okt 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -58,7 +58,7 @@
 <a name="49" href="#49">49</a>  <em> * script.</em>
 <a name="50" href="#50">50</a>  <em> *</em>
 <a name="51" href="#51">51</a>  <em> * @author The MxUpdate Team</em>
-<a name="52" href="#52">52</a>  <em> * @version $Id: InstallDataModel_mxJPO.java 576 2009-10-17 13:16:03Z tim.moxter $</em>
+<a name="52" href="#52">52</a>  <em> * @version $Id: InstallDataModel_mxJPO.java 593 2009-10-19 07:31:58Z tim.moxter $</em>
 <a name="53" href="#53">53</a>  <em> */</em>
 <a name="54" href="#54">54</a>  <strong>public</strong> <strong>class</strong> InstallDataModel_mxJPO
 <a name="55" href="#55">55</a>  {
@@ -171,14 +171,14 @@
 <a name="162" href="#162">162</a>     <em>/**<em>*</em></em>
 <a name="163" href="#163">163</a> <em>     * Name of the type definition for JPO programs.</em>
 <a name="164" href="#164">164</a> <em>     *</em>
-<a name="165" href="#165">165</a> <em>     * @see #registerPrograms(ParameterCache_mxJPO)</em>
+<a name="165" href="#165">165</a> <em>     * @see #registerPrograms(ParameterCache_mxJPO, String, String, String, String, String)</em>
 <a name="166" href="#166">166</a> <em>     */</em>
 <a name="167" href="#167">167</a>     <strong>private</strong> <strong>static</strong> <strong>final</strong> String TYPEDEF_JPO = <span class="string">"JPO"</span>;
 <a name="168" href="#168">168</a> 
 <a name="169" href="#169">169</a>     <em>/**<em>*</em></em>
 <a name="170" href="#170">170</a> <em>     * Name of the type definition for MQL programs.</em>
 <a name="171" href="#171">171</a> <em>     *</em>
-<a name="172" href="#172">172</a> <em>     * @see #registerPrograms(ParameterCache_mxJPO)</em>
+<a name="172" href="#172">172</a> <em>     * @see #registerPrograms(ParameterCache_mxJPO, String, String, String, String, String)</em>
 <a name="173" href="#173">173</a> <em>     */</em>
 <a name="174" href="#174">174</a>     <strong>private</strong> <strong>static</strong> <strong>final</strong> String TYPEDEF_MQL = <span class="string">"Program"</span>;
 <a name="175" href="#175">175</a> 
@@ -193,7 +193,7 @@
 <a name="184" href="#184">184</a> <em>     * MQL statement to list of MxUpdate Update programs for which the symbolic</em>
 <a name="185" href="#185">185</a> <em>     * names must be registered.</em>
 <a name="186" href="#186">186</a> <em>     *</em>
-<a name="187" href="#187">187</a> <em>     * @see #registerPrograms(ParameterCache_mxJPO)</em>
+<a name="187" href="#187">187</a> <em>     * @see #registerPrograms(ParameterCache_mxJPO, String, String, String, String, String)</em>
 <a name="188" href="#188">188</a> <em>     */</em>
 <a name="189" href="#189">189</a>     <strong>private</strong> <strong>static</strong> <strong>final</strong> String LIST_MXUPDATE_PROGRAMS
 <a name="190" href="#190">190</a>             = <span class="string">"escape list program MxUpdate,org.mxupdate* select name isjavaprogram dump @"</span>;

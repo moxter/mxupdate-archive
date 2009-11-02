@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 583 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-18 03:09:22 +0200 (So, 18 Okt 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 611 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-11-02 01:20:36 +0100 (Mo, 02 Nov 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -51,615 +51,610 @@
 <a name="42" href="#42">42</a>  <em> * The class is used to handle administration persons.</em>
 <a name="43" href="#43">43</a>  <em> *</em>
 <a name="44" href="#44">44</a>  <em> * @author The MxUpdate Team</em>
-<a name="45" href="#45">45</a>  <em> * @version $Id: PersonAdmin_mxJPO.java 583 2009-10-18 01:09:22Z tim.moxter $</em>
+<a name="45" href="#45">45</a>  <em> * @version $Id: PersonAdmin_mxJPO.java 611 2009-11-02 00:20:36Z tim.moxter $</em>
 <a name="46" href="#46">46</a>  <em> */</em>
 <a name="47" href="#47">47</a>  <strong>public</strong> <strong>class</strong> PersonAdmin_mxJPO
-<a name="48" href="#48">48</a>          <strong>extends</strong> AbstractUser_mxJPO
+<a name="48" href="#48">48</a>      <strong>extends</strong> AbstractUser_mxJPO
 <a name="49" href="#49">49</a>  {
 <a name="50" href="#50">50</a>      <em>/**<em>*</em></em>
-<a name="51" href="#51">51</a>  <em>     * Defines the serialize version unique identifier.</em>
-<a name="52" href="#52">52</a>  <em>     */</em>
-<a name="53" href="#53">53</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> <strong>long</strong> serialVersionUID = -8458972437612839433L;
-<a name="54" href="#54">54</a>  
-<a name="55" href="#55">55</a>      <em>/**<em>*</em></em>
-<a name="56" href="#56">56</a>  <em>     * Set of all ignored URLs from the XML definition for persons.</em>
-<a name="57" href="#57">57</a>  <em>     *</em>
-<a name="58" href="#58">58</a>  <em>     * @see #parse(String, String)</em>
-<a name="59" href="#59">59</a>  <em>     */</em>
-<a name="60" href="#60">60</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> Set&lt;String> IGNORED_URLS = <strong>new</strong> HashSet&lt;String>();
-<a name="61" href="#61">61</a>      <strong>static</strong>  {
-<a name="62" href="#62">62</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/assignmentList"</span>);
-<a name="63" href="#63">63</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/assignmentList/assignment"</span>);
-<a name="64" href="#64">64</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/access"</span>);
-<a name="65" href="#65">65</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/adminAccess"</span>);
-<a name="66" href="#66">66</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/defaultApplication"</span>);
-<a name="67" href="#67">67</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/homeVault"</span>);
-<a name="68" href="#68">68</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/password"</span>);
-<a name="69" href="#69">69</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/passwordModification"</span>);
-<a name="70" href="#70">70</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/passwordModification/datetime"</span>);
-<a name="71" href="#71">71</a>      }
-<a name="72" href="#72">72</a>  
-<a name="73" href="#73">73</a>      <em>/**<em>*</em></em>
-<a name="74" href="#74">74</a>  <em>     * Defines the parameter for the match of persons for which workspace</em>
-<a name="75" href="#75">75</a>  <em>     * objects are not handled (neither exported nor updated).</em>
-<a name="76" href="#76">76</a>  <em>     *</em>
-<a name="77" href="#77">77</a>  <em>     * @see #ignoreWorkspaceObjects(ParameterCache_mxJPO)</em>
-<a name="78" href="#78">78</a>  <em>     */</em>
-<a name="79" href="#79">79</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String PARAM_IGNORE_WSO_PERSONS = <span class="string">"UserIgnoreWSO4Persons"</span>;
-<a name="80" href="#80">80</a>  
-<a name="81" href="#81">81</a>      <em>/**<em>*</em></em>
-<a name="82" href="#82">82</a>  <em>     * If the parameter is set the 'password never expires' - flag for persons</em>
-<a name="83" href="#83">83</a>  <em>     * is ignored. This means that the flag is not managed anymore from the</em>
-<a name="84" href="#84">84</a>  <em>     * MxUpdate Update tool.</em>
-<a name="85" href="#85">85</a>  <em>     *</em>
-<a name="86" href="#86">86</a>  <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="87" href="#87">87</a>  <em>     * @see #update(ParameterCache_mxJPO, CharSequence, CharSequence, CharSequence, Map, File)</em>
-<a name="88" href="#88">88</a>  <em>     */</em>
-<a name="89" href="#89">89</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String PARAM_IGNORE_PSWD_NEVER_EXPIRES = <span class="string">"UserPersonIgnorePswdNeverExpires"</span>;
-<a name="90" href="#90">90</a>  
-<a name="91" href="#91">91</a>      <em>/**<em>*</em></em>
-<a name="92" href="#92">92</a>  <em>     * If the parameter is set the 'wants email' - flag for persons is ignored.</em>
-<a name="93" href="#93">93</a>  <em>     * This means that the flag is not managed anymore from the MxUpdate Update</em>
-<a name="94" href="#94">94</a>  <em>     * tool.</em>
-<a name="95" href="#95">95</a>  <em>     *</em>
-<a name="96" href="#96">96</a>  <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="97" href="#97">97</a>  <em>     * @see #update(ParameterCache_mxJPO, CharSequence, CharSequence, CharSequence, Map, File)</em>
-<a name="98" href="#98">98</a>  <em>     */</em>
-<a name="99" href="#99">99</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String PARAM_IGNORE_WANTS_EMAIL = <span class="string">"UserPersonIgnoreWantsEmail"</span>;
-<a name="100" href="#100">100</a> 
-<a name="101" href="#101">101</a>     <em>/**<em>*</em></em>
-<a name="102" href="#102">102</a> <em>     * If the parameter is set the 'wants icon mail' - flag for persons is</em>
-<a name="103" href="#103">103</a> <em>     * ignored. This means that the flag is not managed anymore from the</em>
-<a name="104" href="#104">104</a> <em>     * MxUpdate Update tool.</em>
-<a name="105" href="#105">105</a> <em>     *</em>
-<a name="106" href="#106">106</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="107" href="#107">107</a> <em>     * @see #update(ParameterCache_mxJPO, CharSequence, CharSequence, CharSequence, Map, File)</em>
-<a name="108" href="#108">108</a> <em>     */</em>
-<a name="109" href="#109">109</a>     <strong>private</strong> <strong>static</strong> <strong>final</strong> String PARAM_IGNORE_WANTS_ICON_MAIL = <span class="string">"UserPersonIgnoreWantsIconMail"</span>;
-<a name="110" href="#110">110</a> 
-<a name="111" href="#111">111</a>     <em>/**<em>*</em></em>
-<a name="112" href="#112">112</a> <em>     * Holds all group assignments of this person.</em>
-<a name="113" href="#113">113</a> <em>     *</em>
-<a name="114" href="#114">114</a> <em>     * @see #parse(String, String)</em>
-<a name="115" href="#115">115</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="116" href="#116">116</a> <em>     */</em>
-<a name="117" href="#117">117</a>     <strong>private</strong> <strong>final</strong> Set&lt;String> groups = <strong>new</strong> TreeSet&lt;String>();
-<a name="118" href="#118">118</a> 
-<a name="119" href="#119">119</a>     <em>/**<em>*</em></em>
-<a name="120" href="#120">120</a> <em>     * Holds all role assignments of this person.</em>
-<a name="121" href="#121">121</a> <em>     *</em>
-<a name="122" href="#122">122</a> <em>     * @see #parse(String, String)</em>
-<a name="123" href="#123">123</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="124" href="#124">124</a> <em>     */</em>
-<a name="125" href="#125">125</a>     <strong>private</strong> <strong>final</strong> Set&lt;String> roles = <strong>new</strong> TreeSet&lt;String>();
-<a name="126" href="#126">126</a> 
-<a name="127" href="#127">127</a>     <em>/**<em>*</em></em>
-<a name="128" href="#128">128</a> <em>     * Full name of the person.</em>
-<a name="129" href="#129">129</a> <em>     *</em>
-<a name="130" href="#130">130</a> <em>     * @see #parse(String, String)</em>
-<a name="131" href="#131">131</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="132" href="#132">132</a> <em>     */</em>
-<a name="133" href="#133">133</a>     <strong>private</strong> String fullName;
-<a name="134" href="#134">134</a> 
-<a name="135" href="#135">135</a>     <em>/**<em>*</em></em>
-<a name="136" href="#136">136</a> <em>     * Email address of the person.</em>
-<a name="137" href="#137">137</a> <em>     *</em>
-<a name="138" href="#138">138</a> <em>     * @see #parse(String, String)</em>
-<a name="139" href="#139">139</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="140" href="#140">140</a> <em>     */</em>
-<a name="141" href="#141">141</a>     <strong>private</strong> String email;
-<a name="142" href="#142">142</a> 
-<a name="143" href="#143">143</a>     <em>/**<em>*</em></em>
-<a name="144" href="#144">144</a> <em>     * Address of the person.</em>
-<a name="145" href="#145">145</a> <em>     *</em>
-<a name="146" href="#146">146</a> <em>     * @see #parse(String, String)</em>
-<a name="147" href="#147">147</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="148" href="#148">148</a> <em>     */</em>
-<a name="149" href="#149">149</a>     <strong>private</strong> String address;
-<a name="150" href="#150">150</a> 
-<a name="151" href="#151">151</a>     <em>/**<em>*</em></em>
-<a name="152" href="#152">152</a> <em>     * Fax number of the person.</em>
-<a name="153" href="#153">153</a> <em>     *</em>
-<a name="154" href="#154">154</a> <em>     * @see #parse(String, String)</em>
-<a name="155" href="#155">155</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="156" href="#156">156</a> <em>     */</em>
-<a name="157" href="#157">157</a>     <strong>private</strong> String fax;
-<a name="158" href="#158">158</a> 
-<a name="159" href="#159">159</a>     <em>/**<em>*</em></em>
-<a name="160" href="#160">160</a> <em>     * Phone number of the person.</em>
-<a name="161" href="#161">161</a> <em>     *</em>
-<a name="162" href="#162">162</a> <em>     * @see #parse(String, String)</em>
-<a name="163" href="#163">163</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="164" href="#164">164</a> <em>     */</em>
-<a name="165" href="#165">165</a>     <strong>private</strong> String phone;
-<a name="166" href="#166">166</a> 
-<a name="167" href="#167">167</a>     <em>/**<em>*</em></em>
-<a name="168" href="#168">168</a> <em>     * Default vault of the person.</em>
-<a name="169" href="#169">169</a> <em>     *</em>
-<a name="170" href="#170">170</a> <em>     * @see #parse(String, String)</em>
-<a name="171" href="#171">171</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="172" href="#172">172</a> <em>     */</em>
-<a name="173" href="#173">173</a>     <strong>private</strong> String vault;
-<a name="174" href="#174">174</a> 
-<a name="175" href="#175">175</a>     <em>/**<em>*</em></em>
-<a name="176" href="#176">176</a> <em>     * Is the person not active?</em>
-<a name="177" href="#177">177</a> <em>     *</em>
-<a name="178" href="#178">178</a> <em>     * @see #parse(String, String)</em>
-<a name="179" href="#179">179</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
-<a name="180" href="#180">180</a> <em>     */</em>
-<a name="181" href="#181">181</a>     <strong>private</strong> <strong>boolean</strong> isInactive = false;
-<a name="182" href="#182">182</a> 
-<a name="183" href="#183">183</a>     <em>/**<em>*</em></em>
-<a name="184" href="#184">184</a> <em>     * Is the person an application user?</em>
-<a name="185" href="#185">185</a> <em>     *</em>
-<a name="186" href="#186">186</a> <em>     * @see #parse(String, String)</em>
-<a name="187" href="#187">187</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
-<a name="188" href="#188">188</a> <em>     */</em>
-<a name="189" href="#189">189</a>     <strong>private</strong> <strong>boolean</strong> isApplicationUser = false;
-<a name="190" href="#190">190</a> 
-<a name="191" href="#191">191</a>     <em>/**<em>*</em></em>
-<a name="192" href="#192">192</a> <em>     * Is the person a full user?</em>
-<a name="193" href="#193">193</a> <em>     *</em>
-<a name="194" href="#194">194</a> <em>     * @see #parse(String, String)</em>
-<a name="195" href="#195">195</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
-<a name="196" href="#196">196</a> <em>     */</em>
-<a name="197" href="#197">197</a>     <strong>private</strong> <strong>boolean</strong> isFullUser = false;
-<a name="198" href="#198">198</a> 
-<a name="199" href="#199">199</a>     <em>/**<em>*</em></em>
-<a name="200" href="#200">200</a> <em>     * Is the person a business administrator?</em>
-<a name="201" href="#201">201</a> <em>     *</em>
-<a name="202" href="#202">202</a> <em>     * @see #parse(String, String)</em>
-<a name="203" href="#203">203</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
-<a name="204" href="#204">204</a> <em>     */</em>
-<a name="205" href="#205">205</a>     <strong>private</strong> <strong>boolean</strong> isBusinessAdministrator = false;
-<a name="206" href="#206">206</a> 
-<a name="207" href="#207">207</a>     <em>/**<em>*</em></em>
-<a name="208" href="#208">208</a> <em>     * Is the person a system administrator?</em>
-<a name="209" href="#209">209</a> <em>     *</em>
-<a name="210" href="#210">210</a> <em>     * @see #parse(String, String)</em>
-<a name="211" href="#211">211</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
-<a name="212" href="#212">212</a> <em>     */</em>
-<a name="213" href="#213">213</a>     <strong>private</strong> <strong>boolean</strong> isSystemAdministrator = false;
-<a name="214" href="#214">214</a> 
-<a name="215" href="#215">215</a>     <em>/**<em>*</em></em>
-<a name="216" href="#216">216</a> <em>     * Is the person a trusted user?</em>
-<a name="217" href="#217">217</a> <em>     *</em>
-<a name="218" href="#218">218</a> <em>     * @see #parse(String, String)</em>
-<a name="219" href="#219">219</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
-<a name="220" href="#220">220</a> <em>     */</em>
-<a name="221" href="#221">221</a>     <strong>private</strong> <strong>boolean</strong> isTrusted = false;
-<a name="222" href="#222">222</a> 
-<a name="223" href="#223">223</a>     <em>/**<em>*</em></em>
-<a name="224" href="#224">224</a> <em>     * Person wants email?</em>
-<a name="225" href="#225">225</a> <em>     *</em>
-<a name="226" href="#226">226</a> <em>     * @see #parse(String, String)</em>
-<a name="227" href="#227">227</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="228" href="#228">228</a> <em>     */</em>
-<a name="229" href="#229">229</a>     <strong>private</strong> <strong>boolean</strong> wantsEmail = false;
-<a name="230" href="#230">230</a> 
-<a name="231" href="#231">231</a>     <em>/**<em>*</em></em>
-<a name="232" href="#232">232</a> <em>     * Person wants (internal) icon mail.</em>
-<a name="233" href="#233">233</a> <em>     *</em>
-<a name="234" href="#234">234</a> <em>     * @see #parse(String, String)</em>
-<a name="235" href="#235">235</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="236" href="#236">236</a> <em>     */</em>
-<a name="237" href="#237">237</a>     <strong>private</strong> <strong>boolean</strong> wantsIconMail = false;
-<a name="238" href="#238">238</a> 
-<a name="239" href="#239">239</a>     <em>/**<em>*</em></em>
-<a name="240" href="#240">240</a> <em>     * Set of access for this person.</em>
-<a name="241" href="#241">241</a> <em>     *</em>
-<a name="242" href="#242">242</a> <em>     * @see #parse(String, String)</em>
-<a name="243" href="#243">243</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="244" href="#244">244</a> <em>     */</em>
-<a name="245" href="#245">245</a>     <strong>private</strong> <strong>final</strong> Set&lt;String> access = <strong>new</strong> TreeSet&lt;String>();
-<a name="246" href="#246">246</a> 
-<a name="247" href="#247">247</a>     <em>/**<em>*</em></em>
-<a name="248" href="#248">248</a> <em>     * Set of administration access for this person.</em>
-<a name="249" href="#249">249</a> <em>     *</em>
-<a name="250" href="#250">250</a> <em>     * @see #parse(String, String)</em>
-<a name="251" href="#251">251</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="252" href="#252">252</a> <em>     */</em>
-<a name="253" href="#253">253</a>     <strong>private</strong> <strong>final</strong> Set&lt;String> adminAccess = <strong>new</strong> TreeSet&lt;String>();
-<a name="254" href="#254">254</a> 
-<a name="255" href="#255">255</a>     <em>/**<em>*</em></em>
-<a name="256" href="#256">256</a> <em>     * Defines the name of the assigned default application.</em>
-<a name="257" href="#257">257</a> <em>     *</em>
-<a name="258" href="#258">258</a> <em>     * @see #parse(String, String)</em>
-<a name="259" href="#259">259</a> <em>     * @see #update(ParameterCache_mxJPO, CharSequence, CharSequence, CharSequence, Map, File)</em>
-<a name="260" href="#260">260</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="261" href="#261">261</a> <em>     */</em>
-<a name="262" href="#262">262</a>     <strong>private</strong> String defaultApplication;
-<a name="263" href="#263">263</a> 
-<a name="264" href="#264">264</a>     <em>/**<em>*</em></em>
-<a name="265" href="#265">265</a> <em>     * The password of the person never expires.</em>
-<a name="266" href="#266">266</a> <em>     *</em>
-<a name="267" href="#267">267</a> <em>     * @see #parse(String, String)</em>
-<a name="268" href="#268">268</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
-<a name="269" href="#269">269</a> <em>     */</em>
-<a name="270" href="#270">270</a>     <strong>private</strong> <strong>boolean</strong> passwordNeverExpires = false;
-<a name="271" href="#271">271</a> 
-<a name="272" href="#272">272</a>     <em>/**<em>*</em></em>
-<a name="273" href="#273">273</a> <em>     * Constructor used to initialize the type definition enumeration.</em>
-<a name="274" href="#274">274</a> <em>     *</em>
-<a name="275" href="#275">275</a> <em>     * @param _typeDef  person type definition</em>
-<a name="276" href="#276">276</a> <em>     * @param _mxName   MX name of the administration object</em>
-<a name="277" href="#277">277</a> <em>     */</em>
-<a name="278" href="#278">278</a>     <strong>public</strong> PersonAdmin_mxJPO(<strong>final</strong> TypeDef_mxJPO _typeDef,
-<a name="279" href="#279">279</a>                              <strong>final</strong> String _mxName)
-<a name="280" href="#280">280</a>     {
-<a name="281" href="#281">281</a>         <strong>super</strong>(_typeDef, _mxName);
-<a name="282" href="#282">282</a>     }
-<a name="283" href="#283">283</a> 
-<a name="284" href="#284">284</a>     <em>/**<em>*</em></em>
-<a name="285" href="#285">285</a> <em>     * Returns a set of found person names. First for all administration</em>
-<a name="286" href="#286">286</a> <em>     * persons are searched. Then, all persons are removed from the matching</em>
-<a name="287" href="#287">287</a> <em>     * set, for whom a related business person object exists. This new set is</em>
-<a name="288" href="#288">288</a> <em>     * returned.</em>
-<a name="289" href="#289">289</a> <em>     *</em>
-<a name="290" href="#290">290</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="291" href="#291">291</a> <em>     * @return set of person names for which no person business object exists</em>
-<a name="292" href="#292">292</a> <em>     * @throws MatrixException if the query for person objects failed</em>
-<a name="293" href="#293">293</a> <em>     */</em>
-<a name="294" href="#294">294</a>     @Override()
-<a name="295" href="#295">295</a>     <strong>public</strong> Set&lt;String> getMxNames(<strong>final</strong> ParameterCache_mxJPO _paramCache)
-<a name="296" href="#296">296</a>             throws MatrixException
-<a name="297" href="#297">297</a>     {
-<a name="298" href="#298">298</a>         <strong>final</strong> Set&lt;String> persons = <strong>super</strong>.getMxNames(_paramCache);
-<a name="299" href="#299">299</a> 
-<a name="300" href="#300">300</a>         <em class="comment">// evaluate for all business person object names</em>
-<a name="301" href="#301">301</a>         <strong>final</strong> StringList selects = <strong>new</strong> StringList();
-<a name="302" href="#302">302</a>         selects.addElement(<span class="string">"name"</span>);
-<a name="303" href="#303">303</a>         <strong>final</strong> Query query = <strong>new</strong> Query();
-<a name="304" href="#304">304</a>         query.open(_paramCache.getContext());
-<a name="305" href="#305">305</a>         query.setBusinessObjectType(<strong>this</strong>.getTypeDef().getMxBusType());
-<a name="306" href="#306">306</a>         <strong>final</strong> BusinessObjectWithSelectList list = query.select(_paramCache.getContext(), selects);
-<a name="307" href="#307">307</a>         query.close(_paramCache.getContext());
-<a name="308" href="#308">308</a> 
-<a name="309" href="#309">309</a>         <em class="comment">// remove the found persons which related business object</em>
-<a name="310" href="#310">310</a>         <strong>for</strong> (<strong>final</strong> Object mapObj : list)  {
-<a name="311" href="#311">311</a>             <strong>final</strong> BusinessObjectWithSelect map = (BusinessObjectWithSelect) mapObj;
-<a name="312" href="#312">312</a>             <strong>final</strong> String busName = (String) map.getSelectDataList(<span class="string">"name"</span>).get(0);
-<a name="313" href="#313">313</a>             persons.remove(busName);
-<a name="314" href="#314">314</a>         }
-<a name="315" href="#315">315</a> 
-<a name="316" href="#316">316</a>         <strong>return</strong> persons;
-<a name="317" href="#317">317</a>     }
-<a name="318" href="#318">318</a> 
-<a name="319" href="#319">319</a>     <em>/**<em>*</em></em>
-<a name="320" href="#320">320</a> <em>     * &lt;p>Parses all person specific URL values. This includes:</em>
-<a name="321" href="#321">321</a> <em>     * &lt;ul></em>
-<a name="322" href="#322">322</a> <em>     * &lt;li>{@link #groups assigned groups}&lt;/li></em>
-<a name="323" href="#323">323</a> <em>     * &lt;li>{@link #roles assigned roles}&lt;/li></em>
-<a name="324" href="#324">324</a> <em>     * &lt;li>{@link #access}&lt;/li></em>
-<a name="325" href="#325">325</a> <em>     * &lt;li>{@link #adminAccess business administration access}&lt;/li></em>
-<a name="326" href="#326">326</a> <em>     * &lt;li>is person {@link #isInactive inactive}&lt;/li></em>
-<a name="327" href="#327">327</a> <em>     * &lt;li>flag if the person is an {@link #isApplicationUser application user}</em>
-<a name="328" href="#328">328</a> <em>     *     &lt;/li></em>
-<a name="329" href="#329">329</a> <em>     * &lt;li>flag if the person is a {@link #isFullUser full user}&lt;/li></em>
-<a name="330" href="#330">330</a> <em>     * &lt;li>flag if the person is a</em>
-<a name="331" href="#331">331</a> <em>     *     {@link #isBusinessAdministrator business administrator}&lt;/li></em>
-<a name="332" href="#332">332</a> <em>     * &lt;li>flag if the person is a</em>
-<a name="333" href="#333">333</a> <em>     *     {@link #isSystemAdministrator system administrator}&lt;/li></em>
-<a name="334" href="#334">334</a> <em>     * &lt;li>flag if the person is a {@link #isTrusted trusted} person&lt;/li></em>
-<a name="335" href="#335">335</a> <em>     * &lt;li>person wants {@link #wantsEmail email}&lt;/li></em>
-<a name="336" href="#336">336</a> <em>     * &lt;li>person wants {@link #wantsIconMail icon mail}&lt;/li></em>
-<a name="337" href="#337">337</a> <em>     * &lt;li>{@link #address}&lt;/li></em>
-<a name="338" href="#338">338</a> <em>     * &lt;li>{@link #email email address}&lt;/li></em>
-<a name="339" href="#339">339</a> <em>     * &lt;li>{@link #fax fax number}&lt;/li></em>
-<a name="340" href="#340">340</a> <em>     * &lt;li>{@link #fullName full name}&lt;/li></em>
-<a name="341" href="#341">341</a> <em>     * &lt;li>{@link #vault default vault}&lt;/li></em>
-<a name="342" href="#342">342</a> <em>     * &lt;li>{@link #phone phone number}&lt;/li></em>
-<a name="343" href="#343">343</a> <em>     * &lt;li>{@link #passwordNeverExpires password never expires flag}&lt;/li></em>
-<a name="344" href="#344">344</a> <em>     * &lt;/ul>&lt;/p></em>
-<a name="345" href="#345">345</a> <em>     * &lt;p>If an &lt;code>_url&lt;/code> is included in {@link #IGNORED_URLS}, this</em>
-<a name="346" href="#346">346</a> <em>     * URL is ignored.&lt;/p></em>
-<a name="347" href="#347">347</a> <em>     *</em>
-<a name="348" href="#348">348</a> <em>     * @param _url      URL to parse</em>
-<a name="349" href="#349">349</a> <em>     * @param _content  content depending on the URL</em>
-<a name="350" href="#350">350</a> <em>     * @see #IGNORED_URLS</em>
-<a name="351" href="#351">351</a> <em>     */</em>
-<a name="352" href="#352">352</a>     @Override()
-<a name="353" href="#353">353</a>     <strong>protected</strong> <strong>void</strong> parse(<strong>final</strong> String _url,
-<a name="354" href="#354">354</a>                          <strong>final</strong> String _content)
-<a name="355" href="#355">355</a>     {
-<a name="356" href="#356">356</a>         <strong>if</strong> (!PersonAdmin_mxJPO.IGNORED_URLS.contains(_url))  {
-<a name="357" href="#357">357</a>             <strong>if</strong> (<span class="string">"/assignmentList/assignment/groupRef"</span>.equals(_url))  {
-<a name="358" href="#358">358</a>                 <strong>this</strong>.groups.add(_content);
-<a name="359" href="#359">359</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/assignmentList/assignment/roleRef"</span>.equals(_url))  {
-<a name="360" href="#360">360</a>                 <strong>this</strong>.roles.add(_content);
-<a name="361" href="#361">361</a> 
-<a name="362" href="#362">362</a>             } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/access"</span>))  {
-<a name="363" href="#363">363</a>                 <strong>this</strong>.access.add(_url.substring(8).replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
-<a name="364" href="#364">364</a> 
-<a name="365" href="#365">365</a>             } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/adminAccess"</span>))  {
-<a name="366" href="#366">366</a>                 <strong>this</strong>.adminAccess.add(_url.substring(13).replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
-<a name="367" href="#367">367</a> 
-<a name="368" href="#368">368</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/defaultApplication/applicationRef"</span>.equals(_url))  {
-<a name="369" href="#369">369</a>                 <strong>this</strong>.defaultApplication = _content;
-<a name="370" href="#370">370</a> 
-<a name="371" href="#371">371</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/inactive"</span>.equals(_url))  {
-<a name="372" href="#372">372</a>                 <strong>this</strong>.isInactive = <strong>true</strong>;
-<a name="373" href="#373">373</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/applicationsOnly"</span>.equals(_url))  {
-<a name="374" href="#374">374</a>                 <strong>this</strong>.isApplicationUser = <strong>true</strong>;
-<a name="375" href="#375">375</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/fullUser"</span>.equals(_url))  {
-<a name="376" href="#376">376</a>                 <strong>this</strong>.isFullUser = <strong>true</strong>;
-<a name="377" href="#377">377</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/businessAdministrator"</span>.equals(_url))  {
-<a name="378" href="#378">378</a>                 <strong>this</strong>.isBusinessAdministrator = <strong>true</strong>;
-<a name="379" href="#379">379</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/systemAdministrator"</span>.equals(_url))  {
-<a name="380" href="#380">380</a>                 <strong>this</strong>.isSystemAdministrator = <strong>true</strong>;
-<a name="381" href="#381">381</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/trusted"</span>.equals(_url))  {
-<a name="382" href="#382">382</a>                 <strong>this</strong>.isTrusted = <strong>true</strong>;
+<a name="51" href="#51">51</a>  <em>     * Set of all ignored URLs from the XML definition for persons.</em>
+<a name="52" href="#52">52</a>  <em>     *</em>
+<a name="53" href="#53">53</a>  <em>     * @see #parse(String, String)</em>
+<a name="54" href="#54">54</a>  <em>     */</em>
+<a name="55" href="#55">55</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> Set&lt;String> IGNORED_URLS = <strong>new</strong> HashSet&lt;String>();
+<a name="56" href="#56">56</a>      <strong>static</strong>  {
+<a name="57" href="#57">57</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/assignmentList"</span>);
+<a name="58" href="#58">58</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/assignmentList/assignment"</span>);
+<a name="59" href="#59">59</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/access"</span>);
+<a name="60" href="#60">60</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/adminAccess"</span>);
+<a name="61" href="#61">61</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/defaultApplication"</span>);
+<a name="62" href="#62">62</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/homeVault"</span>);
+<a name="63" href="#63">63</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/password"</span>);
+<a name="64" href="#64">64</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/passwordModification"</span>);
+<a name="65" href="#65">65</a>          PersonAdmin_mxJPO.IGNORED_URLS.add(<span class="string">"/passwordModification/datetime"</span>);
+<a name="66" href="#66">66</a>      }
+<a name="67" href="#67">67</a>  
+<a name="68" href="#68">68</a>      <em>/**<em>*</em></em>
+<a name="69" href="#69">69</a>  <em>     * Defines the parameter for the match of persons for which workspace</em>
+<a name="70" href="#70">70</a>  <em>     * objects are not handled (neither exported nor updated).</em>
+<a name="71" href="#71">71</a>  <em>     *</em>
+<a name="72" href="#72">72</a>  <em>     * @see #ignoreWorkspaceObjects(ParameterCache_mxJPO)</em>
+<a name="73" href="#73">73</a>  <em>     */</em>
+<a name="74" href="#74">74</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String PARAM_IGNORE_WSO_PERSONS = <span class="string">"UserIgnoreWSO4Persons"</span>;
+<a name="75" href="#75">75</a>  
+<a name="76" href="#76">76</a>      <em>/**<em>*</em></em>
+<a name="77" href="#77">77</a>  <em>     * If the parameter is set the 'password never expires' - flag for persons</em>
+<a name="78" href="#78">78</a>  <em>     * is ignored. This means that the flag is not managed anymore from the</em>
+<a name="79" href="#79">79</a>  <em>     * MxUpdate Update tool.</em>
+<a name="80" href="#80">80</a>  <em>     *</em>
+<a name="81" href="#81">81</a>  <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="82" href="#82">82</a>  <em>     * @see #update(ParameterCache_mxJPO, CharSequence, CharSequence, CharSequence, Map, File)</em>
+<a name="83" href="#83">83</a>  <em>     */</em>
+<a name="84" href="#84">84</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String PARAM_IGNORE_PSWD_NEVER_EXPIRES = <span class="string">"UserPersonIgnorePswdNeverExpires"</span>;
+<a name="85" href="#85">85</a>  
+<a name="86" href="#86">86</a>      <em>/**<em>*</em></em>
+<a name="87" href="#87">87</a>  <em>     * If the parameter is set the 'wants email' - flag for persons is ignored.</em>
+<a name="88" href="#88">88</a>  <em>     * This means that the flag is not managed anymore from the MxUpdate Update</em>
+<a name="89" href="#89">89</a>  <em>     * tool.</em>
+<a name="90" href="#90">90</a>  <em>     *</em>
+<a name="91" href="#91">91</a>  <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="92" href="#92">92</a>  <em>     * @see #update(ParameterCache_mxJPO, CharSequence, CharSequence, CharSequence, Map, File)</em>
+<a name="93" href="#93">93</a>  <em>     */</em>
+<a name="94" href="#94">94</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String PARAM_IGNORE_WANTS_EMAIL = <span class="string">"UserPersonIgnoreWantsEmail"</span>;
+<a name="95" href="#95">95</a>  
+<a name="96" href="#96">96</a>      <em>/**<em>*</em></em>
+<a name="97" href="#97">97</a>  <em>     * If the parameter is set the 'wants icon mail' - flag for persons is</em>
+<a name="98" href="#98">98</a>  <em>     * ignored. This means that the flag is not managed anymore from the</em>
+<a name="99" href="#99">99</a>  <em>     * MxUpdate Update tool.</em>
+<a name="100" href="#100">100</a> <em>     *</em>
+<a name="101" href="#101">101</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="102" href="#102">102</a> <em>     * @see #update(ParameterCache_mxJPO, CharSequence, CharSequence, CharSequence, Map, File)</em>
+<a name="103" href="#103">103</a> <em>     */</em>
+<a name="104" href="#104">104</a>     <strong>private</strong> <strong>static</strong> <strong>final</strong> String PARAM_IGNORE_WANTS_ICON_MAIL = <span class="string">"UserPersonIgnoreWantsIconMail"</span>;
+<a name="105" href="#105">105</a> 
+<a name="106" href="#106">106</a>     <em>/**<em>*</em></em>
+<a name="107" href="#107">107</a> <em>     * Holds all group assignments of this person.</em>
+<a name="108" href="#108">108</a> <em>     *</em>
+<a name="109" href="#109">109</a> <em>     * @see #parse(String, String)</em>
+<a name="110" href="#110">110</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="111" href="#111">111</a> <em>     */</em>
+<a name="112" href="#112">112</a>     <strong>private</strong> <strong>final</strong> Set&lt;String> groups = <strong>new</strong> TreeSet&lt;String>();
+<a name="113" href="#113">113</a> 
+<a name="114" href="#114">114</a>     <em>/**<em>*</em></em>
+<a name="115" href="#115">115</a> <em>     * Holds all role assignments of this person.</em>
+<a name="116" href="#116">116</a> <em>     *</em>
+<a name="117" href="#117">117</a> <em>     * @see #parse(String, String)</em>
+<a name="118" href="#118">118</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="119" href="#119">119</a> <em>     */</em>
+<a name="120" href="#120">120</a>     <strong>private</strong> <strong>final</strong> Set&lt;String> roles = <strong>new</strong> TreeSet&lt;String>();
+<a name="121" href="#121">121</a> 
+<a name="122" href="#122">122</a>     <em>/**<em>*</em></em>
+<a name="123" href="#123">123</a> <em>     * Full name of the person.</em>
+<a name="124" href="#124">124</a> <em>     *</em>
+<a name="125" href="#125">125</a> <em>     * @see #parse(String, String)</em>
+<a name="126" href="#126">126</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="127" href="#127">127</a> <em>     */</em>
+<a name="128" href="#128">128</a>     <strong>private</strong> String fullName;
+<a name="129" href="#129">129</a> 
+<a name="130" href="#130">130</a>     <em>/**<em>*</em></em>
+<a name="131" href="#131">131</a> <em>     * Email address of the person.</em>
+<a name="132" href="#132">132</a> <em>     *</em>
+<a name="133" href="#133">133</a> <em>     * @see #parse(String, String)</em>
+<a name="134" href="#134">134</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="135" href="#135">135</a> <em>     */</em>
+<a name="136" href="#136">136</a>     <strong>private</strong> String email;
+<a name="137" href="#137">137</a> 
+<a name="138" href="#138">138</a>     <em>/**<em>*</em></em>
+<a name="139" href="#139">139</a> <em>     * Address of the person.</em>
+<a name="140" href="#140">140</a> <em>     *</em>
+<a name="141" href="#141">141</a> <em>     * @see #parse(String, String)</em>
+<a name="142" href="#142">142</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="143" href="#143">143</a> <em>     */</em>
+<a name="144" href="#144">144</a>     <strong>private</strong> String address;
+<a name="145" href="#145">145</a> 
+<a name="146" href="#146">146</a>     <em>/**<em>*</em></em>
+<a name="147" href="#147">147</a> <em>     * Fax number of the person.</em>
+<a name="148" href="#148">148</a> <em>     *</em>
+<a name="149" href="#149">149</a> <em>     * @see #parse(String, String)</em>
+<a name="150" href="#150">150</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="151" href="#151">151</a> <em>     */</em>
+<a name="152" href="#152">152</a>     <strong>private</strong> String fax;
+<a name="153" href="#153">153</a> 
+<a name="154" href="#154">154</a>     <em>/**<em>*</em></em>
+<a name="155" href="#155">155</a> <em>     * Phone number of the person.</em>
+<a name="156" href="#156">156</a> <em>     *</em>
+<a name="157" href="#157">157</a> <em>     * @see #parse(String, String)</em>
+<a name="158" href="#158">158</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="159" href="#159">159</a> <em>     */</em>
+<a name="160" href="#160">160</a>     <strong>private</strong> String phone;
+<a name="161" href="#161">161</a> 
+<a name="162" href="#162">162</a>     <em>/**<em>*</em></em>
+<a name="163" href="#163">163</a> <em>     * Default vault of the person.</em>
+<a name="164" href="#164">164</a> <em>     *</em>
+<a name="165" href="#165">165</a> <em>     * @see #parse(String, String)</em>
+<a name="166" href="#166">166</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="167" href="#167">167</a> <em>     */</em>
+<a name="168" href="#168">168</a>     <strong>private</strong> String vault;
+<a name="169" href="#169">169</a> 
+<a name="170" href="#170">170</a>     <em>/**<em>*</em></em>
+<a name="171" href="#171">171</a> <em>     * Is the person not active?</em>
+<a name="172" href="#172">172</a> <em>     *</em>
+<a name="173" href="#173">173</a> <em>     * @see #parse(String, String)</em>
+<a name="174" href="#174">174</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
+<a name="175" href="#175">175</a> <em>     */</em>
+<a name="176" href="#176">176</a>     <strong>private</strong> <strong>boolean</strong> isInactive = false;
+<a name="177" href="#177">177</a> 
+<a name="178" href="#178">178</a>     <em>/**<em>*</em></em>
+<a name="179" href="#179">179</a> <em>     * Is the person an application user?</em>
+<a name="180" href="#180">180</a> <em>     *</em>
+<a name="181" href="#181">181</a> <em>     * @see #parse(String, String)</em>
+<a name="182" href="#182">182</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
+<a name="183" href="#183">183</a> <em>     */</em>
+<a name="184" href="#184">184</a>     <strong>private</strong> <strong>boolean</strong> isApplicationUser = false;
+<a name="185" href="#185">185</a> 
+<a name="186" href="#186">186</a>     <em>/**<em>*</em></em>
+<a name="187" href="#187">187</a> <em>     * Is the person a full user?</em>
+<a name="188" href="#188">188</a> <em>     *</em>
+<a name="189" href="#189">189</a> <em>     * @see #parse(String, String)</em>
+<a name="190" href="#190">190</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
+<a name="191" href="#191">191</a> <em>     */</em>
+<a name="192" href="#192">192</a>     <strong>private</strong> <strong>boolean</strong> isFullUser = false;
+<a name="193" href="#193">193</a> 
+<a name="194" href="#194">194</a>     <em>/**<em>*</em></em>
+<a name="195" href="#195">195</a> <em>     * Is the person a business administrator?</em>
+<a name="196" href="#196">196</a> <em>     *</em>
+<a name="197" href="#197">197</a> <em>     * @see #parse(String, String)</em>
+<a name="198" href="#198">198</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
+<a name="199" href="#199">199</a> <em>     */</em>
+<a name="200" href="#200">200</a>     <strong>private</strong> <strong>boolean</strong> isBusinessAdministrator = false;
+<a name="201" href="#201">201</a> 
+<a name="202" href="#202">202</a>     <em>/**<em>*</em></em>
+<a name="203" href="#203">203</a> <em>     * Is the person a system administrator?</em>
+<a name="204" href="#204">204</a> <em>     *</em>
+<a name="205" href="#205">205</a> <em>     * @see #parse(String, String)</em>
+<a name="206" href="#206">206</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
+<a name="207" href="#207">207</a> <em>     */</em>
+<a name="208" href="#208">208</a>     <strong>private</strong> <strong>boolean</strong> isSystemAdministrator = false;
+<a name="209" href="#209">209</a> 
+<a name="210" href="#210">210</a>     <em>/**<em>*</em></em>
+<a name="211" href="#211">211</a> <em>     * Is the person a trusted user?</em>
+<a name="212" href="#212">212</a> <em>     *</em>
+<a name="213" href="#213">213</a> <em>     * @see #parse(String, String)</em>
+<a name="214" href="#214">214</a> <em>     * @see #writeEnd(ParameterCache_mxJPO, Appendable)</em>
+<a name="215" href="#215">215</a> <em>     */</em>
+<a name="216" href="#216">216</a>     <strong>private</strong> <strong>boolean</strong> isTrusted = false;
+<a name="217" href="#217">217</a> 
+<a name="218" href="#218">218</a>     <em>/**<em>*</em></em>
+<a name="219" href="#219">219</a> <em>     * Person wants email?</em>
+<a name="220" href="#220">220</a> <em>     *</em>
+<a name="221" href="#221">221</a> <em>     * @see #parse(String, String)</em>
+<a name="222" href="#222">222</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="223" href="#223">223</a> <em>     */</em>
+<a name="224" href="#224">224</a>     <strong>private</strong> <strong>boolean</strong> wantsEmail = false;
+<a name="225" href="#225">225</a> 
+<a name="226" href="#226">226</a>     <em>/**<em>*</em></em>
+<a name="227" href="#227">227</a> <em>     * Person wants (internal) icon mail.</em>
+<a name="228" href="#228">228</a> <em>     *</em>
+<a name="229" href="#229">229</a> <em>     * @see #parse(String, String)</em>
+<a name="230" href="#230">230</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="231" href="#231">231</a> <em>     */</em>
+<a name="232" href="#232">232</a>     <strong>private</strong> <strong>boolean</strong> wantsIconMail = false;
+<a name="233" href="#233">233</a> 
+<a name="234" href="#234">234</a>     <em>/**<em>*</em></em>
+<a name="235" href="#235">235</a> <em>     * Set of access for this person.</em>
+<a name="236" href="#236">236</a> <em>     *</em>
+<a name="237" href="#237">237</a> <em>     * @see #parse(String, String)</em>
+<a name="238" href="#238">238</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="239" href="#239">239</a> <em>     */</em>
+<a name="240" href="#240">240</a>     <strong>private</strong> <strong>final</strong> Set&lt;String> access = <strong>new</strong> TreeSet&lt;String>();
+<a name="241" href="#241">241</a> 
+<a name="242" href="#242">242</a>     <em>/**<em>*</em></em>
+<a name="243" href="#243">243</a> <em>     * Set of administration access for this person.</em>
+<a name="244" href="#244">244</a> <em>     *</em>
+<a name="245" href="#245">245</a> <em>     * @see #parse(String, String)</em>
+<a name="246" href="#246">246</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="247" href="#247">247</a> <em>     */</em>
+<a name="248" href="#248">248</a>     <strong>private</strong> <strong>final</strong> Set&lt;String> adminAccess = <strong>new</strong> TreeSet&lt;String>();
+<a name="249" href="#249">249</a> 
+<a name="250" href="#250">250</a>     <em>/**<em>*</em></em>
+<a name="251" href="#251">251</a> <em>     * Defines the name of the assigned default application.</em>
+<a name="252" href="#252">252</a> <em>     *</em>
+<a name="253" href="#253">253</a> <em>     * @see #parse(String, String)</em>
+<a name="254" href="#254">254</a> <em>     * @see #update(ParameterCache_mxJPO, CharSequence, CharSequence, CharSequence, Map, File)</em>
+<a name="255" href="#255">255</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="256" href="#256">256</a> <em>     */</em>
+<a name="257" href="#257">257</a>     <strong>private</strong> String defaultApplication;
+<a name="258" href="#258">258</a> 
+<a name="259" href="#259">259</a>     <em>/**<em>*</em></em>
+<a name="260" href="#260">260</a> <em>     * The password of the person never expires.</em>
+<a name="261" href="#261">261</a> <em>     *</em>
+<a name="262" href="#262">262</a> <em>     * @see #parse(String, String)</em>
+<a name="263" href="#263">263</a> <em>     * @see #writeObject(ParameterCache_mxJPO, Appendable)</em>
+<a name="264" href="#264">264</a> <em>     */</em>
+<a name="265" href="#265">265</a>     <strong>private</strong> <strong>boolean</strong> passwordNeverExpires = false;
+<a name="266" href="#266">266</a> 
+<a name="267" href="#267">267</a>     <em>/**<em>*</em></em>
+<a name="268" href="#268">268</a> <em>     * Constructor used to initialize the type definition enumeration.</em>
+<a name="269" href="#269">269</a> <em>     *</em>
+<a name="270" href="#270">270</a> <em>     * @param _typeDef  person type definition</em>
+<a name="271" href="#271">271</a> <em>     * @param _mxName   MX name of the administration object</em>
+<a name="272" href="#272">272</a> <em>     */</em>
+<a name="273" href="#273">273</a>     <strong>public</strong> PersonAdmin_mxJPO(<strong>final</strong> TypeDef_mxJPO _typeDef,
+<a name="274" href="#274">274</a>                              <strong>final</strong> String _mxName)
+<a name="275" href="#275">275</a>     {
+<a name="276" href="#276">276</a>         <strong>super</strong>(_typeDef, _mxName);
+<a name="277" href="#277">277</a>     }
+<a name="278" href="#278">278</a> 
+<a name="279" href="#279">279</a>     <em>/**<em>*</em></em>
+<a name="280" href="#280">280</a> <em>     * Returns a set of found person names. First for all administration</em>
+<a name="281" href="#281">281</a> <em>     * persons are searched. Then, all persons are removed from the matching</em>
+<a name="282" href="#282">282</a> <em>     * set, for whom a related business person object exists. This new set is</em>
+<a name="283" href="#283">283</a> <em>     * returned.</em>
+<a name="284" href="#284">284</a> <em>     *</em>
+<a name="285" href="#285">285</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="286" href="#286">286</a> <em>     * @return set of person names for which no person business object exists</em>
+<a name="287" href="#287">287</a> <em>     * @throws MatrixException if the query for person objects failed</em>
+<a name="288" href="#288">288</a> <em>     */</em>
+<a name="289" href="#289">289</a>     @Override()
+<a name="290" href="#290">290</a>     <strong>public</strong> Set&lt;String> getMxNames(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="291" href="#291">291</a>         throws MatrixException
+<a name="292" href="#292">292</a>     {
+<a name="293" href="#293">293</a>         <strong>final</strong> Set&lt;String> persons = <strong>super</strong>.getMxNames(_paramCache);
+<a name="294" href="#294">294</a> 
+<a name="295" href="#295">295</a>         <em class="comment">// evaluate for all business person object names</em>
+<a name="296" href="#296">296</a>         <strong>final</strong> StringList selects = <strong>new</strong> StringList();
+<a name="297" href="#297">297</a>         selects.addElement(<span class="string">"name"</span>);
+<a name="298" href="#298">298</a>         <strong>final</strong> Query query = <strong>new</strong> Query();
+<a name="299" href="#299">299</a>         query.open(_paramCache.getContext());
+<a name="300" href="#300">300</a>         query.setBusinessObjectType(<strong>this</strong>.getTypeDef().getMxBusType());
+<a name="301" href="#301">301</a>         <strong>final</strong> BusinessObjectWithSelectList list = query.select(_paramCache.getContext(), selects);
+<a name="302" href="#302">302</a>         query.close(_paramCache.getContext());
+<a name="303" href="#303">303</a> 
+<a name="304" href="#304">304</a>         <em class="comment">// remove the found persons which related business object</em>
+<a name="305" href="#305">305</a>         <strong>for</strong> (<strong>final</strong> Object mapObj : list)  {
+<a name="306" href="#306">306</a>             <strong>final</strong> BusinessObjectWithSelect map = (BusinessObjectWithSelect) mapObj;
+<a name="307" href="#307">307</a>             <strong>final</strong> String busName = (String) map.getSelectDataList(<span class="string">"name"</span>).get(0);
+<a name="308" href="#308">308</a>             persons.remove(busName);
+<a name="309" href="#309">309</a>         }
+<a name="310" href="#310">310</a> 
+<a name="311" href="#311">311</a>         <strong>return</strong> persons;
+<a name="312" href="#312">312</a>     }
+<a name="313" href="#313">313</a> 
+<a name="314" href="#314">314</a>     <em>/**<em>*</em></em>
+<a name="315" href="#315">315</a> <em>     * &lt;p>Parses all person specific URL values. This includes:</em>
+<a name="316" href="#316">316</a> <em>     * &lt;ul></em>
+<a name="317" href="#317">317</a> <em>     * &lt;li>{@link #groups assigned groups}&lt;/li></em>
+<a name="318" href="#318">318</a> <em>     * &lt;li>{@link #roles assigned roles}&lt;/li></em>
+<a name="319" href="#319">319</a> <em>     * &lt;li>{@link #access}&lt;/li></em>
+<a name="320" href="#320">320</a> <em>     * &lt;li>{@link #adminAccess business administration access}&lt;/li></em>
+<a name="321" href="#321">321</a> <em>     * &lt;li>is person {@link #isInactive inactive}&lt;/li></em>
+<a name="322" href="#322">322</a> <em>     * &lt;li>flag if the person is an {@link #isApplicationUser application user}</em>
+<a name="323" href="#323">323</a> <em>     *     &lt;/li></em>
+<a name="324" href="#324">324</a> <em>     * &lt;li>flag if the person is a {@link #isFullUser full user}&lt;/li></em>
+<a name="325" href="#325">325</a> <em>     * &lt;li>flag if the person is a</em>
+<a name="326" href="#326">326</a> <em>     *     {@link #isBusinessAdministrator business administrator}&lt;/li></em>
+<a name="327" href="#327">327</a> <em>     * &lt;li>flag if the person is a</em>
+<a name="328" href="#328">328</a> <em>     *     {@link #isSystemAdministrator system administrator}&lt;/li></em>
+<a name="329" href="#329">329</a> <em>     * &lt;li>flag if the person is a {@link #isTrusted trusted} person&lt;/li></em>
+<a name="330" href="#330">330</a> <em>     * &lt;li>person wants {@link #wantsEmail email}&lt;/li></em>
+<a name="331" href="#331">331</a> <em>     * &lt;li>person wants {@link #wantsIconMail icon mail}&lt;/li></em>
+<a name="332" href="#332">332</a> <em>     * &lt;li>{@link #address}&lt;/li></em>
+<a name="333" href="#333">333</a> <em>     * &lt;li>{@link #email email address}&lt;/li></em>
+<a name="334" href="#334">334</a> <em>     * &lt;li>{@link #fax fax number}&lt;/li></em>
+<a name="335" href="#335">335</a> <em>     * &lt;li>{@link #fullName full name}&lt;/li></em>
+<a name="336" href="#336">336</a> <em>     * &lt;li>{@link #vault default vault}&lt;/li></em>
+<a name="337" href="#337">337</a> <em>     * &lt;li>{@link #phone phone number}&lt;/li></em>
+<a name="338" href="#338">338</a> <em>     * &lt;li>{@link #passwordNeverExpires password never expires flag}&lt;/li></em>
+<a name="339" href="#339">339</a> <em>     * &lt;/ul>&lt;/p></em>
+<a name="340" href="#340">340</a> <em>     * &lt;p>If an &lt;code>_url&lt;/code> is included in {@link #IGNORED_URLS}, this</em>
+<a name="341" href="#341">341</a> <em>     * URL is ignored.&lt;/p></em>
+<a name="342" href="#342">342</a> <em>     *</em>
+<a name="343" href="#343">343</a> <em>     * @param _url      URL to parse</em>
+<a name="344" href="#344">344</a> <em>     * @param _content  content depending on the URL</em>
+<a name="345" href="#345">345</a> <em>     * @see #IGNORED_URLS</em>
+<a name="346" href="#346">346</a> <em>     */</em>
+<a name="347" href="#347">347</a>     @Override()
+<a name="348" href="#348">348</a>     <strong>protected</strong> <strong>void</strong> parse(<strong>final</strong> String _url,
+<a name="349" href="#349">349</a>                          <strong>final</strong> String _content)
+<a name="350" href="#350">350</a>     {
+<a name="351" href="#351">351</a>         <strong>if</strong> (!PersonAdmin_mxJPO.IGNORED_URLS.contains(_url))  {
+<a name="352" href="#352">352</a>             <strong>if</strong> (<span class="string">"/assignmentList/assignment/groupRef"</span>.equals(_url))  {
+<a name="353" href="#353">353</a>                 <strong>this</strong>.groups.add(_content);
+<a name="354" href="#354">354</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/assignmentList/assignment/roleRef"</span>.equals(_url))  {
+<a name="355" href="#355">355</a>                 <strong>this</strong>.roles.add(_content);
+<a name="356" href="#356">356</a> 
+<a name="357" href="#357">357</a>             } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/access"</span>))  {
+<a name="358" href="#358">358</a>                 <strong>this</strong>.access.add(_url.substring(8).replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
+<a name="359" href="#359">359</a> 
+<a name="360" href="#360">360</a>             } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/adminAccess"</span>))  {
+<a name="361" href="#361">361</a>                 <strong>this</strong>.adminAccess.add(_url.substring(13).replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
+<a name="362" href="#362">362</a> 
+<a name="363" href="#363">363</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/defaultApplication/applicationRef"</span>.equals(_url))  {
+<a name="364" href="#364">364</a>                 <strong>this</strong>.defaultApplication = _content;
+<a name="365" href="#365">365</a> 
+<a name="366" href="#366">366</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/inactive"</span>.equals(_url))  {
+<a name="367" href="#367">367</a>                 <strong>this</strong>.isInactive = <strong>true</strong>;
+<a name="368" href="#368">368</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/applicationsOnly"</span>.equals(_url))  {
+<a name="369" href="#369">369</a>                 <strong>this</strong>.isApplicationUser = <strong>true</strong>;
+<a name="370" href="#370">370</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/fullUser"</span>.equals(_url))  {
+<a name="371" href="#371">371</a>                 <strong>this</strong>.isFullUser = <strong>true</strong>;
+<a name="372" href="#372">372</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/businessAdministrator"</span>.equals(_url))  {
+<a name="373" href="#373">373</a>                 <strong>this</strong>.isBusinessAdministrator = <strong>true</strong>;
+<a name="374" href="#374">374</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/systemAdministrator"</span>.equals(_url))  {
+<a name="375" href="#375">375</a>                 <strong>this</strong>.isSystemAdministrator = <strong>true</strong>;
+<a name="376" href="#376">376</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/trusted"</span>.equals(_url))  {
+<a name="377" href="#377">377</a>                 <strong>this</strong>.isTrusted = <strong>true</strong>;
+<a name="378" href="#378">378</a> 
+<a name="379" href="#379">379</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/wantsEmail"</span>.equals(_url))  {
+<a name="380" href="#380">380</a>                 <strong>this</strong>.wantsEmail = <strong>true</strong>;
+<a name="381" href="#381">381</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/wantsIconMail"</span>.equals(_url))  {
+<a name="382" href="#382">382</a>                 <strong>this</strong>.wantsIconMail = <strong>true</strong>;
 <a name="383" href="#383">383</a> 
-<a name="384" href="#384">384</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/wantsEmail"</span>.equals(_url))  {
-<a name="385" href="#385">385</a>                 <strong>this</strong>.wantsEmail = <strong>true</strong>;
-<a name="386" href="#386">386</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/wantsIconMail"</span>.equals(_url))  {
-<a name="387" href="#387">387</a>                 <strong>this</strong>.wantsIconMail = <strong>true</strong>;
-<a name="388" href="#388">388</a> 
-<a name="389" href="#389">389</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/address"</span>.equals(_url))  {
-<a name="390" href="#390">390</a>                 <strong>this</strong>.address = _content;
-<a name="391" href="#391">391</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/email"</span>.equals(_url))  {
-<a name="392" href="#392">392</a>                 <strong>this</strong>.email = _content;
-<a name="393" href="#393">393</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/fax"</span>.equals(_url))  {
-<a name="394" href="#394">394</a>                 <strong>this</strong>.fax = _content;
-<a name="395" href="#395">395</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/fullName"</span>.equals(_url))  {
-<a name="396" href="#396">396</a>                 <strong>this</strong>.fullName = _content;
-<a name="397" href="#397">397</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/homeVault/vaultRef"</span>.equals(_url))  {
-<a name="398" href="#398">398</a>                 <strong>this</strong>.vault = _content;
-<a name="399" href="#399">399</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/phone"</span>.equals(_url))  {
-<a name="400" href="#400">400</a>                 <strong>this</strong>.phone = _content;
-<a name="401" href="#401">401</a> 
-<a name="402" href="#402">402</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/passwordNeverExpires"</span>.equals(_url))  {
-<a name="403" href="#403">403</a>                 <strong>this</strong>.passwordNeverExpires = <strong>true</strong>;
-<a name="404" href="#404">404</a> 
-<a name="405" href="#405">405</a>             } <strong>else</strong>  {
-<a name="406" href="#406">406</a>                 <strong>super</strong>.parse(_url, _content);
-<a name="407" href="#407">407</a>             }
-<a name="408" href="#408">408</a>         }
-<a name="409" href="#409">409</a>     }
-<a name="410" href="#410">410</a> 
-<a name="411" href="#411">411</a>     <em>/**<em>*</em></em>
-<a name="412" href="#412">412</a> <em>     * The original export MQL command from the super class could not be used,</em>
-<a name="413" href="#413">413</a> <em>     * because otherwise all sets and mails of the person to export are also</em>
-<a name="414" href="#414">414</a> <em>     * exported (but the sets and mails of the person is not needed....).</em>
-<a name="415" href="#415">415</a> <em>     *</em>
-<a name="416" href="#416">416</a> <em>     * @return MQL command to make an XML export of the person</em>
-<a name="417" href="#417">417</a> <em>     */</em>
-<a name="418" href="#418">418</a>     @Override()
-<a name="419" href="#419">419</a>     <strong>protected</strong> String getExportMQL()
-<a name="420" href="#420">420</a>     {
-<a name="421" href="#421">421</a>         <strong>return</strong> <strong>new</strong> StringBuilder()
-<a name="422" href="#422">422</a>                 .append(<span class="string">"escape export person \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName()))
-<a name="423" href="#423">423</a>                 .append(<span class="string">"\&quot; !mail !set xml"</span>)
-<a name="424" href="#424">424</a>                 .toString();
-<a name="425" href="#425">425</a>     }
-<a name="426" href="#426">426</a> 
-<a name="427" href="#427">427</a>     <em>/**<em>*</em></em>
-<a name="428" href="#428">428</a> <em>     * Writes specific information about the cached administration person to</em>
-<a name="429" href="#429">429</a> <em>     * the given TCL update file &lt;code>_out&lt;/code>. The included information is</em>
-<a name="430" href="#430">430</a> <em>     * &lt;ul></em>
-<a name="431" href="#431">431</a> <em>     * &lt;li>{@link #passwordNeverExpires password never expires flag} (if</em>
-<a name="432" href="#432">432</a> <em>     *     parameter {@link #PARAM_IGNORE_PSWD_NEVER_EXPIRES} is not set)&lt;/li></em>
-<a name="433" href="#433">433</a> <em>     * &lt;li>{@link #access}&lt;/li></em>
-<a name="434" href="#434">434</a> <em>     * &lt;li>{@link #adminAccess business administration access}&lt;/li></em>
-<a name="435" href="#435">435</a> <em>     * &lt;li>person wants {@link #wantsEmail email} (if parameter</em>
-<a name="436" href="#436">436</a> <em>     *     {@link #PARAM_IGNORE_WANTS_EMAIL} is not set)&lt;/li></em>
-<a name="437" href="#437">437</a> <em>     * &lt;li>person wants {@link #wantsIconMail icon mail} (if parameter</em>
-<a name="438" href="#438">438</a> <em>     *     {@link #PARAM_IGNORE_WANTS_ICON_MAIL} is not set)&lt;/li></em>
-<a name="439" href="#439">439</a> <em>     * &lt;li>{@link #address}&lt;/li></em>
-<a name="440" href="#440">440</a> <em>     * &lt;li>{@link #email email address}&lt;/li></em>
-<a name="441" href="#441">441</a> <em>     * &lt;li>{@link #fax fax number}&lt;/li></em>
-<a name="442" href="#442">442</a> <em>     * &lt;li>{@link #fullName full name}&lt;/li></em>
-<a name="443" href="#443">443</a> <em>     * &lt;li>{@link #phone phone number}&lt;/li></em>
-<a name="444" href="#444">444</a> <em>     * &lt;li>{@link #vault default vault}&lt;/li></em>
-<a name="445" href="#445">445</a> <em>     * &lt;li>{@link #defaultApplication default application} (if defined)&lt;/li></em>
-<a name="446" href="#446">446</a> <em>     * &lt;li>assigned {@link #groups}&lt;/li></em>
-<a name="447" href="#447">447</a> <em>     * &lt;li>assigned {@link #roles}&lt;/li></em>
-<a name="448" href="#448">448</a> <em>     * &lt;/ul></em>
-<a name="449" href="#449">449</a> <em>     *</em>
-<a name="450" href="#450">450</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="451" href="#451">451</a> <em>     * @param _out          appendable instance to the TCL update file</em>
-<a name="452" href="#452">452</a> <em>     * @throws IOException if the TCL update code could not written</em>
-<a name="453" href="#453">453</a> <em>     * @see #PARAM_IGNORE_PSWD_NEVER_EXPIRES</em>
-<a name="454" href="#454">454</a> <em>     * @see #PARAM_IGNORE_WANTS_EMAIL</em>
-<a name="455" href="#455">455</a> <em>     */</em>
-<a name="456" href="#456">456</a>     @Override()
-<a name="457" href="#457">457</a>     <strong>protected</strong> <strong>void</strong> writeObject(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="458" href="#458">458</a>                                <strong>final</strong> Appendable _out)
-<a name="459" href="#459">459</a>         throws IOException
-<a name="460" href="#460">460</a>     {
-<a name="461" href="#461">461</a>         <strong>super</strong>.writeObject(_paramCache, _out);
-<a name="462" href="#462">462</a> 
-<a name="463" href="#463">463</a>         <em class="comment">// password never expires flag if not matched</em>
-<a name="464" href="#464">464</a>         <strong>final</strong> Collection&lt;String> ignorePswdNeverExpires = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_PSWD_NEVER_EXPIRES);
-<a name="465" href="#465">465</a>         <strong>if</strong> ((ignorePswdNeverExpires == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignorePswdNeverExpires))  {
-<a name="466" href="#466">466</a>             _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.passwordNeverExpires ? <span class="string">""</span> : <span class="string">"!"</span>).append(<span class="string">"neverexpires"</span>);
-<a name="467" href="#467">467</a>         }
-<a name="468" href="#468">468</a>         _out.append(<span class="string">" &#47;&#47;\n    access \&quot;"</span>).append(StringUtil_mxJPO.joinTcl(',', false, <strong>this</strong>.access, <span class="string">"none"</span>)).append(<span class="string">"\&quot;"</span>)
-<a name="469" href="#469">469</a>             .append(<span class="string">" &#47;&#47;\n    admin \&quot;"</span>).append(StringUtil_mxJPO.joinTcl(',', false, <strong>this</strong>.adminAccess, <span class="string">"none"</span>)).append(<span class="string">"\&quot;"</span>);
-<a name="470" href="#470">470</a>         <em class="comment">// wants email only if not matched</em>
-<a name="471" href="#471">471</a>         <strong>final</strong> Collection&lt;String> ignoreWantsEmail = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WANTS_EMAIL);
-<a name="472" href="#472">472</a>         <strong>if</strong> ((ignoreWantsEmail == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreWantsEmail))  {
-<a name="473" href="#473">473</a>             _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.wantsEmail ? <span class="string">"enable"</span> : <span class="string">"disable"</span>).append(<span class="string">" email"</span>);
+<a name="384" href="#384">384</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/address"</span>.equals(_url))  {
+<a name="385" href="#385">385</a>                 <strong>this</strong>.address = _content;
+<a name="386" href="#386">386</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/email"</span>.equals(_url))  {
+<a name="387" href="#387">387</a>                 <strong>this</strong>.email = _content;
+<a name="388" href="#388">388</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/fax"</span>.equals(_url))  {
+<a name="389" href="#389">389</a>                 <strong>this</strong>.fax = _content;
+<a name="390" href="#390">390</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/fullName"</span>.equals(_url))  {
+<a name="391" href="#391">391</a>                 <strong>this</strong>.fullName = _content;
+<a name="392" href="#392">392</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/homeVault/vaultRef"</span>.equals(_url))  {
+<a name="393" href="#393">393</a>                 <strong>this</strong>.vault = _content;
+<a name="394" href="#394">394</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/phone"</span>.equals(_url))  {
+<a name="395" href="#395">395</a>                 <strong>this</strong>.phone = _content;
+<a name="396" href="#396">396</a> 
+<a name="397" href="#397">397</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/passwordNeverExpires"</span>.equals(_url))  {
+<a name="398" href="#398">398</a>                 <strong>this</strong>.passwordNeverExpires = <strong>true</strong>;
+<a name="399" href="#399">399</a> 
+<a name="400" href="#400">400</a>             } <strong>else</strong>  {
+<a name="401" href="#401">401</a>                 <strong>super</strong>.parse(_url, _content);
+<a name="402" href="#402">402</a>             }
+<a name="403" href="#403">403</a>         }
+<a name="404" href="#404">404</a>     }
+<a name="405" href="#405">405</a> 
+<a name="406" href="#406">406</a>     <em>/**<em>*</em></em>
+<a name="407" href="#407">407</a> <em>     * The original export MQL command from the super class could not be used,</em>
+<a name="408" href="#408">408</a> <em>     * because otherwise all sets and mails of the person to export are also</em>
+<a name="409" href="#409">409</a> <em>     * exported (but the sets and mails of the person is not needed....).</em>
+<a name="410" href="#410">410</a> <em>     *</em>
+<a name="411" href="#411">411</a> <em>     * @return MQL command to make an XML export of the person</em>
+<a name="412" href="#412">412</a> <em>     */</em>
+<a name="413" href="#413">413</a>     @Override()
+<a name="414" href="#414">414</a>     <strong>protected</strong> String getExportMQL()
+<a name="415" href="#415">415</a>     {
+<a name="416" href="#416">416</a>         <strong>return</strong> <strong>new</strong> StringBuilder()
+<a name="417" href="#417">417</a>                 .append(<span class="string">"escape export person \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName()))
+<a name="418" href="#418">418</a>                 .append(<span class="string">"\&quot; !mail !set xml"</span>)
+<a name="419" href="#419">419</a>                 .toString();
+<a name="420" href="#420">420</a>     }
+<a name="421" href="#421">421</a> 
+<a name="422" href="#422">422</a>     <em>/**<em>*</em></em>
+<a name="423" href="#423">423</a> <em>     * Writes specific information about the cached administration person to</em>
+<a name="424" href="#424">424</a> <em>     * the given TCL update file &lt;code>_out&lt;/code>. The included information is</em>
+<a name="425" href="#425">425</a> <em>     * &lt;ul></em>
+<a name="426" href="#426">426</a> <em>     * &lt;li>{@link #passwordNeverExpires password never expires flag} (if</em>
+<a name="427" href="#427">427</a> <em>     *     parameter {@link #PARAM_IGNORE_PSWD_NEVER_EXPIRES} is not set)&lt;/li></em>
+<a name="428" href="#428">428</a> <em>     * &lt;li>{@link #access}&lt;/li></em>
+<a name="429" href="#429">429</a> <em>     * &lt;li>{@link #adminAccess business administration access}&lt;/li></em>
+<a name="430" href="#430">430</a> <em>     * &lt;li>person wants {@link #wantsEmail email} (if parameter</em>
+<a name="431" href="#431">431</a> <em>     *     {@link #PARAM_IGNORE_WANTS_EMAIL} is not set)&lt;/li></em>
+<a name="432" href="#432">432</a> <em>     * &lt;li>person wants {@link #wantsIconMail icon mail} (if parameter</em>
+<a name="433" href="#433">433</a> <em>     *     {@link #PARAM_IGNORE_WANTS_ICON_MAIL} is not set)&lt;/li></em>
+<a name="434" href="#434">434</a> <em>     * &lt;li>{@link #address}&lt;/li></em>
+<a name="435" href="#435">435</a> <em>     * &lt;li>{@link #email email address}&lt;/li></em>
+<a name="436" href="#436">436</a> <em>     * &lt;li>{@link #fax fax number}&lt;/li></em>
+<a name="437" href="#437">437</a> <em>     * &lt;li>{@link #fullName full name}&lt;/li></em>
+<a name="438" href="#438">438</a> <em>     * &lt;li>{@link #phone phone number}&lt;/li></em>
+<a name="439" href="#439">439</a> <em>     * &lt;li>{@link #vault default vault}&lt;/li></em>
+<a name="440" href="#440">440</a> <em>     * &lt;li>{@link #defaultApplication default application} (if defined)&lt;/li></em>
+<a name="441" href="#441">441</a> <em>     * &lt;li>assigned {@link #groups}&lt;/li></em>
+<a name="442" href="#442">442</a> <em>     * &lt;li>assigned {@link #roles}&lt;/li></em>
+<a name="443" href="#443">443</a> <em>     * &lt;/ul></em>
+<a name="444" href="#444">444</a> <em>     *</em>
+<a name="445" href="#445">445</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="446" href="#446">446</a> <em>     * @param _out          appendable instance to the TCL update file</em>
+<a name="447" href="#447">447</a> <em>     * @throws IOException if the TCL update code could not written</em>
+<a name="448" href="#448">448</a> <em>     * @see #PARAM_IGNORE_PSWD_NEVER_EXPIRES</em>
+<a name="449" href="#449">449</a> <em>     * @see #PARAM_IGNORE_WANTS_EMAIL</em>
+<a name="450" href="#450">450</a> <em>     */</em>
+<a name="451" href="#451">451</a>     @Override()
+<a name="452" href="#452">452</a>     <strong>protected</strong> <strong>void</strong> writeObject(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="453" href="#453">453</a>                                <strong>final</strong> Appendable _out)
+<a name="454" href="#454">454</a>         throws IOException
+<a name="455" href="#455">455</a>     {
+<a name="456" href="#456">456</a>         <strong>super</strong>.writeObject(_paramCache, _out);
+<a name="457" href="#457">457</a> 
+<a name="458" href="#458">458</a>         <em class="comment">// password never expires flag if not matched</em>
+<a name="459" href="#459">459</a>         <strong>final</strong> Collection&lt;String> ignorePswdNeverExpires = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_PSWD_NEVER_EXPIRES);
+<a name="460" href="#460">460</a>         <strong>if</strong> ((ignorePswdNeverExpires == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignorePswdNeverExpires))  {
+<a name="461" href="#461">461</a>             _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.passwordNeverExpires ? <span class="string">""</span> : <span class="string">"!"</span>).append(<span class="string">"neverexpires"</span>);
+<a name="462" href="#462">462</a>         }
+<a name="463" href="#463">463</a>         _out.append(<span class="string">" &#47;&#47;\n    access \&quot;"</span>).append(StringUtil_mxJPO.joinTcl(',', false, <strong>this</strong>.access, <span class="string">"none"</span>)).append(<span class="string">"\&quot;"</span>)
+<a name="464" href="#464">464</a>             .append(<span class="string">" &#47;&#47;\n    admin \&quot;"</span>).append(StringUtil_mxJPO.joinTcl(',', false, <strong>this</strong>.adminAccess, <span class="string">"none"</span>)).append(<span class="string">"\&quot;"</span>);
+<a name="465" href="#465">465</a>         <em class="comment">// wants email only if not matched</em>
+<a name="466" href="#466">466</a>         <strong>final</strong> Collection&lt;String> ignoreWantsEmail = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WANTS_EMAIL);
+<a name="467" href="#467">467</a>         <strong>if</strong> ((ignoreWantsEmail == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreWantsEmail))  {
+<a name="468" href="#468">468</a>             _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.wantsEmail ? <span class="string">"enable"</span> : <span class="string">"disable"</span>).append(<span class="string">" email"</span>);
+<a name="469" href="#469">469</a>         }
+<a name="470" href="#470">470</a>         <em class="comment">// wants icon mail only if not matched</em>
+<a name="471" href="#471">471</a>         <strong>final</strong> Collection&lt;String> ignoreWantsIconMail = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WANTS_ICON_MAIL);
+<a name="472" href="#472">472</a>         <strong>if</strong> ((ignoreWantsIconMail == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreWantsIconMail))  {
+<a name="473" href="#473">473</a>             _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.wantsIconMail ? <span class="string">"enable"</span> : <span class="string">"disable"</span>).append(<span class="string">" iconmail"</span>);
 <a name="474" href="#474">474</a>         }
-<a name="475" href="#475">475</a>         <em class="comment">// wants icon mail only if not matched</em>
-<a name="476" href="#476">476</a>         <strong>final</strong> Collection&lt;String> ignoreWantsIconMail = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WANTS_ICON_MAIL);
-<a name="477" href="#477">477</a>         <strong>if</strong> ((ignoreWantsIconMail == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreWantsIconMail))  {
-<a name="478" href="#478">478</a>             _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.wantsIconMail ? <span class="string">"enable"</span> : <span class="string">"disable"</span>).append(<span class="string">" iconmail"</span>);
-<a name="479" href="#479">479</a>         }
-<a name="480" href="#480">480</a>         _out.append(<span class="string">" &#47;&#47;\n    address \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.address)).append(<span class="string">"\&quot;"</span>)
-<a name="481" href="#481">481</a>             .append(<span class="string">" &#47;&#47;\n    email \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.email)).append(<span class="string">"\&quot;"</span>)
-<a name="482" href="#482">482</a>             .append(<span class="string">" &#47;&#47;\n    fax \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.fax)).append(<span class="string">"\&quot;"</span>)
-<a name="483" href="#483">483</a>             .append(<span class="string">" &#47;&#47;\n    fullname \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.fullName)).append(<span class="string">"\&quot;"</span>)
-<a name="484" href="#484">484</a>             .append(<span class="string">" &#47;&#47;\n    phone \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.phone)).append(<span class="string">"\&quot;"</span>)
-<a name="485" href="#485">485</a>             .append(<span class="string">" &#47;&#47;\n    vault \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.vault)).append(<span class="string">"\&quot;"</span>);
-<a name="486" href="#486">486</a>         <strong>if</strong> (<strong>this</strong>.defaultApplication != <strong>null</strong>)  {
-<a name="487" href="#487">487</a>             _out.append(<span class="string">" &#47;&#47;\n    application \&quot;"</span>)
-<a name="488" href="#488">488</a>                 .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.defaultApplication)).append(<span class="string">"\&quot;"</span>);
+<a name="475" href="#475">475</a>         _out.append(<span class="string">" &#47;&#47;\n    address \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.address)).append(<span class="string">"\&quot;"</span>)
+<a name="476" href="#476">476</a>             .append(<span class="string">" &#47;&#47;\n    email \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.email)).append(<span class="string">"\&quot;"</span>)
+<a name="477" href="#477">477</a>             .append(<span class="string">" &#47;&#47;\n    fax \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.fax)).append(<span class="string">"\&quot;"</span>)
+<a name="478" href="#478">478</a>             .append(<span class="string">" &#47;&#47;\n    fullname \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.fullName)).append(<span class="string">"\&quot;"</span>)
+<a name="479" href="#479">479</a>             .append(<span class="string">" &#47;&#47;\n    phone \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.phone)).append(<span class="string">"\&quot;"</span>)
+<a name="480" href="#480">480</a>             .append(<span class="string">" &#47;&#47;\n    vault \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.vault)).append(<span class="string">"\&quot;"</span>);
+<a name="481" href="#481">481</a>         <strong>if</strong> (<strong>this</strong>.defaultApplication != <strong>null</strong>)  {
+<a name="482" href="#482">482</a>             _out.append(<span class="string">" &#47;&#47;\n    application \&quot;"</span>)
+<a name="483" href="#483">483</a>                 .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.defaultApplication)).append(<span class="string">"\&quot;"</span>);
+<a name="484" href="#484">484</a>         }
+<a name="485" href="#485">485</a>         <strong>for</strong> (<strong>final</strong> String group : <strong>this</strong>.groups)  {
+<a name="486" href="#486">486</a>             _out.append(<span class="string">" &#47;&#47;\n    assign group \&quot;"</span>)
+<a name="487" href="#487">487</a>                 .append(StringUtil_mxJPO.convertTcl(group))
+<a name="488" href="#488">488</a>                 .append(<span class="string">"\&quot;"</span>);
 <a name="489" href="#489">489</a>         }
-<a name="490" href="#490">490</a>         <strong>for</strong> (<strong>final</strong> String group : <strong>this</strong>.groups)  {
-<a name="491" href="#491">491</a>             _out.append(<span class="string">" &#47;&#47;\n    assign group \&quot;"</span>)
-<a name="492" href="#492">492</a>                 .append(StringUtil_mxJPO.convertTcl(group))
+<a name="490" href="#490">490</a>         <strong>for</strong> (<strong>final</strong> String role : <strong>this</strong>.roles)  {
+<a name="491" href="#491">491</a>             _out.append(<span class="string">" &#47;&#47;\n    assign role \&quot;"</span>)
+<a name="492" href="#492">492</a>                 .append(StringUtil_mxJPO.convertTcl(role))
 <a name="493" href="#493">493</a>                 .append(<span class="string">"\&quot;"</span>);
 <a name="494" href="#494">494</a>         }
-<a name="495" href="#495">495</a>         <strong>for</strong> (<strong>final</strong> String role : <strong>this</strong>.roles)  {
-<a name="496" href="#496">496</a>             _out.append(<span class="string">" &#47;&#47;\n    assign role \&quot;"</span>)
-<a name="497" href="#497">497</a>                 .append(StringUtil_mxJPO.convertTcl(role))
-<a name="498" href="#498">498</a>                 .append(<span class="string">"\&quot;"</span>);
-<a name="499" href="#499">499</a>         }
-<a name="500" href="#500">500</a>     }
-<a name="501" href="#501">501</a> 
-<a name="502" href="#502">502</a>     <em>/**<em>*</em></em>
-<a name="503" href="#503">503</a> <em>     * Appends at the end of the TCL update file the change of the person</em>
-<a name="504" href="#504">504</a> <em>     * &amp;quot;type&amp;quot;. The person &amp;quot;type&amp;quot; defines, if the person is</em>
-<a name="505" href="#505">505</a> <em>     * e.g. active, or trusted etc..</em>
-<a name="506" href="#506">506</a> <em>     *</em>
-<a name="507" href="#507">507</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="508" href="#508">508</a> <em>     * @param _out          appendable instance to the TCL update file</em>
-<a name="509" href="#509">509</a> <em>     * @throws IOException if the extension could not be written</em>
-<a name="510" href="#510">510</a> <em>     */</em>
-<a name="511" href="#511">511</a>     @Override()
-<a name="512" href="#512">512</a>     <strong>protected</strong> <strong>void</strong> writeEnd(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="513" href="#513">513</a>                             <strong>final</strong> Appendable _out)
-<a name="514" href="#514">514</a>             throws IOException
-<a name="515" href="#515">515</a>     {
-<a name="516" href="#516">516</a>         <strong>super</strong>.writeEnd(_paramCache, _out);
-<a name="517" href="#517">517</a>         _out.append(<span class="string">"\nmql mod person \&quot;${NAME}\&quot; type "</span>);
-<a name="518" href="#518">518</a>         <strong>if</strong> (!<strong>this</strong>.isApplicationUser)  {
-<a name="519" href="#519">519</a>             _out.append(<span class="string">"not"</span>);
-<a name="520" href="#520">520</a>         }
-<a name="521" href="#521">521</a>         _out.append(<span class="string">"application,"</span>);
-<a name="522" href="#522">522</a>         <strong>if</strong> (!<strong>this</strong>.isFullUser)  {
-<a name="523" href="#523">523</a>             _out.append(<span class="string">"not"</span>);
-<a name="524" href="#524">524</a>         }
-<a name="525" href="#525">525</a>         _out.append(<span class="string">"full,"</span>);
-<a name="526" href="#526">526</a>         <strong>if</strong> (!<strong>this</strong>.isBusinessAdministrator)  {
-<a name="527" href="#527">527</a>             _out.append(<span class="string">"not"</span>);
-<a name="528" href="#528">528</a>         }
-<a name="529" href="#529">529</a>         _out.append(<span class="string">"business,"</span>);
-<a name="530" href="#530">530</a>         <strong>if</strong> (!<strong>this</strong>.isInactive)  {
-<a name="531" href="#531">531</a>             _out.append(<span class="string">"not"</span>);
-<a name="532" href="#532">532</a>         }
-<a name="533" href="#533">533</a>         _out.append(<span class="string">"inactive,"</span>);
-<a name="534" href="#534">534</a>         <strong>if</strong> (!<strong>this</strong>.isTrusted)  {
-<a name="535" href="#535">535</a>             _out.append(<span class="string">"not"</span>);
-<a name="536" href="#536">536</a>         }
-<a name="537" href="#537">537</a>         _out.append(<span class="string">"trusted,"</span>);
-<a name="538" href="#538">538</a>         <strong>if</strong> (!<strong>this</strong>.isSystemAdministrator)  {
-<a name="539" href="#539">539</a>             _out.append(<span class="string">"not"</span>);
-<a name="540" href="#540">540</a>         }
-<a name="541" href="#541">541</a>         _out.append(<span class="string">"system"</span>);
-<a name="542" href="#542">542</a>     }
-<a name="543" href="#543">543</a> 
-<a name="544" href="#544">544</a>     <em>/**<em>*</em></em>
-<a name="545" href="#545">545</a> <em>     * The method overwrites the original method to</em>
-<a name="546" href="#546">546</a> <em>     * &lt;ul></em>
-<a name="547" href="#547">547</a> <em>     * &lt;li>reset the comment (description)&lt;/li></em>
-<a name="548" href="#548">548</a> <em>     * &lt;li>set the version and author attribute&lt;/li></em>
-<a name="549" href="#549">549</a> <em>     * &lt;li>reset all not ignored attributes&lt;/li></em>
-<a name="550" href="#550">550</a> <em>     * &lt;li>define the TCL variable &amp;quot;OBJECTID&amp;quot; with the object id of</em>
-<a name="551" href="#551">551</a> <em>     *     the represented business object&lt;/li></em>
-<a name="552" href="#552">552</a> <em>     * &lt;li>sets the {@link #passwordNeverExpires password never expires flag}</em>
-<a name="553" href="#553">553</a> <em>     *     to &lt;i>false&lt;/i> (means that the password expires); depends on</em>
-<a name="554" href="#554">554</a> <em>     *     parameter {@link #PARAM_IGNORE_PSWD_NEVER_EXPIRES}&lt;/li></em>
-<a name="555" href="#555">555</a> <em>     * &lt;li>disables that the person wants email; depends on</em>
-<a name="556" href="#556">556</a> <em>     *     parameter {@link #PARAM_IGNORE_WANTS_EMAIL}&lt;/li></em>
-<a name="557" href="#557">557</a> <em>     * &lt;li>enables that the person wants icon mail; depends on</em>
-<a name="558" href="#558">558</a> <em>     *     parameter {@link #PARAM_IGNORE_WANTS_ICON_MAIL}&lt;/li></em>
-<a name="559" href="#559">559</a> <em>     * &lt;/ul></em>
-<a name="560" href="#560">560</a> <em>     * The original method of the super class if called surrounded with a</em>
-<a name="561" href="#561">561</a> <em>     * history off, because if the update itself is done the modified basic</em>
-<a name="562" href="#562">562</a> <em>     * attribute and the version attribute of the business object is updated.</em>
-<a name="563" href="#563">563</a> <em>     * &lt;br/></em>
-<a name="564" href="#564">564</a> <em>     * The new generated MQL code is set in the front of the already defined</em>
-<a name="565" href="#565">565</a> <em>     * MQL code in &lt;code>_preMQLCode&lt;/code> and appended to the MQL statements</em>
-<a name="566" href="#566">566</a> <em>     * in &lt;code>_postMQLCode&lt;/code>.</em>
-<a name="567" href="#567">567</a> <em>     *</em>
-<a name="568" href="#568">568</a> <em>     * @param _paramCache       parameter cache</em>
-<a name="569" href="#569">569</a> <em>     * @param _preMQLCode       MQL statements which must be called before the</em>
-<a name="570" href="#570">570</a> <em>     *                          TCL code is executed</em>
-<a name="571" href="#571">571</a> <em>     * @param _postMQLCode      MQL statements which must be called after the</em>
-<a name="572" href="#572">572</a> <em>     *                          TCL code is executed</em>
-<a name="573" href="#573">573</a> <em>     * @param _preTCLCode       TCL code which is defined before the source</em>
-<a name="574" href="#574">574</a> <em>     *                          file is sourced</em>
-<a name="575" href="#575">575</a> <em>     * @param _tclVariables     map of all TCL variables where the key is the</em>
-<a name="576" href="#576">576</a> <em>     *                          name and the value is value of the TCL variable</em>
-<a name="577" href="#577">577</a> <em>     *                          (the value is automatically converted to TCL</em>
-<a name="578" href="#578">578</a> <em>     *                          syntax!)</em>
-<a name="579" href="#579">579</a> <em>     * @param _sourceFile       souce file with the TCL code to update</em>
-<a name="580" href="#580">580</a> <em>     * @throws Exception if the update from derived class failed</em>
-<a name="581" href="#581">581</a> <em>     * @see #PARAM_IGNORE_PSWD_NEVER_EXPIRES</em>
-<a name="582" href="#582">582</a> <em>     * @see #PARAM_IGNORE_WANTS_EMAIL</em>
-<a name="583" href="#583">583</a> <em>     * @see #PARAM_IGNORE_WANTS_ICON_MAIL</em>
-<a name="584" href="#584">584</a> <em>     */</em>
-<a name="585" href="#585">585</a>     @Override()
-<a name="586" href="#586">586</a>     <strong>protected</strong> <strong>void</strong> update(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="587" href="#587">587</a>                           <strong>final</strong> CharSequence _preMQLCode,
-<a name="588" href="#588">588</a>                           <strong>final</strong> CharSequence _postMQLCode,
-<a name="589" href="#589">589</a>                           <strong>final</strong> CharSequence _preTCLCode,
-<a name="590" href="#590">590</a>                           <strong>final</strong> Map&lt;String,String> _tclVariables,
-<a name="591" href="#591">591</a>                           <strong>final</strong> File _sourceFile)
-<a name="592" href="#592">592</a>         throws Exception
-<a name="593" href="#593">593</a>     {
-<a name="594" href="#594">594</a>         <em class="comment">// append other pre MQL code</em>
-<a name="595" href="#595">595</a>         <strong>final</strong> StringBuilder preMQLCode = <strong>new</strong> StringBuilder()
-<a name="596" href="#596">596</a>                 .append(_preMQLCode)
-<a name="597" href="#597">597</a>                 .append(<span class="string">"escape mod person \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName())).append(<span class="string">"\&quot; "</span>)
-<a name="598" href="#598">598</a>                         .append(<span class="string">"comment '' "</span>)
-<a name="599" href="#599">599</a>                         .append(<span class="string">"access none "</span>)
-<a name="600" href="#600">600</a>                         .append(<span class="string">"admin none "</span>)
-<a name="601" href="#601">601</a>                         .append(<span class="string">"address '' "</span>)
-<a name="602" href="#602">602</a>                         .append(<span class="string">"email '' "</span>)
-<a name="603" href="#603">603</a>                         .append(<span class="string">"fax '' "</span>)
-<a name="604" href="#604">604</a>                         .append(<span class="string">"fullname '' "</span>)
-<a name="605" href="#605">605</a>                         .append(<span class="string">"phone '' "</span>)
-<a name="606" href="#606">606</a>                         .append(<span class="string">"remove assign all"</span>);
-<a name="607" href="#607">607</a>         <em class="comment">// reset wants email if not ignored</em>
-<a name="608" href="#608">608</a>         <strong>final</strong> Collection&lt;String> ignoreWantsEmail = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WANTS_EMAIL);
-<a name="609" href="#609">609</a>         <strong>if</strong> ((ignoreWantsEmail == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreWantsEmail))  {
-<a name="610" href="#610">610</a>             preMQLCode.append(<span class="string">" disable email"</span>);
+<a name="495" href="#495">495</a>     }
+<a name="496" href="#496">496</a> 
+<a name="497" href="#497">497</a>     <em>/**<em>*</em></em>
+<a name="498" href="#498">498</a> <em>     * Appends at the end of the TCL update file the change of the person</em>
+<a name="499" href="#499">499</a> <em>     * &amp;quot;type&amp;quot;. The person &amp;quot;type&amp;quot; defines, if the person is</em>
+<a name="500" href="#500">500</a> <em>     * e.g. active, or trusted etc..</em>
+<a name="501" href="#501">501</a> <em>     *</em>
+<a name="502" href="#502">502</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="503" href="#503">503</a> <em>     * @param _out          appendable instance to the TCL update file</em>
+<a name="504" href="#504">504</a> <em>     * @throws IOException if the extension could not be written</em>
+<a name="505" href="#505">505</a> <em>     */</em>
+<a name="506" href="#506">506</a>     @Override()
+<a name="507" href="#507">507</a>     <strong>protected</strong> <strong>void</strong> writeEnd(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="508" href="#508">508</a>                             <strong>final</strong> Appendable _out)
+<a name="509" href="#509">509</a>             throws IOException
+<a name="510" href="#510">510</a>     {
+<a name="511" href="#511">511</a>         <strong>super</strong>.writeEnd(_paramCache, _out);
+<a name="512" href="#512">512</a>         _out.append(<span class="string">"\nmql mod person \&quot;${NAME}\&quot; type "</span>);
+<a name="513" href="#513">513</a>         <strong>if</strong> (!<strong>this</strong>.isApplicationUser)  {
+<a name="514" href="#514">514</a>             _out.append(<span class="string">"not"</span>);
+<a name="515" href="#515">515</a>         }
+<a name="516" href="#516">516</a>         _out.append(<span class="string">"application,"</span>);
+<a name="517" href="#517">517</a>         <strong>if</strong> (!<strong>this</strong>.isFullUser)  {
+<a name="518" href="#518">518</a>             _out.append(<span class="string">"not"</span>);
+<a name="519" href="#519">519</a>         }
+<a name="520" href="#520">520</a>         _out.append(<span class="string">"full,"</span>);
+<a name="521" href="#521">521</a>         <strong>if</strong> (!<strong>this</strong>.isBusinessAdministrator)  {
+<a name="522" href="#522">522</a>             _out.append(<span class="string">"not"</span>);
+<a name="523" href="#523">523</a>         }
+<a name="524" href="#524">524</a>         _out.append(<span class="string">"business,"</span>);
+<a name="525" href="#525">525</a>         <strong>if</strong> (!<strong>this</strong>.isInactive)  {
+<a name="526" href="#526">526</a>             _out.append(<span class="string">"not"</span>);
+<a name="527" href="#527">527</a>         }
+<a name="528" href="#528">528</a>         _out.append(<span class="string">"inactive,"</span>);
+<a name="529" href="#529">529</a>         <strong>if</strong> (!<strong>this</strong>.isTrusted)  {
+<a name="530" href="#530">530</a>             _out.append(<span class="string">"not"</span>);
+<a name="531" href="#531">531</a>         }
+<a name="532" href="#532">532</a>         _out.append(<span class="string">"trusted,"</span>);
+<a name="533" href="#533">533</a>         <strong>if</strong> (!<strong>this</strong>.isSystemAdministrator)  {
+<a name="534" href="#534">534</a>             _out.append(<span class="string">"not"</span>);
+<a name="535" href="#535">535</a>         }
+<a name="536" href="#536">536</a>         _out.append(<span class="string">"system"</span>);
+<a name="537" href="#537">537</a>     }
+<a name="538" href="#538">538</a> 
+<a name="539" href="#539">539</a>     <em>/**<em>*</em></em>
+<a name="540" href="#540">540</a> <em>     * The method overwrites the original method to</em>
+<a name="541" href="#541">541</a> <em>     * &lt;ul></em>
+<a name="542" href="#542">542</a> <em>     * &lt;li>reset the comment (description)&lt;/li></em>
+<a name="543" href="#543">543</a> <em>     * &lt;li>set the version and author attribute&lt;/li></em>
+<a name="544" href="#544">544</a> <em>     * &lt;li>reset all not ignored attributes&lt;/li></em>
+<a name="545" href="#545">545</a> <em>     * &lt;li>define the TCL variable &amp;quot;OBJECTID&amp;quot; with the object id of</em>
+<a name="546" href="#546">546</a> <em>     *     the represented business object&lt;/li></em>
+<a name="547" href="#547">547</a> <em>     * &lt;li>sets the {@link #passwordNeverExpires password never expires flag}</em>
+<a name="548" href="#548">548</a> <em>     *     to &lt;i>false&lt;/i> (means that the password expires); depends on</em>
+<a name="549" href="#549">549</a> <em>     *     parameter {@link #PARAM_IGNORE_PSWD_NEVER_EXPIRES}&lt;/li></em>
+<a name="550" href="#550">550</a> <em>     * &lt;li>disables that the person wants email; depends on</em>
+<a name="551" href="#551">551</a> <em>     *     parameter {@link #PARAM_IGNORE_WANTS_EMAIL}&lt;/li></em>
+<a name="552" href="#552">552</a> <em>     * &lt;li>enables that the person wants icon mail; depends on</em>
+<a name="553" href="#553">553</a> <em>     *     parameter {@link #PARAM_IGNORE_WANTS_ICON_MAIL}&lt;/li></em>
+<a name="554" href="#554">554</a> <em>     * &lt;/ul></em>
+<a name="555" href="#555">555</a> <em>     * The original method of the super class if called surrounded with a</em>
+<a name="556" href="#556">556</a> <em>     * history off, because if the update itself is done the modified basic</em>
+<a name="557" href="#557">557</a> <em>     * attribute and the version attribute of the business object is updated.</em>
+<a name="558" href="#558">558</a> <em>     * &lt;br/></em>
+<a name="559" href="#559">559</a> <em>     * The new generated MQL code is set in the front of the already defined</em>
+<a name="560" href="#560">560</a> <em>     * MQL code in &lt;code>_preMQLCode&lt;/code> and appended to the MQL statements</em>
+<a name="561" href="#561">561</a> <em>     * in &lt;code>_postMQLCode&lt;/code>.</em>
+<a name="562" href="#562">562</a> <em>     *</em>
+<a name="563" href="#563">563</a> <em>     * @param _paramCache       parameter cache</em>
+<a name="564" href="#564">564</a> <em>     * @param _preMQLCode       MQL statements which must be called before the</em>
+<a name="565" href="#565">565</a> <em>     *                          TCL code is executed</em>
+<a name="566" href="#566">566</a> <em>     * @param _postMQLCode      MQL statements which must be called after the</em>
+<a name="567" href="#567">567</a> <em>     *                          TCL code is executed</em>
+<a name="568" href="#568">568</a> <em>     * @param _preTCLCode       TCL code which is defined before the source</em>
+<a name="569" href="#569">569</a> <em>     *                          file is sourced</em>
+<a name="570" href="#570">570</a> <em>     * @param _tclVariables     map of all TCL variables where the key is the</em>
+<a name="571" href="#571">571</a> <em>     *                          name and the value is value of the TCL variable</em>
+<a name="572" href="#572">572</a> <em>     *                          (the value is automatically converted to TCL</em>
+<a name="573" href="#573">573</a> <em>     *                          syntax!)</em>
+<a name="574" href="#574">574</a> <em>     * @param _sourceFile       souce file with the TCL code to update</em>
+<a name="575" href="#575">575</a> <em>     * @throws Exception if the update from derived class failed</em>
+<a name="576" href="#576">576</a> <em>     * @see #PARAM_IGNORE_PSWD_NEVER_EXPIRES</em>
+<a name="577" href="#577">577</a> <em>     * @see #PARAM_IGNORE_WANTS_EMAIL</em>
+<a name="578" href="#578">578</a> <em>     * @see #PARAM_IGNORE_WANTS_ICON_MAIL</em>
+<a name="579" href="#579">579</a> <em>     */</em>
+<a name="580" href="#580">580</a>     @Override()
+<a name="581" href="#581">581</a>     <strong>protected</strong> <strong>void</strong> update(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="582" href="#582">582</a>                           <strong>final</strong> CharSequence _preMQLCode,
+<a name="583" href="#583">583</a>                           <strong>final</strong> CharSequence _postMQLCode,
+<a name="584" href="#584">584</a>                           <strong>final</strong> CharSequence _preTCLCode,
+<a name="585" href="#585">585</a>                           <strong>final</strong> Map&lt;String,String> _tclVariables,
+<a name="586" href="#586">586</a>                           <strong>final</strong> File _sourceFile)
+<a name="587" href="#587">587</a>         throws Exception
+<a name="588" href="#588">588</a>     {
+<a name="589" href="#589">589</a>         <em class="comment">// append other pre MQL code</em>
+<a name="590" href="#590">590</a>         <strong>final</strong> StringBuilder preMQLCode = <strong>new</strong> StringBuilder()
+<a name="591" href="#591">591</a>                 .append(_preMQLCode)
+<a name="592" href="#592">592</a>                 .append(<span class="string">"escape mod person \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName())).append(<span class="string">"\&quot; "</span>)
+<a name="593" href="#593">593</a>                         .append(<span class="string">"comment '' "</span>)
+<a name="594" href="#594">594</a>                         .append(<span class="string">"access none "</span>)
+<a name="595" href="#595">595</a>                         .append(<span class="string">"admin none "</span>)
+<a name="596" href="#596">596</a>                         .append(<span class="string">"address '' "</span>)
+<a name="597" href="#597">597</a>                         .append(<span class="string">"email '' "</span>)
+<a name="598" href="#598">598</a>                         .append(<span class="string">"fax '' "</span>)
+<a name="599" href="#599">599</a>                         .append(<span class="string">"fullname '' "</span>)
+<a name="600" href="#600">600</a>                         .append(<span class="string">"phone '' "</span>)
+<a name="601" href="#601">601</a>                         .append(<span class="string">"remove assign all"</span>);
+<a name="602" href="#602">602</a>         <em class="comment">// reset wants email if not ignored</em>
+<a name="603" href="#603">603</a>         <strong>final</strong> Collection&lt;String> ignoreWantsEmail = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WANTS_EMAIL);
+<a name="604" href="#604">604</a>         <strong>if</strong> ((ignoreWantsEmail == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreWantsEmail))  {
+<a name="605" href="#605">605</a>             preMQLCode.append(<span class="string">" disable email"</span>);
+<a name="606" href="#606">606</a>         }
+<a name="607" href="#607">607</a>         <em class="comment">// reset wants icon mail if not ignored</em>
+<a name="608" href="#608">608</a>         <strong>final</strong> Collection&lt;String> ignoreWantsIconMail = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WANTS_ICON_MAIL);
+<a name="609" href="#609">609</a>         <strong>if</strong> ((ignoreWantsIconMail == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreWantsIconMail))  {
+<a name="610" href="#610">610</a>             preMQLCode.append(<span class="string">" enable iconmail"</span>);
 <a name="611" href="#611">611</a>         }
-<a name="612" href="#612">612</a>         <em class="comment">// reset wants icon mail if not ignored</em>
-<a name="613" href="#613">613</a>         <strong>final</strong> Collection&lt;String> ignoreWantsIconMail = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WANTS_ICON_MAIL);
-<a name="614" href="#614">614</a>         <strong>if</strong> ((ignoreWantsIconMail == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreWantsIconMail))  {
-<a name="615" href="#615">615</a>             preMQLCode.append(<span class="string">" enable iconmail"</span>);
+<a name="612" href="#612">612</a>         <em class="comment">// reset password never expires if not ignored</em>
+<a name="613" href="#613">613</a>         <strong>final</strong> Collection&lt;String> ignorePswdNeverExpires = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_PSWD_NEVER_EXPIRES);
+<a name="614" href="#614">614</a>         <strong>if</strong> ((ignorePswdNeverExpires == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignorePswdNeverExpires))  {
+<a name="615" href="#615">615</a>             preMQLCode.append(<span class="string">" !neverexpires"</span>);
 <a name="616" href="#616">616</a>         }
-<a name="617" href="#617">617</a>         <em class="comment">// reset password never expires if not ignored</em>
-<a name="618" href="#618">618</a>         <strong>final</strong> Collection&lt;String> ignorePswdNeverExpires = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_PSWD_NEVER_EXPIRES);
-<a name="619" href="#619">619</a>         <strong>if</strong> ((ignorePswdNeverExpires == <strong>null</strong>) || !StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignorePswdNeverExpires))  {
-<a name="620" href="#620">620</a>             preMQLCode.append(<span class="string">" !neverexpires"</span>);
-<a name="621" href="#621">621</a>         }
-<a name="622" href="#622">622</a>         <strong>if</strong> (<strong>this</strong>.defaultApplication != <strong>null</strong>)  {
-<a name="623" href="#623">623</a>             preMQLCode.append(<span class="string">" application \&quot;\&quot;"</span>);
-<a name="624" href="#624">624</a>         }
-<a name="625" href="#625">625</a>         preMQLCode.append(<span class="string">";\n"</span>);
-<a name="626" href="#626">626</a> 
-<a name="627" href="#627">627</a>         <strong>super</strong>.update(_paramCache, preMQLCode, _postMQLCode, _preTCLCode, _tclVariables, _sourceFile);
-<a name="628" href="#628">628</a>     }
-<a name="629" href="#629">629</a> 
-<a name="630" href="#630">630</a>     <em>/**<em>*</em></em>
-<a name="631" href="#631">631</a> <em>     * &lt;p>Calculates if workspace objects for this person are not handled. This</em>
-<a name="632" href="#632">632</a> <em>     * is done by checking if the name of this person matches one of the match</em>
-<a name="633" href="#633">633</a> <em>     * lists defined with parameter {@link #PARAM_IGNORE_WSO_PERSONS}. In this</em>
-<a name="634" href="#634">634</a> <em>     * case the the workspace objects are ignored for this person.&lt;/p></em>
-<a name="635" href="#635">635</a> <em>     *</em>
-<a name="636" href="#636">636</a> <em>     * @param _paramCache       parameter cache</em>
-<a name="637" href="#637">637</a> <em>     * @return &lt;i>true&lt;/i> if the handling of workspace objects for this person</em>
-<a name="638" href="#638">638</a> <em>     *         is ignored</em>
-<a name="639" href="#639">639</a> <em>     * @see #PARAM_IGNORE_WSO_PERSONS</em>
-<a name="640" href="#640">640</a> <em>     */</em>
-<a name="641" href="#641">641</a>     @Override()
-<a name="642" href="#642">642</a>     <strong>protected</strong> <strong>boolean</strong> ignoreWorkspaceObjects(<strong>final</strong> ParameterCache_mxJPO _paramCache)
-<a name="643" href="#643">643</a>     {
-<a name="644" href="#644">644</a>         <strong>boolean</strong> ignore = <strong>super</strong>.ignoreWorkspaceObjects(_paramCache);
-<a name="645" href="#645">645</a>         <strong>if</strong> (!ignore)  {
-<a name="646" href="#646">646</a>             <strong>final</strong> Collection&lt;String> ignoreMatches = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WSO_PERSONS);
-<a name="647" href="#647">647</a>             <strong>if</strong> (ignoreMatches != <strong>null</strong>)  {
-<a name="648" href="#648">648</a>                 ignore = StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreMatches);
-<a name="649" href="#649">649</a>             }
-<a name="650" href="#650">650</a>         }
-<a name="651" href="#651">651</a>         <strong>return</strong> ignore;
-<a name="652" href="#652">652</a>     }
-<a name="653" href="#653">653</a> }
+<a name="617" href="#617">617</a>         <strong>if</strong> (<strong>this</strong>.defaultApplication != <strong>null</strong>)  {
+<a name="618" href="#618">618</a>             preMQLCode.append(<span class="string">" application \&quot;\&quot;"</span>);
+<a name="619" href="#619">619</a>         }
+<a name="620" href="#620">620</a>         preMQLCode.append(<span class="string">";\n"</span>);
+<a name="621" href="#621">621</a> 
+<a name="622" href="#622">622</a>         <strong>super</strong>.update(_paramCache, preMQLCode, _postMQLCode, _preTCLCode, _tclVariables, _sourceFile);
+<a name="623" href="#623">623</a>     }
+<a name="624" href="#624">624</a> 
+<a name="625" href="#625">625</a>     <em>/**<em>*</em></em>
+<a name="626" href="#626">626</a> <em>     * &lt;p>Calculates if workspace objects for this person are not handled. This</em>
+<a name="627" href="#627">627</a> <em>     * is done by checking if the name of this person matches one of the match</em>
+<a name="628" href="#628">628</a> <em>     * lists defined with parameter {@link #PARAM_IGNORE_WSO_PERSONS}. In this</em>
+<a name="629" href="#629">629</a> <em>     * case the the workspace objects are ignored for this person.&lt;/p></em>
+<a name="630" href="#630">630</a> <em>     *</em>
+<a name="631" href="#631">631</a> <em>     * @param _paramCache       parameter cache</em>
+<a name="632" href="#632">632</a> <em>     * @return &lt;i>true&lt;/i> if the handling of workspace objects for this person</em>
+<a name="633" href="#633">633</a> <em>     *         is ignored</em>
+<a name="634" href="#634">634</a> <em>     * @see #PARAM_IGNORE_WSO_PERSONS</em>
+<a name="635" href="#635">635</a> <em>     */</em>
+<a name="636" href="#636">636</a>     @Override()
+<a name="637" href="#637">637</a>     <strong>protected</strong> <strong>boolean</strong> ignoreWorkspaceObjects(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="638" href="#638">638</a>     {
+<a name="639" href="#639">639</a>         <strong>boolean</strong> ignore = <strong>super</strong>.ignoreWorkspaceObjects(_paramCache);
+<a name="640" href="#640">640</a>         <strong>if</strong> (!ignore)  {
+<a name="641" href="#641">641</a>             <strong>final</strong> Collection&lt;String> ignoreMatches = _paramCache.getValueList(PersonAdmin_mxJPO.PARAM_IGNORE_WSO_PERSONS);
+<a name="642" href="#642">642</a>             <strong>if</strong> (ignoreMatches != <strong>null</strong>)  {
+<a name="643" href="#643">643</a>                 ignore = StringUtil_mxJPO.match(<strong>this</strong>.getName(), ignoreMatches);
+<a name="644" href="#644">644</a>             }
+<a name="645" href="#645">645</a>         }
+<a name="646" href="#646">646</a>         <strong>return</strong> ignore;
+<a name="647" href="#647">647</a>     }
+<a name="648" href="#648">648</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 344 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-05-24 23:52:37 +0200 (Sun, 24. May 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 611 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-11-02 01:20:36 +0100 (Mo, 02 Nov 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -46,241 +46,236 @@
 <a name="37" href="#37">37</a>  <em>/**<em>*</em></em>
 <a name="38" href="#38">38</a>  <em> *</em>
 <a name="39" href="#39">39</a>  <em> * @author The MxUpdate Team</em>
-<a name="40" href="#40">40</a>  <em> * @version $Id: Rule_mxJPO.java 344 2009-05-24 21:52:37Z tim.moxter $</em>
+<a name="40" href="#40">40</a>  <em> * @version $Id: Rule_mxJPO.java 611 2009-11-02 00:20:36Z tim.moxter $</em>
 <a name="41" href="#41">41</a>  <em> */</em>
 <a name="42" href="#42">42</a>  <strong>public</strong> <strong>class</strong> Rule_mxJPO
-<a name="43" href="#43">43</a>          <strong>extends</strong> AbstractAdminObject_mxJPO
+<a name="43" href="#43">43</a>      <strong>extends</strong> AbstractAdminObject_mxJPO
 <a name="44" href="#44">44</a>  {
 <a name="45" href="#45">45</a>      <em>/**<em>*</em></em>
-<a name="46" href="#46">46</a>  <em>     * Defines the serialize version unique identifier.</em>
+<a name="46" href="#46">46</a>  <em>     * Set holding the complete owner access.</em>
 <a name="47" href="#47">47</a>  <em>     */</em>
-<a name="48" href="#48">48</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> <strong>long</strong> serialVersionUID = -3114403435479263346L;
+<a name="48" href="#48">48</a>      <strong>private</strong> <strong>final</strong> Set&lt;String> ownerAccess = <strong>new</strong> TreeSet&lt;String>();
 <a name="49" href="#49">49</a>  
 <a name="50" href="#50">50</a>      <em>/**<em>*</em></em>
-<a name="51" href="#51">51</a>  <em>     * Set holding the complete owner access.</em>
+<a name="51" href="#51">51</a>  <em>     * Set holding the complete public access.</em>
 <a name="52" href="#52">52</a>  <em>     */</em>
-<a name="53" href="#53">53</a>      <strong>private</strong> <strong>final</strong> Set&lt;String> ownerAccess = <strong>new</strong> TreeSet&lt;String>();
+<a name="53" href="#53">53</a>      <strong>private</strong> <strong>final</strong> Set&lt;String> publicAccess = <strong>new</strong> TreeSet&lt;String>();
 <a name="54" href="#54">54</a>  
 <a name="55" href="#55">55</a>      <em>/**<em>*</em></em>
-<a name="56" href="#56">56</a>  <em>     * Set holding the complete public access.</em>
-<a name="57" href="#57">57</a>  <em>     */</em>
-<a name="58" href="#58">58</a>      <strong>private</strong> <strong>final</strong> Set&lt;String> publicAccess = <strong>new</strong> TreeSet&lt;String>();
-<a name="59" href="#59">59</a>  
-<a name="60" href="#60">60</a>      <em>/**<em>*</em></em>
-<a name="61" href="#61">61</a>  <em>     * Stack used to hold the user access while parsing.</em>
-<a name="62" href="#62">62</a>  <em>     *</em>
-<a name="63" href="#63">63</a>  <em>     * @see #parse(String, String)</em>
-<a name="64" href="#64">64</a>  <em>     */</em>
-<a name="65" href="#65">65</a>      <strong>private</strong> <strong>final</strong> Stack&lt;UserAccess> userAccess = <strong>new</strong> Stack&lt;UserAccess>();
-<a name="66" href="#66">66</a>  
-<a name="67" href="#67">67</a>      <em>/**<em>*</em></em>
-<a name="68" href="#68">68</a>  <em>     * Sorted set of user access (by name of the user).</em>
-<a name="69" href="#69">69</a>  <em>     *</em>
-<a name="70" href="#70">70</a>  <em>     * @see #prepare(ParameterCache_mxJPO)</em>
-<a name="71" href="#71">71</a>  <em>     */</em>
-<a name="72" href="#72">72</a>      <strong>private</strong> <strong>final</strong> Set&lt;UserAccess> userAccessSorted = <strong>new</strong> TreeSet&lt;UserAccess>();
-<a name="73" href="#73">73</a>  
-<a name="74" href="#74">74</a>      <em>/**<em>*</em></em>
-<a name="75" href="#75">75</a>  <em>     * Constructor used to initialize the type definition enumeration.</em>
-<a name="76" href="#76">76</a>  <em>     *</em>
-<a name="77" href="#77">77</a>  <em>     * @param _typeDef  defines the related type definition enumeration</em>
-<a name="78" href="#78">78</a>  <em>     * @param _mxName   MX name of the rule object</em>
-<a name="79" href="#79">79</a>  <em>     */</em>
-<a name="80" href="#80">80</a>      <strong>public</strong> Rule_mxJPO(<strong>final</strong> TypeDef_mxJPO _typeDef,
-<a name="81" href="#81">81</a>                        <strong>final</strong> String _mxName)
-<a name="82" href="#82">82</a>      {
-<a name="83" href="#83">83</a>          <strong>super</strong>(_typeDef, _mxName);
-<a name="84" href="#84">84</a>      }
-<a name="85" href="#85">85</a>  
-<a name="86" href="#86">86</a>      <em>/**<em>*</em></em>
-<a name="87" href="#87">87</a>  <em>     * Parses all rule specific URLs.</em>
-<a name="88" href="#88">88</a>  <em>     *</em>
-<a name="89" href="#89">89</a>  <em>     * @param _url      URL to parse</em>
-<a name="90" href="#90">90</a>  <em>     * @param _content  content of the URL to parse</em>
-<a name="91" href="#91">91</a>  <em>     */</em>
-<a name="92" href="#92">92</a>      @Override
-<a name="93" href="#93">93</a>      <strong>protected</strong> <strong>void</strong> parse(<strong>final</strong> String _url,
-<a name="94" href="#94">94</a>                           <strong>final</strong> String _content)
-<a name="95" href="#95">95</a>      {
-<a name="96" href="#96">96</a>          <strong>if</strong> (<span class="string">"/ownerAccess"</span>.equals(_url))  {
-<a name="97" href="#97">97</a>              <em class="comment">// to be ignored ...</em>
-<a name="98" href="#98">98</a>          } <strong>else</strong> <strong>if</strong> (<span class="string">"/ownerAccess/access"</span>.equals(_url))  {
-<a name="99" href="#99">99</a>              <em class="comment">// to be ignored ...</em>
-<a name="100" href="#100">100</a>         } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/ownerAccess/access/"</span>))  {
-<a name="101" href="#101">101</a>             <strong>this</strong>.ownerAccess.add(_url.replaceAll(<span class="string">"^/ownerAccess/access/"</span>, <span class="string">""</span>)
-<a name="102" href="#102">102</a>                                      .replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
-<a name="103" href="#103">103</a> 
-<a name="104" href="#104">104</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/publicAccess"</span>.equals(_url))  {
-<a name="105" href="#105">105</a>             <em class="comment">// to be ignored ...</em>
-<a name="106" href="#106">106</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/publicAccess/access"</span>.equals(_url))  {
-<a name="107" href="#107">107</a>             <em class="comment">// to be ignored ...</em>
-<a name="108" href="#108">108</a>         } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/publicAccess/access/"</span>))  {
-<a name="109" href="#109">109</a>             <strong>this</strong>.publicAccess.add(_url.replaceAll(<span class="string">"^/publicAccess/access/"</span>, <span class="string">""</span>)
-<a name="110" href="#110">110</a>                                       .replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
-<a name="111" href="#111">111</a> 
-<a name="112" href="#112">112</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList"</span>.equals(_url))  {
-<a name="113" href="#113">113</a>             <em class="comment">// to be ignored ...</em>
-<a name="114" href="#114">114</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList/userAccess"</span>.equals(_url))  {
-<a name="115" href="#115">115</a>             <strong>this</strong>.userAccess.add(<strong>new</strong> UserAccess());
-<a name="116" href="#116">116</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList/userAccess/userRef"</span>.equals(_url))  {
-<a name="117" href="#117">117</a>             <strong>this</strong>.userAccess.peek().userRef = _content;
-<a name="118" href="#118">118</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList/userAccess/access"</span>.equals(_url))  {
-<a name="119" href="#119">119</a>             <em class="comment">// to be ignored ...</em>
-<a name="120" href="#120">120</a>         } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/userAccessList/userAccess/access/"</span>))  {
-<a name="121" href="#121">121</a>             <strong>this</strong>.userAccess.peek().access.add(_url.replaceAll(<span class="string">"^/userAccessList/userAccess/access/"</span>, <span class="string">""</span>)
-<a name="122" href="#122">122</a>                                                   .replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
-<a name="123" href="#123">123</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList/userAccess/expressionFilter"</span>.equals(_url))  {
-<a name="124" href="#124">124</a>             <strong>this</strong>.userAccess.peek().expressionFilter = _content;
+<a name="56" href="#56">56</a>  <em>     * Stack used to hold the user access while parsing.</em>
+<a name="57" href="#57">57</a>  <em>     *</em>
+<a name="58" href="#58">58</a>  <em>     * @see #parse(String, String)</em>
+<a name="59" href="#59">59</a>  <em>     */</em>
+<a name="60" href="#60">60</a>      <strong>private</strong> <strong>final</strong> Stack&lt;UserAccess> userAccess = <strong>new</strong> Stack&lt;UserAccess>();
+<a name="61" href="#61">61</a>  
+<a name="62" href="#62">62</a>      <em>/**<em>*</em></em>
+<a name="63" href="#63">63</a>  <em>     * Sorted set of user access (by name of the user).</em>
+<a name="64" href="#64">64</a>  <em>     *</em>
+<a name="65" href="#65">65</a>  <em>     * @see #prepare(ParameterCache_mxJPO)</em>
+<a name="66" href="#66">66</a>  <em>     */</em>
+<a name="67" href="#67">67</a>      <strong>private</strong> <strong>final</strong> Set&lt;UserAccess> userAccessSorted = <strong>new</strong> TreeSet&lt;UserAccess>();
+<a name="68" href="#68">68</a>  
+<a name="69" href="#69">69</a>      <em>/**<em>*</em></em>
+<a name="70" href="#70">70</a>  <em>     * Constructor used to initialize the type definition enumeration.</em>
+<a name="71" href="#71">71</a>  <em>     *</em>
+<a name="72" href="#72">72</a>  <em>     * @param _typeDef  defines the related type definition enumeration</em>
+<a name="73" href="#73">73</a>  <em>     * @param _mxName   MX name of the rule object</em>
+<a name="74" href="#74">74</a>  <em>     */</em>
+<a name="75" href="#75">75</a>      <strong>public</strong> Rule_mxJPO(<strong>final</strong> TypeDef_mxJPO _typeDef,
+<a name="76" href="#76">76</a>                        <strong>final</strong> String _mxName)
+<a name="77" href="#77">77</a>      {
+<a name="78" href="#78">78</a>          <strong>super</strong>(_typeDef, _mxName);
+<a name="79" href="#79">79</a>      }
+<a name="80" href="#80">80</a>  
+<a name="81" href="#81">81</a>      <em>/**<em>*</em></em>
+<a name="82" href="#82">82</a>  <em>     * Parses all rule specific URLs.</em>
+<a name="83" href="#83">83</a>  <em>     *</em>
+<a name="84" href="#84">84</a>  <em>     * @param _url      URL to parse</em>
+<a name="85" href="#85">85</a>  <em>     * @param _content  content of the URL to parse</em>
+<a name="86" href="#86">86</a>  <em>     */</em>
+<a name="87" href="#87">87</a>      @Override()
+<a name="88" href="#88">88</a>      <strong>protected</strong> <strong>void</strong> parse(<strong>final</strong> String _url,
+<a name="89" href="#89">89</a>                           <strong>final</strong> String _content)
+<a name="90" href="#90">90</a>      {
+<a name="91" href="#91">91</a>          <strong>if</strong> (<span class="string">"/ownerAccess"</span>.equals(_url))  {
+<a name="92" href="#92">92</a>              <em class="comment">// to be ignored ...</em>
+<a name="93" href="#93">93</a>          } <strong>else</strong> <strong>if</strong> (<span class="string">"/ownerAccess/access"</span>.equals(_url))  {
+<a name="94" href="#94">94</a>              <em class="comment">// to be ignored ...</em>
+<a name="95" href="#95">95</a>          } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/ownerAccess/access/"</span>))  {
+<a name="96" href="#96">96</a>              <strong>this</strong>.ownerAccess.add(_url.replaceAll(<span class="string">"^/ownerAccess/access/"</span>, <span class="string">""</span>)
+<a name="97" href="#97">97</a>                                       .replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
+<a name="98" href="#98">98</a>  
+<a name="99" href="#99">99</a>          } <strong>else</strong> <strong>if</strong> (<span class="string">"/publicAccess"</span>.equals(_url))  {
+<a name="100" href="#100">100</a>             <em class="comment">// to be ignored ...</em>
+<a name="101" href="#101">101</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/publicAccess/access"</span>.equals(_url))  {
+<a name="102" href="#102">102</a>             <em class="comment">// to be ignored ...</em>
+<a name="103" href="#103">103</a>         } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/publicAccess/access/"</span>))  {
+<a name="104" href="#104">104</a>             <strong>this</strong>.publicAccess.add(_url.replaceAll(<span class="string">"^/publicAccess/access/"</span>, <span class="string">""</span>)
+<a name="105" href="#105">105</a>                                       .replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
+<a name="106" href="#106">106</a> 
+<a name="107" href="#107">107</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList"</span>.equals(_url))  {
+<a name="108" href="#108">108</a>             <em class="comment">// to be ignored ...</em>
+<a name="109" href="#109">109</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList/userAccess"</span>.equals(_url))  {
+<a name="110" href="#110">110</a>             <strong>this</strong>.userAccess.add(<strong>new</strong> UserAccess());
+<a name="111" href="#111">111</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList/userAccess/userRef"</span>.equals(_url))  {
+<a name="112" href="#112">112</a>             <strong>this</strong>.userAccess.peek().userRef = _content;
+<a name="113" href="#113">113</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList/userAccess/access"</span>.equals(_url))  {
+<a name="114" href="#114">114</a>             <em class="comment">// to be ignored ...</em>
+<a name="115" href="#115">115</a>         } <strong>else</strong> <strong>if</strong> (_url.startsWith(<span class="string">"/userAccessList/userAccess/access/"</span>))  {
+<a name="116" href="#116">116</a>             <strong>this</strong>.userAccess.peek().access.add(_url.replaceAll(<span class="string">"^/userAccessList/userAccess/access/"</span>, <span class="string">""</span>)
+<a name="117" href="#117">117</a>                                                   .replaceAll(<span class="string">"Access$"</span>, <span class="string">""</span>));
+<a name="118" href="#118">118</a>         } <strong>else</strong> <strong>if</strong> (<span class="string">"/userAccessList/userAccess/expressionFilter"</span>.equals(_url))  {
+<a name="119" href="#119">119</a>             <strong>this</strong>.userAccess.peek().expressionFilter = _content;
+<a name="120" href="#120">120</a> 
+<a name="121" href="#121">121</a>         } <strong>else</strong>  {
+<a name="122" href="#122">122</a>             <strong>super</strong>.parse(_url, _content);
+<a name="123" href="#123">123</a>         }
+<a name="124" href="#124">124</a>     }
 <a name="125" href="#125">125</a> 
-<a name="126" href="#126">126</a>         } <strong>else</strong>  {
-<a name="127" href="#127">127</a>             <strong>super</strong>.parse(_url, _content);
-<a name="128" href="#128">128</a>         }
-<a name="129" href="#129">129</a>     }
-<a name="130" href="#130">130</a> 
-<a name="131" href="#131">131</a>     <em>/**<em>*</em></em>
-<a name="132" href="#132">132</a> <em>     * The user access instances are sorted.</em>
-<a name="133" href="#133">133</a> <em>     *</em>
-<a name="134" href="#134">134</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="135" href="#135">135</a> <em>     * @see #userAccess         unsorted list of user access</em>
-<a name="136" href="#136">136</a> <em>     * @see #userAccessSorted   sorted list user access (after this method is</em>
-<a name="137" href="#137">137</a> <em>     *                          called)</em>
-<a name="138" href="#138">138</a> <em>     * @throws MatrixException if the prepare from derived class failed</em>
-<a name="139" href="#139">139</a> <em>     */</em>
-<a name="140" href="#140">140</a>     @Override
-<a name="141" href="#141">141</a>     <strong>protected</strong> <strong>void</strong> prepare(<strong>final</strong> ParameterCache_mxJPO _paramCache)
-<a name="142" href="#142">142</a>             throws MatrixException
-<a name="143" href="#143">143</a>     {
-<a name="144" href="#144">144</a>         <strong>for</strong> (<strong>final</strong> UserAccess range : <strong>this</strong>.userAccess)  {
-<a name="145" href="#145">145</a>             <strong>this</strong>.userAccessSorted.add(range);
-<a name="146" href="#146">146</a>         }
-<a name="147" href="#147">147</a>         <strong>super</strong>.prepare(_paramCache);
-<a name="148" href="#148">148</a>     }
-<a name="149" href="#149">149</a> 
-<a name="150" href="#150">150</a>     <em>/**<em>*</em></em>
-<a name="151" href="#151">151</a> <em>     * Writes specific information about the cached rule to the given</em>
-<a name="152" href="#152">152</a> <em>     * writer instance.</em>
-<a name="153" href="#153">153</a> <em>     *</em>
-<a name="154" href="#154">154</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="155" href="#155">155</a> <em>     * @param _out          appendable instance to the TCL update file</em>
-<a name="156" href="#156">156</a> <em>     * @throws IOException if the TCL update code for the rule could not be</em>
-<a name="157" href="#157">157</a> <em>     *                     written</em>
-<a name="158" href="#158">158</a> <em>     */</em>
-<a name="159" href="#159">159</a>     @Override
-<a name="160" href="#160">160</a>     <strong>protected</strong> <strong>void</strong> writeObject(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="161" href="#161">161</a>                                <strong>final</strong> Appendable _out)
-<a name="162" href="#162">162</a>             throws IOException
-<a name="163" href="#163">163</a>     {
-<a name="164" href="#164">164</a>         <em class="comment">// hidden?</em>
-<a name="165" href="#165">165</a>         _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.isHidden() ? <span class="string">"hidden"</span> : <span class="string">"!hidden"</span>);
-<a name="166" href="#166">166</a> 
-<a name="167" href="#167">167</a>         <em class="comment">// owner access</em>
-<a name="168" href="#168">168</a>         _out.append(<span class="string">" &#47;&#47;\n    add owner \&quot;"</span>)
-<a name="169" href="#169">169</a>             .append(StringUtil_mxJPO.joinTcl(',', false, <strong>this</strong>.ownerAccess, <strong>null</strong>))
-<a name="170" href="#170">170</a>             .append('\&quot;')
-<a name="171" href="#171">171</a>         <em class="comment">// public access</em>
-<a name="172" href="#172">172</a>             .append(<span class="string">" &#47;&#47;\n    add public \&quot;"</span>)
-<a name="173" href="#173">173</a>             .append(StringUtil_mxJPO.joinTcl(',', false, <strong>this</strong>.publicAccess, <strong>null</strong>))
-<a name="174" href="#174">174</a>             .append('\&quot;');
-<a name="175" href="#175">175</a> 
-<a name="176" href="#176">176</a>         <em class="comment">// user access</em>
-<a name="177" href="#177">177</a>         <strong>for</strong> (<strong>final</strong> UserAccess userAccess : <strong>this</strong>.userAccessSorted)  {
-<a name="178" href="#178">178</a>             _out.append(<span class="string">" &#47;&#47;\n    add user \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(userAccess.userRef)).append(<span class="string">"\&quot; \&quot;"</span>)
-<a name="179" href="#179">179</a>                 .append(StringUtil_mxJPO.joinTcl(',', false, userAccess.access, <strong>null</strong>))
-<a name="180" href="#180">180</a>                 .append(<span class="string">"\&quot; filter \&quot;"</span>)
-<a name="181" href="#181">181</a>                 .append(StringUtil_mxJPO.convertTcl(userAccess.expressionFilter))
-<a name="182" href="#182">182</a>                 .append(<span class="string">"\&quot;"</span>);
-<a name="183" href="#183">183</a>         }
-<a name="184" href="#184">184</a>     }
-<a name="185" href="#185">185</a> 
-<a name="186" href="#186">186</a>     <em>/**<em>*</em></em>
-<a name="187" href="#187">187</a> <em>     * The method overwrites the original method to append the MQL statements</em>
-<a name="188" href="#188">188</a> <em>     * in the &lt;code>_preMQLCode&lt;/code> to reset this rule. Following steps are</em>
-<a name="189" href="#189">189</a> <em>     * done:</em>
-<a name="190" href="#190">190</a> <em>     * &lt;ul></em>
-<a name="191" href="#191">191</a> <em>     * &lt;li>set to not hidden&lt;/li></em>
-<a name="192" href="#192">192</a> <em>     * &lt;li>no owner and public access&lt;/li></em>
-<a name="193" href="#193">193</a> <em>     * &lt;li>remove all users&lt;/li></em>
-<a name="194" href="#194">194</a> <em>     * &lt;/ul></em>
-<a name="195" href="#195">195</a> <em>     *</em>
-<a name="196" href="#196">196</a> <em>     * @param _paramCache       parameter cache</em>
-<a name="197" href="#197">197</a> <em>     * @param _preMQLCode       MQL statements which must be called before the</em>
-<a name="198" href="#198">198</a> <em>     *                          TCL code is executed</em>
-<a name="199" href="#199">199</a> <em>     * @param _postMQLCode      MQL statements which must be called after the</em>
-<a name="200" href="#200">200</a> <em>     *                          TCL code is executed</em>
-<a name="201" href="#201">201</a> <em>     * @param _preTCLCode       TCL code which is defined before the source</em>
-<a name="202" href="#202">202</a> <em>     *                          file is sourced</em>
-<a name="203" href="#203">203</a> <em>     * @param _tclVariables     map of all TCL variables where the key is the</em>
-<a name="204" href="#204">204</a> <em>     *                          name and the value is value of the TCL variable</em>
-<a name="205" href="#205">205</a> <em>     *                          (the value is automatically converted to TCL</em>
-<a name="206" href="#206">206</a> <em>     *                          syntax!)</em>
-<a name="207" href="#207">207</a> <em>     * @param _sourceFile       souce file with the TCL code to update</em>
-<a name="208" href="#208">208</a> <em>     * @throws Exception if the called update from derived class failed</em>
-<a name="209" href="#209">209</a> <em>     */</em>
-<a name="210" href="#210">210</a>     @Override
-<a name="211" href="#211">211</a>     <strong>protected</strong> <strong>void</strong> update(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="212" href="#212">212</a>                           <strong>final</strong> CharSequence _preMQLCode,
-<a name="213" href="#213">213</a>                           <strong>final</strong> CharSequence _postMQLCode,
-<a name="214" href="#214">214</a>                           <strong>final</strong> CharSequence _preTCLCode,
-<a name="215" href="#215">215</a>                           <strong>final</strong> Map&lt;String,String> _tclVariables,
-<a name="216" href="#216">216</a>                           <strong>final</strong> File _sourceFile)
-<a name="217" href="#217">217</a>             throws Exception
-<a name="218" href="#218">218</a>     {
-<a name="219" href="#219">219</a>         <strong>final</strong> StringBuilder preMQLCode = <strong>new</strong> StringBuilder()
-<a name="220" href="#220">220</a>             .append(<span class="string">"escape mod "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
-<a name="221" href="#221">221</a>             .append(<span class="string">" \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName())).append('\&quot;')
-<a name="222" href="#222">222</a>             .append(<span class="string">" !hidden owner none public none"</span>);
-<a name="223" href="#223">223</a>         <em class="comment">// remove user access</em>
-<a name="224" href="#224">224</a>         <strong>for</strong> (<strong>final</strong> UserAccess userAccess : <strong>this</strong>.userAccessSorted)  {
-<a name="225" href="#225">225</a>             preMQLCode.append(<span class="string">" remove user \&quot;"</span>)
-<a name="226" href="#226">226</a>                         .append(StringUtil_mxJPO.convertMql(userAccess.userRef))
-<a name="227" href="#227">227</a>                         .append(<span class="string">"\&quot; all"</span>);
-<a name="228" href="#228">228</a>         }
-<a name="229" href="#229">229</a> 
-<a name="230" href="#230">230</a>         <em class="comment">// append already existing pre MQL code</em>
-<a name="231" href="#231">231</a>         preMQLCode.append(<span class="string">";\n"</span>)
-<a name="232" href="#232">232</a>                   .append(_preMQLCode);
-<a name="233" href="#233">233</a> 
-<a name="234" href="#234">234</a>         <strong>super</strong>.update(_paramCache, preMQLCode, _postMQLCode, _preTCLCode, _tclVariables, _sourceFile);
-<a name="235" href="#235">235</a>     }
-<a name="236" href="#236">236</a> 
-<a name="237" href="#237">237</a>     <em>/**<em>*</em></em>
-<a name="238" href="#238">238</a> <em>     * Class used to hold the user access.</em>
-<a name="239" href="#239">239</a> <em>     */</em>
-<a name="240" href="#240">240</a>     <strong>private</strong> <strong>class</strong> UserAccess
-<a name="241" href="#241">241</a>             implements Comparable&lt;Rule_mxJPO.UserAccess>
-<a name="242" href="#242">242</a>     {
+<a name="126" href="#126">126</a>     <em>/**<em>*</em></em>
+<a name="127" href="#127">127</a> <em>     * The user access instances are sorted.</em>
+<a name="128" href="#128">128</a> <em>     *</em>
+<a name="129" href="#129">129</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="130" href="#130">130</a> <em>     * @see #userAccess         unsorted list of user access</em>
+<a name="131" href="#131">131</a> <em>     * @see #userAccessSorted   sorted list user access (after this method is</em>
+<a name="132" href="#132">132</a> <em>     *                          called)</em>
+<a name="133" href="#133">133</a> <em>     * @throws MatrixException if the prepare from derived class failed</em>
+<a name="134" href="#134">134</a> <em>     */</em>
+<a name="135" href="#135">135</a>     @Override()
+<a name="136" href="#136">136</a>     <strong>protected</strong> <strong>void</strong> prepare(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="137" href="#137">137</a>         throws MatrixException
+<a name="138" href="#138">138</a>     {
+<a name="139" href="#139">139</a>         <strong>for</strong> (<strong>final</strong> UserAccess range : <strong>this</strong>.userAccess)  {
+<a name="140" href="#140">140</a>             <strong>this</strong>.userAccessSorted.add(range);
+<a name="141" href="#141">141</a>         }
+<a name="142" href="#142">142</a>         <strong>super</strong>.prepare(_paramCache);
+<a name="143" href="#143">143</a>     }
+<a name="144" href="#144">144</a> 
+<a name="145" href="#145">145</a>     <em>/**<em>*</em></em>
+<a name="146" href="#146">146</a> <em>     * Writes specific information about the cached rule to the given</em>
+<a name="147" href="#147">147</a> <em>     * writer instance.</em>
+<a name="148" href="#148">148</a> <em>     *</em>
+<a name="149" href="#149">149</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="150" href="#150">150</a> <em>     * @param _out          appendable instance to the TCL update file</em>
+<a name="151" href="#151">151</a> <em>     * @throws IOException if the TCL update code for the rule could not be</em>
+<a name="152" href="#152">152</a> <em>     *                     written</em>
+<a name="153" href="#153">153</a> <em>     */</em>
+<a name="154" href="#154">154</a>     @Override()
+<a name="155" href="#155">155</a>     <strong>protected</strong> <strong>void</strong> writeObject(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="156" href="#156">156</a>                                <strong>final</strong> Appendable _out)
+<a name="157" href="#157">157</a>         throws IOException
+<a name="158" href="#158">158</a>     {
+<a name="159" href="#159">159</a>         <em class="comment">// hidden?</em>
+<a name="160" href="#160">160</a>         _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.isHidden() ? <span class="string">"hidden"</span> : <span class="string">"!hidden"</span>);
+<a name="161" href="#161">161</a> 
+<a name="162" href="#162">162</a>         <em class="comment">// owner access</em>
+<a name="163" href="#163">163</a>         _out.append(<span class="string">" &#47;&#47;\n    add owner \&quot;"</span>)
+<a name="164" href="#164">164</a>             .append(StringUtil_mxJPO.joinTcl(',', false, <strong>this</strong>.ownerAccess, <strong>null</strong>))
+<a name="165" href="#165">165</a>             .append('\&quot;')
+<a name="166" href="#166">166</a>         <em class="comment">// public access</em>
+<a name="167" href="#167">167</a>             .append(<span class="string">" &#47;&#47;\n    add public \&quot;"</span>)
+<a name="168" href="#168">168</a>             .append(StringUtil_mxJPO.joinTcl(',', false, <strong>this</strong>.publicAccess, <strong>null</strong>))
+<a name="169" href="#169">169</a>             .append('\&quot;');
+<a name="170" href="#170">170</a> 
+<a name="171" href="#171">171</a>         <em class="comment">// user access</em>
+<a name="172" href="#172">172</a>         <strong>for</strong> (<strong>final</strong> UserAccess userAccess : <strong>this</strong>.userAccessSorted)  {
+<a name="173" href="#173">173</a>             _out.append(<span class="string">" &#47;&#47;\n    add user \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(userAccess.userRef)).append(<span class="string">"\&quot; \&quot;"</span>)
+<a name="174" href="#174">174</a>                 .append(StringUtil_mxJPO.joinTcl(',', false, userAccess.access, <strong>null</strong>))
+<a name="175" href="#175">175</a>                 .append(<span class="string">"\&quot; filter \&quot;"</span>)
+<a name="176" href="#176">176</a>                 .append(StringUtil_mxJPO.convertTcl(userAccess.expressionFilter))
+<a name="177" href="#177">177</a>                 .append(<span class="string">"\&quot;"</span>);
+<a name="178" href="#178">178</a>         }
+<a name="179" href="#179">179</a>     }
+<a name="180" href="#180">180</a> 
+<a name="181" href="#181">181</a>     <em>/**<em>*</em></em>
+<a name="182" href="#182">182</a> <em>     * The method overwrites the original method to append the MQL statements</em>
+<a name="183" href="#183">183</a> <em>     * in the &lt;code>_preMQLCode&lt;/code> to reset this rule. Following steps are</em>
+<a name="184" href="#184">184</a> <em>     * done:</em>
+<a name="185" href="#185">185</a> <em>     * &lt;ul></em>
+<a name="186" href="#186">186</a> <em>     * &lt;li>set to not hidden&lt;/li></em>
+<a name="187" href="#187">187</a> <em>     * &lt;li>no owner and public access&lt;/li></em>
+<a name="188" href="#188">188</a> <em>     * &lt;li>remove all users&lt;/li></em>
+<a name="189" href="#189">189</a> <em>     * &lt;/ul></em>
+<a name="190" href="#190">190</a> <em>     *</em>
+<a name="191" href="#191">191</a> <em>     * @param _paramCache       parameter cache</em>
+<a name="192" href="#192">192</a> <em>     * @param _preMQLCode       MQL statements which must be called before the</em>
+<a name="193" href="#193">193</a> <em>     *                          TCL code is executed</em>
+<a name="194" href="#194">194</a> <em>     * @param _postMQLCode      MQL statements which must be called after the</em>
+<a name="195" href="#195">195</a> <em>     *                          TCL code is executed</em>
+<a name="196" href="#196">196</a> <em>     * @param _preTCLCode       TCL code which is defined before the source</em>
+<a name="197" href="#197">197</a> <em>     *                          file is sourced</em>
+<a name="198" href="#198">198</a> <em>     * @param _tclVariables     map of all TCL variables where the key is the</em>
+<a name="199" href="#199">199</a> <em>     *                          name and the value is value of the TCL variable</em>
+<a name="200" href="#200">200</a> <em>     *                          (the value is automatically converted to TCL</em>
+<a name="201" href="#201">201</a> <em>     *                          syntax!)</em>
+<a name="202" href="#202">202</a> <em>     * @param _sourceFile       souce file with the TCL code to update</em>
+<a name="203" href="#203">203</a> <em>     * @throws Exception if the called update from derived class failed</em>
+<a name="204" href="#204">204</a> <em>     */</em>
+<a name="205" href="#205">205</a>     @Override()
+<a name="206" href="#206">206</a>     <strong>protected</strong> <strong>void</strong> update(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="207" href="#207">207</a>                           <strong>final</strong> CharSequence _preMQLCode,
+<a name="208" href="#208">208</a>                           <strong>final</strong> CharSequence _postMQLCode,
+<a name="209" href="#209">209</a>                           <strong>final</strong> CharSequence _preTCLCode,
+<a name="210" href="#210">210</a>                           <strong>final</strong> Map&lt;String,String> _tclVariables,
+<a name="211" href="#211">211</a>                           <strong>final</strong> File _sourceFile)
+<a name="212" href="#212">212</a>         throws Exception
+<a name="213" href="#213">213</a>     {
+<a name="214" href="#214">214</a>         <strong>final</strong> StringBuilder preMQLCode = <strong>new</strong> StringBuilder()
+<a name="215" href="#215">215</a>             .append(<span class="string">"escape mod "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
+<a name="216" href="#216">216</a>             .append(<span class="string">" \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName())).append('\&quot;')
+<a name="217" href="#217">217</a>             .append(<span class="string">" !hidden owner none public none"</span>);
+<a name="218" href="#218">218</a>         <em class="comment">// remove user access</em>
+<a name="219" href="#219">219</a>         <strong>for</strong> (<strong>final</strong> UserAccess userAccess : <strong>this</strong>.userAccessSorted)  {
+<a name="220" href="#220">220</a>             preMQLCode.append(<span class="string">" remove user \&quot;"</span>)
+<a name="221" href="#221">221</a>                         .append(StringUtil_mxJPO.convertMql(userAccess.userRef))
+<a name="222" href="#222">222</a>                         .append(<span class="string">"\&quot; all"</span>);
+<a name="223" href="#223">223</a>         }
+<a name="224" href="#224">224</a> 
+<a name="225" href="#225">225</a>         <em class="comment">// append already existing pre MQL code</em>
+<a name="226" href="#226">226</a>         preMQLCode.append(<span class="string">";\n"</span>)
+<a name="227" href="#227">227</a>                   .append(_preMQLCode);
+<a name="228" href="#228">228</a> 
+<a name="229" href="#229">229</a>         <strong>super</strong>.update(_paramCache, preMQLCode, _postMQLCode, _preTCLCode, _tclVariables, _sourceFile);
+<a name="230" href="#230">230</a>     }
+<a name="231" href="#231">231</a> 
+<a name="232" href="#232">232</a>     <em>/**<em>*</em></em>
+<a name="233" href="#233">233</a> <em>     * Class used to hold the user access.</em>
+<a name="234" href="#234">234</a> <em>     */</em>
+<a name="235" href="#235">235</a>     <strong>private</strong> <strong>class</strong> UserAccess
+<a name="236" href="#236">236</a>         implements Comparable&lt;Rule_mxJPO.UserAccess>
+<a name="237" href="#237">237</a>     {
+<a name="238" href="#238">238</a>         <em>/**<em>*</em></em>
+<a name="239" href="#239">239</a> <em>         * Holds the user references of a user access.</em>
+<a name="240" href="#240">240</a> <em>         */</em>
+<a name="241" href="#241">241</a>         String userRef = <strong>null</strong>;
+<a name="242" href="#242">242</a> 
 <a name="243" href="#243">243</a>         <em>/**<em>*</em></em>
-<a name="244" href="#244">244</a> <em>         * Holds the user references of a user access.</em>
+<a name="244" href="#244">244</a> <em>         * Holds the access of the user.</em>
 <a name="245" href="#245">245</a> <em>         */</em>
-<a name="246" href="#246">246</a>         String userRef = <strong>null</strong>;
+<a name="246" href="#246">246</a>         <strong>final</strong> Set&lt;String> access = <strong>new</strong> TreeSet&lt;String>();
 <a name="247" href="#247">247</a> 
 <a name="248" href="#248">248</a>         <em>/**<em>*</em></em>
-<a name="249" href="#249">249</a> <em>         * Holds the access of the user.</em>
+<a name="249" href="#249">249</a> <em>         * Holds the expression filter of a user access.</em>
 <a name="250" href="#250">250</a> <em>         */</em>
-<a name="251" href="#251">251</a>         <strong>final</strong> Set&lt;String> access = <strong>new</strong> TreeSet&lt;String>();
+<a name="251" href="#251">251</a>         String expressionFilter = <strong>null</strong>;
 <a name="252" href="#252">252</a> 
 <a name="253" href="#253">253</a>         <em>/**<em>*</em></em>
-<a name="254" href="#254">254</a> <em>         * Holds the expression filter of a user access.</em>
-<a name="255" href="#255">255</a> <em>         */</em>
-<a name="256" href="#256">256</a>         String expressionFilter = <strong>null</strong>;
-<a name="257" href="#257">257</a> 
-<a name="258" href="#258">258</a>         <em>/**<em>*</em></em>
-<a name="259" href="#259">259</a> <em>         * Compares this user access instance to another user access instance.</em>
-<a name="260" href="#260">260</a> <em>         * Only the user reference {@link #userRef} is used to compare.</em>
-<a name="261" href="#261">261</a> <em>         *</em>
-<a name="262" href="#262">262</a> <em>         * @param _userAccess   user access instance to which this instance</em>
-<a name="263" href="#263">263</a> <em>         *                      must be compared to</em>
-<a name="264" href="#264">264</a> <em>         * @return a negative integer, zero, or a positive integer as this</em>
-<a name="265" href="#265">265</a> <em>         *         object represented by {@link #userRef} is less than, equal</em>
-<a name="266" href="#266">266</a> <em>         *         to, or greater than the specified object represented by</em>
-<a name="267" href="#267">267</a> <em>         *         {@link #userRef}</em>
-<a name="268" href="#268">268</a> <em>         */</em>
-<a name="269" href="#269">269</a>         <strong>public</strong> <strong>int</strong> compareTo(<strong>final</strong> UserAccess _userAccess)
-<a name="270" href="#270">270</a>         {
-<a name="271" href="#271">271</a>             <strong>return</strong> <strong>this</strong>.userRef.compareTo(_userAccess.userRef);
-<a name="272" href="#272">272</a>         }
-<a name="273" href="#273">273</a>     }
-<a name="274" href="#274">274</a> }
+<a name="254" href="#254">254</a> <em>         * Compares this user access instance to another user access instance.</em>
+<a name="255" href="#255">255</a> <em>         * Only the user reference {@link #userRef} is used to compare.</em>
+<a name="256" href="#256">256</a> <em>         *</em>
+<a name="257" href="#257">257</a> <em>         * @param _userAccess   user access instance to which this instance</em>
+<a name="258" href="#258">258</a> <em>         *                      must be compared to</em>
+<a name="259" href="#259">259</a> <em>         * @return a negative integer, zero, or a positive integer as this</em>
+<a name="260" href="#260">260</a> <em>         *         object represented by {@link #userRef} is less than, equal</em>
+<a name="261" href="#261">261</a> <em>         *         to, or greater than the specified object represented by</em>
+<a name="262" href="#262">262</a> <em>         *         {@link #userRef}</em>
+<a name="263" href="#263">263</a> <em>         */</em>
+<a name="264" href="#264">264</a>         <strong>public</strong> <strong>int</strong> compareTo(<strong>final</strong> UserAccess _userAccess)
+<a name="265" href="#265">265</a>         {
+<a name="266" href="#266">266</a>             <strong>return</strong> <strong>this</strong>.userRef.compareTo(_userAccess.userRef);
+<a name="267" href="#267">267</a>         }
+<a name="268" href="#268">268</a>     }
+<a name="269" href="#269">269</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

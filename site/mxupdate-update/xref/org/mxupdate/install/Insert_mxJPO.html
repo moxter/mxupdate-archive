@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 576 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-17 15:16:03 +0200 (Sa, 17 Okt 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 593 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-19 09:31:58 +0200 (Mo, 19 Okt 2009) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -53,7 +53,7 @@
 <a name="44" href="#44">44</a>  <em> * JPO classes, the complete MQL insert is rewritten.</em>
 <a name="45" href="#45">45</a>  <em> *</em>
 <a name="46" href="#46">46</a>  <em> * @author The MxUpdate Team</em>
-<a name="47" href="#47">47</a>  <em> * @version $Id: Insert_mxJPO.java 576 2009-10-17 13:16:03Z tim.moxter $</em>
+<a name="47" href="#47">47</a>  <em> * @version $Id: Insert_mxJPO.java 593 2009-10-19 07:31:58Z tim.moxter $</em>
 <a name="48" href="#48">48</a>  <em> */</em>
 <a name="49" href="#49">49</a>  <strong>public</strong> <strong>class</strong> Insert_mxJPO
 <a name="50" href="#50">50</a>  {
@@ -73,7 +73,7 @@
 <a name="64" href="#64">64</a>  <em>     * MQL command line to list the installed MxUpdate JPOs and the depending</em>
 <a name="65" href="#65">65</a>  <em>     * last modified date of the installed file.</em>
 <a name="66" href="#66">66</a>  <em>     *</em>
-<a name="67" href="#67">67</a>  <em>     * @see #evaluteInstalledJPOs(Context)</em>
+<a name="67" href="#67">67</a>  <em>     * @see #evaluteInstalledJPOs(Context, SimpleDateFormat)</em>
 <a name="68" href="#68">68</a>  <em>     */</em>
 <a name="69" href="#69">69</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String CMD_LISTJPOS
 <a name="70" href="#70">70</a>              = <span class="string">"list prog \&quot;MxUpdate,org.mxupdate.*,net.sourceforge.mxupdate.*\&quot; "</span>
@@ -198,7 +198,7 @@
 <a name="189" href="#189">189</a> <em>     * @param _dateFormat   date / time formatter</em>
 <a name="190" href="#190">190</a> <em>     * @throws IOException if the JPO file could not be read</em>
 <a name="191" href="#191">191</a> <em>     * @throws MatrixException if the JPO could not updated</em>
-<a name="192" href="#192">192</a> <em>     * @see #getCode(Map)</em>
+<a name="192" href="#192">192</a> <em>     * @see ClassFile#getCode()</em>
 <a name="193" href="#193">193</a> <em>     */</em>
 <a name="194" href="#194">194</a>     <strong>public</strong> <strong>void</strong> update(<strong>final</strong> Context _context,
 <a name="195" href="#195">195</a>                        <strong>final</strong> ClassFile _classFile,
