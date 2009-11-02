@@ -38,7 +38,7 @@
          * [CI_User_Role Roles]
          * [CI_User_Person Persons]
          * [CI_User_PersonAdmin Administration Persons]
-     * [C_UI User Interfaces]
+     * [CI_UI User Interfaces]
          * [CI_UI_Command Commands]
          * [CI_UI_Menu Menus]
          * [CI_UI_Channel Channels]
