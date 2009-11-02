@@ -1,0 +1,59 @@
+#summary Describes the special handling of Commands as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+----
+
+= Introduction =
+Commands are used to define buttons with an action for the web user interface.
+
+----
+
+= Handled Command Properties =
+This command properties could be handled from !MxUpdate:
+  * "alt" and label text
+  * hyperlink reference (HRef)
+  * user references (assigned users)
+  * settings
+
+----
+
+= Steps of the Update Flow =
+== Cleanup ==
+Following steps are done before the TCL update file is executed:
+  * The description is set to an empty string.
+  * The "alt" and label text is set to an empty string, too.
+  * The hyperlink reference is removed.
+  * All assigned users are removed.
+  * All settings are removed.
+
+----
+
+= Example =
+
+{{{
+################################################################################
+# COMMAND:
+# ~~~~~~~~
+# MxUpdate_Test
+#
+# SYMBOLIC NAME:
+# ~~~~~~~~~~~~~~
+# command_MxUpdate_Test
+#
+# DESCRIPTION:
+# ~~~~~~~~~~~~
+# Test Command.
+#
+# AUTHOR:
+# ~~~~~~~
+# The MxUpdate Team
+################################################################################
+
+mql escape mod command "${NAME}" \
+    description "Test Command." \
+    label "Test Label" \
+    href "\$\{COMMON_DIR\}/emxTable.jsp?table=TestTable&inquiry=TestInquiry" \
+    alt "" \
+    add setting "Target Location" "content"
+}}}
