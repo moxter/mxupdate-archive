@@ -54,7 +54,7 @@ of configuration items. The date within the installation must be formatted in
 TCL and Java. For the same date the result must be equal in TCL and Java.
 
 For an explanation how to change this properties see also the
-[UpdatePropertyFileFormat property file format] description.
+[UpdatePropertyFileFormat property file format] description.
 
 || *Name*                       || *Default Value*              || *Description* ||
 || !InstallFileDateFormatJava   || *{{{yyyy-MM-dd HH:mm:ss}}}*  || Date / time format used within Java / JPOs to install the !MxUpdate Update tool. ||
