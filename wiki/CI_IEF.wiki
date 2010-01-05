@@ -1,0 +1,9 @@
+#summary Describes the special handling of All Integration Objects as configuration item.
+
+All kind of Integration objects are defined as "business object" (with Matrix
+Navigator). They are used to configure integrations, e.g. for office products or
+CAD programs.
+
+!MxUpdate supports following integration objects:
+ * [CI_IEF_GlobalConfig IEF Global Configurations]
+ * [CI_IEF_GlobalRegistry IEF Global Registries]
