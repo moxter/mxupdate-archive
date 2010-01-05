@@ -1,0 +1,71 @@
+#summary Describes the special handling of Tables as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+----
+
+= Steps of the Update Flow =
+== Cleanup ==
+Following steps are done before the TCL update file is executed:
+  * The description is set to an empty string.
+  * All columns of the web table are removed.
+
+----
+
+= Example =
+{{{
+################################################################################
+# TABLE:
+# ~~~~~~
+# type_MxUpdate_Product
+#
+# SYMBOLIC NAME:
+# ~~~~~~~~~~~~~~
+# table_type_MxUpdate_Product
+#
+# DESCRIPTION:
+# ~~~~~~~~~~~~
+# Example used to handle products.
+#
+# AUTHOR:
+# ~~~~~~~
+# The MxUpdate Team
+################################################################################
+
+mql escape mod table "${NAME}" system \
+    description "Example used to handle products." \
+    column \
+        name "type" \
+        label "emxFramework.Basic.Type" \
+        businessobject "\$<type>" \
+        range "" \
+        href "" \
+        alt "" \
+        setting "Registered Suite" "Framework" \
+        setting "Show Type Icon" "true" \
+    column \
+        name "name" \
+        label "emxFramework.Basic.Name" \
+        businessobject "\$<name>" \
+        range "" \
+        href "\$\{COMMON_DIR\}/emxTree.jsp?mode=insert" \
+        alt "" \
+        setting "Registered Suite" "Framework" \
+        setting "Target Location" "content" \
+    column \
+        name "revision" \
+        label "emxFramework.Basic.Revision" \
+        businessobject "\$<revision>" \
+        range "" \
+        href "" \
+        alt "" \
+        setting "Registered Suite" "Framework" \
+    column \
+        name "description" \
+        label "emxFramework.Basic.Description" \
+        businessobject "\$<description>" \
+        range "" \
+        href "" \
+        alt "" \
+        setting "Registered Suite" "Framework"
+}}}

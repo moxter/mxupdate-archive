@@ -1,20 +1,22 @@
-#summary Describes the special handling of Commands as configuration item.
+#summary Describes the special handling of Menus as configuration item.
 
 <wiki:toc max_depth="3"/>
 
 ----
 
 = Introduction =
-Commands are used to define buttons with an action for the web user interface.
+Menus are used to define group buttons for the web user interface. In some
+cases a menu could also be a button with action.
 
 ----
 
 = Handled Command Properties =
-This command properties could be handled from !MxUpdate:
+This menu properties could be handled from !MxUpdate:
   * "alt" and label text
   * hyperlink reference (HRef)
   * user references (assigned users)
   * settings
+  * sub commands and menus
   * properties
 
 ----
@@ -27,34 +29,36 @@ Following steps are done before the TCL update file is executed:
   * The hyperlink reference is removed.
   * All assigned users are removed.
   * All settings are removed.
+  * All properties are removed.
+  * All sub commands and menus are removed.
 
 ----
 
 = Example =
-
 {{{
 ################################################################################
-# COMMAND:
-# ~~~~~~~~
-# MxUpdate_Test
+# MENU:
+# ~~~~~
+# MxUpdateToolbarMenu
 #
 # SYMBOLIC NAME:
 # ~~~~~~~~~~~~~~
-# command_MxUpdate_Test
+# menu_MxUpdateToolbarMenu
 #
 # DESCRIPTION:
 # ~~~~~~~~~~~~
-# Test Command.
+# Toolbar for MxUpdate.
 #
 # AUTHOR:
 # ~~~~~~~
 # The MxUpdate Team
 ################################################################################
 
-mql escape mod command "${NAME}" \
-    description "Test Command." \
-    label "Test Label" \
-    href "\$\{COMMON_DIR\}/emxTable.jsp?table=TestTable&inquiry=TestInquiry" \
+mql escape mod menu "${NAME}" \
+    description "Toolbar for MxUpdate." \
+    label "emxFramework.Common.Actions" \
+    href "" \
     alt "" \
-    add setting "Target Location" "content"
+    add setting "Registered Suite" "Framework" \
+    add command "MxUpdate_Test"
 }}}

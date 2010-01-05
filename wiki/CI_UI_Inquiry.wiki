@@ -53,9 +53,8 @@ the value defined in the file.
 ----
 
 = Parameter Definitions =
-|| *Name*                    || *Parameter* || Default Value                    || Description ||
-|| UIInquirySeparatorComment ||             || _see the inquiry code separator_ || Defines the used comment in front of the separator between the inquiry TCL update code and the inquiry code itself. ||
-|| UIInquirySeparatorText    ||             || _see the inquiry code separator_ || Defines the used text for the separator between the inquiry TCL update code and the inquiry code itself. ||
+|| *Name:* {{{UIInquirySeparatorComment}}}        <p>*Default Value:* _see the inquiry code separator_ </p><p>Defines the used comment in front of the separator between the inquiry TCL update code and the inquiry code itself.</p> ||
+|| *Name:* {{{UIInquirySeparatorText}}}           <p>*Default Value:* _see the inquiry code separator_ </p><p>Defines the used text for the separator between the inquiry TCL update code and the inquiry code itself.</p> ||
 
 The parameters could be changed depending on project needs. For further
 information see the [UpdatePropertyFileFormat_ParameterDef Parameter Definition Format].
