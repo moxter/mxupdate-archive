@@ -2,10 +2,7 @@
 
 <wiki:toc max_depth="3"/>
 
-= Introduction =
-
 ----
 
 = Parameter Definitions =
-|| *Name*                   || *Parameter*                                          || *Default Value* || *Description* ||
-|| UserIgnoreWSO4Groups     || ‑‑ignoreworkspaceobjectsforgroup, ‑‑ignorewso4group  ||                 || Defines the match of groups for which workspace objects are not handled (neither exported nor updated). Attention! A workspace object defined in the TCL update file are not ignored and will be created! ||
+|| *Name:* {{{UserIgnoreWSO4Groups}}}             <p>*Parameter:* {{{‑‑ignoreworkspaceobjectsforgroup [GROUP_MATCH]}}}, {{{‑‑ignorewso4group [GROUP_MATCH]}}} </p><p>Defines the match of groups for which workspace objects are not handled (neither exported nor updated).</p><p>Attention! A workspace object defined in the TCL update file are not ignored and will be created!</p> ||
