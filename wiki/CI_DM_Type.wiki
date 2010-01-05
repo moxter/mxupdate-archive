@@ -1,0 +1,9 @@
+#summary Describes the special handling of Types as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+----
+
+= Parameter Definitions =
+|| *Name:* {{{DMWithAttrIgnoreTypeAttr}}}         <p>*Parameter:* {{{‑‑ignoretypeattributes [ATTRIBUTE_MATCH]}}} </p><p>Pattern defining the match of attributes which are ignored if not defined anymore within the test attributes of types.</p> ||
+|| *Name:* {{{DMWithAttrRemoveTypeAttr}}}         <p>*Parameter:* {{{‑‑removetypeattributes [ATTRIBUTE_MATCH]}}} </p><p>Pattern defining the match of attributes which are removed if not defined anymore within the test attributes of types.</p> ||
