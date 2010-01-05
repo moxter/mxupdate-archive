@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+  Copyright 2003 - 2010 The MxUpdate Team
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+  Author:          The MxUpdate Team
+  Revision:        $Rev$
+  Last Changed:    $Date$
+  Last Changed By: $Author$
+
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ************************************************************************
+    * Module Definition
+    ************************************************************************* -->
+    <packaging>jar</packaging>
+    <groupId>org.mxupdate</groupId>
+    <artifactId>manual</artifactId>
+    <version>0.7.2-SNAPSHOT</version>
+    <name>Maven Plug-In for Wiki Utility</name>
+    <url>http://manual.mxupdate.org</url>
+    <licenses>
+        <license>
+            <name>Apache 2.0 License</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>tim.moxter</id>
+            <name>Tim Moxter</name>
+            <email>tim.moxter(ad)moxter.net</email>
+            <url>www.mxupdate.org</url>
+            <organization>moxter.net Ltd. &amp; Co.KG</organization>
+            <organizationUrl>http://www.moxter.net/de/</organizationUrl>
+            <timezone>+1</timezone>
+            <properties />
+        </developer>
+    </developers>
+    <inceptionYear>2009</inceptionYear>
+    <organization>
+        <name>The MxUpdate Team</name>
+        <url>http://www.mxupdate.org</url>
+    </organization>
+
+    <!-- Environment Settings -->
+    <issueManagement>
+         <system>MxUpdate Issues on Google Code</system>
+        <url>http://issues.mxupdate.org</url>
+    </issueManagement>
+
+    <!--  Mailing Lists -->
+    <mailingLists>
+        <mailingList>
+            <name>SVN Commit Messages</name>
+            <subscribe>http://groups.google.com/group/mxupdate-commit/subscribe</subscribe>
+            <unsubscribe>http://groups.google.com/group/mxupdate-commit/subscribe</unsubscribe>
+            <post>mxupdate-commit@googlegroups.com</post>
+            <archive>http://groups.google.com/group/mxupdate-commit</archive>
+        </mailingList>
+        <mailingList>
+            <name>Developer Discussions</name>
+            <subscribe>http://groups.google.com/group/mxupdate-developer/subscribe</subscribe>
+            <unsubscribe>http://groups.google.com/group/mxupdate-developer/subscribe</unsubscribe>
+            <post>mxupdate-developer@googlegroups.com</post>
+            <archive>http://groups.google.com/group/mxupdate-developer</archive>
+        </mailingList>
+        <mailingList>
+            <name>Issue Changes</name>
+            <subscribe>http://groups.google.com/group/mxupdate-issue/subscribe</subscribe>
+            <unsubscribe>http://groups.google.com/group/mxupdate-issue/subscribe</unsubscribe>
+            <post>mxupdate-issue@googlegroups.com</post>
+            <archive>http://groups.google.com/group/mxupdate-issue</archive>
+        </mailingList>
+    </mailingLists>
+
+    <!-- SubVersion Repository -->
+    <scm>
+        <connection>scm:svn:http://mxupdate.googlecode.com/svn/mxupdate-manual</connection>
+        <developerConnection>scm:svn:https://mxupdate.googlecode.com/svn/mxupdate-manual</developerConnection>
+        <url>http://mxupdate.googlecode.com/svn/mxupdate-manual</url>
+    </scm>
+
+    <!-- Distribution Repository -->
+    <distributionManagement>
+        <site>
+            <name>MxUpdate Manual</name>
+             <url>svn:https://mxupdate.googlecode.com/svn/site/mxupdate-manual</url>
+        </site>
+    </distributionManagement>
+
+    <!-- correct encoding -->
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <!-- ************************************************************************
+    * Reporting
+    ************************************************************************* -->
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>index</report>
+                            <report>summary</report>
+                            <report>dependencies</report>
+                            <report>project-team</report>
+                            <report>issue-tracking</report>
+                            <report>license</report>
+                            <report>scm</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+        </plugins>
+    </reporting>
+
+    <!-- ************************************************************************
+    * Project itself
+    ************************************************************************* -->
+    <build>
+        <defaultGoal>package</defaultGoal>
+        <plugins>
+            <!--
+                Compiler Settings:
+                - Java 1.6 is needed!
+                - UTF8 encoding
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <!--
+                eFaps Wiki Util Converter Plug-In
+            -->
+            <plugin>
+                <groupId>org.efaps</groupId>
+                <artifactId>wikiutil-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>convert2pdf</id>
+                        <phase>convert</phase>
+                        <goals>
+                            <goal>convert2pdf</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <wikiAuthor>The MxUpdate Team</wikiAuthor>
+                    <wikiLicense>Apache License, Version 2.0</wikiLicense>
+                    <wikiLicenseFile>${basedir}/LICENSE.txt</wikiLicenseFile>
+                    <wikiTitle>MxUpdate Manual</wikiTitle>
+                    <wikiSubTitle>Deployment Tool and Eclipse Plug-In</wikiSubTitle>
+                    <wikiPDFKeywords>MxUpdate,Deployment,Tool,Plug-In</wikiPDFKeywords>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- ************************************************************************
+    * Dependencies
+    ************************************************************************* -->
+    <dependencies>
+    </dependencies>
+</project>
