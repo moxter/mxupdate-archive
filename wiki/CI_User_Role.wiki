@@ -2,11 +2,8 @@
 
 <wiki:toc max_depth="3"/>
 
-= Introduction =
-
 ----
 
 = Parameter Definitions =
-|| *Name*                   || *Parameter*                                          || *Default Value* || *Description* ||
-|| UserIgnoreWSO4Roles      || ‑‑ignoreworkspaceobjectsforrole, ‑‑ignorewso4role    ||                 || Defines the match of roles for which workspace objects are not handled (neither exported nor updated). Attention! A workspace object defined in the TCL update file are not ignored and will be created! ||
-|| !UserRoleSupportRoleType ||                                                      || true            || Are from current MX version role types supported? This is a V6 feature and so as default set to true. If an older MX version is used which does not support role types the value must be set to false. ||
+|| *Name:* {{{UserIgnoreWSO4Roles}}}              <p>*Parameter:* {{{‑‑ignoreworkspaceobjectsforrole [ROLE_MATCH]}}}, {{{‑‑ignorewso4role [ROLE_MATCH]}}} </p><p>Defines the match of roles for which workspace objects are not handled (neither exported nor updated).</p><p>Attention! A workspace object defined in the TCL update file are not ignored and will be created!</p> ||
+|| *Name:* {{{UserRoleSupportRoleType}}}          <p>*Default Value:* {{{true}}}                                                                          </p><p>Are from current MX version role types supported? This is a V6 feature and so as default set to true. If an older MX version is used which does not support role types the value must be set to {{{false}}}.</p> ||
