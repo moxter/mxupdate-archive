@@ -32,9 +32,9 @@ This characters are not encoded:
     * left or right parenthesis
     * plus '+' or minus '-'
     * commas ',' or points '.'
-    * spaces
-    * equals signs '='
-    * underscores '_'
+    * spaces ' '
+    * equals signs '{{{=}}}'
+    * underscores '{{{_}}}'
 
 All other characters are converted with the algorithm:
     * the "at symbol" '@' will be converted to double at symbol '@@'
@@ -52,7 +52,6 @@ A lot of parameters for the !MxUpdate Update tool could be defined. Some paramet
 
 == Symbolic Names ==
 The parameters are used to control the behavior related to symbolic names. Symbolic names are used within MX for referencing administration objects so that the real name could be changed without changing the code where the administration object is referenced.
-|| *Name*                  || *Parameter*              || *Default Value*                   || *Description* ||
-|| !CalcSymbolicNames      || ‑‑calculatesymbolicnames || false                             || With this parameter the symbolic names are always calculated and not extracted from the !MxUpdate file header. This is e.g. useful if symbolic names in the header of !MxUpdate files are not defined correctly. ||
-|| !CalcSymbolicNameRegExp ||                          || allowed are numbers, upper or lower case characters, percent sign {{{%}}}, ampersand {{{&}}}, left {{{(}}} or right {{{)}}} parenthesis, plus {{{+}}} or minus {{{-}}}, colon {{{:}}}, equal sign {{{=}}}, caret {{{^}}}, underscore {{{_}}} and tilde {{{~}}} || Defines the regular expression for special characters which are not allowed for symbolic names. This special characters are replaced "nothing", means by zero length string. ||
-|| !RegisterSymbolicNames  ||                          || eServiceSchemaVariableMapping.tcl || Defines the name of the program where all administration objects are registered with symbolic names. ||
+|| *Name:* {{{CalcSymbolicNames}}}           <p>*Parameter:* {{{‑‑calculatesymbolicnames}}}</p><p>*Default Value*: {{{false}}}</p><p>With this parameter the symbolic names are always calculated and not extracted from the !MxUpdate file header. This is e.g. useful if symbolic names in the header of !MxUpdate files are not defined correctly.</p> ||
+|| *Name:* {{{CalcSymbolicNameRegExp}}}                                                        <p>*Default Value*: allowed are numbers, upper or lower case characters, percent sign {{{%}}}, ampersand {{{&}}}, left {{{(}}} or right {{{)}}} parenthesis, plus {{{+}}} or minus {{{-}}}, colon {{{:}}}, equal sign {{{=}}}, caret {{{^}}}, underscore {{{_}}} and tilde {{{~}}}</p><p>Defines the regular expression for special characters which are not allowed for symbolic names. This special characters are replaced "nothing", means by zero length string.</p> ||
+|| *Name:* {{{RegisterSymbolicNames}}}                                                         <p>*Default Value*: {{{eServiceSchemaVariableMapping.tcl}}}</p><p>Defines the name of the program where all administration objects are registered with symbolic names.</p> ||
