@@ -1,0 +1,24 @@
+#summary Describes the special handling of all Data Model Objects as configuration item.
+
+<wiki:toc max_depth="3"/>
+
+----
+
+= Introduction =
+Data Model objects could be defined as "administration objects" (with Business
+Modeler) or as "business object" (with Matrix Navigator).
+
+The !MxUpdate tool defines following objects as data model:
+ * [CI_DM_Attribute Attributes]
+ * [CI_DM_Dimension Dimensions]
+ * [CI_DM_Expression Expressions]
+ * [CI_DM_Format Formats]
+ * [CI_DM_Interface Interfaces]
+ * [CI_DM_NumberGenerator Number Generators]
+ * [CI_DM_ObjectGenerator Object Generators]
+ * [CI_DM_Policy Policies]
+ * [CI_DM_Relationship Relationships]
+ * [CI_DM_Rule Rules]
+ * [CI_DM_Type Types]
+ * [CI_DM_Trigger Triggers]
+ * [CI_DM_TriggerGroup Trigger Groups]

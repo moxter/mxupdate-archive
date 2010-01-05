@@ -2,6 +2,8 @@
 
 <wiki:toc max_depth="3"/>
 
+----
+
 = Introduction =
 The !MxUpdate update steps for configuration items is typically done by
 removing all values and add them again. For policies this is not possible,

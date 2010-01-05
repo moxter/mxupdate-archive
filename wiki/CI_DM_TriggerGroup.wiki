@@ -2,14 +2,14 @@
 
 <wiki:toc max_depth="3"/>
 
+----
+
 = Introduction =
 Trigger Groups could be used to group trigger parameter definitions. So they are used as documentation.
 
 ----
 
 = Parameter Definitions =
-|| *Name*                           || *Parameter* || *Default Value*                                 || *Description* ||
-|| !InstallTriggerGroupPolicyDesc   ||             || Policy used to group trigger definitions.       || Defines the description which is used for the policy of trigger groups. ||
-|| !InstallTriggerGroupRelationDesc ||             || Relationship used to group trigger definitions. || Defines the description which is used for the relationship of trigger groups. ||
-|| !InstallTriggerGroupTypeDesc     ||             || Type used to group trigger definitions.         || Defines the description which is used for the type of trigger groups. ||
-
+|| *Name:* {{{InstallTriggerGroupPolicyDesc}}}    <p>*Default Value:* Policy used for the group trigger definitions. </p>      <p>Defines the description which is used for the policy of trigger groups.</p> ||
+|| *Name:* {{{InstallTriggerGroupRelationDesc}}}  <p>*Default Value:* Relationship used for the group trigger definitions. </p><p>Defines the description which is used for the relationship of trigger groups.</p> ||
+|| *Name:* {{{InstallTriggerGroupTypeDesc}}}      <p>*Default Value:* Type used for the group trigger definitions. </p>        <p>Defines the description which is used for the type of trigger groups.</p> ||

@@ -2,15 +2,14 @@
 
 <wiki:toc max_depth="3"/>
 
-= Introduction =
-
 ----
+
 = Parameter Definitions =
-|| *Name*                   || *Parameter*                              || *Default Value* || *Description* ||
-|| DMWithAttrIgnoreIntAttr  || ‑‑ignoreinterfaceattributes {{{[MATCH]}}}||                 || Pattern defining the match of attributes which are ignored within the test attributes of interfaces. ||
-|| DMWithAttrRemoveIntAttr  || ‑‑removeinterfaceattributes {{{[MATCH]}}}||                 || Pattern defining the match of attributes which are removed if not defined anymore within the test attributes of interfaces. ||
+|| *Name:* {{{DMWithAttrIgnoreIntAttr}}}          <p>*Parameter:* {{{‑‑ignoreinterfaceattributes [ATTRIBUTE_MATCH]}}}</p><p>Pattern defining the match of attributes which are ignored within the test attributes of interfaces.</p> ||
+|| *Name:* {{{DMWithAttrRemoveIntAttr}}}          <p>*Parameter:* {{{‑‑ignoreinterfaceattributes [ATTRIBUTE_MATCH]}}}</p><p>Pattern defining the match of attributes which are removed if not defined anymore within the test attributes of interfaces.</p> ||
 
 ----
+
 = Explanation of Update Error Codes =
 || *Error Code* || *Description* ||
 || 10901        || A wrong parameter was given the the called TCL procedure {{{testParents}}} which defines the derived interfaces. ||

@@ -2,6 +2,8 @@
 
 <wiki:toc max_depth="3"/>
 
+----
+
 = Introduction =
 The !MxUpdate update steps for configuration items is typically done by removing all values and add them again. For dimensions this is not possible, because otherwise there is potentially some data lost. So for dimensions a "special" format is defined.
 
@@ -19,7 +21,7 @@ The behavior could be overwritten by defining the parameters {{{‑‑dimensionA
 == Update of Multiplier or Offset for an Unit ==
 As default the !MxUpdate Update does not allow to update the multiplier or offset of units. If the !MxUpdate Update found out that this must be done, an exception is thrown and the update itself is stopped.
 
-This !MxUpdate Update makes this, because if a multiplier or offset is changed, the original value from the user input will be changed, because the calculated value depending on the default unit will be same. 
+This !MxUpdate Update makes this, because if a multiplier or offset is changed, the original value from the user input will be changed, because the calculated value depending on the default unit will be same.
 
 The behavior could be overwritten by defining the parameters {{{‑‑dimensionAllowUpdateUnitMultiplier}}} or {{{‑‑dimensionAllowUpdateUnitOffset}}}.
 
@@ -33,11 +35,12 @@ The behavior could be overwritten by defining the parameters {{{‑‑dimensionA
 ----
 
 = Parameter Definitions =
-|| *Name*                   || *Parameter*                          || *Default Value* || *Description* ||
-|| DMDimAllowRemoveUnit     || ‑‑dimensionAllowRemoveUnit           || false           || If the parameter is defined, the !MxUpdate Update removes undefined units. Otherwise an exception is thrown if an unit must be removed. ||
-|| DMDimAllowUpdateDefUnit  || ‑‑dimensionAllowUpdateDefaultUnit    || false           || If the parameter is defined, the !MxUdpate Update allows to change the default unit of a dimension. Otherwise an exception is thrown if the default unit must be changed. ||
-|| DMDimAllowUpdateUnitMult || ‑‑dimensionAllowUpdateUnitMultiplier || false           || If the parameter is defined, the !MxUpdate Update allows to change the multiplier of units. Otherwise an exception is thrown if the multiplier must be changed. ||
-|| DMDimAllowUpdateUnitOffs || ‑‑dimensionAllowUpdateUnitOffset     || false           || If the parameter is defined, the !MxUpdate Update allows to change the offset of units. Otherwise an exception is thrown if the offset must be changed. ||
+|| *Name:* {{{DMDimAllowRemoveUnit}}}             <p>*Parameter:* {{{‑‑dimensionAllowRemoveUnit}}}</p>          <p>*Default Value:* {{{false}}}</p><p>If the parameter is defined, the !MxUpdate Update removes undefined units. Otherwise an exception is thrown if an unit must be removed.</p> ||
+|| *Name:* {{{DMDimAllowUpdateDefUnit}}}          <p>*Parameter:* {{{‑‑dimensionAllowUpdateDefaultUnit}}}</p>   <p>*Default Value:* {{{false}}}</p><p>If the parameter is defined, the !MxUdpate Update allows to change the default unit of a dimension. Otherwise an exception is thrown if the default unit must be changed.</p> ||
+|| *Name:* {{{DMDimAllowUpdateUnitMult}}}         <p>*Parameter:* {{{‑‑dimensionAllowUpdateUnitMultiplier}}}</p><p>*Default Value:* {{{false}}}</p><p>If the parameter is defined, the !MxUpdate Update allows to change the multiplier of units. Otherwise an exception is thrown if the multiplier must be changed.</p> ||
+|| *Name:* {{{DMDimAllowUpdateUnitOffs}}}         <p>*Parameter:* {{{‑‑dimensionAllowUpdateUnitOffset}}}</p>    <p>*Default Value:* {{{false}}}</p><p>If the parameter is defined, the !MxUpdate Update allows to change the offset of units. Otherwise an exception is thrown if the offset must be changed.</p> ||
+
+----
 
 = Explanation of Update Error Codes =
 || *Error Code* || *Description* ||
