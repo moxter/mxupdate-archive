@@ -161,32 +161,93 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-            <!--
-                eFaps Wiki Util Converter Plug-In
-            -->
-            <plugin>
-                <groupId>org.efaps</groupId>
-                <artifactId>wikiutil-maven-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>convert2pdf</id>
-                        <phase>convert</phase>
-                        <goals>
-                            <goal>convert2pdf</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <wikiAuthor>The MxUpdate Team</wikiAuthor>
-                    <wikiLicense>Apache License, Version 2.0</wikiLicense>
-                    <wikiLicenseFile>${basedir}/LICENSE.txt</wikiLicenseFile>
-                    <wikiTitle>MxUpdate Manual</wikiTitle>
-                    <wikiSubTitle>Deployment Tool and Eclipse Plug-In</wikiSubTitle>
-                    <wikiPDFKeywords>MxUpdate,Deployment,Tool,Plug-In</wikiPDFKeywords>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
+    <profiles>
+        <profile>
+            <id>make-pdf</id>
+            <build>
+                <plugins>
+                    <!--
+                        eFaps Wiki Util Converter Plug-In
+                        Could not be defined as "basic" plug-in
+                        (because could not used together with release-profile)
+                    -->
+                    <plugin>
+                        <groupId>org.efaps</groupId>
+                        <artifactId>wikiutil-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>convert2pdf</id>
+                                <phase>convert</phase>
+                                <goals>
+                                    <goal>convert2pdf</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <targetFile>${project.build.directory}/mxupdate-manual-V${project.version}.pdf</targetFile>
+                            <wikiAuthor>The MxUpdate Team</wikiAuthor>
+                            <wikiLicense>Apache License, Version 2.0</wikiLicense>
+                            <wikiLicenseFile>${basedir}/LICENSE.txt</wikiLicenseFile>
+                            <wikiTitle>MxUpdate Manual</wikiTitle>
+                            <wikiSubTitle>Deployment Tool and Eclipse Plug-In</wikiSubTitle>
+                            <wikiPDFKeywords>MxUpdate,Deployment,Tool,Plug-In</wikiPDFKeywords>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>release-profile</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>repository.riedelcastro.org</id>
+                    <name>Riedelcastro's gcUpload</name>
+                    <url>http://repository.riedelcastro.org/</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <repositories>
+                <!-- needed for gcupload plug-in -->
+                <repository>
+                    <id>repository.riedelcastro.org</id>
+                    <name>Riedelcastro's gcUpload</name>
+                    <url>http://repository.riedelcastro.org/</url>
+                </repository>
+            </repositories>
+            <build>
+                <plugins>
+                     <!--
+                         Upload to Google Code
+                     -->
+                     <plugin>
+                         <groupId>org.riedelcastro</groupId>
+                         <artifactId>gcupload-maven-plugin</artifactId>
+                        <version>0.9</version>
+                         <configuration>
+                             <projectName>mxupdate</projectName>
+                             <allowSnapshots>false</allowSnapshots>
+                             <uploads>
+                                 <upload>
+                                     <prefix>mxupdate-manual-V${project.version}</prefix>
+                                     <postfix></postfix>
+                                     <extensions>pdf</extensions>
+                                     <labels>Featured</labels>
+                                     <summary>MxUpdate Manual V${project.version}</summary>
+                                 </upload>
+                             </uploads>
+                         </configuration>
+                     </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
     <!-- ************************************************************************
     * Dependencies
