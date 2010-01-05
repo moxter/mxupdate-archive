@@ -26,7 +26,6 @@ be activated (see [CI_Program#Parameter_Definitions]).
 ----
 
 = Parameter Definitions =
-|| *Name*                        || *Parameter* || *Default Value* || *Description* ||
-|| !ProgramUseEncodingWorkAround ||             || false           || The encoding work around for old MX versions is used. ||
+|| *Name:* {{{ProgramUseEncodingWorkAround}}}     <p>*Default Value:* {{{false}}}</p><p>The encoding work around for old MX versions is used.</p> ||
 
 The parameters could be changed depending on project needs. For further information see the [UpdatePropertyFileFormat_ParameterDef Parameter Definition Format].

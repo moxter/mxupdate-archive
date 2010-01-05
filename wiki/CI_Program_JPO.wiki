@@ -71,10 +71,9 @@ The following TCL update code defines an extra property "Execute" with the value
 ----
 
 = Parameter Definitions =
-|| Name                  || Parameter              || Default Value          || Description ||
-|| Compile               || ‑‑compile              || false                  || Compiles all updated JPO programs. ||
-|| JPOTclUpdateMarkEnd   ||                        || _see the end marker_   || Defines the string to mark the end of embedded TCL update code within JPO source code. ||
-|| JPOTclUpdateMarkStart ||                        || _see the start marker_ || Defines the string to mark the start of embedded TCL update code within JPO source code. ||
-|| JPOTclUpdateNeeded    || ‑‑nojpotclupdateneeded || true                   || Embedded TCL update code within a JPO is not executed. Instead a warning is shown because of existing TCL update code. *Attention!* The default value is true, but if the parameter is defined the flag will be false! ||
+|| *Name:* {{{Compile}}}                          <p>*Parameter:* {{{‑‑compile}}}</p>             <p>*Default Value:* {{{false}}} </p>           <p>Compiles all updated JPO programs.</p> ||
+|| *Name:* {{{JPOTclUpdateMarkEnd}}}                                                              <p>*Default Value:* _see the end marker_ </p>  <p>Defines the string to mark the end of embedded TCL update code within JPO source code.</p> ||
+|| *Name:* {{{JPOTclUpdateMarkStart}}}                                                            <p>*Default Value:* _see the start marker_ </p><p>Defines the string to mark the start of embedded TCL update code within JPO source code.</p> ||
+|| *Name:* {{{JPOTclUpdateNeeded}}}               <p>*Parameter:* {{{‑‑nojpotclupdateneeded}}}</p><p>*Default Value:* {{{true}}} </p>            <p>Embedded TCL update code within a JPO is not executed. Instead a warning is shown because of existing TCL update code.</p><p>*Attention!* The default value is {{{true}}}, but if the parameter is defined the flag will be {{{false}}}!</p> ||
 
 The parameters could be changed depending on project needs. For further information see the [UpdatePropertyFileFormat_ParameterDef Parameter Definition Format].

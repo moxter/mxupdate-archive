@@ -85,10 +85,9 @@ mql mod program "MXPROG.XML"  \
 ----
 
 = Parameter Definitions =
-|| Name || Parameter || Default Value || Description ||
-|| !ProgramTclUpdateExtension ||  || .xml=,.xsl=,.xslt=,.mql=#,.tcl=# || Defines the list of all file extensions which could embed TCL update code and depending on the extension the related line prefixes. ||
-|| !ProgramTclUpdateMarkEnd ||  || _see the end marker_ || Defines the string to mark the end of embedded TCL update code within program source code. ||
-|| !ProgramTclUpdateMarkStart ||  || _see the start marker_ || Defines the string to mark the start of embedded TCL update code within program source code. ||
-|| !ProgramTclUpdateNeeded || ‑‑noprogramtclupdateneeded || true || Embedded TCL update code within a program is not executed. Instead a warning is shown because of existing TCL update code. *Attention!* The default value is true, but if the parameter is defined the flag will be false! ||
+|| *Name:* {{{ProgramTclUpdateExtension}}}                                                            <p>*Default Value:* {{{.xml=,.xsl=,.xslt=,.mql=#,.tcl=#}}}</p><p>Defines the list of all file extensions which could embed TCL update code and depending on the extension the related line prefixes.</p> ||
+|| *Name:* {{{ProgramTclUpdateMarkEnd}}}                                                              <p>*Default Value:* _see the end marker_ </p>                 <p>Defines the string to mark the end of embedded TCL update code within program source code.</p> ||
+|| *Name:* {{{ProgramTclUpdateMarkStart}}}                                                            <p>*Default Value:* _see the start marker_ </p>               <p>Defines the string to mark the start of embedded TCL update code within program source code.</p> ||
+|| *Name:* {{{ProgramTclUpdateNeeded}}}           <p>*Parameter:* {{{‑‑noprogramtclupdateneeded}}}</p><p>*Default Value:* {{{true}}} </p>                           <p>Embedded TCL update code within a program is not executed. Instead a warning is shown because of existing TCL update code.</p><p>*Attention!* The default value is {{{true}}}, but if the parameter is defined the flag will be {{{false}}}!</p> ||
 
 The parameters could be changed depending on project needs. For further information see the [UpdatePropertyFileFormat_ParameterDef Parameter Definition Format].

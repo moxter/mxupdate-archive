@@ -60,9 +60,8 @@ the value defined in the file.
 ----
 
 = Parameter Definitions =
-|| *Name*                       || *Parameter* || Default Value                    || Description ||
-|| !ProgramPageSeparatorComment ||             || _see the page content separator_ || Defines the used comment in front of the separator between the page TCL update code and the page content itself. ||
-|| !ProgramPageSeparatorText    ||             || _see the page content separator_ || Defines the used text for the separator between the page TCL update code and the page content itself. ||
+|| *Name:* {{{ProgramPageSeparatorComment}}}      <p>*Default Value:* _see the page content separator_ </p><p>Defines the used comment in front of the separator between the page TCL update code and the page content itself.</p> ||
+|| *Name:* {{{ProgramPageSeparatorText}}}         <p>*Default Value:* _see the page content separator_ </p><p>Defines the used text for the separator between the page TCL update code and the page content itself.</p> ||
 
 The parameters could be changed depending on project needs. For further
 information see the [UpdatePropertyFileFormat_ParameterDef Parameter Definition Format].
