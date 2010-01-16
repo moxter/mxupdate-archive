@@ -9,3 +9,85 @@ The !MxUpdate update steps for configuration items is typically done by
 removing all values and add them again. For policies this is not possible,
 because otherwise there is potentially some data lost. So for policies a
 "special" format is defined.
+
+----
+
+= Policy File Format =
+The policy (excluding the properties of a policy) is defined with the TCL
+procedure {{{updatePolicy}}}.
+
+*Snippet of an Example:*
+{{{
+updatePolicy "${NAME}" {
+  :
+}
+}}}
+
+== Types ==
+After the tag {{{type}}} the list of types in curly braces are defined. If
+all types are defined, the tag {{{all}}} could be used instead of defining a
+list.
+
+*Snippet of an Examples with One Type:*
+{{{
+updatePolicy "${NAME}" {
+  :
+  type {"Test Type"}
+  :
+}
+}}}
+*Snippet of an Examples with All Types:*
+{{{
+updatePolicy "${NAME}" {
+  :
+  type all
+  :
+}
+}}}
+
+== Formats ==
+After the tag {{{format}}} the list of formats in curly braces are defined. If
+all formats are defined, the tag {{{all}}} could be used instead of defining a
+list.
+
+*Snippet of an Examples with One Format:*
+{{{
+updatePolicy "${NAME}" {
+  :
+  format {generic}
+  :
+}
+}}}
+*Snippet of an Examples with All Formats:*
+{{{
+updatePolicy "${NAME}" {
+  :
+  format all
+  :
+}
+}}}
+
+== Owner and Public Access for States ==
+The owner access is defined with the tag {{{owner}}}, the access list (in
+curly braces), the tag {{{filter}}} with the filter expression. The {{{filter}}}
+and expression must be only defined if wanted.
+
+The public access uses instead the tag {{{public}}}.
+
+For revoke access, the tag {{{revoke}}} must be define in front of the access
+definitions.
+
+*Snippet of an Example:*
+{{{
+updatePolicy "${NAME}" {
+    :
+  state "TestState"  {
+    :
+    owner {read show modify}
+    revoke owner {modify} filter "type==Test"
+    public {none}
+    :
+  }
+    :
+}
+}}}
