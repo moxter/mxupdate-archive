@@ -17,6 +17,7 @@
          * [CI_DM_Expression Expressions]
          * [CI_DM_Format Formats]
          * [CI_DM_Interface Interfaces]
+         * [CI_DM_Notification Notifications]
          * [CI_DM_NumberGenerator Number Generators]
          * [CI_DM_ObjectGenerator Object Generators]
          * [CI_DM_Policy Policies]
