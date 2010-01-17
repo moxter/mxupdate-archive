@@ -1,4 +1,4 @@
-#Sun Jan 17 03:41:08 CET 2010
+#Sun Jan 17 11:45:27 CET 2010
 eclipse.preferences.version=1
 encoding/CI.wiki=UTF-8
 encoding/CI_DM.wiki=UTF-8
@@ -32,6 +32,7 @@ encoding/EclipseInstallation_Check.wiki=UTF-8
 encoding/EclipseInstallation_Connect.wiki=UTF-8
 encoding/EclipseInstallation_Manually.wiki=UTF-8
 encoding/EclipseInstallation_PlugIn.wiki=UTF-8
+encoding/FAQ.wiki=UTF-8
 encoding/Index.wiki=UTF-8
 encoding/NewProject.wiki=UTF-8
 encoding/Start.wiki=UTF-8
