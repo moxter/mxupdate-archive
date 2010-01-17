@@ -11,6 +11,47 @@ Studio Modeling Platform".
 
 ----
 
+= Handled Properties =
+
+This rule properties could be handled from !MxUpdate:
+ * description
+ * hidden flag
+ * owner access
+ * owner revoke
+ * public access
+ * public revoke
+ * user access
+ * properties
+The governed objects are not handled in the rule configuration item file. They
+must be defined in the related [CI_DM_Attribute attribute], [CI_UI_Form form],
+[CI_Program program] or [CI_DM_Relationship relationship] configuration item
+file.
+
+----
+
+= Steps of the Update Flow =
+
+== Cleanup ==
+
+Following steps are done before the TCL update file is executed:
+ * set to not hidden
+ * no owner and public access
+ * no public or owner revoke definition (only if not defined or if not {{{none}}})
+ * remove all users
+ * remove all assigned properties
+
+== Update ==
+
+Within the update the owner / public is defined and further user access added.
+The governed objects are not changed or modified.
+
+----
+
+= Parameter Definitions =
+No further parameters are defined.
+
+----
+
 = Example =
 {{{
 ################################################################################
