@@ -8,7 +8,7 @@
 <div id="overview"><a href="../../../../../../../../../../../../../../../../../apidocs/org/mxupdate/test/data/user/workspace/AbstractWorkspaceObjectData.html">View Javadoc</a></div><pre>
 
 <a name="1" href="#1">1</a>   <em class="comment">/*</em>
-<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2009 The MxUpdate Team</em>
+<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2010 The MxUpdate Team</em>
 <a name="3" href="#3">3</a>   <em class="comment"> *</em>
 <a name="4" href="#4">4</a>   <em class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a name="5" href="#5">5</a>   <em class="comment"> * you may not use this file except in compliance with the License.</em>
@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 586 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-18 17:52:59 +0200 (So, 18 Okt 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -49,7 +49,7 @@
 <a name="40" href="#40">40</a>  <em> * to users used to create / update and to export.</em>
 <a name="41" href="#41">41</a>  <em> *</em>
 <a name="42" href="#42">42</a>  <em> * @author The MxUpdate Team</em>
-<a name="43" href="#43">43</a>  <em> * @version $Id: AbstractWorkspaceObjectData.java 586 2009-10-18 15:52:59Z tim.moxter $</em>
+<a name="43" href="#43">43</a>  <em> * @version $Id: AbstractWorkspaceObjectData.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
 <a name="44" href="#44">44</a>  <em> * @param &lt;DATA> workspace object class</em>
 <a name="45" href="#45">45</a>  <em> * @param &lt;USER> for which user class the workspace object class is defined</em>
 <a name="46" href="#46">46</a>  <em> */</em>
@@ -59,7 +59,7 @@
 <a name="50" href="#50">50</a>      <em>/**<em>*</em></em>
 <a name="51" href="#51">51</a>  <em>     * Related user to which is workspace object belongs through.</em>
 <a name="52" href="#52">52</a>  <em>     *</em>
-<a name="53" href="#53">53</a>  <em>     * @see #AbstractWorkspaceObjectData(AbstractTest, AbstractUserData, String)</em>
+<a name="53" href="#53">53</a>  <em>     * @see #AbstractWorkspaceObjectData(AbstractTest, String, AbstractUserData, String, Set)</em>
 <a name="54" href="#54">54</a>  <em>     */</em>
 <a name="55" href="#55">55</a>      <strong>private</strong> <strong>final</strong> USER user;
 <a name="56" href="#56">56</a>  
@@ -164,7 +164,7 @@
 <a name="155" href="#155">155</a> 
 <a name="156" href="#156">156</a>     <em>/**<em>*</em></em>
 <a name="157" href="#157">157</a> <em>     * Appends the MQL commands to define the hidden flag and the</em>
-<a name="158" href="#158">158</a> <em>     * {@link #visible users}Êwithin a create.</em>
+<a name="158" href="#158">158</a> <em>     * {@link #visible users} within a create.</em>
 <a name="159" href="#159">159</a> <em>     *</em>
 <a name="160" href="#160">160</a> <em>     * @param _cmd  string builder used to append MQL commands</em>
 <a name="161" href="#161">161</a> <em>     * @throws MatrixException if used object could not be created</em>

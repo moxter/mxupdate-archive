@@ -8,7 +8,7 @@
 <div id="overview"><a href="../../../../../../../../../../../../../apidocs/org/mxupdate/test/data/AbstractAdminData.html">View Javadoc</a></div><pre>
 
 <a name="1" href="#1">1</a>   <em class="comment">/*</em>
-<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2009 The MxUpdate Team</em>
+<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2010 The MxUpdate Team</em>
 <a name="3" href="#3">3</a>   <em class="comment"> *</em>
 <a name="4" href="#4">4</a>   <em class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a name="5" href="#5">5</a>   <em class="comment"> * you may not use this file except in compliance with the License.</em>
@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 594 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-29 01:37:31 +0100 (Do, 29 Okt 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -47,7 +47,7 @@
 <a name="38" href="#38">38</a>  <em> *</em>
 <a name="39" href="#39">39</a>  <em> * @param &lt;DATA>    class which is derived from this class</em>
 <a name="40" href="#40">40</a>  <em> * @author The MxUpdate Team</em>
-<a name="41" href="#41">41</a>  <em> * @version $Id: AbstractAdminData.java 594 2009-10-29 00:37:31Z tim.moxter $</em>
+<a name="41" href="#41">41</a>  <em> * @version $Id: AbstractAdminData.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
 <a name="42" href="#42">42</a>  <em> */</em>
 <a name="43" href="#43">43</a>  <strong>public</strong> <strong>abstract</strong> <strong>class</strong> AbstractAdminData&lt;DATA <strong>extends</strong> AbstractAdminData&lt;?>>
 <a name="44" href="#44">44</a>      <strong>extends</strong> AbstractData&lt;DATA>
@@ -56,7 +56,7 @@
 <a name="47" href="#47">47</a>  <em>     * Regular expression to defines the list of not allowed characters  of</em>
 <a name="48" href="#48">48</a>  <em>     * symbolic names which are removed for the calculated symbolic name.</em>
 <a name="49" href="#49">49</a>  <em>     *</em>
-<a name="50" href="#50">50</a>  <em>     * @see #AbstractData(AbstractTest, AbstractTest.CI, String, String, Set)</em>
+<a name="50" href="#50">50</a>  <em>     * @see #AbstractAdminData(AbstractTest, org.mxupdate.test.AbstractTest.CI, String, Set)</em>
 <a name="51" href="#51">51</a>  <em>     */</em>
 <a name="52" href="#52">52</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> String NOT_ALLOWED_CHARS
 <a name="53" href="#53">53</a>              = <span class="string">"[^%&amp;()+-0123456789:=ABCDEFGHIJKLMNOPQRSTUVWXYZ^_abcdefghijklmnopqrstuvwxyz~]"</span>;
@@ -69,7 +69,7 @@
 <a name="60" href="#60">60</a>      <em>/**<em>*</em></em>
 <a name="61" href="#61">61</a>  <em>     * Is the role hidden?</em>
 <a name="62" href="#62">62</a>  <em>     *</em>
-<a name="63" href="#63">63</a>  <em>     * @see #setHidden(boolean)</em>
+<a name="63" href="#63">63</a>  <em>     * @see #setHidden(Boolean)</em>
 <a name="64" href="#64">64</a>  <em>     * @see #isHidden()</em>
 <a name="65" href="#65">65</a>  <em>     */</em>
 <a name="66" href="#66">66</a>      <strong>private</strong> Boolean hidden = false;
@@ -227,7 +227,7 @@
 <a name="218" href="#218">218</a>     }
 <a name="219" href="#219">219</a> 
 <a name="220" href="#220">220</a>     <em>/**<em>*</em></em>
-<a name="221" href="#221">221</a> <em>     * Appends the MQL commands to define all {@link #values}Êand</em>
+<a name="221" href="#221">221</a> <em>     * Appends the MQL commands to define all {@link #values} and</em>
 <a name="222" href="#222">222</a> <em>     * {@link #properties} within a create.</em>
 <a name="223" href="#223">223</a> <em>     *</em>
 <a name="224" href="#224">224</a> <em>     * @param _cmd  string builder used to append MQL commands</em>

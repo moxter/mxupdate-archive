@@ -14,6 +14,5 @@ org.mxupdate.test.data.user
 org.mxupdate.test.data.user.workspace
 org.mxupdate.test.data.userinterface
 org.mxupdate.test.data.util
-org.mxupdate.test.export.datamodel
 org.mxupdate.test.update.datamodel
 org.mxupdate.test.util

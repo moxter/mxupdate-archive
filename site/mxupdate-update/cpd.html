@@ -42,7 +42,7 @@
   
     
             <div class="xleft">
-        Last Published: 02-November-2009
+        Last Published: 17-January-2010
                       </div>
             <div class="xright">            <a href="http://code.google.com/p/mxupdate/" class="externalLink">MxUpdate</a>
             |
@@ -167,7 +167,7 @@
     <div id="bodyColumn">
       <div id="contentBox">
         <div class="section"><h2>CPD Results</h2>
-<p>The following document contains the results of PMD's  <a href="http://pmd.sourceforge.net/cpd.html" class="externalLink">CPD</a> 4.2.2.</p>
+<p>The following document contains the results of PMD's  <a class="externalLink" href="http://pmd.sourceforge.net/cpd.html">CPD</a> 4.2.2.</p>
 </div>
 <div class="section"><h2>Duplications</h2>
 <p><table class="bodyTable"><tr class="a"><th>File</th>
@@ -250,6 +250,50 @@
             if (!&quot;&quot;.equals(name))  {
                 final String[] nameArr = name.split(&quot;\t&quot;);
                 if (!&quot;TRUE&quot;.equals(nameArr[1]))  {</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/datamodel/Policy_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/datamodel/Policy_mxJPO.html#808">808</a></td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/datamodel/Rule_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/datamodel/Rule_mxJPO.html#267">267</a></td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>            .append('\&quot;');
+        if ((this.publicAccessFilter != null) &amp;&amp; !&quot;&quot;.equals(this.publicAccessFilter))  {
+            _out.append(&quot; filter \&quot;&quot;)
+                .append(StringUtil_mxJPO.convertTcl(this.publicAccessFilter))
+                .append(&quot;\&quot;&quot;);
+        }
+        // public revoke
+        if ((!this.publicRevoke.isEmpty() &amp;&amp; !((this.publicRevoke.size() == 1) &amp;&amp; this.publicRevoke.contains(&quot;none&quot;)))
+                || ((this.publicRevokeFilter != null) &amp;&amp; !&quot;&quot;.equals(this.publicRevokeFilter)))  {
+            _out.append(&quot; \\\n    add revoke public \&quot;&quot;)</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/datamodel/Policy_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/datamodel/Policy_mxJPO.html#787">787</a></td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/datamodel/Rule_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/datamodel/Rule_mxJPO.html#246">246</a></td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>            .append('\&quot;');
+        if ((this.ownerAccessFilter != null) &amp;&amp; !&quot;&quot;.equals(this.ownerAccessFilter))  {
+            _out.append(&quot; filter \&quot;&quot;)
+                .append(StringUtil_mxJPO.convertTcl(this.ownerAccessFilter))
+                .append(&quot;\&quot;&quot;);
+        }
+        // owner revoke
+        if ((!this.ownerRevoke.isEmpty() &amp;&amp; !((this.ownerRevoke.size() == 1) &amp;&amp; this.ownerRevoke.contains(&quot;none&quot;)))
+                || ((this.ownerRevokeFilter != null) &amp;&amp; !&quot;&quot;.equals(this.ownerRevokeFilter)))  {
+            _out.append(&quot; \\\n    add revoke owner \&quot;&quot;)</pre>
 </div>
 </td></tr>
 <table class="bodyTable"></p>
@@ -401,6 +445,89 @@
 </div>
 </td></tr>
 <table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/datamodel/Policy_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/datamodel/Policy_mxJPO.html#651">651</a></td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/datamodel/Rule_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/datamodel/Rule_mxJPO.html#71">71</a></td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>    private final Set&lt;String&gt; ownerAccess = new TreeSet&lt;String&gt;();
+
+    /**
+     * Filter for the owner access.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private String ownerAccessFilter;
+
+    /**
+     * Set holding the complete owner revoke.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private final Set&lt;String&gt; ownerRevoke = new TreeSet&lt;String&gt;();
+
+    /**
+     * Filter for the owner revoke.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private String ownerRevokeFilter;
+
+    /**
+     * Set holding the complete public access.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private final Set&lt;String&gt; publicAccess = new TreeSet&lt;String&gt;();
+
+    /**
+     * Filter for the public access.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private String publicAccessFilter;
+
+    /**
+     * Set holding the complete public revoke.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private final Set&lt;String&gt; publicRevoke = new TreeSet&lt;String&gt;();
+
+    /**
+     * Filter for the public revoke.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private String publicRevokeFilter;
+
+    /**
+     * Stack used to hold the user access while parsing.
+     *
+     * @see #parse(String, String)
+     */
+    private final Stack&lt;UserAccess&gt; userAccess = new Stack&lt;UserAccess&gt;();
+
+    /**
+     * Sorted set of user access (by name of the user).
+     *
+     * @see #prepare(ParameterCache_mxJPO)
+     */
+    private final Set&lt;UserAccess&gt; userAccessSorted = new TreeSet&lt;UserAccess&gt;();</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
 </div>
 
       </div>
@@ -410,7 +537,7 @@
     </div>
     <div id="footer">
       <div class="xright">&#169;  
-          2009
+          2008-2010
     
           The MxUpdate Team
           
