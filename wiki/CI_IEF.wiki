@@ -5,5 +5,6 @@ Navigator). They are used to configure integrations, e.g. for office products or
 CAD programs.
 
 !MxUpdate supports following integration objects:
+ * [CI_IEF_EBOMSyncConfig IEF EBOM Sync Configurations]
  * [CI_IEF_GlobalConfig IEF Global Configurations]
  * [CI_IEF_GlobalRegistry IEF Global Registries]

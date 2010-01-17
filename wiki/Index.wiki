@@ -27,6 +27,7 @@
          * [CI_DM_Trigger Triggers]
          * [CI_DM_TriggerGroup Trigger Groups]
      * [CI_IEF Integrations]
+         * [CI_IEF_EBOMSyncConfig IEF EBOM Sync Configurations]
          * [CI_IEF_GlobalConfig IEF Global Configurations]
          * [CI_IEF_GlobalRegistry IEF Global Registries]
      * [CI_Program Programs]
