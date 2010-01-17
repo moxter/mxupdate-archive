@@ -1,4 +1,5 @@
 #summary Frequently Asked Questions.
+#labels Featured
 
 <wiki:toc max_depth="3"/>
 
@@ -218,5 +219,3 @@ ParameterDef.DMWithAttrRemoveRelAttr.Default = *
 {{{
 ParameterDef.DMWithAttrRemoveIntAttr.Default = *
 }}}
-
-
