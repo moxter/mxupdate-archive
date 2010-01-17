@@ -8,7 +8,7 @@
 <div id="overview"><a href="../../../../../../../../../../../../../../../apidocs/org/mxupdate/test/data/datamodel/RelationshipData.html">View Javadoc</a></div><pre>
 
 <a name="1" href="#1">1</a>   <em class="comment">/*</em>
-<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2009 The MxUpdate Team</em>
+<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2010 The MxUpdate Team</em>
 <a name="3" href="#3">3</a>   <em class="comment"> *</em>
 <a name="4" href="#4">4</a>   <em class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a name="5" href="#5">5</a>   <em class="comment"> * you may not use this file except in compliance with the License.</em>
@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 585 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-18 10:11:43 +0200 (So, 18 Okt 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -42,7 +42,7 @@
 <a name="33" href="#33">33</a>  <em> * Used to define a relationship, create them and test the result.</em>
 <a name="34" href="#34">34</a>  <em> *</em>
 <a name="35" href="#35">35</a>  <em> * @author The MxUpdate Team</em>
-<a name="36" href="#36">36</a>  <em> * @version $Id: RelationshipData.java 585 2009-10-18 08:11:43Z tim.moxter $</em>
+<a name="36" href="#36">36</a>  <em> * @version $Id: RelationshipData.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
 <a name="37" href="#37">37</a>  <em> */</em>
 <a name="38" href="#38">38</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/RelationshipData.html">RelationshipData</a>
 <a name="39" href="#39">39</a>      <strong>extends</strong> AbstractDataWithTrigger&lt;RelationshipData>
@@ -115,57 +115,56 @@
 <a name="106" href="#106">106</a> <em>     *</em>
 <a name="107" href="#107">107</a> <em>     * @return this relationship data instance</em>
 <a name="108" href="#108">108</a> <em>     * @throws MatrixException if create failed</em>
-<a name="109" href="#109">109</a> <em>     * @see #methods</em>
-<a name="110" href="#110">110</a> <em>     * @see #attributes</em>
-<a name="111" href="#111">111</a> <em>     */</em>
-<a name="112" href="#112">112</a>     @Override()
-<a name="113" href="#113">113</a>     <strong>public</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/RelationshipData.html">RelationshipData</a> create()
-<a name="114" href="#114">114</a>         throws MatrixException
-<a name="115" href="#115">115</a>     {
-<a name="116" href="#116">116</a>         <strong>if</strong> (!<strong>this</strong>.isCreated())  {
-<a name="117" href="#117">117</a>             <strong>this</strong>.setCreated(<strong>true</strong>);
-<a name="118" href="#118">118</a> 
-<a name="119" href="#119">119</a>             <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder();
-<a name="120" href="#120">120</a>             cmd.append(<span class="string">"escape add relationship \&quot;"</span>).append(AbstractTest.convertMql(<strong>this</strong>.getName())).append('\&quot;');
-<a name="121" href="#121">121</a> 
-<a name="122" href="#122">122</a>             <em class="comment">// append attributes</em>
-<a name="123" href="#123">123</a>             <strong>for</strong> (<strong>final</strong> AbstractAttributeData&lt;?> attribute : <strong>this</strong>.attributes)  {
-<a name="124" href="#124">124</a>                 attribute.create();
-<a name="125" href="#125">125</a>                 cmd.append(<span class="string">" attribute \&quot;"</span>).append(AbstractTest.convertMql(attribute.getName())).append(<span class="string">"\&quot;"</span>);
-<a name="126" href="#126">126</a>             }
-<a name="127" href="#127">127</a> 
-<a name="128" href="#128">128</a>             <strong>this</strong>.append4Create(cmd);
-<a name="129" href="#129">129</a> 
-<a name="130" href="#130">130</a>             <strong>this</strong>.getTest().mql(cmd);
-<a name="131" href="#131">131</a>         }
-<a name="132" href="#132">132</a> 
-<a name="133" href="#133">133</a>         <strong>return</strong> <strong>this</strong>;
-<a name="134" href="#134">134</a>     }
-<a name="135" href="#135">135</a> 
-<a name="136" href="#136">136</a>     <em>/**<em>*</em></em>
-<a name="137" href="#137">137</a> <em>     * Checks the export of this data piece if all values are correct defined.</em>
-<a name="138" href="#138">138</a> <em>     *</em>
-<a name="139" href="#139">139</a> <em>     * @param _exportParser     parsed export</em>
-<a name="140" href="#140">140</a> <em>     * @throws MatrixException if check failed</em>
-<a name="141" href="#141">141</a> <em>     */</em>
-<a name="142" href="#142">142</a>     @Override()
-<a name="143" href="#143">143</a>     <strong>public</strong> <strong>void</strong> checkExport(<strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> _exportParser)
-<a name="144" href="#144">144</a>         throws MatrixException
-<a name="145" href="#145">145</a>     {
-<a name="146" href="#146">146</a>         <strong>super</strong>.checkExport(_exportParser);
-<a name="147" href="#147">147</a> 
-<a name="148" href="#148">148</a>         <em class="comment">// check attributes</em>
-<a name="149" href="#149">149</a>         <strong>final</strong> Set&lt;String> attrs = <strong>new</strong> HashSet&lt;String>(_exportParser.getLines(<span class="string">"/testAttributes/"</span>));
-<a name="150" href="#150">150</a>         <strong>for</strong> (<strong>final</strong> AbstractAttributeData&lt;?> attribute : <strong>this</strong>.attributes)  {
-<a name="151" href="#151">151</a>             <strong>final</strong> String attrName = <span class="string">"\&quot;"</span> + AbstractTest.convertTcl(attribute.getName()) + <span class="string">"\&quot; &#47;&#47;"</span>;
-<a name="152" href="#152">152</a>             Assert.assertTrue(attrs.contains(attrName),
-<a name="153" href="#153">153</a>                               <span class="string">"check that attribute '"</span> + attribute.getName() + <span class="string">"' is defined"</span>);
-<a name="154" href="#154">154</a>         }
-<a name="155" href="#155">155</a>         Assert.assertEquals(attrs.size(),
-<a name="156" href="#156">156</a>                             <strong>this</strong>.attributes.size(),
-<a name="157" href="#157">157</a>                             <span class="string">"check all attributes are defined"</span>);
-<a name="158" href="#158">158</a>     }
-<a name="159" href="#159">159</a> }
+<a name="109" href="#109">109</a> <em>     * @see #attributes</em>
+<a name="110" href="#110">110</a> <em>     */</em>
+<a name="111" href="#111">111</a>     @Override()
+<a name="112" href="#112">112</a>     <strong>public</strong> <a href="../../../../../org/mxupdate/test/data/datamodel/RelationshipData.html">RelationshipData</a> create()
+<a name="113" href="#113">113</a>         throws MatrixException
+<a name="114" href="#114">114</a>     {
+<a name="115" href="#115">115</a>         <strong>if</strong> (!<strong>this</strong>.isCreated())  {
+<a name="116" href="#116">116</a>             <strong>this</strong>.setCreated(<strong>true</strong>);
+<a name="117" href="#117">117</a> 
+<a name="118" href="#118">118</a>             <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder();
+<a name="119" href="#119">119</a>             cmd.append(<span class="string">"escape add relationship \&quot;"</span>).append(AbstractTest.convertMql(<strong>this</strong>.getName())).append('\&quot;');
+<a name="120" href="#120">120</a> 
+<a name="121" href="#121">121</a>             <em class="comment">// append attributes</em>
+<a name="122" href="#122">122</a>             <strong>for</strong> (<strong>final</strong> AbstractAttributeData&lt;?> attribute : <strong>this</strong>.attributes)  {
+<a name="123" href="#123">123</a>                 attribute.create();
+<a name="124" href="#124">124</a>                 cmd.append(<span class="string">" attribute \&quot;"</span>).append(AbstractTest.convertMql(attribute.getName())).append(<span class="string">"\&quot;"</span>);
+<a name="125" href="#125">125</a>             }
+<a name="126" href="#126">126</a> 
+<a name="127" href="#127">127</a>             <strong>this</strong>.append4Create(cmd);
+<a name="128" href="#128">128</a> 
+<a name="129" href="#129">129</a>             <strong>this</strong>.getTest().mql(cmd);
+<a name="130" href="#130">130</a>         }
+<a name="131" href="#131">131</a> 
+<a name="132" href="#132">132</a>         <strong>return</strong> <strong>this</strong>;
+<a name="133" href="#133">133</a>     }
+<a name="134" href="#134">134</a> 
+<a name="135" href="#135">135</a>     <em>/**<em>*</em></em>
+<a name="136" href="#136">136</a> <em>     * Checks the export of this data piece if all values are correct defined.</em>
+<a name="137" href="#137">137</a> <em>     *</em>
+<a name="138" href="#138">138</a> <em>     * @param _exportParser     parsed export</em>
+<a name="139" href="#139">139</a> <em>     * @throws MatrixException if check failed</em>
+<a name="140" href="#140">140</a> <em>     */</em>
+<a name="141" href="#141">141</a>     @Override()
+<a name="142" href="#142">142</a>     <strong>public</strong> <strong>void</strong> checkExport(<strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> _exportParser)
+<a name="143" href="#143">143</a>         throws MatrixException
+<a name="144" href="#144">144</a>     {
+<a name="145" href="#145">145</a>         <strong>super</strong>.checkExport(_exportParser);
+<a name="146" href="#146">146</a> 
+<a name="147" href="#147">147</a>         <em class="comment">// check attributes</em>
+<a name="148" href="#148">148</a>         <strong>final</strong> Set&lt;String> attrs = <strong>new</strong> HashSet&lt;String>(_exportParser.getLines(<span class="string">"/testAttributes/"</span>));
+<a name="149" href="#149">149</a>         <strong>for</strong> (<strong>final</strong> AbstractAttributeData&lt;?> attribute : <strong>this</strong>.attributes)  {
+<a name="150" href="#150">150</a>             <strong>final</strong> String attrName = <span class="string">"\&quot;"</span> + AbstractTest.convertTcl(attribute.getName()) + <span class="string">"\&quot; &#47;&#47;"</span>;
+<a name="151" href="#151">151</a>             Assert.assertTrue(attrs.contains(attrName),
+<a name="152" href="#152">152</a>                               <span class="string">"check that attribute '"</span> + attribute.getName() + <span class="string">"' is defined"</span>);
+<a name="153" href="#153">153</a>         }
+<a name="154" href="#154">154</a>         Assert.assertEquals(attrs.size(),
+<a name="155" href="#155">155</a>                             <strong>this</strong>.attributes.size(),
+<a name="156" href="#156">156</a>                             <span class="string">"check all attributes are defined"</span>);
+<a name="157" href="#157">157</a>     }
+<a name="158" href="#158">158</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

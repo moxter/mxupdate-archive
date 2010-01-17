@@ -75,6 +75,42 @@
 ]]>
 </codefragment>
 </duplication>
+<duplication lines="10" tokens="108">
+<file line="808" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Policy_mxJPO.java"/>
+<file line="267" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Rule_mxJPO.java"/>
+<codefragment>
+<![CDATA[
+            .append('\"');
+        if ((this.publicAccessFilter != null) && !"".equals(this.publicAccessFilter))  {
+            _out.append(" filter \"")
+                .append(StringUtil_mxJPO.convertTcl(this.publicAccessFilter))
+                .append("\"");
+        }
+        // public revoke
+        if ((!this.publicRevoke.isEmpty() && !((this.publicRevoke.size() == 1) && this.publicRevoke.contains("none")))
+                || ((this.publicRevokeFilter != null) && !"".equals(this.publicRevokeFilter)))  {
+            _out.append(" \\\n    add revoke public \"")
+]]>
+</codefragment>
+</duplication>
+<duplication lines="10" tokens="108">
+<file line="787" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Policy_mxJPO.java"/>
+<file line="246" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Rule_mxJPO.java"/>
+<codefragment>
+<![CDATA[
+            .append('\"');
+        if ((this.ownerAccessFilter != null) && !"".equals(this.ownerAccessFilter))  {
+            _out.append(" filter \"")
+                .append(StringUtil_mxJPO.convertTcl(this.ownerAccessFilter))
+                .append("\"");
+        }
+        // owner revoke
+        if ((!this.ownerRevoke.isEmpty() && !((this.ownerRevoke.size() == 1) && this.ownerRevoke.contains("none")))
+                || ((this.ownerRevokeFilter != null) && !"".equals(this.ownerRevokeFilter)))  {
+            _out.append(" \\\n    add revoke owner \"")
+]]>
+</codefragment>
+</duplication>
 <duplication lines="44" tokens="107">
 <file line="122" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/user/Group_mxJPO.java"/>
 <file line="190" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/user/Role_mxJPO.java"/>
@@ -208,6 +244,85 @@
                 .append("escape mod ").append(this.getTypeDef().getMxAdminName())
                 .append(" \"").append(StringUtil_mxJPO.convertMql(this.getName())).append('\"')
                 .append(" !hidden");
+]]>
+</codefragment>
+</duplication>
+<duplication lines="71" tokens="102">
+<file line="651" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Policy_mxJPO.java"/>
+<file line="71" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Rule_mxJPO.java"/>
+<codefragment>
+<![CDATA[
+    private final Set<String> ownerAccess = new TreeSet<String>();
+
+    /**
+     * Filter for the owner access.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private String ownerAccessFilter;
+
+    /**
+     * Set holding the complete owner revoke.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private final Set<String> ownerRevoke = new TreeSet<String>();
+
+    /**
+     * Filter for the owner revoke.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private String ownerRevokeFilter;
+
+    /**
+     * Set holding the complete public access.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private final Set<String> publicAccess = new TreeSet<String>();
+
+    /**
+     * Filter for the public access.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private String publicAccessFilter;
+
+    /**
+     * Set holding the complete public revoke.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private final Set<String> publicRevoke = new TreeSet<String>();
+
+    /**
+     * Filter for the public revoke.
+     *
+     * @see #parse(String, String)
+     * @see #writeObject(ParameterCache_mxJPO, Appendable)
+     */
+    private String publicRevokeFilter;
+
+    /**
+     * Stack used to hold the user access while parsing.
+     *
+     * @see #parse(String, String)
+     */
+    private final Stack<UserAccess> userAccess = new Stack<UserAccess>();
+
+    /**
+     * Sorted set of user access (by name of the user).
+     *
+     * @see #prepare(ParameterCache_mxJPO)
+     */
+    private final Set<UserAccess> userAccessSorted = new TreeSet<UserAccess>();
 ]]>
 </codefragment>
 </duplication>
