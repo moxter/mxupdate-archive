@@ -7,7 +7,7 @@
 = Introduction =
 The notification objects are used from the generic email utility to define the
 subject, text and recipients of notifications (emails). The generic email
-utility is described in the "Business Process Services Administrator’s Guide"
+utility is described in the "Business Process Services Administrator's Guide"
 (Live Collaboration Admin).
 
 The notification object itself is internally stored in MX as business object
