@@ -1,0 +1,505 @@
+/*
+ * Copyright 2008-2010 The MxUpdate Team
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Revision:        $Rev$
+ * Last Changed:    $Date$
+ * Last Changed By: $Author$
+ */
+
+options {
+  JDK_VERSION = "1.5";
+  STATIC = false;
+  ERROR_REPORTING = false;
+  USER_TOKEN_MANAGER = false;
+//  USER_CHAR_STREAM = true;
+//  OPTIMIZE_TOKEN_MANAGER = true;
+  SUPPORT_CLASS_VISIBILITY_PUBLIC = false;
+}
+
+PARSER_BEGIN(PolicyDefParser)
+
+package org.mxupdate.update.datamodel.policy;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.mxupdate.mapping.TypeDef_mxJPO;
+import org.mxupdate.update.datamodel.Policy_mxJPO;
+import org.mxupdate.update.util.AbstractParser_mxJPO;
+import org.mxupdate.update.util.ParameterCache_mxJPO;
+
+public class PolicyDefParser
+    extends AbstractParser_mxJPO
+{
+}
+PARSER_END(PolicyDefParser)
+
+SKIP :
+{
+  " "
+| "\t"
+| "\n"
+| "\r"
+}
+
+TOKEN : /** first level */
+{
+    <DESCRIPTION:     "description">      : S_EXPECTED
+  | <TYPE:            "type">             : LALL_EXPECTED
+  | <FORMAT:          "format">           : LALL_EXPECTED
+  | <STORE:           "store">            : S_EXPECTED
+  | <DEFAULTFORMAT:   "defaultformat">    : S_EXPECTED
+  | <SEQUENCE:        "sequence">         : S_EXPECTED
+  | <HIDDEN:          "hidden">           : B_EXPECTED
+  | <STATE:           "state">            : S_EXPECTED
+}
+
+TOKEN : /** State and depending signature and trigger Tokens */
+{
+      <REGISTEREDNAME:  "registeredName">   : S_EXPECTED
+    | <REVISION:        "revision">         : B_EXPECTED
+    | <VERSION:         "version">          : B_EXPECTED
+    | <PROMOTE:         "promote">          : B_EXPECTED
+    | <CHECKOUTHISTORY: "checkouthistory">  : B_EXPECTED
+    | <REVOKE:          "revoke">           : DEFAULT
+    | <OWNER:           "owner">            : L_EXPECTED
+    | <PUBLIC:          "public">           : L_EXPECTED
+    | <USER:            "user">             : SL_EXPECTED
+    | <FILTER:          "filter">           : S_EXPECTED
+    | <ACTION:          "action">           : S_EXPECTED
+    | <CHECK:           "check">            : S_EXPECTED
+    | <OVERRIDE:        "override">         : S_EXPECTED
+    | <INPUT:           "input">            : S_EXPECTED
+    | <TRIGGER:         "trigger">          : S_EXPECTED
+    | <APPROVE:         "approve">          : L_EXPECTED
+    | <IGNORE:          "ignore">           : L_EXPECTED
+    | <REJECT:          "reject">           : L_EXPECTED
+    | <BRANCH:          "branch">           : S_EXPECTED
+    | <SIGNATURE:       "signature">        : S_EXPECTED
+    | <ROUTE:           "route">            : LS_EXPECTED
+}
+
+/*************************************************** Boolean for Hidden Value */
+<B_EXPECTED> SKIP :
+{
+  " " | "\t" | "\n" | "\r"
+}
+
+<B_EXPECTED> TOKEN :
+{
+      <BOOLEAN_TRUE : (<BOOLEAN_TRUESTR> | "\"" <BOOLEAN_TRUESTR> "\"")> : DEFAULT
+    | <BOOLEAN_FALSE : (<BOOLEAN_FALSESTR> | "\"" <BOOLEAN_FALSESTR> "\"")> : DEFAULT
+    | <#BOOLEAN_TRUESTR : ["t","T"] ["r","R"] ["u","U"] ["e","E"]>
+    | <#BOOLEAN_FALSESTR : ["f","F"] ["a","A"] ["l","L"] ["s","S"] ["e","E"]>
+}
+
+/************************************************************* List -> String */
+<LS_EXPECTED> SKIP:
+{
+  " " | "\t" | "\n" | "\r"
+}
+
+<LS_EXPECTED> TOKEN : /* List of Strings */
+{
+      <LS_CURLY_BRACKET_OPEN : "{">    : LS_EXPECTED
+    | <LS_CURLY_BRACKET_CLOSE : "}">   : S_EXPECTED
+    | <LS_STRING : (<LS_APOSTROPHE>(<LS_CHAR> | "\\\"" | "\\{" | "\\}" | " ")*<LS_APOSTROPHE>)> : LS_EXPECTED
+    | <LS_SINGLE_STRING : (<LS_CHAR>)+> : LS_EXPECTED
+    | <#LS_APOSTROPHE: "\"" >
+    | <#LS_CHAR : ~["\u0000"-"\u0020","\"","{","}","\u0100"-"\uffff"]>
+}
+
+/************************************************************* String -> List */
+<SL_EXPECTED> SKIP :
+{
+  " " | "\t" | "\n" | "\r"
+}
+
+<SL_EXPECTED> TOKEN :
+{
+      <SL_STRING : (<SL_APOSTROPHE>(<SL_CHAR> | "\\\"" | "\\{" | "\\}" | " ")*<SL_APOSTROPHE>)> : L_EXPECTED
+    | <SL_SINGLE_STRING : (<SL_CHAR>)+> : L_EXPECTED
+    | <#SL_APOSTROPHE: "\"" >
+    | <#SL_CHAR : ~["\u0000"-"\u0020","\"","{","}","\u0100"-"\uffff"]>
+}
+
+/******************************************************************** String  */
+<S_EXPECTED> SKIP :
+{
+  " " | "\t" | "\n" | "\r"
+}
+
+<S_EXPECTED> TOKEN :
+{
+      <S_STRING : (<S_APOSTROPHE>(<S_CHAR> | "\\\"" | "\\{" | "\\}" | " ")*<S_APOSTROPHE>)> : DEFAULT
+    | <S_SINGLE_STRING : (<S_CHAR>)+> : DEFAULT
+    | <#S_APOSTROPHE: "\"" >
+    | <#S_CHAR : ~["\u0000"-"\u0020","\"","{","}","\u0100"-"\uffff"]>
+}
+
+/**************************************************************** List or All */
+<LALL_EXPECTED> SKIP:
+{
+  " " | "\t" | "\n" | "\r"
+}
+<LALL_EXPECTED> TOKEN : /* List of Strings */
+{
+    < LALL_CURLY_BRACKET_OPEN : "{" >    : L2_EXPECTED
+  | < LALL_ALL : "all" > : DEFAULT
+}
+
+/*********************************************************************** List */
+<L_EXPECTED> SKIP:
+{
+  " " | "\t" | "\n" | "\r"
+}
+<L_EXPECTED> TOKEN : /* List of Strings */
+{
+      <L_CURLY_BRACKET_OPEN : "{">    : L2_EXPECTED
+}
+
+<L2_EXPECTED> SKIP:
+{
+  " " | "\t" | "\n" | "\r"
+}
+<L2_EXPECTED> TOKEN : /* List of Strings */
+{
+      <L_CURLY_BRACKET_CLOSE : "}">   : DEFAULT
+    | <L_STRING : (<L_APOSTROPHE>(<L_CHAR> | "\\\"" | "\\{" | "\\}" | " ")*<L_APOSTROPHE>)> : L2_EXPECTED
+    | <L_SINGLE_STRING : (<L_CHAR>)+> : L2_EXPECTED
+    | <#L_APOSTROPHE: "\"" >
+    | <#L_CHAR : ~["\u0000"-"\u0020","\"","{","}","\u0100"-"\uffff"]>
+    | <L2_CURLY_BRACKET_OPEN : "{">    : L3_EXPECTED
+}
+
+<L3_EXPECTED> TOKEN : /* List of Strings */
+{
+      <L3_BRACE_STRING  : (<L3_CHAR>)*> : L4_EXPECTED
+    | <#L3_CHAR : ~["\u0000"-"\u001f","{","}","\u0100"-"\uffff"]>
+}
+
+<L4_EXPECTED> TOKEN : /* List of Strings */
+{
+      <L4_CURLY_BRACKET_CLOSE : "}">   : L2_EXPECTED
+}
+
+/**
+ * Parses one complete policy definition.
+ *
+ * @param _paramCache   parameter cache
+ * @param _typeDef      type definition of the policy (to instanciate the
+ *                      policy)
+ * @param _mxName       MX name of the policy
+ */
+Policy_mxJPO policy(final ParameterCache_mxJPO _paramCache,
+                    final TypeDef_mxJPO _typeDef,
+                    final String _mxName)
+    throws SecurityException, IllegalArgumentException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException
+: {
+    final Policy_mxJPO policy = (Policy_mxJPO) _typeDef.newTypeInstance(_mxName);
+    String tmp;
+} {
+    (
+        ( <DESCRIPTION>    tmp = sString()     {setValue(policy, "description", tmp);} )
+      | ( format(policy) )
+      | ( type(policy) )
+      | ( <DEFAULTFORMAT>  tmp = sString()     {setValue(policy, "defaultFormat", tmp);} )
+      | ( <SEQUENCE>       tmp = sString()     {setValue(policy, "sequence", tmp);} )
+      | ( <STORE>          tmp = sString()     {setValue(policy, "store", tmp);} )
+      | ( <HIDDEN>         ( <BOOLEAN_TRUE>    {this.setValue(policy, "hidden", true);}
+                          | <BOOLEAN_FALSE>   {this.setValue(policy, "hidden", false);} ) )
+      | ( state(policy) )
+    )*
+    {
+        this.prepareObject(_paramCache, policy);
+        return policy;
+    }
+}
+
+/**
+ * Format of a policy definition.
+ *
+ * @param _policy   current parsed policy
+ */
+void format(final Policy_mxJPO _policy) :
+{
+    Set<String> set;
+}
+{
+    <FORMAT>
+    ( LOOKAHEAD(2)
+        ( <LALL_ALL> {set = new HashSet<String>();set.add("all");} )
+      | ( set = lList() )
+    )
+    {
+        setValue(_policy, "formats", set);
+    }
+}
+
+/**
+ * Format of a type definition.
+ *
+ * @param _policy   current parsed policy
+ */
+void type(final Policy_mxJPO _policy) :
+{
+    Set<String> set;
+}
+{
+    <TYPE>
+    ( LOOKAHEAD(2)
+        ( <LALL_ALL> {set = new HashSet<String>();set.add("all");} )
+      | ( set = lList() )
+    )
+    {
+        setValue(_policy, "types", set);
+    }
+}
+
+void state(final Policy_mxJPO _policy) : {
+    final Policy_mxJPO.State state = new Policy_mxJPO.State();
+    String tmpStr;
+    Set<String> tmpSet;
+} {
+    <STATE> tmpStr = sString() {setValue(state, "name", tmpStr);}
+    "{"
+        ( (<REGISTEREDNAME>     tmpStr = sString()  {this.appendValue(state, "symbolicNames", tmpStr);})
+        | (<REVISION>           ( <BOOLEAN_TRUE>    {this.setValue(state, "revisionable", true);}
+                                | <BOOLEAN_FALSE>   {this.setValue(state, "revisionable", false);} ) )
+        | (<VERSION>            ( <BOOLEAN_TRUE>    {this.setValue(state, "versionable", true);}
+                                | <BOOLEAN_FALSE>   {this.setValue(state, "versionable", false);} ) )
+        | (<PROMOTE>            ( <BOOLEAN_TRUE>    {this.setValue(state, "autoPromotion", true);}
+                                | <BOOLEAN_FALSE>   {this.setValue(state, "autoPromotion", false);} ) )
+        | (<CHECKOUTHISTORY>    ( <BOOLEAN_TRUE>    {this.setValue(state, "checkoutHistory", true);}
+                                | <BOOLEAN_FALSE>   {this.setValue(state, "checkoutHistory", false);} ) )
+        | stateOwnerAccess(state)
+        | statePublicAccess(state)
+        | ( <REVOKE> ( stateOwnerRevoke(state) | statePublicRevoke(state) ) )
+        | (<ACTION>             tmpStr = sString()  {this.setValue(state, "actionProgram", tmpStr);}
+           <INPUT>              tmpStr = sString()  {this.setValue(state, "actionInput", tmpStr);})
+        | (<CHECK>              tmpStr = sString()  {this.setValue(state, "checkProgram", tmpStr);}
+           <INPUT>              tmpStr = sString()  {this.setValue(state, "checkInput", tmpStr);})
+        | (<ROUTE>              tmpSet = lsList()   {this.setValue(state, "routeUsers", tmpSet);}
+                                tmpStr = sString()  {this.setValue(state, "routeMessage", tmpStr);})
+        | stateUser(state)
+        | stateTrigger(state)
+        | stateSignature(state)
+        )*
+    "}"
+    {
+        this.appendValue(_policy, "states", state);
+    }
+}
+
+/**
+ * Parses the access and filter expression for the owner definition.
+ *
+ * @param _state    current parsed state of the policy
+ */
+void stateOwnerAccess(final Policy_mxJPO.State _state) : {
+    String filter = null;
+    Set<String> accessSet;
+}  {
+    ( <OWNER> accessSet = lList() )
+    ( <FILTER> filter = sString() )?
+    {
+        this.setValue(_state, "ownerAccess", accessSet);
+        this.setValue(_state, "ownerAccessFilter", filter);
+    }
+}
+
+/**
+ * Parses the access and filter expression for the public definition.
+ *
+ * @param _state    current parsed state of the policy
+ */
+void statePublicAccess(final Policy_mxJPO.State _state) : {
+    String filter = null;
+    Set<String> accessSet;
+}  {
+    ( <PUBLIC> accessSet = lList() )
+    ( <FILTER> filter = sString() )?
+    {
+        this.setValue(_state, "publicAccess", accessSet);
+        this.setValue(_state, "publicAccessFilter", filter);
+    }
+}
+
+/**
+ * Parses the access and filter expression for the owner revoke definition.
+ *
+ * @param _state    current parsed state of the policy
+ */
+void stateOwnerRevoke(final Policy_mxJPO.State _state) : {
+    String filter = null;
+    Set<String> accessSet;
+}  {
+    ( <OWNER> accessSet = lList() )
+    ( <FILTER> filter = sString() )?
+    {
+        this.setValue(_state, "ownerRevoke", accessSet);
+        this.setValue(_state, "ownerRevokeFilter", filter);
+    }
+}
+
+/**
+ * Parses the access and filter expression for the public revoke definition.
+ *
+ * @param _state    current parsed state of the policy
+ */
+void statePublicRevoke(final Policy_mxJPO.State _state) : {
+    String filter = null;
+    Set<String> accessSet;
+}  {
+    ( <PUBLIC> accessSet = lList() )
+    ( <FILTER> filter = sString() )?
+    {
+        this.setValue(_state, "publicRevoke", accessSet);
+        this.setValue(_state, "publicRevokeFilter", filter);
+    }
+}
+
+/**
+ * Parses the access and filter expression for a user definition.
+ *
+ * @param _state    current parsed state of the policy
+ */
+void stateUser(final Policy_mxJPO.State _state) : {
+    final Policy_mxJPO.UserAccess userAccess = new Policy_mxJPO.UserAccess();
+    String user, filter = null;
+    Set<String> accessSet;
+}  {
+    <USER> user = slString() accessSet = lList()
+    (<FILTER> filter = sString())?
+    {
+        this.setValue(userAccess, "userRef", user);
+        this.setValue(userAccess, "access", accessSet);
+        this.setValue(userAccess, "expressionFilter", filter);
+        this.appendValue(_state, "userAccess", userAccess);
+    }
+}
+
+void stateTrigger(final Policy_mxJPO.State _state) : {
+    final Policy_mxJPO.Trigger trigger = new Policy_mxJPO.Trigger();
+    String tmp;
+} {
+    <TRIGGER> tmp = sString()
+            ( <ACTION>      {this.setValue(trigger, "name", tmp + "Action");}
+            | <CHECK>       {this.setValue(trigger, "name", tmp + "Check");}
+            | <OVERRIDE>    {this.setValue(trigger, "name", tmp + "Override");})
+            tmp = sString() {this.setValue(trigger, "program", tmp);}
+            <INPUT> tmp = sString() {setValue(trigger, "arguments", tmp);}
+    {
+        this.appendValue(_state, "triggersStack", trigger);
+    }
+}
+
+void stateSignature(final Policy_mxJPO.State _state) : {
+    final Policy_mxJPO.Signature signature = new Policy_mxJPO.Signature();
+    String tmpStr;
+    Set<String> tmpSet;
+} {
+    <SIGNATURE> tmpStr = sString() {this.setValue(signature, "name", tmpStr);}
+    "{"
+        ( (<BRANCH> tmpStr = sString()  {this.setValue(signature, "branch", tmpStr);})
+        | (<APPROVE> tmpSet = lList()   {this.setValue(signature, "approverUsers", tmpSet);})
+        | (<IGNORE> tmpSet = lList()    {this.setValue(signature, "ignoreUsers", tmpSet);})
+        | (<REJECT> tmpSet = lList()    {this.setValue(signature, "rejectUsers", tmpSet);})
+        | (<FILTER> tmpStr = sString()  {this.setValue(signature, "filter", tmpStr);})) *
+    "}"
+    {
+        this.appendValue(_state, "signatures", signature);
+    }
+}
+
+Set<String> lsList() :  {
+    Token tmp;
+    Set<String> ret = new HashSet<String>();
+}  {
+    (
+        <LS_CURLY_BRACKET_OPEN>
+            (
+                (tmp = <LS_STRING>)         {ret.add(this.getString(tmp.image));}
+                |
+                (tmp = <LS_SINGLE_STRING>)  {ret.add(this.getSingle(tmp.image));}
+            )*
+        <LS_CURLY_BRACKET_CLOSE>
+    )
+    {
+        return ret;
+    }
+}
+
+Set<String> lList() :  {
+    Token tmp;
+    Set<String> ret = new HashSet<String>();
+}  {
+    (
+        ( <L_CURLY_BRACKET_OPEN> | <LALL_CURLY_BRACKET_OPEN> )
+            (
+                (tmp = <L_STRING>) {ret.add(this.getString(tmp.image));}
+                |
+                (tmp = <L_SINGLE_STRING>) {ret.add(this.getSingle(tmp.image));}
+                |
+                <L2_CURLY_BRACKET_OPEN>
+                    (tmp = <L3_BRACE_STRING>)
+                    {ret.add(tmp.image);}
+                <L4_CURLY_BRACKET_CLOSE>
+            )*
+        <L_CURLY_BRACKET_CLOSE>
+    )
+    {
+        return ret;
+    }
+}
+
+/**
+ * Evaluates a simple string where a list must follow.
+ *
+ * @return evaluated simple string
+ */
+String slString() : {
+    Token tmp;
+    String ret;
+} {
+    (
+        (tmp = <SL_STRING>)         {ret = this.getString(tmp.image);}
+        |
+        (tmp = <SL_SINGLE_STRING>)  {ret = this.getSingle(tmp.image);}
+    )
+    {
+        return ret;
+    }
+}
+
+/**
+ * Evaluates a simple string.
+ *
+ * @return evaluated simple string
+ */
+String sString() : {
+    Token tmp;
+    String ret;
+} {
+    (
+        (tmp = <S_STRING>)          {ret = this.getString(tmp.image);}
+        |
+        (tmp = <S_SINGLE_STRING>)   {ret = this.getSingle(tmp.image);}
+    )
+    {
+        return ret;
+    }
+}
