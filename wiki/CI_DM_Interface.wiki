@@ -6,7 +6,7 @@
 
 = Parameter Definitions =
 || *Name:* {{{DMWithAttrIgnoreIntAttr}}}          <p>*Parameter:* {{{‑‑ignoreinterfaceattributes [ATTRIBUTE_MATCH]}}}</p><p>Pattern defining the match of attributes which are ignored within the test attributes of interfaces.</p> ||
-|| *Name:* {{{DMWithAttrRemoveIntAttr}}}          <p>*Parameter:* {{{‑‑ignoreinterfaceattributes [ATTRIBUTE_MATCH]}}}</p><p>Pattern defining the match of attributes which are removed if not defined anymore within the test attributes of interfaces.</p> ||
+|| *Name:* {{{DMWithAttrRemoveIntAttr}}}          <p>*Parameter:* {{{‑‑removeinterfaceattributes [ATTRIBUTE_MATCH]}}}</p><p>Pattern defining the match of attributes which are removed if not defined anymore within the test attributes of interfaces.</p> ||
 
 ----
 
