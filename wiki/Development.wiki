@@ -5,7 +5,7 @@
 ----
 
 = Introduction =
-For the development of !MxUpdate [http://maven.apache.org Maven]Êis used. For
+For the development of !MxUpdate [http://maven.apache.org Maven]ï¿½is used. For
 the specific configuration see the related developer description for
 [Development_Update MxUpdate Update Tool] and the
 [Development_Manual MxUpdate Manual].
@@ -16,6 +16,42 @@ the specific configuration see the related developer description for
 Depending on the environment some specific settings could be defined. For maven
 the settings are located in the file {{{~/.m2/settings.xml}}} (home
 directory of current user and then sub directory {{{.m2}}}).
+
+== Link to the MX Environment ==
+The used link to the MX environment is defined via following properties in the
+settings:
+|| *Key*                         || *Description ||
+|| org.mxupdate.mx.url           || URL to the MX database, if not defined the MX shared library is used. ||
+|| org.mxupdate.mx.user          || User for the login. ||
+|| org.mxupdate.mx.password      || Password for the login. ||
+|| org.mxupdate.mx.jar.ematrix   || File path for the {{{eMatrixServletRMI.jar}}} file. ||
+|| org.mxupdate.mx.jar.fcsclient || File path for the {{{FcsClient.jar}}} file. ||
+
+*Example:*
+{{{
+<settings>
+    :
+  <profiles>
+       :
+    <profile>
+      <id>MxUpdate Configuration</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <mxversion>V6-R2010x</mxversion>
+        <org.mxupdate.mx.url>http://172.16.62.128:8080/enovia</org.mxupdate.mx.url>
+        <org.mxupdate.mx.user>creator</org.mxupdate.mx.user>
+        <org.mxupdate.mx.password></org.mxupdate.mx.password>
+        <org.mxupdate.mx.jar.ematrix>${basedir}/lib/eMatrixServletRMI.${mxversion}.jar</org.mxupdate.mx.jar.ematrix>
+        <org.mxupdate.mx.jar.fcsclient>${basedir}/lib/FcsClient.${mxversion}.jar</org.mxupdate.mx.jar.fcsclient>
+      </properties>
+    </profile>
+       :
+  <profiles>
+    :
+</settings>
+}}}
 
 == HTTP Proxy for Maven ==
 Maven downloads via HTTP protocol required dependencies (e.g. the test-ng Java
