@@ -5,7 +5,7 @@
 ----
 
 = Introduction =
-For the development of !MxUpdate [http://maven.apache.org Maven]�is used. For
+For the development of !MxUpdate [http://maven.apache.org Maven] is used. For
 the specific configuration see the related developer description for
 [Development_Update MxUpdate Update Tool] and the
 [Development_Manual MxUpdate Manual].
