@@ -55,5 +55,7 @@
      * [UpdatePropertyFileFormat_TypeDef TypeDef]
      * [UpdatePropertyFileFormat_TypeDefGroup TypeDefGroup]
      * [UpdatePropertyFileFormat_UpdateCheck UpdateCheck]
- * [UpdateDevelopment Development]
+ * [Development Development]
+     * [Development_Update Update Tool]
+     * [Development_Manual Manual]
  * [FAQ Frequently Asked Questions]
