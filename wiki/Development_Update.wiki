@@ -5,12 +5,15 @@
 ----
 
 = Install Eclipse Project =
+Prerequisites is that the Maven settings are already defined (as described in
+[Development]).
 
   * Use the Maven Eclipse Plug-In
   * In Eclipse create a new SVN project using the {{{trunc}}} directory.
-  * Copy {{{eMatrixServletRMI.jar}}} and {{{FcsClient.jar}}} from your MX installation into the directory {{{lib}}}.
+  * Update Maven dependencies.
 
-The Jar file must be copied to defined place, or Apache Maven could not compile and test the MxUpdate Update tool.
+The Maven dependencies are updated and the {{{eMatrixServletRMI.jar}}} and
+{{{FcsClient.jar}}} are added (which should be checked).
 
 ----
 
