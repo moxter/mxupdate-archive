@@ -22,6 +22,7 @@ package org.mxupdate.eclipse;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
@@ -30,6 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import matrix.db.Context;
@@ -81,6 +83,31 @@ public class MXAdapter
      * Key name of the properties stored in the preferences.
      */
     private static final String PREF_PROPERTIES = "pluginProperties"; //$NON-NLS-1$
+
+    /**
+     * Key if the properties are configured in external property file.
+     */
+    public static final String PREF_EXTERNAL_CONFIGURED = "externalConfigured"; //$NON-NLS-1$
+
+    /**
+     * Key for the external property file.
+     */
+    public static final String PREF_PROP_FILE = "propertyFile"; //$NON-NLS-1$
+
+    /**
+     * Key of the property key host (URL) preference.
+     */
+    public static final String PREF_PROP_KEY_URL = "propKeyUrl"; //$NON-NLS-1$
+
+    /**
+     * Key of the property key user name preference.
+     */
+    public static final String PREF_PROP_KEY_NAME = "propKeyName"; //$NON-NLS-1$
+
+    /**
+     * Key of the property key password preference.
+     */
+    public static final String PREF_PROP_KEY_PASSWORD = "propKeyPassword"; //$NON-NLS-1$
 
     /**
      * Name and place of the manifest file.
@@ -167,18 +194,60 @@ public class MXAdapter
             final boolean connectAllowed;
             final String user;
             final String passwd;
-            final String host =  this.preferences.getString(MXAdapter.PREF_URL);
+            final String host;
 
-            if (!this.preferences.getBoolean(MXAdapter.PREF_STORE_PASSWORD))  {
-                final MXLoginPage loginPage = new MXLoginPage(host, this.preferences.getString(MXAdapter.PREF_NAME));
-                loginPage.open();
-                connectAllowed = loginPage.isOkPressed();
-                user = loginPage.getUserName();
-                passwd = loginPage.getPassword();
-            } else  {
-                connectAllowed = true;
-                user =  this.preferences.getString(MXAdapter.PREF_NAME);
-                passwd =  this.preferences.getString(MXAdapter.PREF_PASSWORD);
+            // is external configured
+            if (this.preferences.getBoolean(MXAdapter.PREF_EXTERNAL_CONFIGURED))  {
+                final String propFile = this.preferences.getString(MXAdapter.PREF_PROP_FILE);
+                final String propHost = this.preferences.getString(MXAdapter.PREF_PROP_KEY_URL);
+                final String propName = this.preferences.getString(MXAdapter.PREF_PROP_KEY_NAME);
+                final String propPass = this.preferences.getString(MXAdapter.PREF_PROP_KEY_PASSWORD);
+
+                this.console.logInfo(Messages.getString("MXAdapter.ReadExternalFile", propFile)); //$NON-NLS-1$
+                final Properties extProps = new Properties();
+                boolean read = false;
+                try {
+                    extProps.load(new FileInputStream(propFile));
+                    read = true;
+                } catch (final FileNotFoundException e) {
+                    this.console.logError(Messages.getString("MXAdapter.ExceptionExternalFileOpenFailed"), e); //$NON-NLS-1$
+                } catch (final IOException e) {
+                    this.console.logError(Messages.getString("MXAdapter.ExceptionExternalFileOpenFailed"), e); //$NON-NLS-1$
+                }
+
+                if (!read)  {
+                    connectAllowed = false;
+                    host = null;
+                    user = null;
+                    passwd = null;
+                } else if ((propName == null) || "".equals(propName) || (propPass == null) || "".equals(propPass))  {
+                    host = extProps.getProperty(propHost);
+                    final MXLoginPage loginPage = new MXLoginPage(host, this.preferences.getString(MXAdapter.PREF_NAME));
+                    loginPage.open();
+                    connectAllowed = loginPage.isOkPressed();
+                    user = loginPage.getUserName();
+                    passwd = loginPage.getPassword();
+                } else  {
+                    connectAllowed = true;
+                    host = extProps.getProperty(propHost);
+                    user = extProps.getProperty(propName);
+                    passwd = extProps.getProperty(propPass);
+                }
+
+            // internal configured
+            } else {
+                host =  this.preferences.getString(MXAdapter.PREF_URL);
+                if (!this.preferences.getBoolean(MXAdapter.PREF_STORE_PASSWORD))  {
+                    final MXLoginPage loginPage = new MXLoginPage(host, this.preferences.getString(MXAdapter.PREF_NAME));
+                    loginPage.open();
+                    connectAllowed = loginPage.isOkPressed();
+                    user = loginPage.getUserName();
+                    passwd = loginPage.getPassword();
+                } else  {
+                    connectAllowed = true;
+                    user =  this.preferences.getString(MXAdapter.PREF_NAME);
+                    passwd =  this.preferences.getString(MXAdapter.PREF_PASSWORD);
+                }
             }
 
             if (connectAllowed)  {
