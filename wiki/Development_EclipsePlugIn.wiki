@@ -1,0 +1,29 @@
+#summary Describes how to develop MxUpdate Eclipse Plug-In
+
+<wiki:toc max_depth="3"/>
+
+----
+
+= Install Eclipse Project =
+Prerequisites is that the Maven settings are already defined (as described in
+[Development]).
+
+  * In Eclipse create a new SVN project using the {{{trunc}}} directory.
+
+The Maven dependencies are updated and the {{{eMatrixServletRMI.jar}}} and
+{{{FcsClient.jar}}} are added (which should be checked).
+
+----
+
+= Result of an Maven Build =
+After the install of a maven build is done, two jar files are located in the
+target directory. The first one in the format
+{{{
+    org.mxupdate.eclipse_[VERSION].jar
+}}}
+is the Eclipse Plug-In itself, the second one in the format
+{{{
+    org.mxupdate.eclipse_[VERSION]-feature.jar
+}}}
+holds the {{{feature.xml}}} file needed for the site.
+

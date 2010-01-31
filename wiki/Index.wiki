@@ -57,5 +57,6 @@
      * [UpdatePropertyFileFormat_UpdateCheck UpdateCheck]
  * [Development Development]
      * [Development_Update Update Tool]
+     * [Development_EclipsePlugIn Eclipse Plug-In]
      * [Development_Manual Manual]
  * [FAQ Frequently Asked Questions]
