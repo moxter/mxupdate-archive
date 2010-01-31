@@ -391,8 +391,7 @@
             <resource>
                 <directory>src/main/resources</directory>
                 <excludes>
-                    <exclude>feature.xml</exclude>
-                    <exclude>icons/**/*</exclude>
+                    <exclude>**/*</exclude>
                 </excludes>
             </resource>
             <resource>

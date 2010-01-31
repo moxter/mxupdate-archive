@@ -36,7 +36,7 @@ public final class Messages
     /**
      * Name of the property bundle holding all messages.
      */
-    private static final String BUNDLE_NAME = "plugin"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "src/main/resources/plugin"; //$NON-NLS-1$
 
     /**
      * Resource bundle to the MxUpdate eclipse plug-in properties.
