@@ -27,3 +27,30 @@ is the Eclipse Plug-In itself, the second one in the format
 }}}
 holds the {{{feature.xml}}} file needed for the site.
 
+----
+
+= Upload new Version to Google Code Downloads =
+
+== Local Test ==
+To create the packages without upload following maven call must be done for
+Mac OSX:
+{{{
+mvn install -P release-profile,MacOSx
+}}}
+For Windows:
+{{{
+mvn install -P release-profile,Windows
+}}}
+
+== Upload to Google Code ==
+To upload a new !MxUpdate Update version, following maven call must be done for
+Mac OSX:
+{{{
+mvn gcupload:gcupload -P release-profile,MacOSx
+}}}
+For Windows:
+{{{
+mvn gcupload:gcupload -P release-profile,Windows
+}}}
+First the compiled plug-in and the Javadoc are packed and compressed. Then the
+packages are uploaded.
