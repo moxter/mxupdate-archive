@@ -326,13 +326,13 @@
             <version>1.3</version>
             <scope>provided</scope>
         </dependency>
-        <!-- eMatrixServletRMI -->
+        <!-- MX dependency -->
         <dependency>
-            <groupId>com.3ds</groupId>
-            <artifactId>eMatrixServletRMI</artifactId>
-            <version>V6R2010x</version>
+            <groupId>ematrix</groupId>
+            <artifactId>ematrix</artifactId>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/eMatrixServletRMI.jar</systemPath>
+            <version>ALL</version>
+            <systemPath>${org.mxupdate.mx.jar.ematrix}</systemPath>
         </dependency>
     </dependencies>
 
