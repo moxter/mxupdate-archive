@@ -29,7 +29,7 @@ import org.mxupdate.eclipse.preferences.AbstractWorkspacePreference;
 /**
  *
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public final class ShellPreference

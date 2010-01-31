@@ -28,7 +28,7 @@ import org.mxupdate.eclipse.Messages;
 /**
  * Eclipse Handler called from the connect command used to connect to the MX.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class ConnectHandler

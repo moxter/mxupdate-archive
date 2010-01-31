@@ -37,7 +37,7 @@ import org.mxupdate.eclipse.Activator;
  *
  * @param <T>   preference class derived from this abstract workspace
  *              preference class
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public abstract class AbstractWorkspacePreference<T extends AbstractWorkspacePreference<?>>

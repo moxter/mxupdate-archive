@@ -29,7 +29,7 @@ import org.mxupdate.eclipse.Messages;
  * Eclipse Handler called from the disconnect command used to disconnect from
  * the MX data base.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class DisconnectHandler

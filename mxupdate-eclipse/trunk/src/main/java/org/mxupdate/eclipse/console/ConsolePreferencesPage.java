@@ -26,7 +26,7 @@ import org.mxupdate.eclipse.preferences.AbstractWorkspacePreferencesPage;
  * Shows the console specific preference page for all workspace preferences
  * defined in {@link ConsolePreference}.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class ConsolePreferencesPage

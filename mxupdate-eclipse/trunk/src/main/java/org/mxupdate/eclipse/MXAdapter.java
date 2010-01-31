@@ -50,7 +50,7 @@ import org.mxupdate.eclipse.console.Console;
  * @version $Id$
  */
 public class MXAdapter
-        implements IDeploymentAdapter
+    implements IDeploymentAdapter
 {
     /**
      * Key of the URL preference.

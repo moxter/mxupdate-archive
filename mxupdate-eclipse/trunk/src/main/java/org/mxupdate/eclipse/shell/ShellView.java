@@ -44,7 +44,7 @@ import org.mxupdate.eclipse.Messages;
 /**
  *
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class ShellView

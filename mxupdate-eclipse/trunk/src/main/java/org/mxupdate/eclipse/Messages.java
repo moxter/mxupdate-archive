@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
  * Utility class to handle message translation for the MxUpdate eclipse
  * plug-in.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public final class Messages

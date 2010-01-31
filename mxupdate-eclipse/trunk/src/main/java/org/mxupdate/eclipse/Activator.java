@@ -40,7 +40,7 @@ import org.osgi.framework.BundleContext;
 /**
  * The activator class controls the MxUpdate plug-in life cycle.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class Activator
