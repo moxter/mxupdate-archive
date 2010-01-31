@@ -121,12 +121,12 @@
                mnemonic="M">
             <command
                   commandId="org.mxupdate.eclipse.command.update"
-                  icon="icons/Update.gif"
+                  icon="src/main/resources/icons/Update.gif"
                   style="push">
             </command>
             <command
                   commandId="org.mxupdate.eclipse.command.updatecompile"
-                  icon="icons/UpdateCompile.gif"
+                  icon="src/main/resources/icons/UpdateCompile.gif"
                   style="push">
             </command>
             <separator
@@ -135,12 +135,12 @@
             </separator>
             <command
                   commandId="org.mxupdate.eclipse.command.connect"
-                  icon="icons/Connect.gif"
+                  icon="src/main/resources/icons/Connect.gif"
                   style="push">
             </command>
             <command
                   commandId="org.mxupdate.eclipse.command.disconnect"
-                  icon="icons/Disconnect.gif"
+                  icon="src/main/resources/icons/Disconnect.gif"
                   style="push">
             </command>
          </menu>
@@ -149,11 +149,11 @@
       <menuContribution locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar id="org.mxupdate.eclipse.toolbars.toolbar">
             <command commandId="org.mxupdate.eclipse.command.update"
-                     icon="icons/Update.gif"
+                     icon="src/main/resources/icons/Update.gif"
                      tooltip="%plugin.command.update.tooltip">
             </command>
             <command commandId="org.mxupdate.eclipse.command.updatecompile"
-                     icon="icons/UpdateCompile.gif"
+                     icon="src/main/resources/icons/UpdateCompile.gif"
                      tooltip="%plugin.command.updatecompile.tooltip">
             </command>
          </toolbar>
@@ -162,9 +162,9 @@
       <menuContribution locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <menu label="%plugin.popup.label">
             <command commandId="org.mxupdate.eclipse.command.update"
-                     icon="icons/Update.gif"/>
+                     icon="src/main/resources/icons/Update.gif"/>
             <command commandId="org.mxupdate.eclipse.command.updatecompile"
-                     icon="icons/UpdateCompile.gif"/>
+                     icon="src/main/resources/icons/UpdateCompile.gif"/>
             <command commandId="org.mxupdate.eclipse.command.compare"/>
          </menu>
       </menuContribution>
@@ -187,7 +187,7 @@
               name="%plugin.views.view.mql"
               class="org.mxupdate.eclipse.shell.ShellView"
               category="org.mxupdate.eclipse.views.category"
-              icon="icons/Shell.gif">
+              icon="src/main/resources/icons/Shell.gif">
         </view>
     </extension>
 
