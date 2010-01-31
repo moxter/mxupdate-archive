@@ -43,7 +43,7 @@ import org.mxupdate.eclipse.Messages;
  * The class is used as handler for commands to compare local update files
  * against current update code from the data base.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class CompareHandler

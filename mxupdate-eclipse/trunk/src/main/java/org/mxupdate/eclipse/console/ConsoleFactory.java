@@ -27,7 +27,7 @@ import org.mxupdate.eclipse.Activator;
  * Console Factory used to show the console defined from the MxUpdate eclipse
  * plug-in.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class ConsoleFactory

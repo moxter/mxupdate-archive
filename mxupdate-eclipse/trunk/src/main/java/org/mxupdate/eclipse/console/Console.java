@@ -37,7 +37,7 @@ import org.mxupdate.eclipse.Messages;
 /**
  * MxUpdate specific eclipse plug-in console.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class Console

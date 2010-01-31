@@ -37,7 +37,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  * The abstract class handles selection of files (or selected file of editor)
  * and calls method {@link #execute(List)}.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public abstract class AbstractFileHandler

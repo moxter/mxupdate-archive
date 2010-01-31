@@ -31,10 +31,10 @@ import org.mxupdate.eclipse.Activator;
 
 /**
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  *
  * @param <T>
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public abstract class AbstractWorkspacePreferencesInitializer<T extends AbstractWorkspacePreference<?>>

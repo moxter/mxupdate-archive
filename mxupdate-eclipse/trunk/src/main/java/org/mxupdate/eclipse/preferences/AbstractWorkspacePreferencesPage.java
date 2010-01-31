@@ -37,7 +37,7 @@ import org.mxupdate.eclipse.Messages;
 /**
  *
  * @param <T>   related preference class for which the preference page is shown
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class AbstractWorkspacePreferencesPage<T extends AbstractWorkspacePreference<?>>

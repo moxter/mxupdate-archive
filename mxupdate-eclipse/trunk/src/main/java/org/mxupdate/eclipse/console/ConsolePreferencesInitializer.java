@@ -25,7 +25,7 @@ import org.mxupdate.eclipse.preferences.AbstractWorkspacePreferencesInitializer;
 /**
  * Initialize all console specific preferences.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class ConsolePreferencesInitializer

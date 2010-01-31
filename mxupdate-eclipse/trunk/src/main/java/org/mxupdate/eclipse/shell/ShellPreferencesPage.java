@@ -25,7 +25,7 @@ import org.mxupdate.eclipse.preferences.AbstractWorkspacePreferencesPage;
 /**
  *
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public class ShellPreferencesPage

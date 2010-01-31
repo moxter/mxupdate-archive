@@ -30,7 +30,7 @@ import org.mxupdate.eclipse.preferences.AbstractWorkspacePreference;
  * Class with all console specific preferences to define the colors depending
  * on the logging level.
  *
- * @author Tim Moxter
+ * @author The MxUpdate Team
  * @version $Id$
  */
 public final class ConsolePreference
