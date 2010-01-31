@@ -1,0 +1,491 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!--
+
+ Copyright 2008-2010 The MxUpdate Team
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+
+ Author:          The MxUpdate Team
+ Revision:        $Rev$
+ Last Changed:    $Date$
+ Last Changed By: $Author$
+
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.mxupdate</groupId>
+    <artifactId>org.mxupdate.eclipse</artifactId>
+    <packaging>jar</packaging>
+    <name>MxUpdate Eclipse Plug-In</name>
+    <version>0.8.0</version>
+    <inceptionYear>2008</inceptionYear>
+    <organization>
+        <name>The MxUpdate Team</name>
+        <url>http://www.mxupdate.org</url>
+    </organization>
+
+    <description>
+        Eclipse Plug-In for the MxUpdate Update Deployment Tool.
+    </description>
+
+    <properties>
+        <!-- correct encoding -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!--  org.eclipse.core.runtime -->
+        <dependency>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>runtime</artifactId>
+            <version>3.3.100-v20070530</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.equinox</groupId>
+                    <artifactId>app</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.eclipse.core.resources -->
+        <dependency>
+            <groupId>org.eclipse.core</groupId>
+            <artifactId>resources</artifactId>
+            <version>3.3.0-v20070604</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- org.eclipse.ui -->
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>ui</artifactId>
+            <version>3.3.0-I20070614-0800</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>swt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>jface</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>workbench</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.core</groupId>
+                    <artifactId>expressions</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.eclipse.ui.console -->
+        <dependency>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>console</artifactId>
+            <version>3.2.0-v20070530</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>ui</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jface</groupId>
+                    <artifactId>text</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui.workbench</groupId>
+                    <artifactId>texteditor</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.core</groupId>
+                    <artifactId>expressions</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.core</groupId>
+                    <artifactId>variables</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.eclipse.ui.ide -->
+        <dependency>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>ide</artifactId>
+            <version>3.3.0-I20070620</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>help</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>ui</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.update</groupId>
+                    <artifactId>core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.update</groupId>
+                    <artifactId>ui</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.update</groupId>
+                    <artifactId>configurator</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jface</groupId>
+                    <artifactId>text</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>forms</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>views</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.eclipse.compare -->
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>compare</artifactId>
+            <version>3.3.0-I20070606</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>ui</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.core</groupId>
+                    <artifactId>resources</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jface</groupId>
+                    <artifactId>text</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>ide</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>views</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>workbench</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui.workbench</groupId>
+                    <artifactId>texteditor</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>editors</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>forms</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.eclipse.team.ui -->
+        <dependency>
+            <groupId>org.eclipse.team</groupId>
+            <artifactId>ui</artifactId>
+            <version>3.3.0-I20070607</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse.core</groupId>
+                    <artifactId>resources</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.team</groupId>
+                    <artifactId>core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>ui</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>compare</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>forms</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>navigator</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui.navigator</groupId>
+                    <artifactId>resources</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.ui</groupId>
+                    <artifactId>editors</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jface</groupId>
+                    <artifactId>text</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.eclipse.ui.workbench (because excluded) -->
+        <dependency>
+            <groupId>org.eclipse.ui</groupId>
+            <artifactId>workbench</artifactId>
+            <version>3.3.0-I20070608-1100</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>help</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>jface</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>swt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.jface</groupId>
+                    <artifactId>databinding</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.core</groupId>
+                    <artifactId>databinding</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.eclipse.jface (because excluded) -->
+        <dependency>
+            <groupId>org.eclipse</groupId>
+            <artifactId>jface</artifactId>
+            <version>3.3.0-I20070606-0010</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>swt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse.core</groupId>
+                    <artifactId>commands</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.eclipse.jface.resource (because excluded) -->
+        <dependency>
+            <groupId>org.eclipse.jface</groupId>
+            <artifactId>text</artifactId>
+            <version>3.3.0-v20070606-0010</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>text</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>swt</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.eclipse</groupId>
+                    <artifactId>jface</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- org.apache.commons.codec;bundle-version="1.3.0" -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- eMatrixServletRMI -->
+        <dependency>
+            <groupId>com.3ds</groupId>
+            <artifactId>eMatrixServletRMI</artifactId>
+            <version>V6R2010x</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/eMatrixServletRMI.jar</systemPath>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>feature.xml</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>${basedir}</directory>
+                <includes>
+                    <include>about.html</include>
+                    <include>about_files/**/*</include>
+                    <include>plugin.xml</include>
+                    <include>plugin_customization.ini</include>
+                    <include>plugin.properties</include>
+                    <include>splash.bmp</include>
+                    <include>icons/**/*.gif</include>
+                    <include>icons/**/*.license</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <targetPath>src/main/resources</targetPath>
+                <excludes>
+                    <exclude>feature.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!--
+                pack feature.xml
+            -->
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/feature-assembly.xml</descriptor>
+                    </descriptors>
+                    <finalName>org.mxupdate.eclipse_${project.version}</finalName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                define Java5 and UTF-8 encoding
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.5</source>
+                    <target>1.5</target>
+                    <encoding>UTF-8</encoding>
+                    <showDeprecation>true</showDeprecation>
+                    <showWarnings>true</showWarnings>
+                </configuration>
+            </plugin>
+
+            <!--
+                defines the correct version in the manifest file
+            -->
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>maven-replacer-plugin</artifactId>
+                <version>1.1</version>
+                <executions>
+                    <execution>
+                        <id>define-version-in-manifest</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                        <configuration>
+                            <file>META-INF/MANIFEST.MF</file>
+                            <outputFile>target/MANIFEST.MF</outputFile>
+                            <token>Bundle-Version: 0.0.0</token>
+                            <value>Bundle-Version: ${project.version}</value>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                to define the name of the target file and to reuse the manifest
+                file generated from the replacer plug-in
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <finalName>org.mxupdate.eclipse_${project.version}</finalName>
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                        <manifestFile>target/MANIFEST.MF</manifestFile>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <!--
+            SWT for windows
+        -->
+        <profile>
+            <id>SWT for Windows</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+                <os>
+                    <name>Windows XP</name>
+                    <family>Windows</family>
+                    <arch>x86</arch>
+                </os>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.eclipse.swt.win32.win32</groupId>
+                    <artifactId>x86</artifactId>
+                    <version>3.3.0-v3346</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+
+        <!--
+            SWT for Mac OSX
+        -->
+        <profile>
+            <id>SWT for Mac OSx</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>org.eclipse.swt.carbon</groupId>
+                    <artifactId>macosx</artifactId>
+                    <version>3.3.0-v3346</version>
+                    <scope>provided</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
+</project>
