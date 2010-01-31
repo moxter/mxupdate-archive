@@ -1,9 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Localization: src/plugin
-Bundle-Name: %plugin.name
+Bundle-Localization: src/main/resources/plugin
 Bundle-SymbolicName: org.mxupdate.eclipse;singleton:=true
-Bundle-Version: 0.6.1
 Bundle-Activator: org.mxupdate.eclipse.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -17,5 +15,16 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-Vendor: The MxUpdate Team
-Export-Package: org.mxupdate.eclipse
+Export-Package: org.mxupdate.eclipse;
+  uses:="org.eclipse.jface.preference,
+   org.eclipse.ui,
+   org.eclipse.core.resources,
+   org.eclipse.jface.viewers,
+   org.eclipse.ui.plugin,
+   org.osgi.framework,
+   org.eclipse.swt.widgets,
+   org.mxupdate.eclipse.console,
+   org.eclipse.jface.dialogs"
 Bundle-ClassPath: .
+Bundle-Version: 0.0.0
+Bundle-Name: MxUpdate Eclipse Plug-In
