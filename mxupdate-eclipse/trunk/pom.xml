@@ -342,6 +342,7 @@
                 <directory>src/main/resources</directory>
                 <excludes>
                     <exclude>feature.xml</exclude>
+                    <exclude>icons/**/*</exclude>
                 </excludes>
             </resource>
             <resource>
@@ -353,13 +354,16 @@
                     <include>plugin_customization.ini</include>
                     <include>plugin.properties</include>
                     <include>splash.bmp</include>
-                    <include>icons/**/*.gif</include>
-                    <include>icons/**/*.license</include>
                 </includes>
             </resource>
             <resource>
                 <directory>src/main/resources</directory>
                 <targetPath>src/main/resources</targetPath>
+                <includes>
+                    <include>icons/**/*.gif</include>
+                    <include>icons/**/*.license</include>
+                    <include>plugin.properties</include>
+                </includes>
                 <excludes>
                     <exclude>feature.xml</exclude>
                 </excludes>
