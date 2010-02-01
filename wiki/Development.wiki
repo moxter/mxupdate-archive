@@ -21,7 +21,7 @@ directory of current user and then sub directory {{{.m2}}}).
 == Link to the MX Environment ==
 The used link to the MX environment is defined via following properties in the
 settings:
-|| *Key*                         || *Description ||
+|| *Key*                         || *Description* ||
 || org.mxupdate.mx.url           || URL to the MX database, if not defined the MX shared library is used. ||
 || org.mxupdate.mx.user          || User for the login. ||
 || org.mxupdate.mx.password      || Password for the login. ||
