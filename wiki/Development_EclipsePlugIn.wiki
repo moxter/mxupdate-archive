@@ -29,6 +29,15 @@ holds the {{{feature.xml}}} file needed for the site.
 
 ----
 
+= Maven Profiles =
+Three different profiles exists which could be activated:
+|| *Name of the Profile* || *Description* ||
+|| {{{Windows}}}         || SWT for Windows is used. ||
+|| {{{MacOSx}}}          || SWT for Mac OSX is used (default). ||
+|| {{{release-profile}}} || The assembly plug-in prepares the packages with the compiled plug-in and the Javadoc pages. ||
+
+----
+
 = Upload new Version to Google Code Downloads =
 
 == Local Test ==
