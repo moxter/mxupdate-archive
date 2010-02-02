@@ -35,7 +35,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import matrix.db.Context;
-import matrix.db.JPO;
 import matrix.db.MQLCommand;
 import matrix.util.MatrixException;
 
@@ -412,10 +411,12 @@ public class MXAdapter
                 }
             }
             try {
-                this.console.logInfo(this.jpoInvoke("org.mxupdate.plugin.Update",
+                this.console.logInfo(this.executeEncoded("org.mxupdate.plugin.Update",
                                                     "updateByContent",
                                                     files,
-                                                    _compile));
+                                                    _compile,
+                                                    new HashMap<String,String>(),
+                                                    Boolean.TRUE));
             } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed",  //$NON-NLS-1$
                                                          files.keySet().toString()),
@@ -428,10 +429,12 @@ public class MXAdapter
                 fileNames.add(file.getLocation().toString());
             }
             try {
-                this.console.logInfo(this.jpoInvoke("org.mxupdate.plugin.Update",
+                this.console.logInfo(this.executeEncoded("org.mxupdate.plugin.Update",
                                                     "updateByName",
                                                     fileNames,
-                                                    _compile));
+                                                    _compile,
+                                                    new HashMap<String,String>(),
+                                                    Boolean.TRUE));
             } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed", //$NON-NLS-1$
                                                          fileNames.toString()),
@@ -449,7 +452,7 @@ public class MXAdapter
      * @throws MatrixException if update code could not be extracted
      */
     public String extractCode(final IFile _file)
-            throws MatrixException
+        throws MatrixException
     {
         return this.execute("exec prog org.mxupdate.plugin.GetMxUpdateCode '" //$NON-NLS-1$
                 + _file.toString() + "'"); //$NON-NLS-1$
@@ -497,26 +500,34 @@ public class MXAdapter
      * @see #mxContext
      * @see #connect()
      */
-    protected String jpoInvoke(final String _jpo,
-                               final String _method,
-                               final Object... _parameters)
+    protected String executeEncoded(final String _jpo,
+                                    final String _method,
+                                    final Object... _parameters)
         throws IOException, MatrixException
     {
         if (!this.connected)  {
             this.connect();
         }
 
+        final StringBuilder cmd = new StringBuilder()
+            .append("exec prog ").append(_jpo).append(" -method ").append(_method);
+
         // encode parameters
-        final String[] paramStrings = new String[_parameters.length];
-        int idx = 0;
         for (final Object parameter : _parameters)  {
             final ByteArrayOutputStream out = new ByteArrayOutputStream();
             final ObjectOutputStream oos = new ObjectOutputStream(out);
             oos.writeObject(parameter);
             oos.close();
-            paramStrings[idx++] = new String(Base64.encodeBase64(out.toByteArray()));
+            cmd.append(" \"").append(new String(Base64.encodeBase64(out.toByteArray()))).append("\"");
         }
 
-        return (String) JPO.invoke(this.mxContext, _jpo, null, _method, paramStrings, String.class);
+        // execute MQL command
+        final MQLCommand mql = new MQLCommand();
+        mql.executeCommand(this.mxContext, cmd.toString());
+        if ((mql.getError() != null) && !"".equals(mql.getError()))  { //$NON-NLS-1$
+            throw new MatrixException(mql.getError());
+        }
+
+        return mql.getResult().trim();
     }
 }
