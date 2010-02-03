@@ -250,3 +250,14 @@ This value could be changed by defining following property in the mapping:
 ParameterDef.DefaultInstaller.Default = YOUR_VALUE
 }}}
 
+----
+
+= !MxUpdate Eclipse Plug-In =
+
+== I've compiled with [http://maven.apache.org Maven] the Eclipse Plug-In, but where must I copy the {{{org.mxupdate.eclipse_X.X.X-feature.jar}}} ? ==
+The {{{org.mxupdate.eclipse_X.X.X-feature.jar}}} is only required if you are
+working with an Eclipse update site. If you are directly install the Plug-In in
+your Eclipse, you could ignore this created jar file.
+
+For more information see the [Development_EclipsePlugin Eclipse Plug-In development]
+description.
