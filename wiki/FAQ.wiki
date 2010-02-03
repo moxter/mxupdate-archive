@@ -259,5 +259,5 @@ The {{{org.mxupdate.eclipse_X.X.X-feature.jar}}} is only required if you are
 working with an Eclipse update site. If you are directly install the Plug-In in
 your Eclipse, you could ignore this created jar file.
 
-For more information see the [Development_EclipsePlugin Eclipse Plug-In development]
+For more information see the [Development_EclipsePlugIn Eclipse Plug-In development]
 description.
