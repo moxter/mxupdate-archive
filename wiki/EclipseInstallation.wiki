@@ -11,13 +11,3 @@ To install the !MxUpdate Eclipse Plug-In correctly, following three steps must b
   * [EclipseInstallation_Connect At least the MxUpdate settings must be defined and the properties from MX loaded.]
 The correct installation could be [EclipseInstallation_Check checked] after Eclipse was restarted.
 
-= Installation FAQ =
-
-== Why must the MX ADK installed as Eclipse Plug-In? ==
-If the ADK is not installed as Eclipse Plug-In, the !MxUdate Eclipse Plug-In must include the ADK itself. Because of the legal this means that for each new !MxUpdate Eclipse Plug-In version each user must create himself the plug-in by e.g. coping the ADK manually into the !MxUpdate Eclipse Plug-In. Otherwise if the ADK is separated in an own plug-in the !MxUpdate Eclipse Plug-In could be deployed separately with the Eclipse standard way, e.g. via a site.
-
-== Why using the !MxUpdate Eclipse Plug-In site? ==
-If the !MxUpdate Eclipse Plug-In site is used, an update of the Plug-In could be done via the standard Eclipse update functionality.
-
-== Could I install the !MxUpdate Eclipse Plug-In manually? ==
-Yes, the plug-in is also located under the [http://code.google.com/p/mxupdate/downloads/list downloads]. A description also exists. The preferred way is to install the plug-in via the [http://mxupdate.googlecode.com/svn/mxupdate-eclipse-site/tags/ MxUpdate Eclipse Plug-In site].
