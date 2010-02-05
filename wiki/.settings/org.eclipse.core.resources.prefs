@@ -1,4 +1,4 @@
-#Sun Jan 31 13:49:54 CET 2010
+#Fri Feb 05 18:10:54 CET 2010
 eclipse.preferences.version=1
 encoding/CI.wiki=UTF-8
 encoding/CI_DM.wiki=UTF-8
@@ -48,5 +48,6 @@ encoding/UpdatePropertyFileFormat_ParameterDef.wiki=UTF-8
 encoding/UpdatePropertyFileFormat_PropertyDef.wiki=UTF-8
 encoding/UpdatePropertyFileFormat_TypeDef.wiki=UTF-8
 encoding/UpdatePropertyFileFormat_TypeDefGroup.wiki=UTF-8
+encoding/UpdatePropertyFileFormat_TypeDefTree.wiki=UTF-8
 encoding/UpdatePropertyFileFormat_UpdateCheck.wiki=UTF-8
 encoding/UpdateUsage.wiki=UTF-8
