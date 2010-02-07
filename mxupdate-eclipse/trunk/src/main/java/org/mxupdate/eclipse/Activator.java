@@ -20,17 +20,6 @@
 
 package org.mxupdate.eclipse;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-
-import org.apache.commons.codec.binary.Base64;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -48,14 +37,6 @@ import org.osgi.framework.BundleContext;
 public class Activator
     extends AbstractUIPlugin
 {
-
-    /**
-     * Map used to hold the images for MxUpdate files. The first key is the
-     * file extension, the second key the file prefix.
-     */
-    public static final Map<String,Map<String,ImageDescriptor>> IMAGEMAP
-            = new HashMap<String,Map<String,ImageDescriptor>>();
-
     /**
      * ID of the MxUpdate plug-in.
      */
@@ -73,6 +54,9 @@ public class Activator
      */
     private Console console = null;
 
+    /**
+     * Adapter implementing the interface to MX.
+     */
     private IDeploymentAdapter adapter;
 
 
@@ -92,45 +76,11 @@ try  {
         this.console.activate();
         ConsolePlugin.getDefault().getConsoleManager().addConsoles(new IConsole[]{this.console});
 
-final Properties properties = new Properties();
-final String propStr = this.getPreferenceStore().getString("pluginProperties"); //$NON-NLS-1$
-if (propStr != null)  {
-    final InputStream is = new ByteArrayInputStream(propStr.getBytes());
-    properties.load(is);
-}
-
-// extract all admin type names
-final Set<String> admins = new HashSet<String>();
-for (final Object keyObj : properties.keySet())  {
-    final String key = keyObj.toString().replaceAll("\\..*", ""); //$NON-NLS-1$ //$NON-NLS-2$
-    admins.add(key);
-}
-
-// prepare image cache
-for (final String admin : admins)  {
-    final String prefix = properties.getProperty(admin + ".FilePrefix"); //$NON-NLS-1$
-    final String suffix = properties.getProperty(admin + ".FileSuffix"); //$NON-NLS-1$
-    final String iconStr = properties.getProperty(admin + ".Icon"); //$NON-NLS-1$
-
-    final byte[] bin = Base64.decodeBase64(iconStr.getBytes());
-    final InputStream in = new ByteArrayInputStream(bin);
-
-    final ImageData ret = new ImageData(in);
-
-
-    Map<String,ImageDescriptor> mapPrefix = Activator.IMAGEMAP.get(suffix);
-    if (mapPrefix == null)  {
-        mapPrefix = new HashMap<String,ImageDescriptor>();
-        Activator.IMAGEMAP.put(suffix, mapPrefix);
-    }
-    mapPrefix.put(prefix, ImageDescriptor.createFromImageData(ret));
-}
 } catch (final Throwable e)  {
     e.printStackTrace(System.out);
     this.console.logError("ERROR", e); //$NON-NLS-1$
 }
-this.adapter = new MXAdapter(this.getPreferenceStore(), this.console);
-
+        this.adapter = new MXAdapter(this.getPreferenceStore(), this.console);
     }
 
     /*

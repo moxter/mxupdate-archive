@@ -20,16 +20,20 @@
 
 package org.mxupdate.eclipse.importwizard;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -68,6 +72,15 @@ public class Step2ConfigurationItemsPage
     private Table table;
 
     /**
+     * Map holding already created images for this wizard page. The images
+     * are used within the result table.
+     *
+     * @see #dispose()
+     * @see #setVisible(boolean)
+     */
+    private final Map<String,Image> images = new HashMap<String,Image>();
+
+    /**
      * Initializes step 2 page of the import wizard.
      *
      * @param _typeNamePage     reference to first step of the wizard
@@ -80,6 +93,21 @@ public class Step2ConfigurationItemsPage
         this.step1 = _typeNamePage;
         this.setTitle(Messages.getString("ImportWizard.Wizard.Step2.Title")); //$NON-NLS-1$
         this.setDescription(Messages.getString("ImportWizard.Wizard.Step2.Description")); //$NON-NLS-1$
+    }
+
+    /**
+     * All {@link #images} must be disposed.
+     *
+     * @see #images
+     */
+    @Override()
+    public void dispose()
+    {
+        super.dispose();
+        for (final Image image : this.images.values())  {
+            image.dispose();
+        }
+        this.images.clear();
     }
 
     /**
@@ -100,6 +128,17 @@ public class Step2ConfigurationItemsPage
                 final TableItem tableItem = new TableItem(this.table, SWT.NONE);
                 tableItem.setText(new String[]{item.getName(), item.getFileName(), item.getFilePath()});
                 tableItem.setData(item);
+
+                final String typeDef = item.getTypeDef();
+                if (!this.images.containsKey(typeDef))  {
+                    final ImageDescriptor imageDescr = Activator.getDefault().getAdapter().getImageDescriptor(typeDef);
+                    if (imageDescr != null)  {
+                        this.images.put(typeDef, imageDescr.createImage());
+                    } else  {
+                        this.images.put(typeDef, null);
+                    }
+                }
+                tableItem.setImage(this.images.get(typeDef));
             }
         }
         super.setVisible(_visible);

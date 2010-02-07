@@ -47,6 +47,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.ImageData;
 import org.mxupdate.eclipse.Messages;
 import org.mxupdate.eclipse.adapter.IDeploymentAdapter;
 import org.mxupdate.eclipse.adapter.IExportItem;
@@ -201,6 +203,24 @@ public class MXAdapter
     private boolean connected = false;
 
     /**
+     * Map used to hold the images for MxUpdate files. The first key is the
+     * file extension, the second key the file prefix.
+     *
+     * @see #initImageDescriptors()
+     * @see #getImageDescriptor(IFile)
+     */
+    private final Map<String,Map<String,ImageDescriptor>> imageMap
+            = new HashMap<String,Map<String,ImageDescriptor>>();
+
+    /**
+     * Mapping between type definition and related image descriptors.
+     *
+     * @see #initImageDescriptors()
+     * @see #getImageDescriptor(String)
+     */
+    private final Map<String,ImageDescriptor> typeDef2Image = new HashMap<String,ImageDescriptor>();
+
+    /**
      * Initializes the MX adapter.
      *
      * @param _preferences  preference store
@@ -211,6 +231,57 @@ public class MXAdapter
     {
         this.preferences = _preferences;
         this.console = _console;
+        this.initImageDescriptors();
+    }
+
+    /**
+     * Initializes the image descriptors read from the plug in properties.
+     *
+     * @see #imageMap
+     * @see #typeDef2Image
+     */
+    protected void initImageDescriptors()
+    {
+        final Properties properties = new Properties();
+        final String propStr = this.preferences.getString("pluginProperties"); //$NON-NLS-1$
+        if (propStr != null)  {
+            final InputStream is = new ByteArrayInputStream(propStr.getBytes());
+            try {
+                properties.load(is);
+            } catch (final IOException e) {
+                this.console.logError("MxAdapter.ExceptionInitImageDescriptorsLoadPropertiesFailed", e);
+            }
+        }
+
+        // extract all admin type names
+        final Set<String> admins = new HashSet<String>();
+        for (final Object keyObj : properties.keySet())  {
+            final String key = keyObj.toString().replaceAll("\\..*", ""); //$NON-NLS-1$ //$NON-NLS-2$
+            admins.add(key);
+        }
+
+        // prepare image cache
+        for (final String admin : admins)  {
+            final String prefix = properties.getProperty(admin + ".FilePrefix"); //$NON-NLS-1$
+            final String suffix = properties.getProperty(admin + ".FileSuffix"); //$NON-NLS-1$
+            final String iconStr = properties.getProperty(admin + ".Icon"); //$NON-NLS-1$
+
+            final byte[] bin = Base64.decodeBase64(iconStr.getBytes());
+            final InputStream in = new ByteArrayInputStream(bin);
+
+            final ImageDescriptor imageDesriptor = ImageDescriptor.createFromImageData(new ImageData(in));
+
+            // mapping between file prefix / extension and image
+            Map<String,ImageDescriptor> mapPrefix = this.imageMap.get(suffix);
+            if (mapPrefix == null)  {
+                mapPrefix = new HashMap<String,ImageDescriptor>();
+                this.imageMap.put(suffix, mapPrefix);
+            }
+            mapPrefix.put(prefix, imageDesriptor);
+
+            // mapping between type definition and image
+            this.typeDef2Image.put(admin, imageDesriptor);
+        }
     }
 
     /**
@@ -727,6 +798,40 @@ public class MXAdapter
         }
 
         return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see #imageMap
+     */
+    public ImageDescriptor getImageDescriptor(final IFile _file)
+    {
+        final String name = _file.getName();
+
+        ImageDescriptor ret = null;
+        for (final Map.Entry<String,Map<String,ImageDescriptor>> suffixEntry : this.imageMap.entrySet())  {
+            if (name.endsWith(suffixEntry.getKey()))  {
+                for (final Map.Entry<String, ImageDescriptor> entry : suffixEntry.getValue().entrySet())  {
+                    if (name.startsWith(entry.getKey()))  {
+                        ret = entry.getValue();
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see #typeDef2Image
+     */
+    public ImageDescriptor getImageDescriptor(final String _typeDef)
+    {
+        return this.typeDef2Image.get(_typeDef);
     }
 
     /**

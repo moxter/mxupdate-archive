@@ -20,8 +20,6 @@
 
 package org.mxupdate.eclipse.mxadapter;
 
-import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
@@ -51,19 +49,9 @@ public class MXDecorator
     public void decorate(final Object _obj,
                          final IDecoration _decoration)
     {
-        final IFile file = (IFile) _obj;
-        final String name = file.getName();
-
-        for (final Map.Entry<String,Map<String,ImageDescriptor>> suffixEntry : Activator.IMAGEMAP.entrySet())  {
-            if (name.endsWith(suffixEntry.getKey()))  {
-                for (final Map.Entry<String, ImageDescriptor> entry : suffixEntry.getValue().entrySet())  {
-                    if (name.startsWith(entry.getKey()))  {
-                        _decoration.addOverlay(entry.getValue(), IDecoration.TOP_LEFT);
-                        break;
-                    }
-                }
-                break;
-            }
+        final ImageDescriptor imageDesc = Activator.getDefault().getAdapter().getImageDescriptor((IFile) _obj);
+        if (imageDesc != null)  {
+            _decoration.addOverlay(imageDesc, IDecoration.TOP_LEFT);
         }
     }
 

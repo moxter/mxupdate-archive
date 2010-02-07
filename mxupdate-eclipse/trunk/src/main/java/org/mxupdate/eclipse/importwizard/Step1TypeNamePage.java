@@ -20,15 +20,19 @@
 
 package org.mxupdate.eclipse.importwizard;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -61,6 +65,15 @@ public class Step1TypeNamePage
     private Tree tree;
 
     /**
+     * Map holding already created images for this wizard page. The images
+     * are used within the tree table showing the type definition tree.
+     *
+     * @see #dispose()
+     * @see #append(ITypeDefNode, TreeItem)
+     */
+    private final List<Image> images = new ArrayList<Image>();
+
+    /**
      * Initializes step 1 page of the import wizard.
      */
     public Step1TypeNamePage()
@@ -68,6 +81,21 @@ public class Step1TypeNamePage
         super("Step1");
         this.setTitle(Messages.getString("ImportWizard.Wizard.Step1.Title")); //$NON-NLS-1$
         this.setDescription(Messages.getString("ImportWizard.Wizard.Step1.Description")); //$NON-NLS-1$
+    }
+
+    /**
+     * All {@link #images} must be disposed.
+     *
+     * @see #images
+     */
+    @Override()
+    public void dispose()
+    {
+        super.dispose();
+        for (final Image image : this.images)  {
+            image.dispose();
+        }
+        this.images.clear();
     }
 
     /**
@@ -136,6 +164,16 @@ public class Step1TypeNamePage
     {
         _item.setText(_node.getLabel());
         _item.setData(_node);
+        // if one type definition is defined show related image
+        if (_node.getTypeDefs().size() == 1)  {
+            final String typeDef = _node.getTypeDefs().iterator().next();
+            final ImageDescriptor imageDescr = Activator.getDefault().getAdapter().getImageDescriptor(typeDef);
+            if (imageDescr != null)  {
+                final Image image = imageDescr.createImage();
+                this.images.add(image);
+                _item.setImage(image);
+            }
+        }
         for (final ITypeDefNode subNode : _node.getSubTypeDef())  {
             this.append(subNode, new TreeItem(_item, SWT.NONE));
         }
