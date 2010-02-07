@@ -10,6 +10,7 @@
      * [EclipseInstallation_Check Check]
  * [NewProject New Project From Scratch]
  * [UpdateUsage MxUpdate Usage]
+ * [EclipseUsage Eclipse Plug-In Usage]
  * [CI Configuration Items]
      * [CI_DM Data Model]
          * [CI_DM_Attribute Attributes]

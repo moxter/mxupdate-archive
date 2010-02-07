@@ -7,4 +7,4 @@ The [http://www.mxupdate.org MxUpdate] Tools is based on the [CI Configuration I
 
 To handle this philosophy the [http://www.mxupdate.org MxUpdate] tool includes two different tools:
  * !MxUpdate Update Deployment Tool ([UpdateInstallation installation], [UpdateUsage usage])
- * !MxUpdate Eclipse Plug-In ([EclipseInstallation installation])
+ * !MxUpdate Eclipse Plug-In ([EclipseInstallation installation], [EclipseUsage usage])
