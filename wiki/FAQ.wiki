@@ -272,7 +272,7 @@ the [http://code.google.com/p/mxupdate/downloads/list downloads]. A description
 also exists. The preferred way is to install the plug-in via
 the [http://mxupdate.googlecode.com/svn/mxupdate-eclipse-site/tags/ MxUpdate Eclipse Plug-In site].
 
-== I've compiled with [http://maven.apache.org Maven] the Eclipse Plug-In, but where must I copy the {{{org.mxupdate.eclipse_X.X.X-feature.jar}}} ? ==
+== I've compiled with Maven the Eclipse Plug-In, but where must I copy the org.mxupdate.eclipse_X.X.X-feature.jar ? ==
 The {{{org.mxupdate.eclipse_X.X.X-feature.jar}}} is only required if you are
 working with an Eclipse update site. If you are directly install the Plug-In in
 your Eclipse, you could ignore this created jar file.
