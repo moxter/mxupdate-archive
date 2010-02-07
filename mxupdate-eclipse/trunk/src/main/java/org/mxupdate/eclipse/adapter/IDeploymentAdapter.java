@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * Interface defining a common deployment adapter within eclipse needed to
@@ -59,6 +60,15 @@ public interface IDeploymentAdapter
                 final boolean _compile);
 
     /**
+     * Extracts for given <code>_file</code> name the update code from the
+     * database.
+     *
+     * @param _file update file for which the update code must be extracted
+     * @return extracted update code
+     */
+    IExportItem export(final IFile _file);
+
+    /**
      * Exports defined <code>_item</code> with depending <code>_typeDef</code>.
      *
      * @param _typeDef  type definition
@@ -67,15 +77,6 @@ public interface IDeploymentAdapter
      */
     IExportItem export(final String _typeDef,
                        final String _item);
-
-    /**
-     * Extracts for given <code>_file</code> name the update code from the
-     * database.
-     *
-     * @param _file update file for which the update code must be extracted
-     * @return extracted update code
-     */
-    IExportItem export(final IFile _file);
 
     /**
      * Executes given <code>_command</code> within the console.
@@ -87,13 +88,6 @@ public interface IDeploymentAdapter
     String execute(final CharSequence _command) throws Exception;
 
     /**
-     * Evaluates the type tree hierarchy and returns the root.
-     *
-     * @return root type tree (or <code>null</code> if it could not evaluated)
-     */
-    ITypeDefRoot getTypeDefRoot();
-
-    /**
      * Searches for given type definitions <code>_typeDefList</code> which
      * matches <code>_match</code>.
      *
@@ -103,4 +97,29 @@ public interface IDeploymentAdapter
      */
     List<ISearchItem> search(final Set<String> _typeDefList,
                              final String _match);
+
+    /**
+     * Evaluates the type tree hierarchy and returns the root.
+     *
+     * @return root type tree (or <code>null</code> if it could not evaluated)
+     */
+    ITypeDefRoot getTypeDefRoot();
+
+    /**
+     * Returns for given <code>_file</code> related image descriptor.
+     *
+     * @param _file     file for which the image descriptor is searched
+     * @return found image descriptor; otherwise <code>null</code>
+     */
+    ImageDescriptor getImageDescriptor(final IFile _file);
+
+    /**
+     * Returns for given type definition <code>_typeDef</code> related image
+     * descriptor.
+     *
+     * @param _typeDef  type definition for which the image descriptor is
+     *                  searched
+     * @return found image descriptor; otherwise <code>null</code>
+     */
+    ImageDescriptor getImageDescriptor(final String _typeDef);
 }
