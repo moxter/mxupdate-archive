@@ -76,46 +76,53 @@ Select folder *\vendor\lib* and add all JARs from this folder.
 == Create folder-structure for Project-Files  ==
 
 Create following folder-structure under project-root:
-  * _\10_pre_environment_
-  * _\20_environment_
-  * _\30_pre_mxupdate_
-  * _\40_mxupdate_
-  * _\40_mxupdate\datamodel_
-  * _\40_mxupdate\datamodel\attribute_
-  * _\40_mxupdate\datamodel\dimension_
-  * _\40_mxupdate\datamodel\expression_
-  * _\40_mxupdate\datamodel\format_
-  * _\40_mxupdate\datamodel\interface_
-  * _\40_mxupdate\datamodel\numbergenerator_
-  * _\40_mxupdate\datamodel\objectgenerator_
-  * _\40_mxupdate\datamodel\policy_
-  * _\40_mxupdate\datamodel\relationship_
-  * _\40_mxupdate\datamodel\rule_
-  * _\40_mxupdate\datamodel\trigger_
-  * _\40_mxupdate\datamodel\triggergroup_
-  * _\40_mxupdate\datamodel\type_
-  * _\40_mxupdate\integration_
-  * _\40_mxupdate\program_
-  * _\40_mxupdate\program\csharp_
-  * _\40_mxupdate\program\jpo_
-  * _\40_mxupdate\program\mql_
-  * _\40_mxupdate\program\page_
-  * _\40_mxupdate\user_
-  * _\40_mxupdate\user\association_
-  * _\40_mxupdate\user\group_
-  * _\40_mxupdate\user\person_
-  * _\40_mxupdate\user\role_
-  * _\40_mxupdate\userinterface_
-  * _\40_mxupdate\userinterface\channel_
-  * _\40_mxupdate\userinterface\command_
-  * _\40_mxupdate\userinterface\form_
-  * _\40_mxupdate\userinterface\inquiry_
-  * _\40_mxupdate\userinterface\menu_
-  * _\40_mxupdate\userinterface\portal_
-  * _\40_mxupdate\userinterface\table_
-  * _\50_post_mxupdate_
-  * _\60_environment_
-  * _\70_post_environment_
+{{{
+  \10_pre_environment
+  \20_environment
+  \30_pre_mxupdate
+  \40_mxupdate
+  \40_mxupdate\datamodel
+  \40_mxupdate\datamodel\attribute
+  \40_mxupdate\datamodel\dimension
+  \40_mxupdate\datamodel\expression
+  \40_mxupdate\datamodel\format
+  \40_mxupdate\datamodel\interface
+  \40_mxupdate\datamodel\notification
+  \40_mxupdate\datamodel\numbergenerator
+  \40_mxupdate\datamodel\objectgenerator
+  \40_mxupdate\datamodel\policy
+  \40_mxupdate\datamodel\relationship
+  \40_mxupdate\datamodel\rule
+  \40_mxupdate\datamodel\trigger
+  \40_mxupdate\datamodel\triggergroup
+  \40_mxupdate\datamodel\type
+  \40_mxupdate\integration
+  \40_mxupdate\integration\ebomsync
+  \40_mxupdate\integration\globalconfig
+  \40_mxupdate\integration\globalregistry
+  \40_mxupdate\program
+  \40_mxupdate\program\csharp
+  \40_mxupdate\program\jpo
+  \40_mxupdate\program\mql
+  \40_mxupdate\program\page
+  \40_mxupdate\user
+  \40_mxupdate\user\association
+  \40_mxupdate\user\group
+  \40_mxupdate\user\person
+  \40_mxupdate\user\personadmin
+  \40_mxupdate\user\role
+  \40_mxupdate\userinterface
+  \40_mxupdate\userinterface\channel
+  \40_mxupdate\userinterface\command
+  \40_mxupdate\userinterface\form
+  \40_mxupdate\userinterface\inquiry
+  \40_mxupdate\userinterface\menu
+  \40_mxupdate\userinterface\portal
+  \40_mxupdate\userinterface\table
+  \50_post_mxupdate
+  \60_environment
+  \70_post_environment
+}}}
 
 == Define JPO-Folder of project as source folder in Eclipse ==
 
