@@ -18,7 +18,7 @@
  * Last Changed By: $Author$
  */
 
-package org.mxupdate.eclipse;
+package org.mxupdate.eclipse.mxadapter;
 
 import java.util.Map;
 
@@ -27,6 +27,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
+import org.mxupdate.eclipse.Activator;
 
 /**
  * MX Update Eclipse plug-in specific decorator which evaluates depending on
@@ -68,6 +69,8 @@ public class MXDecorator
 
     /**
      * Method stub to implement interface {@link ILightweightLabelDecorator}.
+     *
+     * @param _ilabelproviderlistener
      */
     public void addListener(final ILabelProviderListener _ilabelproviderlistener)
     {

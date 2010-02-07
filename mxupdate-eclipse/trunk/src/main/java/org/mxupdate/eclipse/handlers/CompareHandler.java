@@ -38,6 +38,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.team.ui.synchronize.SaveableCompareEditorInput;
 import org.mxupdate.eclipse.Activator;
 import org.mxupdate.eclipse.Messages;
+import org.mxupdate.eclipse.adapter.IExportItem;
 
 /**
  * The class is used as handler for commands to compare local update files
@@ -122,9 +123,9 @@ public class CompareHandler
             _progressMonitor.beginTask(Messages.getString("CompareHandler.TaskReadFromDataBase"), 2); //$NON-NLS-1$
 
             // get current update code
-            final String cur;
+            final IExportItem item;
             try {
-                cur = Activator.getDefault().getAdapter().extractCode(this.file);
+                item = Activator.getDefault().getAdapter().export(this.file);
             } catch (final Exception ex) {
                 throw new InvocationTargetException(ex);
             }
@@ -133,7 +134,7 @@ public class CompareHandler
             _progressMonitor.setTaskName(Messages.getString("CompareHandler.TaskConvertText")); //$NON-NLS-1$
             final byte[] buf;
             try {
-                buf = cur.getBytes("UTF8"); //$NON-NLS-1$
+                buf = item.getContent().getBytes("UTF8"); //$NON-NLS-1$
             } catch (final UnsupportedEncodingException ex) {
                 throw new InvocationTargetException(ex);
             }

@@ -34,7 +34,9 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.mxupdate.eclipse.adapter.IDeploymentAdapter;
 import org.mxupdate.eclipse.console.Console;
+import org.mxupdate.eclipse.mxadapter.MXAdapter;
 import org.osgi.framework.BundleContext;
 
 /**
