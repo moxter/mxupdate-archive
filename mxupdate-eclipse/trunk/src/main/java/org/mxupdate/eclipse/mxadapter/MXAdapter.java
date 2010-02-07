@@ -18,15 +18,20 @@
  * Last Changed By: $Author$
  */
 
-package org.mxupdate.eclipse;
+package org.mxupdate.eclipse.mxadapter;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -42,6 +47,12 @@ import org.apache.commons.codec.binary.Base64;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.mxupdate.eclipse.Messages;
+import org.mxupdate.eclipse.adapter.IDeploymentAdapter;
+import org.mxupdate.eclipse.adapter.IExportItem;
+import org.mxupdate.eclipse.adapter.ISearchItem;
+import org.mxupdate.eclipse.adapter.ITypeDefNode;
+import org.mxupdate.eclipse.adapter.ITypeDefRoot;
 import org.mxupdate.eclipse.console.Console;
 
 /**
@@ -132,6 +143,34 @@ public class MXAdapter
     private static final int LENGTH_BUNDLE_VERSION = MXAdapter.TEXT_BUNDLE_VERSION.length();
 
     /**
+     * Name of the key in the return map for the log message.
+     *
+     * @see #prepareReturn(String, String, Exception, Object)
+     */
+    private static final String RETURN_KEY_LOG = "log";
+
+    /**
+     * Name of the key in the return map for the error message.
+     *
+     * @see #prepareReturn(String, String, Exception, Object)
+     */
+    private static final String RETURN_KEY_ERROR = "error";
+
+    /**
+     * Name of the key in the return map for the exception.
+     *
+     * @see #prepareReturn(String, String, Exception, Object)
+     */
+    private static final String RETURN_KEY_EXCEPTION = "exception";
+
+    /**
+     * Name of the key in the return map for the values.
+     *
+     * @see #prepareReturn(String, String, Exception, Object)
+     */
+    private static final String RETURN_KEY_VALUES = "values";
+
+    /**
      * Holds the link to the preferences.
      */
     private final IPreferenceStore preferences;
@@ -167,8 +206,8 @@ public class MXAdapter
      * @param _preferences  preference store
      * @param _console      console used for logging purposes
      */
-    MXAdapter(final IPreferenceStore _preferences,
-              final Console _console)
+    public MXAdapter(final IPreferenceStore _preferences,
+                     final Console _console)
     {
         this.preferences = _preferences;
         this.console = _console;
@@ -411,12 +450,10 @@ public class MXAdapter
                 }
             }
             try {
-                this.console.logInfo(this.executeEncoded("org.mxupdate.plugin.Update",
-                                                    "updateByContent",
-                                                    files,
-                                                    _compile,
-                                                    new HashMap<String,String>(),
-                                                    Boolean.TRUE));
+                final Map<?,?> bck = this.executeEncoded("Update",
+                                                         "Compile", _compile,
+                                                         "FileContents", files);
+                this.console.logInfo((String) bck.get(MXAdapter.RETURN_KEY_LOG));
             } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed",  //$NON-NLS-1$
                                                          files.keySet().toString()),
@@ -429,12 +466,10 @@ public class MXAdapter
                 fileNames.add(file.getLocation().toString());
             }
             try {
-                this.console.logInfo(this.executeEncoded("org.mxupdate.plugin.Update",
-                                                    "updateByName",
-                                                    fileNames,
-                                                    _compile,
-                                                    new HashMap<String,String>(),
-                                                    Boolean.TRUE));
+                final Map<?,?> bck = this.executeEncoded("Update",
+                                                         "Compile", _compile,
+                                                         "FileNames", fileNames);
+                this.console.logInfo((String) bck.get(MXAdapter.RETURN_KEY_LOG));
             } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed", //$NON-NLS-1$
                                                          fileNames.toString()),
@@ -444,19 +479,254 @@ public class MXAdapter
     }
 
     /**
+     * {@inheritDoc}
+     * The type definition root is evaluated directly in MX and only converted
+     * in the required format.
+     */
+    public ITypeDefRoot getTypeDefRoot()
+    {
+        Map<?,?> bck = null;
+        try {
+            bck = this.executeEncoded("TypeDefTreeList");
+        } catch (final IOException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionRootTypeDefFailed"), e); //$NON-NLS-1$
+        } catch (final MatrixException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionRootTypeDefFailed"), e); //$NON-NLS-1$
+        } catch (final ClassNotFoundException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionRootTypeDefFailed"), e); //$NON-NLS-1$
+        }
+
+        final ITypeDefRoot ret;
+        if (bck == null)  {
+            ret = null;
+        } else if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
+            ret = null;
+            this.console.logError(Messages.getString("MXAdapter.ExceptionRootTypeDefFailed"), //$NON-NLS-1$
+                                  (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION));
+        } else  {
+            final Map<?,?> treeMap = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            ret = new ITypeDefRoot()  {
+                private final Collection<ITypeDefNode> typeDefNodes = new ArrayList<ITypeDefNode>();
+                public Collection<ITypeDefNode> getSubTypeDef()
+                {
+                    return this.typeDefNodes;
+                }
+            };
+            this.appendSubNode(ret, (Map<?,?>) treeMap.get("All"), treeMap);
+        }
+        return ret;
+    }
+
+    /**
+     * Appends to the <code>_node</code> all required / defined sub nodes.
+     *
+     * @param _node         node where sub nodes must be appended
+     * @param _treeNode     current tree node which must be appended
+     * @param _treeMap      map with all tree definitions from MX
+     */
+    protected void appendSubNode(final ITypeDefRoot _node,
+                                 final Map<?,?> _treeNode,
+                                 final Map<?,?> _treeMap)
+    {
+        final Collection<?> typeDefTreeList = (Collection<?>) _treeNode.get("TypeDefTreeList");
+        if (typeDefTreeList != null)  {
+            for (final Object subTreeNameObj : typeDefTreeList)  {
+                if ((subTreeNameObj != null) && !"".equals(subTreeNameObj))  {
+                    final Map<?,?> subTreeNode = (Map<?,?>) _treeMap.get(subTreeNameObj);
+                    final String subLabel = (String) subTreeNode.get("Label");
+                    final Collection<?> subTypeDefs = (Collection<?>) subTreeNode.get("TypeDefList");
+                    final String[] typeDefArr;
+                    if ((subTypeDefs != null) && !subTypeDefs.isEmpty())  {
+                        typeDefArr = new String[subTypeDefs.size()];
+                        int idx = 0;
+                        for (final Object typeDefObj : subTypeDefs)  {
+                            typeDefArr[idx++] = (String) typeDefObj;
+                        }
+                    } else  {
+                        typeDefArr = new String[0];
+                    }
+                    final ITypeDefNode subNode = new ITypeDefNode() {
+                        private final Collection<ITypeDefNode> typeDefNodes = new ArrayList<ITypeDefNode>();
+                        public String getLabel()
+                        {
+                            return subLabel;
+                        }
+                        public Set<String> getTypeDefs()
+                        {
+                            return new HashSet<String>(Arrays.asList(typeDefArr));
+                        }
+                        public Collection<ITypeDefNode> getSubTypeDef()
+                        {
+                            return this.typeDefNodes;
+                        }
+                    };
+                    this.appendSubNode(subNode, subTreeNode, _treeMap);
+                    _node.getSubTypeDef().add(subNode);
+                }
+            }
+        }
+    }
+
+    /**
+     * Searches for configuration items within MX.
+     *
+     * @param _typeDefList  list with searched type definitions
+     * @param _match        string for the names with must match
+     * @return found search items
+     */
+    public List<ISearchItem> search(final Set<String> _typeDefList,
+                                    final String _match)
+    {
+        Map<?,?> bck = null;
+        try {
+            bck = this.executeEncoded("Search",
+                                      "TypeDefList", _typeDefList,
+                                      "Match", _match);
+        } catch (final IOException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionSearchFailed"), e); //$NON-NLS-1$
+        } catch (final MatrixException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionSearchFailed"), e); //$NON-NLS-1$
+        } catch (final ClassNotFoundException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionSearchFailed"), e); //$NON-NLS-1$
+        }
+
+        final List<ISearchItem> ret = new ArrayList<ISearchItem>();
+        if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionSearchFailed"), //$NON-NLS-1$
+                                  (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION));
+        } else  {
+            final List<?> values = (List<?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            for (final Object valueObj : values)  {
+                final Map<?,?> value = (Map<?,?>) valueObj;
+                ret.add(new ISearchItem() {
+                    public String getFileName()
+                    {
+                        return (String) value.get("FileName");
+                    }
+                    public String getFilePath()
+                    {
+                        return (String) value.get("FilePath");
+                    }
+                    public String getName()
+                    {
+                        return (String) value.get("Name");
+                    }
+                    public String getTypeDef()
+                    {
+                        return (String) value.get("TypeDef");
+                    }
+                });
+            }
+        }
+        return ret;
+    }
+
+    /**
      * Extract the TCL update code for given <code>_file</code> from MX.
      *
      * @param _file     name of the update file for which the TCL update code
      *                  within MX must be extracted
      * @return configuration item update code for given <code>_file</code>
-     * @throws MatrixException if update code could not be extracted
      */
-    public String extractCode(final IFile _file)
-        throws MatrixException
+    public IExportItem export(final IFile _file)
     {
-        return this.execute("exec prog org.mxupdate.plugin.GetMxUpdateCode '" //$NON-NLS-1$
-                + _file.toString() + "'"); //$NON-NLS-1$
+        Map<?,?> bck = null;
+        try {
+            bck = this.executeEncoded("Export",
+                                      "FileName", _file.toString());
+        } catch (final IOException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        } catch (final MatrixException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        } catch (final ClassNotFoundException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        }
 
+        final IExportItem ret;
+        if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
+            ret = null;
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), //$NON-NLS-1$
+                                  (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION));
+        } else  {
+            final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            ret = new IExportItem() {
+                public String getFileName()
+                {
+                    return (String) value.get("FileName");
+                }
+                public String getFilePath()
+                {
+                    return (String) value.get("FilePath");
+                }
+                public String getName()
+                {
+                    return (String) value.get("Name");
+                }
+                public String getTypeDef()
+                {
+                    return (String) value.get("TypeDef");
+                }
+                public String getContent()
+                {
+                    return (String) value.get("Code");
+                }
+            };
+        }
+
+        return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public IExportItem export(final String _typeDef,
+                              final String _item)
+    {
+        Map<?,?> bck = null;
+        try {
+            bck = this.executeEncoded("Export",
+                                      "TypeDef", _typeDef,
+                                      "Name", _item);
+        } catch (final IOException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        } catch (final MatrixException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        } catch (final ClassNotFoundException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        }
+
+        final IExportItem ret;
+        if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
+            ret = null;
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), //$NON-NLS-1$
+                                  (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION));
+        } else  {
+            final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            ret = new IExportItem() {
+                public String getFileName()
+                {
+                    return (String) value.get("FileName");
+                }
+                public String getFilePath()
+                {
+                    return (String) value.get("FilePath");
+                }
+                public String getName()
+                {
+                    return (String) value.get("Name");
+                }
+                public String getTypeDef()
+                {
+                    return (String) value.get("TypeDef");
+                }
+                public String getContent()
+                {
+                    return (String) value.get("Code");
+                }
+            };
+        }
+
+        return ret;
     }
 
     /**
@@ -486,40 +756,47 @@ public class MXAdapter
     }
 
     /**
-     * Calls given <code>_method</code> in <code>_jpo</code>. The MX context
-     * {@link #mxContext} is connected to the database if not already done.
+     * Calls given <code>_method</code> in of the MxUpdate eclipse plug-in
+     * dispatcher. The MX context {@link #mxContext} is connected to the
+     * database if not already done.
      *
-     * @param _jpo          name of JPO to call
      * @param _method       method of the called <code>_jpo</code>
-     * @param _parameters   list of all parameters for the <code>_jpo</code>
+     * @param _arguments    list of all parameters for the <code>_jpo</code>
      *                      which are automatically encoded encoded
      * @return returned value from the called <code>_jpo</code>
      * @throws IOException      if the parameter could not be encoded
      * @throws MatrixException  if the called <code>_jpo</code> throws an
      *                          exception
+     * @throws ClassNotFoundException if the class which is decoded from the
+     *                          returned string value could not be found
      * @see #mxContext
      * @see #connect()
      */
-    protected String executeEncoded(final String _jpo,
-                                    final String _method,
-                                    final Object... _parameters)
-        throws IOException, MatrixException
+    protected Map<?,?> executeEncoded(final String _method,
+                                      final Object... _arguments)
+        throws IOException, MatrixException, ClassNotFoundException
     {
         if (!this.connected)  {
             this.connect();
         }
 
-        final StringBuilder cmd = new StringBuilder()
-            .append("exec prog ").append(_jpo).append(" -method ").append(_method);
-
-        // encode parameters
-        for (final Object parameter : _parameters)  {
-            final ByteArrayOutputStream out = new ByteArrayOutputStream();
-            final ObjectOutputStream oos = new ObjectOutputStream(out);
-            oos.writeObject(parameter);
-            oos.close();
-            cmd.append(" \"").append(new String(Base64.encodeBase64(out.toByteArray()))).append("\"");
+        // prepare arguments in a map
+        final Map<String,Object> params;
+        if ((_arguments == null) || (_arguments.length == 0))  {
+            params = null;
+        } else  {
+            params = new HashMap<String,Object>();
+            for (int idx = 0; idx < _arguments.length; )  {
+                params.put((String) _arguments[idx++], _arguments[idx++]);
+            }
         }
+
+        // prepare MQL statement with encoded parameters
+        final StringBuilder cmd = new StringBuilder()
+            .append("exec prog ").append("org.mxupdate.plugin.Dispatcher \"")
+            .append(this.encode(null)).append("\" \"")
+            .append(this.encode(_method)).append("\" \"")
+            .append(this.encode(params)).append("\"");
 
         // execute MQL command
         final MQLCommand mql = new MQLCommand();
@@ -528,6 +805,52 @@ public class MXAdapter
             throw new MatrixException(mql.getError());
         }
 
-        return mql.getResult().trim();
+        return this.<Map<?,?>>decode(mql.getResult());
+    }
+
+    /**
+     * Encodes given <code>_object</code> to a string with <b>base64</b>.
+     *
+     * @param _object   object to encode
+     * @return encoded string
+     * @throws IOException if encode failed
+     */
+    protected String encode(final Object _object)
+        throws IOException
+    {
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+        final ObjectOutputStream oos = new ObjectOutputStream(out);
+        oos.writeObject(_object);
+        oos.close();
+        return new String(Base64.encodeBase64(out.toByteArray()));
+    }
+
+    /**
+     * Decodes given string value to an object of given type
+     * <code>&lt;T&gt;</code>. First the string is <b>base64</b> decoded, then
+     * the object instance is extracted from the decoded bytes via the Java
+     * &quot;standard&quot; feature of the {@link ObjectInputStream}.
+     *
+     * @param <T>   type of the object which must be decoded
+     * @param _arg  string argument with encoded instance of
+     *              <code>&lt;T&gt;</code>
+     * @return decoded object instance of given type <code>&lt;T&gt;</code>
+     * @throws IOException              if the value could not be decoded,
+     *                                  the decoder stream could not be
+     *                                  opened or the argument at given
+     *                                  <code>_index</code> is not defined
+     * @throws ClassNotFoundException   if the object itself could not be read
+     *                                  from decoder stream
+     */
+    @SuppressWarnings("unchecked")
+    protected final <T> T decode(final String _arg)
+        throws IOException, ClassNotFoundException
+    {
+        final byte[] bytes = Base64.decodeBase64(_arg.getBytes());
+        final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+        final ObjectInputStream ois = new ObjectInputStream(in);
+        final T ret = (T) ois.readObject();
+        ois.close();
+        return ret;
     }
 }

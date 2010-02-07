@@ -18,9 +18,10 @@
  * Last Changed By: $Author$
  */
 
-package org.mxupdate.eclipse;
+package org.mxupdate.eclipse.adapter;
 
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 
@@ -58,16 +59,23 @@ public interface IDeploymentAdapter
                 final boolean _compile);
 
     /**
+     * Exports defined <code>_item</code> with depending <code>_typeDef</code>.
+     *
+     * @param _typeDef  type definition
+     * @param _item     MX name to export
+     * @return list of exported files
+     */
+    IExportItem export(final String _typeDef,
+                       final String _item);
+
+    /**
      * Extracts for given <code>_file</code> name the update code from the
      * database.
      *
      * @param _file update file for which the update code must be extracted
      * @return extracted update code
-     * @throws Exception if the update code from the database could not be
-     *                   extracted
-     * @todo exceptions!
      */
-    String extractCode(final IFile _file) throws Exception;
+    IExportItem export(final IFile _file);
 
     /**
      * Executes given <code>_command</code> within the console.
@@ -77,4 +85,22 @@ public interface IDeploymentAdapter
      * @todo exceptions!
      */
     String execute(final CharSequence _command) throws Exception;
+
+    /**
+     * Evaluates the type tree hierarchy and returns the root.
+     *
+     * @return root type tree (or <code>null</code> if it could not evaluated)
+     */
+    ITypeDefRoot getTypeDefRoot();
+
+    /**
+     * Searches for given type definitions <code>_typeDefList</code> which
+     * matches <code>_match</code>.
+     *
+     * @param _typeDefList  set of searched type definitions
+     * @param _match        match for the search
+     * @return list of found objects
+     */
+    List<ISearchItem> search(final Set<String> _typeDefList,
+                             final String _match);
 }
