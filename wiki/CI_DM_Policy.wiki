@@ -50,7 +50,7 @@ After the tag {{{format}}} the list of formats in curly braces are defined. If
 all formats are defined, the tag {{{all}}} could be used instead of defining a
 list.
 
-*Snippet of an Examples with One Format:*
+*Snippet of an example with One Format:*
 {{{
 updatePolicy "${NAME}" {
   :
@@ -58,11 +58,30 @@ updatePolicy "${NAME}" {
   :
 }
 }}}
-*Snippet of an Examples with All Formats:*
+*Snippet of an example with All Formats:*
 {{{
 updatePolicy "${NAME}" {
   :
   format all
+  :
+}
+}}}
+
+== All State Access Definition ==
+The "all state access" definition is defined within {{{allstate}}}.
+
+*Snippet of an example:*
+{{{
+updatePolicy "${NAME}" {
+  :
+  allstate  {
+    :
+    owner {read show modify}
+    revoke owner {modify} filter "type==Test"
+    public {none}
+    user "creator" {all}
+    :
+  }
   :
 }
 }}}
@@ -80,7 +99,7 @@ definitions.
 *Snippet of an Example:*
 {{{
 updatePolicy "${NAME}" {
-    :
+  :
   state "TestState"  {
     :
     owner {read show modify}
@@ -88,6 +107,119 @@ updatePolicy "${NAME}" {
     public {none}
     :
   }
-    :
+  :
 }
 }}}
+
+----
+= Example =
+{{{
+################################################################################
+# POLICY:
+# ~~~~~~~
+# TestPolicy
+#
+# SYMBOLIC NAME:
+# ~~~~~~~~~~~~~~
+# policy_TestPolicy
+#
+# DESCRIPTION:
+# ~~~~~~~~~~~~
+# Policy for test purposes.
+#
+# AUTHOR:
+# ~~~~~~~
+# The MxUpdate Team
+################################################################################
+
+updatePolicy "${NAME}" {
+  description "Policy for test purposes."
+  type {all}
+  format {generic}
+  defaultformat "generic"
+  sequence "1,2,3,..."
+  store ""
+  hidden "false"
+  allstate  {
+    owner {}
+    public {read show}
+  }
+  state "Submitted"  {
+    registeredName "state_Submitted"
+    revision "true"
+    version "true"
+    promote "true"
+    checkouthistory "true"
+    owner {read modify checkout checkin}
+    public {}
+    action "" input ""
+    check "" input ""
+    signature "Reject" {
+      branch "Rejected"
+      approve {Employee}
+      ignore {Employee}
+      reject {Employee}
+      filter ""
+    }
+    signature "Review" {
+      branch "Review"
+      approve {Employee}
+      ignore {Employee}
+      reject {Employee}
+      filter ""
+    }
+  }
+  state "Review"  {
+    registeredName "state_Review"
+    revision "true"
+    version "true"
+    promote "true"
+    checkouthistory "true"
+    owner {read modify checkout}
+    public {}
+    action "" input ""
+    check "" input ""
+  }
+  state "Approved"  {
+    registeredName "state_Approved"
+    revision "true"
+    version "true"
+    promote "true"
+    checkouthistory "true"
+    owner {read modify checkout checkin}
+    public {}
+    action "" input ""
+    check "" input ""
+    signature "creator" {
+      branch ""
+      approve {creator}
+      ignore {}
+      reject {}
+      filter ""
+    }
+  }
+  state "Rejected"  {
+    revision "true"
+    version "true"
+    promote "true"
+    checkouthistory "true"
+    owner {read modify show}
+    public {}
+    action "" input ""
+    check "" input ""
+  }
+}
+}}}
+
+----
+= Limitations =
+With Enovia !V6R2010 it is not possible to extract filter informations for
+owner / public / revoke owner / revoke public access with a XML export or with
+a MQL print select statement. There exists some incidents for this behavior.
+This means that a !MxUpdate export does not include this filter informations.
+In this case the filters must be added manually to the configuration item file.
+So this also means e.g. that the standard MQL compare command does not work
+correctly (because the filter informations are not exported...).
+
+Starting with Enovia !V6R2010x the extract filter information works as expected.
+
