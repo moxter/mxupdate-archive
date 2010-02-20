@@ -28,20 +28,9 @@ The sub keys are defined after the "!TypeDef" Key. Following sub keys are interp
 || JPO                      || Defines the name of the JPO which implements the export / import ||
 || !ParameterDesc           || Description of the parameter used in the help. ||
 || !ParameterDescOpposite   || Description of the opposite parameters used in the help.<p>_Opposite parameters are used to define matches file names which must be ignored._</p> ||
-|| !ParameterList           || Comma separated list of parameters )<p>_If a parameter contains only one single character, one minus '-' is used as prefix. If the parameter name contains more than one character, two minus '--' are used as prefix._</p> ||
+|| !ParameterList           || Comma separated list of parameters )<p>_If a parameter contains only one single character, one minus '-' is used as prefix. If the parameter name contains more than one character, two minus '--' are used as prefix._</p><p>* Example *<br/>{{{TypeDef.Policy.ParameterList = p,pol,policy}}}<br/>So for policies three parameters are defined:<br/>{{{-p}}}<br/>{{{--pol}}}<br/>{{{--policy}}}</p> ||
 || !ParameterListOpposite   || Comma separated list of opposite parameters <p>_The list is defined in the same way as the !ParameterList sub key._</p> ||
 || !TextLogging             || Text used as logging entry. ||
 || !TextTitle               || Title entry in the !MxUpdate file. ||
 || Icon                     || Path to the icon used from the !MxUpdate Eclipse plug-in. ||
 || Wiki                     || Name of the Wiki file used to reference. ||
-
-== Example ==
-{{{
-TypeDef.Policy.ParameterList = p,pol,policy
-}}}
-So for policies three parameters are defined:
-{{{
--p
---pol
---policy
-}}}
