@@ -521,9 +521,9 @@ public class MXAdapter
                 }
             }
             try {
-                final Map<?,?> bck = this.executeEncoded("Update",
-                                                         "Compile", _compile,
-                                                         "FileContents", files);
+                final Map<?,?> bck = this.executeEncoded(new String[]{"Compile", String.valueOf(_compile)},
+                                                         "Update",
+                                                         new Object[]{"FileContents", files});
                 this.console.logInfo((String) bck.get(MXAdapter.RETURN_KEY_LOG));
             } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed",  //$NON-NLS-1$
@@ -537,9 +537,9 @@ public class MXAdapter
                 fileNames.add(file.getLocation().toString());
             }
             try {
-                final Map<?,?> bck = this.executeEncoded("Update",
-                                                         "Compile", _compile,
-                                                         "FileNames", fileNames);
+                final Map<?,?> bck = this.executeEncoded(new String[]{"Compile", String.valueOf(_compile)},
+                                                         "Update",
+                                                         new Object[]{"FileNames", fileNames});
                 this.console.logInfo((String) bck.get(MXAdapter.RETURN_KEY_LOG));
             } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed", //$NON-NLS-1$
@@ -558,7 +558,7 @@ public class MXAdapter
     {
         Map<?,?> bck = null;
         try {
-            bck = this.executeEncoded("TypeDefTreeList");
+            bck = this.executeEncoded(null, "TypeDefTreeList", null);
         } catch (final IOException e) {
             this.console.logError(Messages.getString("MXAdapter.ExceptionRootTypeDefFailed"), e); //$NON-NLS-1$
         } catch (final MatrixException e) {
@@ -650,9 +650,10 @@ public class MXAdapter
     {
         Map<?,?> bck = null;
         try {
-            bck = this.executeEncoded("Search",
-                                      "TypeDefList", _typeDefList,
-                                      "Match", _match);
+            bck = this.executeEncoded(null,
+                                      "Search",
+                                      new Object[]{"TypeDefList", _typeDefList,
+                                                   "Match", _match});
         } catch (final IOException e) {
             this.console.logError(Messages.getString("MXAdapter.ExceptionSearchFailed"), e); //$NON-NLS-1$
         } catch (final MatrixException e) {
@@ -703,8 +704,9 @@ public class MXAdapter
     {
         Map<?,?> bck = null;
         try {
-            bck = this.executeEncoded("Export",
-                                      "FileName", _file.toString());
+            bck = this.executeEncoded(null,
+                                      "Export",
+                                      new Object[]{"FileName", _file.toString()});
         } catch (final IOException e) {
             this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
         } catch (final MatrixException e) {
@@ -755,9 +757,10 @@ public class MXAdapter
     {
         Map<?,?> bck = null;
         try {
-            bck = this.executeEncoded("Export",
-                                      "TypeDef", _typeDef,
-                                      "Name", _item);
+            bck = this.executeEncoded(null,
+                                      "Export",
+                                      new Object[]{"TypeDef", _typeDef,
+                                                   "Name", _item});
         } catch (final IOException e) {
             this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
         } catch (final MatrixException e) {
@@ -877,31 +880,43 @@ public class MXAdapter
      * @see #mxContext
      * @see #connect()
      */
-    protected Map<?,?> executeEncoded(final String _method,
-                                      final Object... _arguments)
+    protected Map<?,?> executeEncoded(final String[] _parameters,
+                                      final String _method,
+                                      final Object[] _arguments)
         throws IOException, MatrixException, ClassNotFoundException
     {
         if (!this.connected)  {
             this.connect();
         }
 
-        // prepare arguments in a map
-        final Map<String,Object> params;
-        if ((_arguments == null) || (_arguments.length == 0))  {
-            params = null;
+        // prepare parameters in a map
+        final Map<String,String> parameters;
+        if ((_parameters == null) || (_parameters.length == 0))  {
+            parameters = null;
         } else  {
-            params = new HashMap<String,Object>();
+            parameters = new HashMap<String,String>();
+            for (int idx = 0; idx < _parameters.length; )  {
+                parameters.put(_parameters[idx++], _parameters[idx++]);
+            }
+        }
+
+        // prepare arguments in a map
+        final Map<String,Object> arguments;
+        if ((_arguments == null) || (_arguments.length == 0))  {
+            arguments = null;
+        } else  {
+            arguments = new HashMap<String,Object>();
             for (int idx = 0; idx < _arguments.length; )  {
-                params.put((String) _arguments[idx++], _arguments[idx++]);
+                arguments.put((String) _arguments[idx++], _arguments[idx++]);
             }
         }
 
         // prepare MQL statement with encoded parameters
         final StringBuilder cmd = new StringBuilder()
             .append("exec prog ").append("org.mxupdate.plugin.Dispatcher \"")
-            .append(this.encode(null)).append("\" \"")
+            .append(this.encode(parameters)).append("\" \"")
             .append(this.encode(_method)).append("\" \"")
-            .append(this.encode(params)).append("\"");
+            .append(this.encode(arguments)).append("\"");
 
         // execute MQL command
         final MQLCommand mql = new MQLCommand();
