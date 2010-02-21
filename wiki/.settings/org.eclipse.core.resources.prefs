@@ -1,4 +1,4 @@
-#Sun Feb 21 16:25:34 CET 2010
+#Sun Feb 21 18:10:37 CET 2010
 eclipse.preferences.version=1
 encoding/CI.wiki=UTF-8
 encoding/CI_DM.wiki=UTF-8
@@ -6,9 +6,12 @@ encoding/CI_DM_Dimension.wiki=UTF-8
 encoding/CI_DM_Format.wiki=UTF-8
 encoding/CI_DM_Interface.wiki=UTF-8
 encoding/CI_DM_Notification.wiki=UTF-8
+encoding/CI_DM_NumberGenerator.wiki=UTF-8
+encoding/CI_DM_ObjectGenerator.wiki=UTF-8
 encoding/CI_DM_Policy.wiki=UTF-8
 encoding/CI_DM_Relationship.wiki=UTF-8
 encoding/CI_DM_Rule.wiki=UTF-8
+encoding/CI_DM_Trigger.wiki=UTF-8
 encoding/CI_DM_TriggerGroup.wiki=UTF-8
 encoding/CI_DM_Type.wiki=UTF-8
 encoding/CI_IEF.wiki=UTF-8
