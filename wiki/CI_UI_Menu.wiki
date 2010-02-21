@@ -6,7 +6,9 @@
 
 = Introduction =
 Menus are used to define group buttons for the web user interface. In some
-cases a menu could also be a button with action.
+cases a menu could also be a button with action. For a deep instruction see the
+"MQL Guide" or "Business Modeler Guide" of the "ENOVIAvStudio Modeling
+Platform".
 
 ----
 
