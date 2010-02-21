@@ -2,6 +2,14 @@
 
 <wiki:toc max_depth="3"/>
 
+
+----
+
+= Introduction =
+A web table is used to display multiple business objects with related
+information. For a deep instruction see the "MQL Guide" or "Business Modeler
+Guide" of the "ENOVIAvStudio Modeling Platform".
+
 ----
 
 = Handled Table Properties =

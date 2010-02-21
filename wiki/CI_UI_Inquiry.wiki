@@ -5,6 +5,11 @@
 ----
 
 = Introduction =
+An inquiry is used to produce a list of objects which e.g. could be used to
+select objects which are shown in a web table. For a deep instruction see the
+"MQL Guide" or "Business Modeler Guide" of the "ENOVIAvStudio Modeling
+Platform".
+
 Configuration item update files for inquiries are separated into two different
 pieces. The first piece handles the update itself of an inquiry, the second
 piece is the inquiry code.

@@ -6,6 +6,8 @@
 
 = Introduction =
 Commands are used to define buttons with an action for the web user interface.
+For a deep instruction see the "MQL Guide" or "Business Modeler Guide"
+of the "ENOVIAvStudio Modeling Platform".
 
 ----
 

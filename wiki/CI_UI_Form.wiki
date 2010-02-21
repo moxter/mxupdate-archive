@@ -2,6 +2,14 @@
 
 <wiki:toc max_depth="3"/>
 
+
+----
+
+= Introduction =
+A form is used to display information related to an object. For a deep
+instruction see the "MQL Guide" or "Business Modeler Guide" of the
+"ENOVIAvStudio Modeling Platform".
+
 ----
 
 = Handled Form Properties =
@@ -27,9 +35,6 @@ Because there is an issue in MX of correct order for new created and appended
 fields (after all fields was removed), !MxUpdate specific TCL procedure
 {{{orderFields}}} must be called. This TCL procedure orders all fields
 correctly (by reordering them via MQL statements).
-
-== Update ==
-The TCL update file is executed.
 
 ----
 

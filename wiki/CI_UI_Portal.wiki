@@ -5,9 +5,12 @@
 ----
 
 = Introduction =
+A portal is a collection of channels. A portal is used as power view in the
+user interface. For a deep instruction see the "MQL Guide" or "Business Modeler
+Guide" of the "ENOVIAvStudio Modeling Platform".
 
-Here the configuration item 'portal' of the !MxUpdate Update tool is
-described, not the portals which are defined as user's workspace item.
+The configuration item 'portal' of the !MxUpdate Update tool does not handle
+portals which are defined as user's workspace item.
 
 ----
 

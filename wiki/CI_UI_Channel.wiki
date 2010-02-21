@@ -5,11 +5,12 @@
 ----
 
 = Introduction =
-Channels are a collection of commands. Multiple channels are used to define the
-content of MX portals.
+A channels is a collection of commands. Multiple channels are used to define the
+content of MX portals. For a deep instruction see the "MQL Guide" or "Business
+Modeler Guide" of the "ENOVIAvStudio Modeling Platform".
 
-Here the configuration item 'channel' of the !MxUpdate Update tool is
-described, not the channels which are defined as user's workspace item.
+The configuration item 'channel' of the !MxUpdate Update tool does not handle
+channels which are defined as user's workspace item.
 
 ----
 
