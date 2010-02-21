@@ -1,4 +1,4 @@
-#Sat Feb 20 18:59:32 CET 2010
+#Sun Feb 21 16:25:34 CET 2010
 eclipse.preferences.version=1
 encoding/CI.wiki=UTF-8
 encoding/CI_DM.wiki=UTF-8
@@ -20,8 +20,10 @@ encoding/CI_Program_JPO.wiki=UTF-8
 encoding/CI_Program_MQL.wiki=UTF-8
 encoding/CI_Program_Page.wiki=UTF-8
 encoding/CI_UI.wiki=UTF-8
+encoding/CI_UI_Channel.wiki=UTF-8
 encoding/CI_UI_Command.wiki=UTF-8
 encoding/CI_UI_Inquiry.wiki=UTF-8
+encoding/CI_UI_Portal.wiki=UTF-8
 encoding/CI_User.wiki=UTF-8
 encoding/CI_User_Association.wiki=UTF-8
 encoding/CI_User_Group.wiki=UTF-8
