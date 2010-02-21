@@ -4,10 +4,19 @@
 
 ----
 
+= Handled Form Properties =
+This form properties could be handled from !MxUpdate:
+  * description
+  * hidden flag
+  * fields
+
+----
+
 = Steps of the Update Flow =
 == Cleanup ==
 Following steps are done before the TCL update file is executed:
   * The description is set to an empty string.
+  * The form is set to not hidden.
   * All fields of the web form are removed.
 
 == Update ==
@@ -18,6 +27,14 @@ Because there is an issue in MX of correct order for new created and appended
 fields (after all fields was removed), !MxUpdate specific TCL procedure
 {{{orderFields}}} must be called. This TCL procedure orders all fields
 correctly (by reordering them via MQL statements).
+
+== Update ==
+The TCL update file is executed.
+
+----
+
+= Parameter Definitions =
+No further parameters are defined.
 
 ----
 
@@ -35,7 +52,7 @@ correctly (by reordering them via MQL statements).
 #
 # DESCRIPTION:
 # ~~~~~~~~~~~~
-# Example used to handle products.
+# Form for test purposes.
 #
 # AUTHOR:
 # ~~~~~~~
@@ -43,7 +60,7 @@ correctly (by reordering them via MQL statements).
 ################################################################################
 
 mql escape mod form "${NAME}" \
-    description "Example used to handle products." \
+    description "Form for test purposes." \
     field \
         name "type" \
         label "emxFramework.Basic.Type" \

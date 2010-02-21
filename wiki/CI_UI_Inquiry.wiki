@@ -11,6 +11,16 @@ piece is the inquiry code.
 
 ----
 
+= Handled Inquiry Properties =
+This inquiry properties could be handled from !MxUpdate:
+  * description
+  * hidden flag
+  * format and pattern
+  * inquiry code
+  * arguments
+
+----
+
 = Separator between TCL Update Code and Inquiry Code =
 The inquiry code and the TCL update code are defined in the same configuration
 item file. Before the separator a comment is defined as information:
@@ -28,22 +38,16 @@ same syntax as described in the MX manuals.
 
 ----
 
-= Handled Inquiry Properties =
-This inquiry properties could be handled from !MxUpdate:
-  * description
-  * code
-  * format and pattern
-  * arguments
-
-----
-
 = Steps of the Update Flow =
+
 == Cleanup ==
 Following steps are done before the TCL update file is executed:
   * The description is set to zero length string.
+  * The inquiry is set to not hidden.
   * The pattern and format is reset.
   * The inquiry code is removed.
   * All arguments are removed.
+
 == Update ==
 The inquiry code defined in the configuration item file is extracted and
 written in a temporary file. The path of the file is defined as TCL variable
@@ -75,7 +79,7 @@ information see the [UpdatePropertyFileFormat_ParameterDef Parameter Definition 
 #
 # DESCRIPTION:
 # ~~~~~~~~~~~~
-# MxUpdate test inquiry.
+# Inquiry for test purposes.
 #
 # AUTHOR:
 # ~~~~~~~
@@ -83,7 +87,7 @@ information see the [UpdatePropertyFileFormat_ParameterDef Parameter Definition 
 ################################################################################
 
 mql escape mod inquiry "${NAME}" \
-    description "MxUpdate test inquiry." \
+    description "Inquiry for test purposes." \
     pattern "\$\{OID\}" \
     format "\$\{OID\}" \
     file [file join "${FILE}"] \

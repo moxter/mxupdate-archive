@@ -10,11 +10,12 @@ cases a menu could also be a button with action.
 
 ----
 
-= Handled Command Properties =
+= Handled Menu Properties =
 This menu properties could be handled from !MxUpdate:
+  * description
+  * hidden flag
   * "alt" and label text
   * hyperlink reference (HRef)
-  * user references (assigned users)
   * settings
   * sub commands and menus
   * properties
@@ -25,12 +26,20 @@ This menu properties could be handled from !MxUpdate:
 == Cleanup ==
 Following steps are done before the TCL update file is executed:
   * The description is set to an empty string.
+  * The menu is set to not hidden.
   * The "alt" and label text is set to an empty string, too.
   * The hyperlink reference is removed.
-  * All assigned users are removed.
   * All settings are removed.
   * All properties are removed.
   * All sub commands and menus are removed.
+
+== Update ==
+The TCL update file is executed.
+
+----
+
+= Parameter Definitions =
+No further parameters are defined.
 
 ----
 
@@ -47,7 +56,7 @@ Following steps are done before the TCL update file is executed:
 #
 # DESCRIPTION:
 # ~~~~~~~~~~~~
-# Toolbar for MxUpdate.
+# Menu for test purposes.
 #
 # AUTHOR:
 # ~~~~~~~
@@ -55,7 +64,7 @@ Following steps are done before the TCL update file is executed:
 ################################################################################
 
 mql escape mod menu "${NAME}" \
-    description "Toolbar for MxUpdate." \
+    description "Menu for test purposes." \
     label "emxFramework.Common.Actions" \
     href "" \
     alt "" \
