@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.2" timestamp="2010-01-17T22:10:08.470">
+<pmd version="4.2.2" timestamp="2010-02-22T00:26:17.939">
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/BusObject_mxJPO.java">
-<violation beginline="419" endline="419" begincolumn="14" endcolumn="14" rule="EmptyStatementNotInLoop" ruleset="Basic Rules" package="org.mxupdate.update" class="BusObject_mxJPO" method="expand4Parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyStatementNotInLoop" priority="3">
+<violation beginline="439" endline="439" begincolumn="14" endcolumn="14" rule="EmptyStatementNotInLoop" ruleset="Basic Rules" package="org.mxupdate.update" class="BusObject_mxJPO" method="expand4Parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyStatementNotInLoop" priority="3">
 An empty statement (semicolon) not part of a loop
 </violation>
 </file>
@@ -12,11 +12,6 @@ Avoid empty if statements
 </file>
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Expression_mxJPO.java">
 <violation beginline="73" endline="77" begincolumn="46" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Expression_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-</file>
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/Format_mxJPO.java">
-<violation beginline="97" endline="99" begincolumn="50" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.datamodel" class="Format_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
 Avoid empty if statements
 </violation>
 </file>
@@ -72,21 +67,11 @@ Overriding method merely calls super
 Overriding method merely calls super
 </violation>
 </file>
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Channel_mxJPO.java">
-<violation beginline="124" endline="126" begincolumn="53" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Channel_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-</file>
-<file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Portal_mxJPO.java">
-<violation beginline="114" endline="116" begincolumn="53" endcolumn="9" rule="EmptyIfStmt" ruleset="Basic Rules" package="org.mxupdate.update.userinterface" class="Portal_mxJPO" method="parse" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyIfStmt" priority="3">
-Avoid empty if statements
-</violation>
-</file>
 <file name="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/util/AbstractParser_mxJPO.java">
-<violation beginline="217" endline="218" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.mxupdate.update.util" class="AbstractParser_mxJPO" method="getField" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+<violation beginline="218" endline="219" begincolumn="11" endcolumn="9" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.mxupdate.update.util" class="AbstractParser_mxJPO" method="getField" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
-<violation beginline="224" endline="225" begincolumn="19" endcolumn="17" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.mxupdate.update.util" class="AbstractParser_mxJPO" method="getField" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
+<violation beginline="225" endline="226" begincolumn="19" endcolumn="17" rule="EmptyCatchBlock" ruleset="Basic Rules" package="org.mxupdate.update.util" class="AbstractParser_mxJPO" method="getField" externalInfoUrl="http://pmd.sourceforge.net/rules/basic.html#EmptyCatchBlock" priority="3">
 Avoid empty catch blocks
 </violation>
 </file>

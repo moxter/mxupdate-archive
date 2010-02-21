@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 748 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-22 00:17:20 +0100 (Mo, 22 Feb 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -54,7 +54,7 @@
 <a name="45" href="#45">45</a>  <em> * Test cases for the export and update of roles.</em>
 <a name="46" href="#46">46</a>  <em> *</em>
 <a name="47" href="#47">47</a>  <em> * @author The MxUpdate Team</em>
-<a name="48" href="#48">48</a>  <em> * @version $Id: RoleTest.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
+<a name="48" href="#48">48</a>  <em> * @version $Id: RoleTest.java 748 2010-02-21 23:17:20Z tim.moxter $</em>
 <a name="49" href="#49">49</a>  <em> */</em>
 <a name="50" href="#50">50</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/user/RoleTest.html">RoleTest</a>
 <a name="51" href="#51">51</a>      <strong>extends</strong> AbstractUserTest&lt;RoleData>
@@ -250,13 +250,13 @@
 <a name="241" href="#241">241</a>         }
 <a name="242" href="#242">242</a> 
 <a name="243" href="#243">243</a>         <em class="comment">// first update with original content</em>
-<a name="244" href="#244">244</a>         <strong>this</strong>.update(_role.getCIFileName(), _role.ciFile());
+<a name="244" href="#244">244</a>         _role.update();
 <a name="245" href="#245">245</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _role.export();
 <a name="246" href="#246">246</a>         _role.checkExport(exportParser);
 <a name="247" href="#247">247</a> 
 <a name="248" href="#248">248</a>         <em class="comment">// second update with delivered content</em>
-<a name="249" href="#249">249</a>         <strong>this</strong>.update(_role.getCIFileName(), exportParser.getOrigCode());
-<a name="250" href="#250">250</a>         _role.checkExport(_role.export());
+<a name="249" href="#249">249</a>         _role.updateWithCode(exportParser.getOrigCode())
+<a name="250" href="#250">250</a>              .checkExport(_role.export());
 <a name="251" href="#251">251</a>     }
 <a name="252" href="#252">252</a> 
 <a name="253" href="#253">253</a>     <em>/**<em>*</em></em>
@@ -272,7 +272,7 @@
 <a name="263" href="#263">263</a>                 .setSite(<strong>new</strong> <a href="../../../../../org/mxupdate/test/data/other/SiteData.html">SiteData</a>(<strong>this</strong>, <span class="string">"Test \&quot; Site"</span>));
 <a name="264" href="#264">264</a>         role.create();
 <a name="265" href="#265">265</a>         role.setSite(<strong>null</strong>);
-<a name="266" href="#266">266</a>         <strong>this</strong>.update(role);
+<a name="266" href="#266">266</a>         role.update();
 <a name="267" href="#267">267</a> 
 <a name="268" href="#268">268</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print role \&quot;"</span> + AbstractTest.convertMql(role.getName()) + <span class="string">"\&quot; select site dump"</span>),
 <a name="269" href="#269">269</a>                             <span class="string">""</span>,
@@ -291,7 +291,7 @@
 <a name="282" href="#282">282</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/RoleData.html">RoleData</a> role = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/RoleData.html">RoleData</a>(<strong>this</strong>, <span class="string">"hallo \&quot; test"</span>).setHidden(<strong>true</strong>);
 <a name="283" href="#283">283</a>         role.create();
 <a name="284" href="#284">284</a>         role.setHidden(<strong>null</strong>);
-<a name="285" href="#285">285</a>         <strong>this</strong>.update(role);
+<a name="285" href="#285">285</a>         role.update();
 <a name="286" href="#286">286</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print role \&quot;"</span> + AbstractTest.convertMql(role.getName()) + <span class="string">"\&quot; select hidden dump"</span>),
 <a name="287" href="#287">287</a>                             <span class="string">"FALSE"</span>,
 <a name="288" href="#288">288</a>                             <span class="string">"check that role is not hidden"</span>);

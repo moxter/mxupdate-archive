@@ -42,7 +42,7 @@
   
     
             <div class="xleft">
-        Last Published: 17-January-2010
+        Last Published: 22-February-2010
                       </div>
             <div class="xright">            <a href="http://code.google.com/p/mxupdate/" class="externalLink">MxUpdate</a>
             |
@@ -177,7 +177,13 @@
 <td>-</td>
 <td>jar</td>
 </tr>
-<tr class="a"><td>org.testng</td>
+<tr class="a"><td>org.apache.maven</td>
+<td><a class="externalLink" href="http://maven.apache.org/maven-settings">maven-settings</a></td>
+<td>2.2.1</td>
+<td>-</td>
+<td>jar</td>
+</tr>
+<tr class="b"><td>org.testng</td>
 <td><a class="externalLink" href="http://testng.org">testng</a></td>
 <td>5.8</td>
 <td>jdk15</td>
@@ -187,17 +193,17 @@
 </div>
 <a name="system"></a><div class="section"><h3>system</h3>
 <p>The following is a list of system dependencies for this project. These dependencies are required to compile the application:</p>
-<table class="bodyTable"><tr class="b"><th>GroupId</th>
+<table class="bodyTable"><tr class="a"><th>GroupId</th>
 <th>ArtifactId</th>
 <th>Version</th>
 <th>Type</th>
 </tr>
-<tr class="a"><td>ematrix</td>
+<tr class="b"><td>ematrix</td>
 <td>ematrix</td>
 <td>ALL</td>
 <td>jar</td>
 </tr>
-<tr class="b"><td>ematrix</td>
+<tr class="a"><td>ematrix</td>
 <td>fcsclient</td>
 <td>ALL</td>
 <td>jar</td>
@@ -209,14 +215,39 @@
 <p>The following is a list of transitive dependencies for this project. Transitive dependencies are the dependencies of the project dependencies.</p>
 <a name="test"></a><div class="section"><h3>test</h3>
 <p>The following is a list of test dependencies for this project. These dependencies are only required to compile and run unit tests for the application:</p>
-<table class="bodyTable"><tr class="a"><th>GroupId</th>
+<table class="bodyTable"><tr class="b"><th>GroupId</th>
 <th>ArtifactId</th>
 <th>Version</th>
 <th>Type</th>
 </tr>
+<tr class="a"><td>classworlds</td>
+<td><a class="externalLink" href="http://classworlds.codehaus.org/">classworlds</a></td>
+<td>1.1-alpha-2</td>
+<td>jar</td>
+</tr>
 <tr class="b"><td>junit</td>
 <td><a class="externalLink" href="http://junit.org">junit</a></td>
 <td>3.8.1</td>
+<td>jar</td>
+</tr>
+<tr class="a"><td>org.apache.maven</td>
+<td><a class="externalLink" href="http://maven.apache.org/maven-model">maven-model</a></td>
+<td>2.2.1</td>
+<td>jar</td>
+</tr>
+<tr class="b"><td>org.codehaus.plexus</td>
+<td>plexus-container-default</td>
+<td>1.0-alpha-9-stable-1</td>
+<td>jar</td>
+</tr>
+<tr class="a"><td>org.codehaus.plexus</td>
+<td><a class="externalLink" href="http://plexus.codehaus.org/plexus-components/plexus-interpolation">plexus-interpolation</a></td>
+<td>1.11</td>
+<td>jar</td>
+</tr>
+<tr class="b"><td>org.codehaus.plexus</td>
+<td><a class="externalLink" href="http://plexus.codehaus.org/plexus-utils">plexus-utils</a></td>
+<td>1.5.15</td>
 <td>jar</td>
 </tr>
 </table>
@@ -241,7 +272,7 @@
       }
 </script>
 <a name="Dependency_Tree"></a><div class="section"><h3>Dependency Tree</h3>
-<ul><li>org.mxupdate:update:jar:0.8.0 <img id="_1075608940" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_217419142', '_1075608940' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_217419142" style="display:none"><table class="bodyTable"><tr class="a"><th>MxUpdate Update</th>
+<ul><li>org.mxupdate:update:jar:0.9.0 <img id="_826705250" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1626721456', '_826705250' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1626721456" style="display:none"><table class="bodyTable"><tr class="a"><th>MxUpdate Update</th>
 </tr>
 <tr class="b"><td><p><b>Description: </b>MxUpdate Update is a deployment tool for the Enovia PLM platform to
         handle administration objects as single update files (configuration
@@ -251,23 +282,23 @@
 </td>
 </tr>
 </table>
-</div><ul><li>ematrix:ematrix:jar:ALL (system) <img id="_1331576667" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1228325768', '_1331576667' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1228325768" style="display:none"><table class="bodyTable"><tr class="a"><th>ematrix:ematrix:jar:ALL</th>
+</div><ul><li>ematrix:ematrix:jar:ALL (system) <img id="_1496981385" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1519370318', '_1496981385' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1519370318" style="display:none"><table class="bodyTable"><tr class="a"><th>ematrix:ematrix:jar:ALL</th>
 </tr>
 <tr class="b"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
-<p><b>URL: </b>/Users/tim/Daten/Bosch/mxupdate/lib/eMatrixServletRMI.V6-R2010x.jar</p>
+<p><b>URL: </b>/Users/tim/Daten/Bosch/mxupdate/../mxupdate/lib/eMatrixServletRMI.V6-R2010x.jar</p>
 </td>
 </tr>
 </table>
 </div></li>
-<li>ematrix:fcsclient:jar:ALL (system) <img id="_1580426932" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_374635134', '_1580426932' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_374635134" style="display:none"><table class="bodyTable"><tr class="a"><th>ematrix:fcsclient:jar:ALL</th>
+<li>ematrix:fcsclient:jar:ALL (system) <img id="_928057615" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1457992140', '_928057615' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1457992140" style="display:none"><table class="bodyTable"><tr class="a"><th>ematrix:fcsclient:jar:ALL</th>
 </tr>
 <tr class="b"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
-<p><b>URL: </b>/Users/tim/Daten/Bosch/mxupdate/lib/FcsClient.V6-R2010x.jar</p>
+<p><b>URL: </b>/Users/tim/Daten/Bosch/mxupdate/../mxupdate/lib/FcsClient.V6-R2010x.jar</p>
 </td>
 </tr>
 </table>
 </div></li>
-<li>commons-codec:commons-codec:jar:1.3 (test) <img id="_422138572" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1214463570', '_422138572' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1214463570" style="display:none"><table class="bodyTable"><tr class="a"><th>Codec</th>
+<li>commons-codec:commons-codec:jar:1.3 (test) <img id="_1553880584" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_2133922804', '_1553880584' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_2133922804" style="display:none"><table class="bodyTable"><tr class="a"><th>Codec</th>
 </tr>
 <tr class="b"><td><p><b>Description: </b>The codec package contains simple encoder and decoders for
    various formats such as Base64 and Hexadecimal.  In addition to these
@@ -279,7 +310,7 @@
 </tr>
 </table>
 </div></li>
-<li>org.testng:testng:jar:jdk15:5.8 (test) <img id="_348225611" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_8200383', '_348225611' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_8200383" style="display:none"><table class="bodyTable"><tr class="a"><th>TestNG</th>
+<li>org.testng:testng:jar:jdk15:5.8 (test) <img id="_1577621593" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1263623092', '_1577621593' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1263623092" style="display:none"><table class="bodyTable"><tr class="a"><th>TestNG</th>
 </tr>
 <tr class="b"><td><p><b>Description: </b>TestNG is a testing framework inspired from JUnit and NUnit but introducing some new functionalities that make it more powerful and easier to use.</p>
 <p><b>URL: </b><a class="externalLink" href="http://testng.org">http://testng.org</a></p>
@@ -287,7 +318,7 @@
 </td>
 </tr>
 </table>
-</div><ul><li>junit:junit:jar:3.8.1 (test) <img id="_1753660693" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_813708074', '_1753660693' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_813708074" style="display:none"><table class="bodyTable"><tr class="a"><th>JUnit</th>
+</div><ul><li>junit:junit:jar:3.8.1 (test) <img id="_1019536082" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1872292628', '_1019536082' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1872292628" style="display:none"><table class="bodyTable"><tr class="a"><th>JUnit</th>
 </tr>
 <tr class="b"><td><p><b>Description: </b>JUnit is a regression testing framework written by Erich Gamma and Kent Beck. It is used by the developer who implements unit tests in Java.</p>
 <p><b>URL: </b><a class="externalLink" href="http://junit.org">http://junit.org</a></p>
@@ -298,15 +329,90 @@
 </div></li>
 </ul>
 </li>
+<li>org.apache.maven:maven-settings:jar:2.2.1 (test) <img id="_926612814" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_540732509', '_926612814' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_540732509" style="display:none"><table class="bodyTable"><tr class="a"><th>Maven Local Settings Model</th>
+</tr>
+<tr class="b"><td><p><b>Description: </b>Maven is a project development management and comprehension tool. Based on the concept of a project object model: builds, dependency management, documentation creation, site publication, and distribution publication are all controlled from the declarative file. Maven can be extended by plugins to utilise a number of other development tools for reporting or the build process.</p>
+<p><b>URL: </b><a class="externalLink" href="http://maven.apache.org/maven-settings">http://maven.apache.org/maven-settings</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p>
+</td>
+</tr>
+</table>
+</div><ul><li>org.apache.maven:maven-model:jar:2.2.1 (test) <img id="_53549851" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_138474045', '_53549851' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_138474045" style="display:none"><table class="bodyTable"><tr class="a"><th>Maven Model</th>
+</tr>
+<tr class="b"><td><p><b>Description: </b>Maven Model</p>
+<p><b>URL: </b><a class="externalLink" href="http://maven.apache.org/maven-model">http://maven.apache.org/maven-model</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p>
+</td>
+</tr>
+</table>
+</div><ul><li>org.codehaus.plexus:plexus-utils:jar:1.5.15 (test) <img id="_970273292" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1745134679', '_970273292' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1745134679" style="display:none"><table class="bodyTable"><tr class="a"><th>Plexus Common Utilities</th>
+</tr>
+<tr class="b"><td><p><b>Description: </b>A collection of various utility classes to ease working with strings, files, command lines, XML and more.</p>
+<p><b>URL: </b><a class="externalLink" href="http://plexus.codehaus.org/plexus-utils">http://plexus.codehaus.org/plexus-utils</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+</ul>
+</li>
+<li>org.codehaus.plexus:plexus-interpolation:jar:1.11 (test) <img id="_123708302" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1077892252', '_123708302' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1077892252" style="display:none"><table class="bodyTable"><tr class="a"><th>Plexus Interpolation API</th>
+</tr>
+<tr class="b"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>URL: </b><a class="externalLink" href="http://plexus.codehaus.org/plexus-components/plexus-interpolation">http://plexus.codehaus.org/plexus-components/plexus-interpolation</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>org.codehaus.plexus:plexus-utils:jar:1.5.15 (test) <img id="_1350993315" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_407571549', '_1350993315' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_407571549" style="display:none"><table class="bodyTable"><tr class="a"><th>Plexus Common Utilities</th>
+</tr>
+<tr class="b"><td><p><b>Description: </b>A collection of various utility classes to ease working with strings, files, command lines, XML and more.</p>
+<p><b>URL: </b><a class="externalLink" href="http://plexus.codehaus.org/plexus-utils">http://plexus.codehaus.org/plexus-utils</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.apache.org/licenses/LICENSE-2.0.txt">The Apache Software License, Version 2.0</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1 (test) <img id="_1800162762" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1018057819', '_1800162762' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1018057819" style="display:none"><table class="bodyTable"><tr class="a"><th>Default Plexus Container</th>
+</tr>
+<tr class="b"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>Project License: </b>No project license is defined for this project.</p>
+</td>
+</tr>
+</table>
+</div><ul><li>junit:junit:jar:3.8.1 (test) <img id="_920972331" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_311960706', '_920972331' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_311960706" style="display:none"><table class="bodyTable"><tr class="a"><th>JUnit</th>
+</tr>
+<tr class="b"><td><p><b>Description: </b>JUnit is a regression testing framework written by Erich Gamma and Kent Beck. It is used by the developer who implements unit tests in Java.</p>
+<p><b>URL: </b><a class="externalLink" href="http://junit.org">http://junit.org</a></p>
+<p><b>Project License: </b><a class="externalLink" href="http://www.opensource.org/licenses/cpl1.0.txt">Common Public License Version 1.0</a></p>
+</td>
+</tr>
+</table>
+</div></li>
+<li>classworlds:classworlds:jar:1.1-alpha-2 (test) <img id="_31649135" src="./images/icon_info_sml.gif" alt="Information" onclick="toggleDependencyDetail( '_1634576543', '_31649135' );" style="cursor: pointer;vertical-align:text-bottom;"></img><div id="_1634576543" style="display:none"><table class="bodyTable"><tr class="a"><th>classworlds</th>
+</tr>
+<tr class="b"><td><p><b>Description: </b>There is currently no description associated with this project.</p>
+<p><b>URL: </b><a class="externalLink" href="http://classworlds.codehaus.org/">http://classworlds.codehaus.org/</a></p>
+<p><b>Project License: </b>No project license is defined for this project.</p>
+</td>
+</tr>
+</table>
+</div></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 <a name="Licenses"></a><div class="section"><h2>Licenses</h2>
+<p><b>Unknown: </b>Default Plexus Container, classworlds</p>
 <p><b>Apache License, Version 2.0: </b>TestNG</p>
 <p><b>Common Public License Version 1.0: </b>JUnit</p>
-<p><b>The Apache Software License, Version 2.0: </b>Codec</p>
+<p><b>The Apache Software License, Version 2.0: </b>Codec, Maven Local Settings Model, Maven Model, Plexus Common Utilities, Plexus Interpolation API</p>
 <p><b>Apache 2.0 License: </b>MxUpdate Update</p>
 </div>
 <a name="Dependency_File_Details"></a><div class="section"><h2>Dependency File Details</h2>
@@ -318,7 +424,15 @@
 <th align="center">JDK Rev</th>
 <th align="center">Debug</th>
 </tr>
-<tr class="b"><td align="left">commons-codec-1.3.jar</td>
+<tr class="b"><td align="left">classworlds-1.1-alpha-2.jar</td>
+<td align="right">36.64 kB</td>
+<td align="right">32</td>
+<td align="right">22</td>
+<td align="right">3</td>
+<td align="center">1.1</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">commons-codec-1.3.jar</td>
 <td align="right">45.63 kB</td>
 <td align="right">42</td>
 <td align="right">25</td>
@@ -326,7 +440,7 @@
 <td align="center">1.2</td>
 <td align="center">debug</td>
 </tr>
-<tr class="a"><td align="left">eMatrixServletRMI.V6-R2010x.jar</td>
+<tr class="b"><td align="left">eMatrixServletRMI.V6-R2010x.jar</td>
 <td align="right">1.75 MB</td>
 <td align="right">1,090</td>
 <td align="right">1,054</td>
@@ -334,7 +448,7 @@
 <td align="center">1.5</td>
 <td align="center">debug</td>
 </tr>
-<tr class="b"><td align="left">FcsClient.V6-R2010x.jar</td>
+<tr class="a"><td align="left">FcsClient.V6-R2010x.jar</td>
 <td align="right">30.82 kB</td>
 <td align="right">28</td>
 <td align="right">18</td>
@@ -342,12 +456,52 @@
 <td align="center">1.5</td>
 <td align="center">debug</td>
 </tr>
-<tr class="a"><td align="left">junit-3.8.1.jar</td>
+<tr class="b"><td align="left">junit-3.8.1.jar</td>
 <td align="right">118.23 kB</td>
 <td align="right">119</td>
 <td align="right">100</td>
 <td align="right">6</td>
 <td align="center">1.1</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">maven-model-2.2.1.jar</td>
+<td align="right">85.54 kB</td>
+<td align="right">61</td>
+<td align="right">45</td>
+<td align="right">2</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">maven-settings-2.2.1.jar</td>
+<td align="right">47.89 kB</td>
+<td align="right">38</td>
+<td align="right">20</td>
+<td align="right">2</td>
+<td align="center">1.5</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">plexus-container-default-1.0-alpha-9-stable-1.jar</td>
+<td align="right">189.63 kB</td>
+<td align="right">215</td>
+<td align="right">175</td>
+<td align="right">28</td>
+<td align="center">1.1</td>
+<td align="center">debug</td>
+</tr>
+<tr class="b"><td align="left">plexus-interpolation-1.11.jar</td>
+<td align="right">49.74 kB</td>
+<td align="right">55</td>
+<td align="right">40</td>
+<td align="right">5</td>
+<td align="center">1.4</td>
+<td align="center">debug</td>
+</tr>
+<tr class="a"><td align="left">plexus-utils-1.5.15.jar</td>
+<td align="right">222.76 kB</td>
+<td align="right">129</td>
+<td align="right">103</td>
+<td align="right">10</td>
+<td align="center">1.3</td>
 <td align="center">debug</td>
 </tr>
 <tr class="b"><td align="left">testng-5.8-jdk15.jar</td>
@@ -366,21 +520,21 @@
 <th align="center">JDK Rev</th>
 <th align="center">Debug</th>
 </tr>
-<tr class="b"><td align="right">5</td>
-<td align="right">2.75 MB</td>
-<td align="right">1,887</td>
-<td align="right">1,691</td>
-<td align="right">75</td>
+<tr class="b"><td align="right">11</td>
+<td align="right">3.36 MB</td>
+<td align="right">2,417</td>
+<td align="right">2,096</td>
+<td align="right">125</td>
 <td align="center">1.5</td>
-<td align="right">5</td>
+<td align="right">11</td>
 </tr>
-<tr class="a"><td align="right">test: 3</td>
-<td align="right">test: 987.56 kB</td>
-<td align="right">test: 769</td>
-<td align="right">test: 619</td>
-<td align="right">test: 45</td>
+<tr class="a"><td align="right">test: 9</td>
+<td align="right">test: 1.58 MB</td>
+<td align="right">test: 1,299</td>
+<td align="right">test: 1,024</td>
+<td align="right">test: 95</td>
 <td align="center">-</td>
-<td align="right">test: 3</td>
+<td align="right">test: 9</td>
 </tr>
 <tr class="b"><td align="right">system: 2</td>
 <td align="right">system: 1.78 MB</td>
@@ -398,38 +552,84 @@
 <th align="left">URL</th>
 <th align="center">Release</th>
 <th align="center">Snapshot</th>
+<th align="center">Blacklisted</th>
+</tr>
+<tr class="b"><td align="left">apache.snapshots</td>
+<td align="left"><a class="externalLink" href="http://repository.apache.org/snapshots">http://repository.apache.org/snapshots</a></td>
+<td align="center">-</td>
+<td align="center">Yes</td>
+<td align="center">-</td>
+</tr>
+<tr class="a"><td align="left">snapshots</td>
+<td align="left">http://snapshots.maven.codehaus.org/maven2</td>
+<td align="center">-</td>
+<td align="center">Yes</td>
+<td align="center">Yes</td>
 </tr>
 <tr class="b"><td align="left">central</td>
 <td align="left"><a class="externalLink" href="http://repo1.maven.org/maven2">http://repo1.maven.org/maven2</a></td>
 <td align="center">Yes</td>
+<td align="center">-</td>
 <td align="center">-</td>
 </tr>
 </tbody>
 </table>
 <p>Repository locations for each of the Dependencies.</p>
 <table class="bodyTable"><tbody><tr class="a"><th align="left">Artifact</th>
+<th align="center">apache.snapshots</th>
 <th align="center">central</th>
 </tr>
-<tr class="b"><td align="left">commons-codec:commons-codec:jar:1.3</td>
+<tr class="b"><td align="left">classworlds:classworlds:jar:1.1-alpha-2</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/classworlds/classworlds/1.1-alpha-2/classworlds-1.1-alpha-2.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="a"><td align="left">commons-codec:commons-codec:jar:1.3</td>
+<td align="center">-</td>
 <td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/commons-codec/commons-codec/1.3/commons-codec-1.3.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
 </tr>
-<tr class="a"><td align="left">ematrix:ematrix:jar:ALL</td>
+<tr class="b"><td align="left">ematrix:ematrix:jar:ALL</td>
+<td align="center">-</td>
 <td align="center">-</td>
 </tr>
-<tr class="b"><td align="left">ematrix:fcsclient:jar:ALL</td>
+<tr class="a"><td align="left">ematrix:fcsclient:jar:ALL</td>
+<td align="center">-</td>
 <td align="center">-</td>
 </tr>
-<tr class="a"><td align="left">junit:junit:jar:3.8.1</td>
+<tr class="b"><td align="left">junit:junit:jar:3.8.1</td>
+<td align="center">-</td>
 <td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/junit/junit/3.8.1/junit-3.8.1.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
 </tr>
+<tr class="a"><td align="left">org.apache.maven:maven-model:jar:2.2.1</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/apache/maven/maven-model/2.2.1/maven-model-2.2.1.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="b"><td align="left">org.apache.maven:maven-settings:jar:2.2.1</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/apache/maven/maven-settings/2.2.1/maven-settings-2.2.1.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="a"><td align="left">org.codehaus.plexus:plexus-container-default:jar:1.0-alpha-9-stable-1</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-container-default/1.0-alpha-9-stable-1/plexus-container-default-1.0-alpha-9-stable-1.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="b"><td align="left">org.codehaus.plexus:plexus-interpolation:jar:1.11</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-interpolation/1.11/plexus-interpolation-1.11.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
+<tr class="a"><td align="left">org.codehaus.plexus:plexus-utils:jar:1.5.15</td>
+<td align="center">-</td>
+<td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-utils/1.5.15/plexus-utils-1.5.15.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
+</tr>
 <tr class="b"><td align="left">org.testng:testng:jar:jdk15:5.8</td>
+<td align="center">-</td>
 <td align="center"><a class="externalLink" href="http://repo1.maven.org/maven2/org/testng/testng/5.8/testng-5.8-jdk15.jar"><img alt="Found at http://repo1.maven.org/maven2" src="images/icon_success_sml.gif" /></a></td>
 </tr>
 <tr class="a"><th align="left">Total</th>
+<th align="center">apache.snapshots</th>
 <th align="center">central</th>
 </tr>
-<tr class="b"><td align="left">5 (test: 3, system: 2)</td>
-<td align="center">3</td>
+<tr class="b"><td align="left">11 (test: 9, system: 2)</td>
+<td align="center">0</td>
+<td align="center">9</td>
 </tr>
 </tbody>
 </table>
