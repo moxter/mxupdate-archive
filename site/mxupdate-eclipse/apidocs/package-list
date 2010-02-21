@@ -1,5 +1,8 @@
 org.mxupdate.eclipse
+org.mxupdate.eclipse.adapter
 org.mxupdate.eclipse.console
 org.mxupdate.eclipse.handlers
+org.mxupdate.eclipse.importwizard
+org.mxupdate.eclipse.mxadapter
 org.mxupdate.eclipse.preferences
 org.mxupdate.eclipse.shell

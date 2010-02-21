@@ -1,3 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
+<duplication lines="49" tokens="243">
+<file line="709" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/mxadapter/MXAdapter.java"/>
+<file line="763" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/mxadapter/MXAdapter.java"/>
+<codefragment>
+<![CDATA[
+                                                   "Name", _item});
+        } catch (final IOException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        } catch (final MatrixException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        } catch (final ClassNotFoundException e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        }
+
+        final IExportItem ret;
+        if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
+            ret = null;
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), //$NON-NLS-1$
+                                  (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION));
+        } else  {
+            final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            ret = new IExportItem() {
+                public String getFileName()
+                {
+                    return (String) value.get("FileName");
+                }
+                public String getFilePath()
+                {
+                    return (String) value.get("FilePath");
+                }
+                public String getName()
+                {
+                    return (String) value.get("Name");
+                }
+                public String getTypeDef()
+                {
+                    return (String) value.get("TypeDef");
+                }
+                public String getContent()
+                {
+                    return (String) value.get("Code");
+                }
+            };
+        }
+
+        return ret;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @see #imageMap
+     */
+    public ImageDescriptor getImageDescriptor(final IFile _file)
+]]>
+</codefragment>
+</duplication>
 </pmd-cpd>
