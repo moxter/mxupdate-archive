@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 724 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-20 16:37:15 +0100 (Sa, 20 Feb 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -52,7 +52,7 @@
 <a name="43" href="#43">43</a>  <em> * Prepares test data for users (group, role and person).</em>
 <a name="44" href="#44">44</a>  <em> *</em>
 <a name="45" href="#45">45</a>  <em> * @author The MxUpdate Team</em>
-<a name="46" href="#46">46</a>  <em> * @version $Id: AbstractUserTest.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
+<a name="46" href="#46">46</a>  <em> * @version $Id: AbstractUserTest.java 724 2010-02-20 15:37:15Z tim.moxter $</em>
 <a name="47" href="#47">47</a>  <em> * @param &lt;USER> user class which is tested</em>
 <a name="48" href="#48">48</a>  <em> */</em>
 <a name="49" href="#49">49</a>  <strong>public</strong> <strong>abstract</strong> <strong>class</strong> AbstractUserTest&lt;USER <strong>extends</strong> AbstractUserData&lt;USER>>
@@ -851,7 +851,7 @@
 <a name="842" href="#842">842</a>         <strong>final</strong> CueData&lt;USER> cue = user.newCue(<span class="string">"cue not removed test"</span>);
 <a name="843" href="#843">843</a>         user.create();
 <a name="844" href="#844">844</a>         user.getCues().clear();
-<a name="845" href="#845">845</a>         <strong>this</strong>.update(user, _paramName, <span class="string">"*"</span>);
+<a name="845" href="#845">845</a>         user.update(_paramName, <span class="string">"*"</span>);
 <a name="846" href="#846">846</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape list cue user \&quot;"</span> + AbstractTest.convertMql(user.getName()) + <span class="string">"\&quot;"</span>),
 <a name="847" href="#847">847</a>                             _ignored ? cue.getName() : <span class="string">""</span>,
 <a name="848" href="#848">848</a>                             <span class="string">"check that cue exists"</span>);
@@ -874,7 +874,7 @@
 <a name="865" href="#865">865</a>         <strong>final</strong> FilterData&lt;USER> filter = user.newFilter(<span class="string">"filter not removed test"</span>);
 <a name="866" href="#866">866</a>         user.create();
 <a name="867" href="#867">867</a>         user.getFilters().clear();
-<a name="868" href="#868">868</a>         <strong>this</strong>.update(user, _paramName, <span class="string">"*"</span>);
+<a name="868" href="#868">868</a>         user.update(_paramName, <span class="string">"*"</span>);
 <a name="869" href="#869">869</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape list filter user \&quot;"</span> + AbstractTest.convertMql(user.getName()) + <span class="string">"\&quot;"</span>),
 <a name="870" href="#870">870</a>                             _ignored ? filter.getName() : <span class="string">""</span>,
 <a name="871" href="#871">871</a>                             <span class="string">"check that filter exists"</span>);
@@ -897,7 +897,7 @@
 <a name="888" href="#888">888</a>         <strong>final</strong> QueryData&lt;USER> query = user.newQuery(<span class="string">"query not removed test"</span>);
 <a name="889" href="#889">889</a>         user.create();
 <a name="890" href="#890">890</a>         user.getQueries().clear();
-<a name="891" href="#891">891</a>         <strong>this</strong>.update(user, _paramName, <span class="string">"*"</span>);
+<a name="891" href="#891">891</a>         user.update(_paramName, <span class="string">"*"</span>);
 <a name="892" href="#892">892</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape list query user \&quot;"</span> + AbstractTest.convertMql(user.getName()) + <span class="string">"\&quot;"</span>),
 <a name="893" href="#893">893</a>                             _ignored ? query.getName() : <span class="string">""</span>,
 <a name="894" href="#894">894</a>                             <span class="string">"check that query exists"</span>);
@@ -920,7 +920,7 @@
 <a name="911" href="#911">911</a>         <strong>final</strong> TableData&lt;USER> table = user.newTable(<span class="string">"table not removed test"</span>);
 <a name="912" href="#912">912</a>         user.create();
 <a name="913" href="#913">913</a>         user.getTables().clear();
-<a name="914" href="#914">914</a>         <strong>this</strong>.update(user, _paramName, <span class="string">"*"</span>);
+<a name="914" href="#914">914</a>         user.update(_paramName, <span class="string">"*"</span>);
 <a name="915" href="#915">915</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape list table user \&quot;"</span> + AbstractTest.convertMql(user.getName()) + <span class="string">"\&quot;"</span>),
 <a name="916" href="#916">916</a>                             _ignored ? table.getName() : <span class="string">""</span>,
 <a name="917" href="#917">917</a>                             <span class="string">"check that table exists"</span>);
@@ -943,7 +943,7 @@
 <a name="934" href="#934">934</a>         <strong>final</strong> TipData&lt;USER> tip = user.newTip(<span class="string">"tip not removed test"</span>);
 <a name="935" href="#935">935</a>         user.create();
 <a name="936" href="#936">936</a>         user.getTips().clear();
-<a name="937" href="#937">937</a>         <strong>this</strong>.update(user, _paramName, <span class="string">"*"</span>);
+<a name="937" href="#937">937</a>         user.update(_paramName, <span class="string">"*"</span>);
 <a name="938" href="#938">938</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape list tip user \&quot;"</span> + AbstractTest.convertMql(user.getName()) + <span class="string">"\&quot;"</span>),
 <a name="939" href="#939">939</a>                             _ignored ? tip.getName() : <span class="string">""</span>,
 <a name="940" href="#940">940</a>                             <span class="string">"check that tip exists"</span>);
@@ -966,7 +966,7 @@
 <a name="957" href="#957">957</a>         <strong>final</strong> ToolSetData&lt;USER> toolSet = user.newToolSet(<span class="string">"tool set not removed test"</span>);
 <a name="958" href="#958">958</a>         user.create();
 <a name="959" href="#959">959</a>         user.getToolSets().clear();
-<a name="960" href="#960">960</a>         <strong>this</strong>.update(user, _paramName, <span class="string">"*"</span>);
+<a name="960" href="#960">960</a>         user.update(_paramName, <span class="string">"*"</span>);
 <a name="961" href="#961">961</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape list toolset user \&quot;"</span> + AbstractTest.convertMql(user.getName()) + <span class="string">"\&quot;"</span>),
 <a name="962" href="#962">962</a>                             _ignored ? toolSet.getName() : <span class="string">""</span>,
 <a name="963" href="#963">963</a>                             <span class="string">"check that tool set exists"</span>);
@@ -989,7 +989,7 @@
 <a name="980" href="#980">980</a>         <strong>final</strong> ViewData&lt;USER> view = user.newView(<span class="string">"view not removed test"</span>);
 <a name="981" href="#981">981</a>         user.create();
 <a name="982" href="#982">982</a>         user.getViews().clear();
-<a name="983" href="#983">983</a>         <strong>this</strong>.update(user, _paramName, <span class="string">"*"</span>);
+<a name="983" href="#983">983</a>         user.update(_paramName, <span class="string">"*"</span>);
 <a name="984" href="#984">984</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape list view user \&quot;"</span> + AbstractTest.convertMql(user.getName()) + <span class="string">"\&quot;"</span>),
 <a name="985" href="#985">985</a>                             _ignored ? view.getName() : <span class="string">""</span>,
 <a name="986" href="#986">986</a>                             <span class="string">"check that view exists"</span>);

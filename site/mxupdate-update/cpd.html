@@ -42,7 +42,7 @@
   
     
             <div class="xleft">
-        Last Published: 17-January-2010
+        Last Published: 22-February-2010
                       </div>
             <div class="xright">            <a href="http://code.google.com/p/mxupdate/" class="externalLink">MxUpdate</a>
             |
@@ -173,11 +173,71 @@
 <p><table class="bodyTable"><tr class="a"><th>File</th>
 <th>Line</th>
 </tr>
-<tr class="b"><td>org/mxupdate/update/userinterface/Channel_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/userinterface/Channel_mxJPO.html#158">158</a></td>
+<tr class="b"><td>org/mxupdate/update/userinterface/Command_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Command_mxJPO.html#158">158</a></td>
 </tr>
 <tr class="a"><td>org/mxupdate/update/userinterface/Portal_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/userinterface/Portal_mxJPO.html#149">149</a></td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Portal_mxJPO.html#220">220</a></td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>        }
+    }
+
+    /**
+     * The method overwrites the original method to append the MQL statements
+     * in the &lt;code&gt;_preMQLCode&lt;/code&gt; to reset this portal. Following steps
+     * are done:
+     * &lt;ul&gt;
+     * &lt;li&gt;reset hidden flag, {@link #href}, description, {@link #alt} and
+     *     {@link #label}&lt;/li&gt;
+     * &lt;li&gt;remove all settings and channels&lt;/li&gt;
+     * &lt;/ul&gt;
+     *
+     * @param _paramCache       parameter cache
+     * @param _preMQLCode       MQL statements which must be called before the
+     *                          TCL code is executed
+     * @param _postMQLCode      MQL statements which must be called after the
+     *                          TCL code is executed
+     * @param _preTCLCode       TCL code which is defined before the source
+     *                          file is sourced
+     * @param _tclVariables     map of all TCL variables where the key is the
+     *                          name and the value is value of the TCL variable
+     *                          (the value is automatically converted to TCL
+     *                          syntax!)
+     * @param _sourceFile       souce file with the TCL code to update
+     * @throws Exception if the update from derived class failed
+     */
+    @Override()
+    protected void update(final ParameterCache_mxJPO _paramCache,
+                          final CharSequence _preMQLCode,
+                          final CharSequence _postMQLCode,
+                          final CharSequence _preTCLCode,
+                          final Map&lt;String,String&gt; _tclVariables,
+                          final File _sourceFile)
+        throws Exception
+    {
+        // HRef, description, alt and label
+        final StringBuilder preMQLCode = new StringBuilder()
+                .append(&quot;escape mod &quot;).append(this.getTypeDef().getMxAdminName())
+                .append(&quot; \&quot;&quot;).append(StringUtil_mxJPO.convertMql(this.getName())).append('\&quot;')
+                .append(&quot; !hidden href \&quot;\&quot; description \&quot;\&quot; alt \&quot;\&quot; label \&quot;\&quot;&quot;);
+
+        // reset settings
+        for (final AdminProperty_mxJPO prop : this.getPropertiesMap().values())  {
+            if (prop.isSetting())  {
+                preMQLCode.append(&quot; remove setting \&quot;&quot;).append(StringUtil_mxJPO.convertMql(prop.getName().substring(1))).append('\&quot;');
+            }
+        }</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/update/userinterface/Channel_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Channel_mxJPO.html#171">171</a></td>
+</tr>
+<tr class="a"><td>org/mxupdate/update/userinterface/Portal_mxJPO.java</td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Portal_mxJPO.html#161">161</a></td>
 </tr>
 <tr class="b"><td colspan='2'><div class="source"><pre>            sub.put(channelRef.column, channelRef);
         }
@@ -189,6 +249,7 @@
      * Writes specific information about the cached portal to the given writer
      * instance. This includes
      * &lt;ul&gt;
+     * &lt;li&gt;hidden flag (only if hidden)&lt;/li&gt;
      * &lt;li&gt;{@link #label}&lt;/li&gt;
      * &lt;li&gt;{@link #href}&lt;/li&gt;
      * &lt;li&gt;{@link #alt}&lt;/li&gt;
@@ -206,6 +267,9 @@
                                final Appendable _out)
         throws IOException
     {
+        if (this.isHidden())  {
+            _out.append(&quot; \\\n    hidden&quot;);
+        }
         _out.append(&quot; \\\n    label \&quot;&quot;).append(StringUtil_mxJPO.convertTcl(this.label)).append(&quot;\&quot;&quot;);
         if (this.href != null)  {
             _out.append(&quot; \\\n    href \&quot;&quot;).append(StringUtil_mxJPO.convertTcl(this.href)).append(&quot;\&quot;&quot;);
@@ -250,50 +314,6 @@
             if (!&quot;&quot;.equals(name))  {
                 final String[] nameArr = name.split(&quot;\t&quot;);
                 if (!&quot;TRUE&quot;.equals(nameArr[1]))  {</pre>
-</div>
-</td></tr>
-<table class="bodyTable"></p>
-<p><table class="bodyTable"><tr class="a"><th>File</th>
-<th>Line</th>
-</tr>
-<tr class="b"><td>org/mxupdate/update/datamodel/Policy_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/datamodel/Policy_mxJPO.html#808">808</a></td>
-</tr>
-<tr class="a"><td>org/mxupdate/update/datamodel/Rule_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/datamodel/Rule_mxJPO.html#267">267</a></td>
-</tr>
-<tr class="b"><td colspan='2'><div class="source"><pre>            .append('\&quot;');
-        if ((this.publicAccessFilter != null) &amp;&amp; !&quot;&quot;.equals(this.publicAccessFilter))  {
-            _out.append(&quot; filter \&quot;&quot;)
-                .append(StringUtil_mxJPO.convertTcl(this.publicAccessFilter))
-                .append(&quot;\&quot;&quot;);
-        }
-        // public revoke
-        if ((!this.publicRevoke.isEmpty() &amp;&amp; !((this.publicRevoke.size() == 1) &amp;&amp; this.publicRevoke.contains(&quot;none&quot;)))
-                || ((this.publicRevokeFilter != null) &amp;&amp; !&quot;&quot;.equals(this.publicRevokeFilter)))  {
-            _out.append(&quot; \\\n    add revoke public \&quot;&quot;)</pre>
-</div>
-</td></tr>
-<table class="bodyTable"></p>
-<p><table class="bodyTable"><tr class="a"><th>File</th>
-<th>Line</th>
-</tr>
-<tr class="b"><td>org/mxupdate/update/datamodel/Policy_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/datamodel/Policy_mxJPO.html#787">787</a></td>
-</tr>
-<tr class="a"><td>org/mxupdate/update/datamodel/Rule_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/datamodel/Rule_mxJPO.html#246">246</a></td>
-</tr>
-<tr class="b"><td colspan='2'><div class="source"><pre>            .append('\&quot;');
-        if ((this.ownerAccessFilter != null) &amp;&amp; !&quot;&quot;.equals(this.ownerAccessFilter))  {
-            _out.append(&quot; filter \&quot;&quot;)
-                .append(StringUtil_mxJPO.convertTcl(this.ownerAccessFilter))
-                .append(&quot;\&quot;&quot;);
-        }
-        // owner revoke
-        if ((!this.ownerRevoke.isEmpty() &amp;&amp; !((this.ownerRevoke.size() == 1) &amp;&amp; this.ownerRevoke.contains(&quot;none&quot;)))
-                || ((this.ownerRevokeFilter != null) &amp;&amp; !&quot;&quot;.equals(this.ownerRevokeFilter)))  {
-            _out.append(&quot; \\\n    add revoke owner \&quot;&quot;)</pre>
 </div>
 </td></tr>
 <table class="bodyTable"></p>
@@ -395,7 +415,7 @@
 <td><a href="./xref/org/mxupdate/update/datamodel/AbstractAttribute_mxJPO.html#364">364</a></td>
 </tr>
 <tr class="a"><td>org/mxupdate/update/userinterface/Form_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/userinterface/Form_mxJPO.html#162">162</a></td>
+<td><a href="./xref/org/mxupdate/update/userinterface/Form_mxJPO.html#169">169</a></td>
 </tr>
 <tr class="b"><td colspan='2'><div class="source"><pre>                        .append(&quot; \&quot;&quot;).append(StringUtil_mxJPO.convertMql(this.getName())).append(&quot;\&quot; web;&quot;);
         MqlUtil_mxJPO.execMql(_paramCache, cmd);
@@ -441,90 +461,7 @@
         final StringBuilder preMQLCode = new StringBuilder()
                 .append(&quot;escape mod &quot;).append(this.getTypeDef().getMxAdminName())
                 .append(&quot; \&quot;&quot;).append(StringUtil_mxJPO.convertMql(this.getName())).append('\&quot;')
-                .append(&quot; !hidden&quot;);</pre>
-</div>
-</td></tr>
-<table class="bodyTable"></p>
-<p><table class="bodyTable"><tr class="a"><th>File</th>
-<th>Line</th>
-</tr>
-<tr class="b"><td>org/mxupdate/update/datamodel/Policy_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/datamodel/Policy_mxJPO.html#651">651</a></td>
-</tr>
-<tr class="a"><td>org/mxupdate/update/datamodel/Rule_mxJPO.java</td>
-<td><a href="./xref/org/mxupdate/update/datamodel/Rule_mxJPO.html#71">71</a></td>
-</tr>
-<tr class="b"><td colspan='2'><div class="source"><pre>    private final Set&lt;String&gt; ownerAccess = new TreeSet&lt;String&gt;();
-
-    /**
-     * Filter for the owner access.
-     *
-     * @see #parse(String, String)
-     * @see #writeObject(ParameterCache_mxJPO, Appendable)
-     */
-    private String ownerAccessFilter;
-
-    /**
-     * Set holding the complete owner revoke.
-     *
-     * @see #parse(String, String)
-     * @see #writeObject(ParameterCache_mxJPO, Appendable)
-     */
-    private final Set&lt;String&gt; ownerRevoke = new TreeSet&lt;String&gt;();
-
-    /**
-     * Filter for the owner revoke.
-     *
-     * @see #parse(String, String)
-     * @see #writeObject(ParameterCache_mxJPO, Appendable)
-     */
-    private String ownerRevokeFilter;
-
-    /**
-     * Set holding the complete public access.
-     *
-     * @see #parse(String, String)
-     * @see #writeObject(ParameterCache_mxJPO, Appendable)
-     */
-    private final Set&lt;String&gt; publicAccess = new TreeSet&lt;String&gt;();
-
-    /**
-     * Filter for the public access.
-     *
-     * @see #parse(String, String)
-     * @see #writeObject(ParameterCache_mxJPO, Appendable)
-     */
-    private String publicAccessFilter;
-
-    /**
-     * Set holding the complete public revoke.
-     *
-     * @see #parse(String, String)
-     * @see #writeObject(ParameterCache_mxJPO, Appendable)
-     */
-    private final Set&lt;String&gt; publicRevoke = new TreeSet&lt;String&gt;();
-
-    /**
-     * Filter for the public revoke.
-     *
-     * @see #parse(String, String)
-     * @see #writeObject(ParameterCache_mxJPO, Appendable)
-     */
-    private String publicRevokeFilter;
-
-    /**
-     * Stack used to hold the user access while parsing.
-     *
-     * @see #parse(String, String)
-     */
-    private final Stack&lt;UserAccess&gt; userAccess = new Stack&lt;UserAccess&gt;();
-
-    /**
-     * Sorted set of user access (by name of the user).
-     *
-     * @see #prepare(ParameterCache_mxJPO)
-     */
-    private final Set&lt;UserAccess&gt; userAccessSorted = new TreeSet&lt;UserAccess&gt;();</pre>
+                .append(&quot; !hidden description \&quot;\&quot; &quot;);</pre>
 </div>
 </td></tr>
 <table class="bodyTable"></p>

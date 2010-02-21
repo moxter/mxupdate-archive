@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 748 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-22 00:17:20 +0100 (Mo, 22 Feb 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -47,7 +47,7 @@
 <a name="38" href="#38">38</a>  <em> * Test cases for the export and update of JPO programs.</em>
 <a name="39" href="#39">39</a>  <em> *</em>
 <a name="40" href="#40">40</a>  <em> * @author The MxUpdate Team</em>
-<a name="41" href="#41">41</a>  <em> * @version $Id: JPOTest.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
+<a name="41" href="#41">41</a>  <em> * @version $Id: JPOTest.java 748 2010-02-21 23:17:20Z tim.moxter $</em>
 <a name="42" href="#42">42</a>  <em> */</em>
 <a name="43" href="#43">43</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/program/JPOTest.html">JPOTest</a>
 <a name="44" href="#44">44</a>      <strong>extends</strong> AbstractDataExportUpdate&lt;JPOProgramData>
@@ -172,7 +172,7 @@
 <a name="163" href="#163">163</a>         }
 <a name="164" href="#164">164</a> 
 <a name="165" href="#165">165</a>         <em class="comment">// first update with original content</em>
-<a name="166" href="#166">166</a>         <strong>this</strong>.update(_jpoProgram);
+<a name="166" href="#166">166</a>         _jpoProgram.update();
 <a name="167" href="#167">167</a> 
 <a name="168" href="#168">168</a>         <em class="comment">// the replace code (removing TCL update commands)</em>
 <a name="169" href="#169">169</a>         <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
@@ -189,12 +189,12 @@
 <a name="180" href="#180">180</a>                 + <span class="string">"\&quot; execute user creator execute immediate !needsbusinessobject !downloadable !pipe !pooled description test !hidden"</span>);
 <a name="181" href="#181">181</a> 
 <a name="182" href="#182">182</a>         <em class="comment">// second update with delivered content</em>
-<a name="183" href="#183">183</a>         <strong>this</strong>.update(_jpoProgram.getCIFileName(), exportParser.getOrigCode());
-<a name="184" href="#184">184</a>         _jpoProgram.checkExport(_jpoProgram.export());
+<a name="183" href="#183">183</a>         _jpoProgram.updateWithCode(exportParser.getOrigCode())
+<a name="184" href="#184">184</a>                    .checkExport();
 <a name="185" href="#185">185</a> 
 <a name="186" href="#186">186</a>         <em class="comment">// third update with delivered content (without changing the code)</em>
-<a name="187" href="#187">187</a>         <strong>this</strong>.update(_jpoProgram.getCIFileName(), exportParser.getOrigCode());
-<a name="188" href="#188">188</a>         _jpoProgram.checkExport(_jpoProgram.export());
+<a name="187" href="#187">187</a>         _jpoProgram.updateWithCode(exportParser.getOrigCode())
+<a name="188" href="#188">188</a>                    .checkExport();
 <a name="189" href="#189">189</a> 
 <a name="190" href="#190">190</a>         Assert.assertEquals(exportParser.getOrigCode(),
 <a name="191" href="#191">191</a>                             _jpoProgram.export().getOrigCode(),

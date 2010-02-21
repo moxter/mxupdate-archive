@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 748 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-22 00:17:20 +0100 (Mo, 22 Feb 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -42,7 +42,7 @@
 <a name="33" href="#33">33</a>  <em> * Test cases for the export and update of page programs.</em>
 <a name="34" href="#34">34</a>  <em> *</em>
 <a name="35" href="#35">35</a>  <em> * @author The MxUpdate Team</em>
-<a name="36" href="#36">36</a>  <em> * @version $Id: PageTest.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
+<a name="36" href="#36">36</a>  <em> * @version $Id: PageTest.java 748 2010-02-21 23:17:20Z tim.moxter $</em>
 <a name="37" href="#37">37</a>  <em> */</em>
 <a name="38" href="#38">38</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/program/PageTest.html">PageTest</a>
 <a name="39" href="#39">39</a>      <strong>extends</strong> <a href="../../../../../org/mxupdate/test/AbstractTest.html">AbstractTest</a>
@@ -135,41 +135,38 @@
 <a name="126" href="#126">126</a>         throws Exception
 <a name="127" href="#127">127</a>     {
 <a name="128" href="#128">128</a>         <em class="comment">// first update with original content</em>
-<a name="129" href="#129">129</a>         <strong>this</strong>.update(_page.getCIFileName(), _page.ciFile());
-<a name="130" href="#130">130</a> 
-<a name="131" href="#131">131</a>         <em class="comment">// first update with original content</em>
-<a name="132" href="#132">132</a>         <strong>this</strong>.update(_page);
-<a name="133" href="#133">133</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _page.export();
-<a name="134" href="#134">134</a>         _page.checkExport(exportParser);
-<a name="135" href="#135">135</a> 
-<a name="136" href="#136">136</a>         <em class="comment">// second update with delivered content</em>
-<a name="137" href="#137">137</a>         <strong>this</strong>.update(_page.getCIFileName(), exportParser.getOrigCode());
-<a name="138" href="#138">138</a>         _page.checkExport(_page.export());
-<a name="139" href="#139">139</a> 
-<a name="140" href="#140">140</a>         <em class="comment">// and check that both export code is equal</em>
-<a name="141" href="#141">141</a>         Assert.assertEquals(exportParser.getOrigCode(),
-<a name="142" href="#142">142</a>                             _page.export().getOrigCode(),
-<a name="143" href="#143">143</a>                             <span class="string">"check that first and second export is equal"</span>);
-<a name="144" href="#144">144</a>     }
-<a name="145" href="#145">145</a> 
-<a name="146" href="#146">146</a> 
-<a name="147" href="#147">147</a>     <em>/**<em>*</em></em>
-<a name="148" href="#148">148</a> <em>     * Check that the end tag of CDATA is correct translated to</em>
-<a name="149" href="#149">149</a> <em>     * 'Inserted_by_ENOVIA'.</em>
-<a name="150" href="#150">150</a> <em>     *</em>
-<a name="151" href="#151">151</a> <em>     * @throws Exception if test failed</em>
-<a name="152" href="#152">152</a> <em>     */</em>
-<a name="153" href="#153">153</a>     @Test(description = <span class="string">"check that the end tag of CDATA is correct translated to 'Inserted_by_ENOVIA'"</span>)
-<a name="154" href="#154">154</a>     <strong>public</strong> <strong>void</strong> checkCDataTranslation()
-<a name="155" href="#155">155</a>         throws Exception
-<a name="156" href="#156">156</a>     {
-<a name="157" href="#157">157</a>         <strong>final</strong> String name = AbstractTest.PREFIX + <span class="string">"_Test"</span>;
-<a name="158" href="#158">158</a>         <strong>this</strong>.mql(<span class="string">"add page "</span> + name + <span class="string">" content '&lt;]]>'"</span>);
-<a name="159" href="#159">159</a>         <strong>final</strong> String xml = <strong>this</strong>.mql(<span class="string">"export page "</span> + name + <span class="string">" xml"</span>);
-<a name="160" href="#160">160</a>         Assert.assertTrue(xml.indexOf(<span class="string">"&lt;pageContent>&lt;![CDATA[&lt;]Inserted_by_ENOVIA]Inserted_by_ENOVIA>]]>&lt;/pageContent>"</span>) >= 0,
-<a name="161" href="#161">161</a>                           <span class="string">"check translation of the CDATA conversion"</span>);
-<a name="162" href="#162">162</a>     }
-<a name="163" href="#163">163</a> }
+<a name="129" href="#129">129</a>         _page.update();
+<a name="130" href="#130">130</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _page.export();
+<a name="131" href="#131">131</a>         _page.checkExport(exportParser);
+<a name="132" href="#132">132</a> 
+<a name="133" href="#133">133</a>         <em class="comment">// second update with delivered content</em>
+<a name="134" href="#134">134</a>         _page.updateWithCode(exportParser.getOrigCode())
+<a name="135" href="#135">135</a>              .checkExport();
+<a name="136" href="#136">136</a> 
+<a name="137" href="#137">137</a>         <em class="comment">// and check that both export code is equal</em>
+<a name="138" href="#138">138</a>         Assert.assertEquals(exportParser.getOrigCode(),
+<a name="139" href="#139">139</a>                             _page.export().getOrigCode(),
+<a name="140" href="#140">140</a>                             <span class="string">"check that first and second export is equal"</span>);
+<a name="141" href="#141">141</a>     }
+<a name="142" href="#142">142</a> 
+<a name="143" href="#143">143</a> 
+<a name="144" href="#144">144</a>     <em>/**<em>*</em></em>
+<a name="145" href="#145">145</a> <em>     * Check that the end tag of CDATA is correct translated to</em>
+<a name="146" href="#146">146</a> <em>     * 'Inserted_by_ENOVIA'.</em>
+<a name="147" href="#147">147</a> <em>     *</em>
+<a name="148" href="#148">148</a> <em>     * @throws Exception if test failed</em>
+<a name="149" href="#149">149</a> <em>     */</em>
+<a name="150" href="#150">150</a>     @Test(description = <span class="string">"check that the end tag of CDATA is correct translated to 'Inserted_by_ENOVIA'"</span>)
+<a name="151" href="#151">151</a>     <strong>public</strong> <strong>void</strong> checkCDataTranslation()
+<a name="152" href="#152">152</a>         throws Exception
+<a name="153" href="#153">153</a>     {
+<a name="154" href="#154">154</a>         <strong>final</strong> String name = AbstractTest.PREFIX + <span class="string">"_Test"</span>;
+<a name="155" href="#155">155</a>         <strong>this</strong>.mql(<span class="string">"add page "</span> + name + <span class="string">" content '&lt;]]>'"</span>);
+<a name="156" href="#156">156</a>         <strong>final</strong> String xml = <strong>this</strong>.mql(<span class="string">"export page "</span> + name + <span class="string">" xml"</span>);
+<a name="157" href="#157">157</a>         Assert.assertTrue(xml.indexOf(<span class="string">"&lt;pageContent>&lt;![CDATA[&lt;]Inserted_by_ENOVIA]Inserted_by_ENOVIA>]]>&lt;/pageContent>"</span>) >= 0,
+<a name="158" href="#158">158</a>                           <span class="string">"check translation of the CDATA conversion"</span>);
+<a name="159" href="#159">159</a>     }
+<a name="160" href="#160">160</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

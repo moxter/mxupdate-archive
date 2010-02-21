@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 748 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-22 00:17:20 +0100 (Mo, 22 Feb 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -60,7 +60,7 @@
 <a name="51" href="#51">51</a>  <em> * related business object).</em>
 <a name="52" href="#52">52</a>  <em> *</em>
 <a name="53" href="#53">53</a>  <em> * @author The MxUpdate Team</em>
-<a name="54" href="#54">54</a>  <em> * @version $Id: PersonTest.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
+<a name="54" href="#54">54</a>  <em> * @version $Id: PersonTest.java 748 2010-02-21 23:17:20Z tim.moxter $</em>
 <a name="55" href="#55">55</a>  <em> */</em>
 <a name="56" href="#56">56</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/user/PersonTest.html">PersonTest</a>
 <a name="57" href="#57">57</a>      <strong>extends</strong> AbstractUserTest&lt;PersonAdminData>
@@ -266,277 +266,278 @@
 <a name="257" href="#257">257</a> <em>     * @param _person       person to test</em>
 <a name="258" href="#258">258</a> <em>     * @throws Exception if test failed</em>
 <a name="259" href="#259">259</a> <em>     */</em>
-<a name="260" href="#260">260</a>     @Test(dataProvider = <span class="string">"persons"</span>, description = <span class="string">"test update of non existing person"</span>)
-<a name="261" href="#261">261</a>     <strong>public</strong> <strong>void</strong> simpleUpdate(<strong>final</strong> String _description,
-<a name="262" href="#262">262</a>                              <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> _person)
-<a name="263" href="#263">263</a>         throws Exception
-<a name="264" href="#264">264</a>     {
-<a name="265" href="#265">265</a>         <em class="comment">// create referenced property value</em>
-<a name="266" href="#266">266</a>         <strong>for</strong> (<strong>final</strong> PropertyDef prop : _person.getProperties())  {
-<a name="267" href="#267">267</a>             <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="268" href="#268">268</a>                 prop.getTo().create();
-<a name="269" href="#269">269</a>             }
-<a name="270" href="#270">270</a>         }
-<a name="271" href="#271">271</a>         <em class="comment">// create site</em>
-<a name="272" href="#272">272</a>         <strong>if</strong> (_person.getSite() != <strong>null</strong>)  {
-<a name="273" href="#273">273</a>             _person.getSite().create();
-<a name="274" href="#274">274</a>         }
-<a name="275" href="#275">275</a>         <em class="comment">// create assigned roles</em>
-<a name="276" href="#276">276</a>         <strong>for</strong> (<strong>final</strong> RoleData role : _person.getRoles())  {
-<a name="277" href="#277">277</a>             role.create();
-<a name="278" href="#278">278</a>         }
-<a name="279" href="#279">279</a>         <em class="comment">// create assigned groups</em>
-<a name="280" href="#280">280</a>         <strong>for</strong> (<strong>final</strong> GroupData group : _person.getGroups())  {
-<a name="281" href="#281">281</a>             group.create();
-<a name="282" href="#282">282</a>         }
-<a name="283" href="#283">283</a>         <em class="comment">// create cue properties</em>
-<a name="284" href="#284">284</a>         <strong>for</strong> (<strong>final</strong> CueData&lt;PersonAdminData> cue : _person.getCues())  {
-<a name="285" href="#285">285</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : cue.getProperties())  {
-<a name="286" href="#286">286</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="287" href="#287">287</a>                     prop.getTo().create();
-<a name="288" href="#288">288</a>                 }
-<a name="289" href="#289">289</a>             }
-<a name="290" href="#290">290</a>         }
-<a name="291" href="#291">291</a>         <em class="comment">// create filter properties</em>
-<a name="292" href="#292">292</a>         <strong>for</strong> (<strong>final</strong> FilterData&lt;PersonAdminData> filter : _person.getFilters())  {
-<a name="293" href="#293">293</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : filter.getProperties())  {
-<a name="294" href="#294">294</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="295" href="#295">295</a>                     prop.getTo().create();
-<a name="296" href="#296">296</a>                 }
-<a name="297" href="#297">297</a>             }
-<a name="298" href="#298">298</a>         }
-<a name="299" href="#299">299</a>         <em class="comment">// create query properties</em>
-<a name="300" href="#300">300</a>         <strong>for</strong> (<strong>final</strong> QueryData&lt;PersonAdminData> query : _person.getQueries())  {
-<a name="301" href="#301">301</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : query.getProperties())  {
-<a name="302" href="#302">302</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="303" href="#303">303</a>                     prop.getTo().create();
-<a name="304" href="#304">304</a>                 }
-<a name="305" href="#305">305</a>             }
-<a name="306" href="#306">306</a>         }
-<a name="307" href="#307">307</a>         <em class="comment">// create table properties</em>
-<a name="308" href="#308">308</a>         <strong>for</strong> (<strong>final</strong> TableData&lt;PersonAdminData> table : _person.getTables())  {
-<a name="309" href="#309">309</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : table.getProperties())  {
-<a name="310" href="#310">310</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="311" href="#311">311</a>                     prop.getTo().create();
-<a name="312" href="#312">312</a>                 }
-<a name="313" href="#313">313</a>             }
-<a name="314" href="#314">314</a>         }
-<a name="315" href="#315">315</a>         <em class="comment">// create tip properties</em>
-<a name="316" href="#316">316</a>         <strong>for</strong> (<strong>final</strong> TipData&lt;PersonAdminData> tip : _person.getTips())  {
-<a name="317" href="#317">317</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : tip.getProperties())  {
-<a name="318" href="#318">318</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="319" href="#319">319</a>                     prop.getTo().create();
-<a name="320" href="#320">320</a>                 }
-<a name="321" href="#321">321</a>             }
-<a name="322" href="#322">322</a>         }
-<a name="323" href="#323">323</a>         <em class="comment">// create tool set properties and programs</em>
-<a name="324" href="#324">324</a>         <strong>for</strong> (<strong>final</strong> ToolSetData&lt;PersonAdminData> toolSet : _person.getToolSets())  {
-<a name="325" href="#325">325</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : toolSet.getProperties())  {
-<a name="326" href="#326">326</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="327" href="#327">327</a>                     prop.getTo().create();
-<a name="328" href="#328">328</a>                 }
-<a name="329" href="#329">329</a>             }
-<a name="330" href="#330">330</a>             <strong>for</strong> (<strong>final</strong> AbstractProgramData&lt;?> prog : toolSet.getPrograms())  {
-<a name="331" href="#331">331</a>                 prog.create();
-<a name="332" href="#332">332</a>             }
-<a name="333" href="#333">333</a>         }
-<a name="334" href="#334">334</a>         <em class="comment">// create view properties</em>
-<a name="335" href="#335">335</a>         <strong>for</strong> (<strong>final</strong> ViewData&lt;PersonAdminData> view : _person.getViews())  {
-<a name="336" href="#336">336</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : view.getProperties())  {
-<a name="337" href="#337">337</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="338" href="#338">338</a>                     prop.getTo().create();
-<a name="339" href="#339">339</a>                 }
-<a name="340" href="#340">340</a>             }
-<a name="341" href="#341">341</a>         }
-<a name="342" href="#342">342</a> 
-<a name="343" href="#343">343</a>         <em class="comment">// first update with original content</em>
-<a name="344" href="#344">344</a>         <strong>this</strong>.update(_person.getCIFileName(), _person.ciFile());
-<a name="345" href="#345">345</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _person.export();
-<a name="346" href="#346">346</a>         _person.checkExport(exportParser);
-<a name="347" href="#347">347</a> 
-<a name="348" href="#348">348</a>         <em class="comment">// second update with delivered content</em>
-<a name="349" href="#349">349</a>         <strong>this</strong>.update(_person.getCIFileName(), exportParser.getOrigCode());
-<a name="350" href="#350">350</a>         _person.checkExport(_person.export());
-<a name="351" href="#351">351</a>     }
-<a name="352" href="#352">352</a> 
-<a name="353" href="#353">353</a>     <em>/**<em>*</em></em>
-<a name="354" href="#354">354</a> <em>     * Test an update of a person where the site is removed.</em>
-<a name="355" href="#355">355</a> <em>     *</em>
-<a name="356" href="#356">356</a> <em>     * @throws Exception if test failed</em>
-<a name="357" href="#357">357</a> <em>     */</em>
-<a name="358" href="#358">358</a>     @Test(description = <span class="string">"update existing existing person with site by removing site"</span>)
-<a name="359" href="#359">359</a>     <strong>public</strong> <strong>void</strong> checkExistingSiteRemovedWithinUpdate()
-<a name="360" href="#360">360</a>         throws Exception
-<a name="361" href="#361">361</a>     {
-<a name="362" href="#362">362</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hallo \&quot; test"</span>)
-<a name="363" href="#363">363</a>                 .setSite(<strong>new</strong> <a href="../../../../../org/mxupdate/test/data/other/SiteData.html">SiteData</a>(<strong>this</strong>, <span class="string">"Test \&quot; Site"</span>));
-<a name="364" href="#364">364</a>         person.create();
-<a name="365" href="#365">365</a>         person.setSite(<strong>null</strong>);
-<a name="366" href="#366">366</a>         <strong>this</strong>.update(person);
-<a name="367" href="#367">367</a> 
-<a name="368" href="#368">368</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span>
-<a name="369" href="#369">369</a>                                     + AbstractTest.convertMql(person.getName())
-<a name="370" href="#370">370</a>                                     + <span class="string">"\&quot; select site dump"</span>),
-<a name="371" href="#371">371</a>                             <span class="string">""</span>,
-<a name="372" href="#372">372</a>                             <span class="string">"check that no site is defined"</span>);
-<a name="373" href="#373">373</a>     }
-<a name="374" href="#374">374</a> 
-<a name="375" href="#375">375</a>     <em>/**<em>*</em></em>
-<a name="376" href="#376">376</a> <em>     * Check that the hidden flag is removed within update.</em>
-<a name="377" href="#377">377</a> <em>     *</em>
-<a name="378" href="#378">378</a> <em>     * @throws Exception if test failed</em>
-<a name="379" href="#379">379</a> <em>     */</em>
-<a name="380" href="#380">380</a>     @Test(description = <span class="string">"check that the hidden flag is removed within update"</span>)
-<a name="381" href="#381">381</a>     <strong>public</strong> <strong>void</strong> checkHiddenFlagRemoveWithinUpdate()
-<a name="382" href="#382">382</a>         throws Exception
-<a name="383" href="#383">383</a>     {
-<a name="384" href="#384">384</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setHidden(<strong>true</strong>);
-<a name="385" href="#385">385</a>         person.create();
-<a name="386" href="#386">386</a>         person.setHidden(<strong>null</strong>);
-<a name="387" href="#387">387</a>         <strong>this</strong>.update(person);
-<a name="388" href="#388">388</a> 
-<a name="389" href="#389">389</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select hidden dump"</span>),
-<a name="390" href="#390">390</a>                             <span class="string">"FALSE"</span>,
-<a name="391" href="#391">391</a>                             <span class="string">"check that person is not hidden"</span>);
-<a name="392" href="#392">392</a>     }
-<a name="393" href="#393">393</a> 
-<a name="394" href="#394">394</a>     <em>/**<em>*</em></em>
-<a name="395" href="#395">395</a> <em>     * Check that the password never expires flag is removed within update.</em>
-<a name="396" href="#396">396</a> <em>     *</em>
-<a name="397" href="#397">397</a> <em>     * @throws Exception if test failed</em>
-<a name="398" href="#398">398</a> <em>     */</em>
-<a name="399" href="#399">399</a>     @Test(description = <span class="string">"check that the hidden flag is removed within update"</span>)
-<a name="400" href="#400">400</a>     <strong>public</strong> <strong>void</strong> checkPasswordNeverExpiresFlagRemoveWithinUpdate()
-<a name="401" href="#401">401</a>         throws Exception
-<a name="402" href="#402">402</a>     {
-<a name="403" href="#403">403</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setPasswordNeverExpires(<strong>true</strong>);
-<a name="404" href="#404">404</a>         person.create();
-<a name="405" href="#405">405</a>         person.setPasswordNeverExpires(<strong>null</strong>);
-<a name="406" href="#406">406</a>         <strong>this</strong>.update(person);
-<a name="407" href="#407">407</a> 
-<a name="408" href="#408">408</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select neverexpires dump"</span>),
-<a name="409" href="#409">409</a>                             <span class="string">"FALSE"</span>,
-<a name="410" href="#410">410</a>                             <span class="string">"check that password of person expires"</span>);
-<a name="411" href="#411">411</a>     }
-<a name="412" href="#412">412</a> 
-<a name="413" href="#413">413</a>     <em>/**<em>*</em></em>
-<a name="414" href="#414">414</a> <em>     * Checks that the password never expires flag is not reset if the</em>
-<a name="415" href="#415">415</a> <em>     * parameter 'UserPersonIgnorePswdNeverExpires' is defined.</em>
-<a name="416" href="#416">416</a> <em>     *</em>
-<a name="417" href="#417">417</a> <em>     * @throws Exception if check failed</em>
-<a name="418" href="#418">418</a> <em>     */</em>
-<a name="419" href="#419">419</a>     @Test(description = <span class="string">"checks that the password never expires flag is not reset if the parameter 'UserPersonIgnorePswdNeverExpires' is defined"</span>)
-<a name="420" href="#420">420</a>     <strong>public</strong> <strong>void</strong> checkWithIgnoreParameterPasswordNeverExpiresFlagIsNotRemoved()
-<a name="421" href="#421">421</a>         throws Exception
-<a name="422" href="#422">422</a>     {
-<a name="423" href="#423">423</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setPasswordNeverExpires(<strong>true</strong>);
-<a name="424" href="#424">424</a>         person.create();
-<a name="425" href="#425">425</a>         person.setPasswordNeverExpires(<strong>null</strong>);
-<a name="426" href="#426">426</a>         <strong>this</strong>.update(person, <span class="string">"UserPersonIgnorePswdNeverExpires"</span>, <span class="string">"*"</span>);
-<a name="427" href="#427">427</a> 
-<a name="428" href="#428">428</a>         <em class="comment">// check not updated</em>
-<a name="429" href="#429">429</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select neverexpires dump"</span>),
-<a name="430" href="#430">430</a>                             <span class="string">"TRUE"</span>,
-<a name="431" href="#431">431</a>                             <span class="string">"check that password of person never expires"</span>);
-<a name="432" href="#432">432</a>         <em class="comment">// check not defined within update file</em>
-<a name="433" href="#433">433</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = person.export(<span class="string">"UserPersonIgnorePswdNeverExpires"</span>, <span class="string">"*"</span>);
-<a name="434" href="#434">434</a>         person.checkValueExists(exportParser, <span class="string">"person"</span>, <span class="string">"neverexpires"</span>, false);
-<a name="435" href="#435">435</a>         person.checkValueExists(exportParser, <span class="string">"person"</span>, <span class="string">"!neverexpires"</span>, false);
-<a name="436" href="#436">436</a>     }
-<a name="437" href="#437">437</a> 
-<a name="438" href="#438">438</a>     <em>/**<em>*</em></em>
-<a name="439" href="#439">439</a> <em>     * Check that the wants email flag is removed within update.</em>
-<a name="440" href="#440">440</a> <em>     *</em>
-<a name="441" href="#441">441</a> <em>     * @throws Exception if test failed</em>
-<a name="442" href="#442">442</a> <em>     */</em>
-<a name="443" href="#443">443</a>     @Test(description = <span class="string">"check that the wants email flag is removed within update"</span>)
-<a name="444" href="#444">444</a>     <strong>public</strong> <strong>void</strong> checkWantsEmailFlagRemoveWithinUpdate()
-<a name="445" href="#445">445</a>         throws Exception
-<a name="446" href="#446">446</a>     {
-<a name="447" href="#447">447</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setWantsEmail(<strong>true</strong>);
-<a name="448" href="#448">448</a>         person.create();
-<a name="449" href="#449">449</a>         person.setWantsEmail(<strong>null</strong>);
-<a name="450" href="#450">450</a>         <strong>this</strong>.update(person);
-<a name="451" href="#451">451</a> 
-<a name="452" href="#452">452</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select emailenabled dump"</span>),
-<a name="453" href="#453">453</a>                             <span class="string">"FALSE"</span>,
-<a name="454" href="#454">454</a>                             <span class="string">"check that 'wants email' flag is disabled"</span>);
-<a name="455" href="#455">455</a>     }
-<a name="456" href="#456">456</a> 
-<a name="457" href="#457">457</a>     <em>/**<em>*</em></em>
-<a name="458" href="#458">458</a> <em>     * Checks that 'the wants email' - flag is not reset if the</em>
-<a name="459" href="#459">459</a> <em>     * parameter 'UserPersonIgnoreWantsEmail' is defined.</em>
-<a name="460" href="#460">460</a> <em>     *</em>
-<a name="461" href="#461">461</a> <em>     * @throws Exception if check failed</em>
-<a name="462" href="#462">462</a> <em>     */</em>
-<a name="463" href="#463">463</a>     @Test(description = <span class="string">"checks that the 'wants email' - flag is not reset if the parameter 'UserPersonIgnoreWantsEmail' is defined"</span>)
-<a name="464" href="#464">464</a>     <strong>public</strong> <strong>void</strong> checkWithIgnoreParameterWantsEmailFlag()
-<a name="465" href="#465">465</a>         throws Exception
-<a name="466" href="#466">466</a>     {
-<a name="467" href="#467">467</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setWantsEmail(<strong>true</strong>);
-<a name="468" href="#468">468</a>         person.create();
-<a name="469" href="#469">469</a>         person.setWantsEmail(<strong>null</strong>);
-<a name="470" href="#470">470</a>         <strong>this</strong>.update(person, <span class="string">"UserPersonIgnoreWantsEmail"</span>, <span class="string">"*"</span>);
-<a name="471" href="#471">471</a> 
-<a name="472" href="#472">472</a>         <em class="comment">// check not updated</em>
-<a name="473" href="#473">473</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select emailenabled dump"</span>),
-<a name="474" href="#474">474</a>                             <span class="string">"TRUE"</span>,
-<a name="475" href="#475">475</a>                             <span class="string">"check that 'wants email' flag is enabled"</span>);
-<a name="476" href="#476">476</a>         <em class="comment">// check not defined within update file</em>
-<a name="477" href="#477">477</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = person.export(<span class="string">"UserPersonIgnoreWantsEmail"</span>, <span class="string">"*"</span>);
-<a name="478" href="#478">478</a>         <strong>final</strong> Set&lt;String> enabled = <strong>new</strong> HashSet&lt;String>(exportParser.getLines(<span class="string">"/mql/enable/@value"</span>));
-<a name="479" href="#479">479</a>         <strong>final</strong> Set&lt;String> disabled = <strong>new</strong> HashSet&lt;String>(exportParser.getLines(<span class="string">"/mql/disable/@value"</span>));
-<a name="480" href="#480">480</a>         Assert.assertFalse(enabled.contains(<span class="string">"email"</span>), <span class="string">"check email not enabled"</span>);
-<a name="481" href="#481">481</a>         Assert.assertFalse(disabled.contains(<span class="string">"email"</span>), <span class="string">"check email not disabled"</span>);
-<a name="482" href="#482">482</a>     }
-<a name="483" href="#483">483</a> 
-<a name="484" href="#484">484</a>     <em>/**<em>*</em></em>
-<a name="485" href="#485">485</a> <em>     * Check that the wants email flag is removed within update.</em>
-<a name="486" href="#486">486</a> <em>     *</em>
-<a name="487" href="#487">487</a> <em>     * @throws Exception if test failed</em>
-<a name="488" href="#488">488</a> <em>     */</em>
-<a name="489" href="#489">489</a>     @Test(description = <span class="string">"check that the wants email flag is set within update"</span>)
-<a name="490" href="#490">490</a>     <strong>public</strong> <strong>void</strong> checkWantsIconMailFlagSetWithinUpdate()
-<a name="491" href="#491">491</a>         throws Exception
-<a name="492" href="#492">492</a>     {
-<a name="493" href="#493">493</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setWantsIconMail(false);
-<a name="494" href="#494">494</a>         person.create();
-<a name="495" href="#495">495</a>         person.setWantsIconMail(<strong>null</strong>);
-<a name="496" href="#496">496</a>         <strong>this</strong>.update(person);
-<a name="497" href="#497">497</a> 
-<a name="498" href="#498">498</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select iconmailenabled dump"</span>),
-<a name="499" href="#499">499</a>                             <span class="string">"TRUE"</span>,
-<a name="500" href="#500">500</a>                             <span class="string">"check that 'wants icon mail' flag is enabled"</span>);
-<a name="501" href="#501">501</a>     }
-<a name="502" href="#502">502</a> 
+<a name="260" href="#260">260</a>     @Test(dataProvider = <span class="string">"persons"</span>,
+<a name="261" href="#261">261</a>           description = <span class="string">"test update of non existing person"</span>)
+<a name="262" href="#262">262</a>     <strong>public</strong> <strong>void</strong> simpleUpdate(<strong>final</strong> String _description,
+<a name="263" href="#263">263</a>                              <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> _person)
+<a name="264" href="#264">264</a>         throws Exception
+<a name="265" href="#265">265</a>     {
+<a name="266" href="#266">266</a>         <em class="comment">// create referenced property value</em>
+<a name="267" href="#267">267</a>         <strong>for</strong> (<strong>final</strong> PropertyDef prop : _person.getProperties())  {
+<a name="268" href="#268">268</a>             <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="269" href="#269">269</a>                 prop.getTo().create();
+<a name="270" href="#270">270</a>             }
+<a name="271" href="#271">271</a>         }
+<a name="272" href="#272">272</a>         <em class="comment">// create site</em>
+<a name="273" href="#273">273</a>         <strong>if</strong> (_person.getSite() != <strong>null</strong>)  {
+<a name="274" href="#274">274</a>             _person.getSite().create();
+<a name="275" href="#275">275</a>         }
+<a name="276" href="#276">276</a>         <em class="comment">// create assigned roles</em>
+<a name="277" href="#277">277</a>         <strong>for</strong> (<strong>final</strong> RoleData role : _person.getRoles())  {
+<a name="278" href="#278">278</a>             role.create();
+<a name="279" href="#279">279</a>         }
+<a name="280" href="#280">280</a>         <em class="comment">// create assigned groups</em>
+<a name="281" href="#281">281</a>         <strong>for</strong> (<strong>final</strong> GroupData group : _person.getGroups())  {
+<a name="282" href="#282">282</a>             group.create();
+<a name="283" href="#283">283</a>         }
+<a name="284" href="#284">284</a>         <em class="comment">// create cue properties</em>
+<a name="285" href="#285">285</a>         <strong>for</strong> (<strong>final</strong> CueData&lt;PersonAdminData> cue : _person.getCues())  {
+<a name="286" href="#286">286</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : cue.getProperties())  {
+<a name="287" href="#287">287</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="288" href="#288">288</a>                     prop.getTo().create();
+<a name="289" href="#289">289</a>                 }
+<a name="290" href="#290">290</a>             }
+<a name="291" href="#291">291</a>         }
+<a name="292" href="#292">292</a>         <em class="comment">// create filter properties</em>
+<a name="293" href="#293">293</a>         <strong>for</strong> (<strong>final</strong> FilterData&lt;PersonAdminData> filter : _person.getFilters())  {
+<a name="294" href="#294">294</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : filter.getProperties())  {
+<a name="295" href="#295">295</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="296" href="#296">296</a>                     prop.getTo().create();
+<a name="297" href="#297">297</a>                 }
+<a name="298" href="#298">298</a>             }
+<a name="299" href="#299">299</a>         }
+<a name="300" href="#300">300</a>         <em class="comment">// create query properties</em>
+<a name="301" href="#301">301</a>         <strong>for</strong> (<strong>final</strong> QueryData&lt;PersonAdminData> query : _person.getQueries())  {
+<a name="302" href="#302">302</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : query.getProperties())  {
+<a name="303" href="#303">303</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="304" href="#304">304</a>                     prop.getTo().create();
+<a name="305" href="#305">305</a>                 }
+<a name="306" href="#306">306</a>             }
+<a name="307" href="#307">307</a>         }
+<a name="308" href="#308">308</a>         <em class="comment">// create table properties</em>
+<a name="309" href="#309">309</a>         <strong>for</strong> (<strong>final</strong> TableData&lt;PersonAdminData> table : _person.getTables())  {
+<a name="310" href="#310">310</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : table.getProperties())  {
+<a name="311" href="#311">311</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="312" href="#312">312</a>                     prop.getTo().create();
+<a name="313" href="#313">313</a>                 }
+<a name="314" href="#314">314</a>             }
+<a name="315" href="#315">315</a>         }
+<a name="316" href="#316">316</a>         <em class="comment">// create tip properties</em>
+<a name="317" href="#317">317</a>         <strong>for</strong> (<strong>final</strong> TipData&lt;PersonAdminData> tip : _person.getTips())  {
+<a name="318" href="#318">318</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : tip.getProperties())  {
+<a name="319" href="#319">319</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="320" href="#320">320</a>                     prop.getTo().create();
+<a name="321" href="#321">321</a>                 }
+<a name="322" href="#322">322</a>             }
+<a name="323" href="#323">323</a>         }
+<a name="324" href="#324">324</a>         <em class="comment">// create tool set properties and programs</em>
+<a name="325" href="#325">325</a>         <strong>for</strong> (<strong>final</strong> ToolSetData&lt;PersonAdminData> toolSet : _person.getToolSets())  {
+<a name="326" href="#326">326</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : toolSet.getProperties())  {
+<a name="327" href="#327">327</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="328" href="#328">328</a>                     prop.getTo().create();
+<a name="329" href="#329">329</a>                 }
+<a name="330" href="#330">330</a>             }
+<a name="331" href="#331">331</a>             <strong>for</strong> (<strong>final</strong> AbstractProgramData&lt;?> prog : toolSet.getPrograms())  {
+<a name="332" href="#332">332</a>                 prog.create();
+<a name="333" href="#333">333</a>             }
+<a name="334" href="#334">334</a>         }
+<a name="335" href="#335">335</a>         <em class="comment">// create view properties</em>
+<a name="336" href="#336">336</a>         <strong>for</strong> (<strong>final</strong> ViewData&lt;PersonAdminData> view : _person.getViews())  {
+<a name="337" href="#337">337</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : view.getProperties())  {
+<a name="338" href="#338">338</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="339" href="#339">339</a>                     prop.getTo().create();
+<a name="340" href="#340">340</a>                 }
+<a name="341" href="#341">341</a>             }
+<a name="342" href="#342">342</a>         }
+<a name="343" href="#343">343</a> 
+<a name="344" href="#344">344</a>         <em class="comment">// first update with original content</em>
+<a name="345" href="#345">345</a>         _person.update();
+<a name="346" href="#346">346</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _person.export();
+<a name="347" href="#347">347</a>         _person.checkExport(exportParser);
+<a name="348" href="#348">348</a> 
+<a name="349" href="#349">349</a>         <em class="comment">// second update with delivered content</em>
+<a name="350" href="#350">350</a>         _person.updateWithCode(exportParser.getOrigCode())
+<a name="351" href="#351">351</a>                .checkExport();
+<a name="352" href="#352">352</a>     }
+<a name="353" href="#353">353</a> 
+<a name="354" href="#354">354</a>     <em>/**<em>*</em></em>
+<a name="355" href="#355">355</a> <em>     * Test an update of a person where the site is removed.</em>
+<a name="356" href="#356">356</a> <em>     *</em>
+<a name="357" href="#357">357</a> <em>     * @throws Exception if test failed</em>
+<a name="358" href="#358">358</a> <em>     */</em>
+<a name="359" href="#359">359</a>     @Test(description = <span class="string">"update existing existing person with site by removing site"</span>)
+<a name="360" href="#360">360</a>     <strong>public</strong> <strong>void</strong> checkExistingSiteRemovedWithinUpdate()
+<a name="361" href="#361">361</a>         throws Exception
+<a name="362" href="#362">362</a>     {
+<a name="363" href="#363">363</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hallo \&quot; test"</span>)
+<a name="364" href="#364">364</a>                 .setSite(<strong>new</strong> <a href="../../../../../org/mxupdate/test/data/other/SiteData.html">SiteData</a>(<strong>this</strong>, <span class="string">"Test \&quot; Site"</span>));
+<a name="365" href="#365">365</a>         person.create();
+<a name="366" href="#366">366</a>         person.setSite(<strong>null</strong>);
+<a name="367" href="#367">367</a>         person.update();
+<a name="368" href="#368">368</a> 
+<a name="369" href="#369">369</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span>
+<a name="370" href="#370">370</a>                                     + AbstractTest.convertMql(person.getName())
+<a name="371" href="#371">371</a>                                     + <span class="string">"\&quot; select site dump"</span>),
+<a name="372" href="#372">372</a>                             <span class="string">""</span>,
+<a name="373" href="#373">373</a>                             <span class="string">"check that no site is defined"</span>);
+<a name="374" href="#374">374</a>     }
+<a name="375" href="#375">375</a> 
+<a name="376" href="#376">376</a>     <em>/**<em>*</em></em>
+<a name="377" href="#377">377</a> <em>     * Check that the hidden flag is removed within update.</em>
+<a name="378" href="#378">378</a> <em>     *</em>
+<a name="379" href="#379">379</a> <em>     * @throws Exception if test failed</em>
+<a name="380" href="#380">380</a> <em>     */</em>
+<a name="381" href="#381">381</a>     @Test(description = <span class="string">"check that the hidden flag is removed within update"</span>)
+<a name="382" href="#382">382</a>     <strong>public</strong> <strong>void</strong> checkHiddenFlagRemoveWithinUpdate()
+<a name="383" href="#383">383</a>         throws Exception
+<a name="384" href="#384">384</a>     {
+<a name="385" href="#385">385</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setHidden(<strong>true</strong>);
+<a name="386" href="#386">386</a>         person.create();
+<a name="387" href="#387">387</a>         person.setHidden(<strong>null</strong>);
+<a name="388" href="#388">388</a>         person.update();
+<a name="389" href="#389">389</a> 
+<a name="390" href="#390">390</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select hidden dump"</span>),
+<a name="391" href="#391">391</a>                             <span class="string">"FALSE"</span>,
+<a name="392" href="#392">392</a>                             <span class="string">"check that person is not hidden"</span>);
+<a name="393" href="#393">393</a>     }
+<a name="394" href="#394">394</a> 
+<a name="395" href="#395">395</a>     <em>/**<em>*</em></em>
+<a name="396" href="#396">396</a> <em>     * Check that the password never expires flag is removed within update.</em>
+<a name="397" href="#397">397</a> <em>     *</em>
+<a name="398" href="#398">398</a> <em>     * @throws Exception if test failed</em>
+<a name="399" href="#399">399</a> <em>     */</em>
+<a name="400" href="#400">400</a>     @Test(description = <span class="string">"check that the hidden flag is removed within update"</span>)
+<a name="401" href="#401">401</a>     <strong>public</strong> <strong>void</strong> checkPasswordNeverExpiresFlagRemoveWithinUpdate()
+<a name="402" href="#402">402</a>         throws Exception
+<a name="403" href="#403">403</a>     {
+<a name="404" href="#404">404</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setPasswordNeverExpires(<strong>true</strong>);
+<a name="405" href="#405">405</a>         person.create();
+<a name="406" href="#406">406</a>         person.setPasswordNeverExpires(<strong>null</strong>);
+<a name="407" href="#407">407</a>         person.update();
+<a name="408" href="#408">408</a> 
+<a name="409" href="#409">409</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select neverexpires dump"</span>),
+<a name="410" href="#410">410</a>                             <span class="string">"FALSE"</span>,
+<a name="411" href="#411">411</a>                             <span class="string">"check that password of person expires"</span>);
+<a name="412" href="#412">412</a>     }
+<a name="413" href="#413">413</a> 
+<a name="414" href="#414">414</a>     <em>/**<em>*</em></em>
+<a name="415" href="#415">415</a> <em>     * Checks that the password never expires flag is not reset if the</em>
+<a name="416" href="#416">416</a> <em>     * parameter 'UserPersonIgnorePswdNeverExpires' is defined.</em>
+<a name="417" href="#417">417</a> <em>     *</em>
+<a name="418" href="#418">418</a> <em>     * @throws Exception if check failed</em>
+<a name="419" href="#419">419</a> <em>     */</em>
+<a name="420" href="#420">420</a>     @Test(description = <span class="string">"checks that the password never expires flag is not reset if the parameter 'UserPersonIgnorePswdNeverExpires' is defined"</span>)
+<a name="421" href="#421">421</a>     <strong>public</strong> <strong>void</strong> checkWithIgnoreParameterPasswordNeverExpiresFlagIsNotRemoved()
+<a name="422" href="#422">422</a>         throws Exception
+<a name="423" href="#423">423</a>     {
+<a name="424" href="#424">424</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setPasswordNeverExpires(<strong>true</strong>);
+<a name="425" href="#425">425</a>         person.create();
+<a name="426" href="#426">426</a>         person.setPasswordNeverExpires(<strong>null</strong>);
+<a name="427" href="#427">427</a>         person.update(<span class="string">"UserPersonIgnorePswdNeverExpires"</span>, <span class="string">"*"</span>);
+<a name="428" href="#428">428</a> 
+<a name="429" href="#429">429</a>         <em class="comment">// check not updated</em>
+<a name="430" href="#430">430</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select neverexpires dump"</span>),
+<a name="431" href="#431">431</a>                             <span class="string">"TRUE"</span>,
+<a name="432" href="#432">432</a>                             <span class="string">"check that password of person never expires"</span>);
+<a name="433" href="#433">433</a>         <em class="comment">// check not defined within update file</em>
+<a name="434" href="#434">434</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = person.export(<span class="string">"UserPersonIgnorePswdNeverExpires"</span>, <span class="string">"*"</span>);
+<a name="435" href="#435">435</a>         person.checkValueExists(exportParser, <span class="string">"person"</span>, <span class="string">"neverexpires"</span>, false);
+<a name="436" href="#436">436</a>         person.checkValueExists(exportParser, <span class="string">"person"</span>, <span class="string">"!neverexpires"</span>, false);
+<a name="437" href="#437">437</a>     }
+<a name="438" href="#438">438</a> 
+<a name="439" href="#439">439</a>     <em>/**<em>*</em></em>
+<a name="440" href="#440">440</a> <em>     * Check that the wants email flag is removed within update.</em>
+<a name="441" href="#441">441</a> <em>     *</em>
+<a name="442" href="#442">442</a> <em>     * @throws Exception if test failed</em>
+<a name="443" href="#443">443</a> <em>     */</em>
+<a name="444" href="#444">444</a>     @Test(description = <span class="string">"check that the wants email flag is removed within update"</span>)
+<a name="445" href="#445">445</a>     <strong>public</strong> <strong>void</strong> checkWantsEmailFlagRemoveWithinUpdate()
+<a name="446" href="#446">446</a>         throws Exception
+<a name="447" href="#447">447</a>     {
+<a name="448" href="#448">448</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setWantsEmail(<strong>true</strong>);
+<a name="449" href="#449">449</a>         person.create();
+<a name="450" href="#450">450</a>         person.setWantsEmail(<strong>null</strong>);
+<a name="451" href="#451">451</a>         person.update();
+<a name="452" href="#452">452</a> 
+<a name="453" href="#453">453</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select emailenabled dump"</span>),
+<a name="454" href="#454">454</a>                             <span class="string">"FALSE"</span>,
+<a name="455" href="#455">455</a>                             <span class="string">"check that 'wants email' flag is disabled"</span>);
+<a name="456" href="#456">456</a>     }
+<a name="457" href="#457">457</a> 
+<a name="458" href="#458">458</a>     <em>/**<em>*</em></em>
+<a name="459" href="#459">459</a> <em>     * Checks that 'the wants email' - flag is not reset if the</em>
+<a name="460" href="#460">460</a> <em>     * parameter 'UserPersonIgnoreWantsEmail' is defined.</em>
+<a name="461" href="#461">461</a> <em>     *</em>
+<a name="462" href="#462">462</a> <em>     * @throws Exception if check failed</em>
+<a name="463" href="#463">463</a> <em>     */</em>
+<a name="464" href="#464">464</a>     @Test(description = <span class="string">"checks that the 'wants email' - flag is not reset if the parameter 'UserPersonIgnoreWantsEmail' is defined"</span>)
+<a name="465" href="#465">465</a>     <strong>public</strong> <strong>void</strong> checkWithIgnoreParameterWantsEmailFlag()
+<a name="466" href="#466">466</a>         throws Exception
+<a name="467" href="#467">467</a>     {
+<a name="468" href="#468">468</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setWantsEmail(<strong>true</strong>);
+<a name="469" href="#469">469</a>         person.create();
+<a name="470" href="#470">470</a>         person.setWantsEmail(<strong>null</strong>);
+<a name="471" href="#471">471</a>         person.update(<span class="string">"UserPersonIgnoreWantsEmail"</span>, <span class="string">"*"</span>);
+<a name="472" href="#472">472</a> 
+<a name="473" href="#473">473</a>         <em class="comment">// check not updated</em>
+<a name="474" href="#474">474</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select emailenabled dump"</span>),
+<a name="475" href="#475">475</a>                             <span class="string">"TRUE"</span>,
+<a name="476" href="#476">476</a>                             <span class="string">"check that 'wants email' flag is enabled"</span>);
+<a name="477" href="#477">477</a>         <em class="comment">// check not defined within update file</em>
+<a name="478" href="#478">478</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = person.export(<span class="string">"UserPersonIgnoreWantsEmail"</span>, <span class="string">"*"</span>);
+<a name="479" href="#479">479</a>         <strong>final</strong> Set&lt;String> enabled = <strong>new</strong> HashSet&lt;String>(exportParser.getLines(<span class="string">"/mql/enable/@value"</span>));
+<a name="480" href="#480">480</a>         <strong>final</strong> Set&lt;String> disabled = <strong>new</strong> HashSet&lt;String>(exportParser.getLines(<span class="string">"/mql/disable/@value"</span>));
+<a name="481" href="#481">481</a>         Assert.assertFalse(enabled.contains(<span class="string">"email"</span>), <span class="string">"check email not enabled"</span>);
+<a name="482" href="#482">482</a>         Assert.assertFalse(disabled.contains(<span class="string">"email"</span>), <span class="string">"check email not disabled"</span>);
+<a name="483" href="#483">483</a>     }
+<a name="484" href="#484">484</a> 
+<a name="485" href="#485">485</a>     <em>/**<em>*</em></em>
+<a name="486" href="#486">486</a> <em>     * Check that the wants email flag is removed within update.</em>
+<a name="487" href="#487">487</a> <em>     *</em>
+<a name="488" href="#488">488</a> <em>     * @throws Exception if test failed</em>
+<a name="489" href="#489">489</a> <em>     */</em>
+<a name="490" href="#490">490</a>     @Test(description = <span class="string">"check that the wants email flag is set within update"</span>)
+<a name="491" href="#491">491</a>     <strong>public</strong> <strong>void</strong> checkWantsIconMailFlagSetWithinUpdate()
+<a name="492" href="#492">492</a>         throws Exception
+<a name="493" href="#493">493</a>     {
+<a name="494" href="#494">494</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setWantsIconMail(false);
+<a name="495" href="#495">495</a>         person.create();
+<a name="496" href="#496">496</a>         person.setWantsIconMail(<strong>null</strong>);
+<a name="497" href="#497">497</a>         person.update();
+<a name="498" href="#498">498</a> 
+<a name="499" href="#499">499</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select iconmailenabled dump"</span>),
+<a name="500" href="#500">500</a>                             <span class="string">"TRUE"</span>,
+<a name="501" href="#501">501</a>                             <span class="string">"check that 'wants icon mail' flag is enabled"</span>);
+<a name="502" href="#502">502</a>     }
 <a name="503" href="#503">503</a> 
-<a name="504" href="#504">504</a>     <em>/**<em>*</em></em>
-<a name="505" href="#505">505</a> <em>     * Checks that 'the wants icon mail' - flag is not reset if the</em>
-<a name="506" href="#506">506</a> <em>     * parameter 'UserPersonIgnoreWantsIconMail' is defined.</em>
-<a name="507" href="#507">507</a> <em>     *</em>
-<a name="508" href="#508">508</a> <em>     * @throws Exception if check failed</em>
-<a name="509" href="#509">509</a> <em>     */</em>
-<a name="510" href="#510">510</a>     @Test(description = <span class="string">"checks that the 'wants icon mail' - flag is not reset if the parameter 'UserPersonIgnoreWantsIconMail' is defined"</span>)
-<a name="511" href="#511">511</a>     <strong>public</strong> <strong>void</strong> checkWithIgnoreParameterWantsIconMailFlag()
-<a name="512" href="#512">512</a>         throws Exception
-<a name="513" href="#513">513</a>     {
-<a name="514" href="#514">514</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setWantsIconMail(false);
-<a name="515" href="#515">515</a>         person.create();
-<a name="516" href="#516">516</a>         person.setWantsIconMail(<strong>null</strong>);
-<a name="517" href="#517">517</a>         <strong>this</strong>.update(person, <span class="string">"UserPersonIgnoreWantsIconMail"</span>, <span class="string">"*"</span>);
-<a name="518" href="#518">518</a> 
-<a name="519" href="#519">519</a>         <em class="comment">// check not updated</em>
-<a name="520" href="#520">520</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select iconmailenabled dump"</span>),
-<a name="521" href="#521">521</a>                             <span class="string">"FALSE"</span>,
-<a name="522" href="#522">522</a>                             <span class="string">"check that 'wants icon mail' flag is disabled"</span>);
-<a name="523" href="#523">523</a>         <em class="comment">// check not defined within update file</em>
-<a name="524" href="#524">524</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = person.export(<span class="string">"UserPersonIgnoreWantsIconMail"</span>, <span class="string">"*"</span>);
-<a name="525" href="#525">525</a>         <strong>final</strong> Set&lt;String> enabled = <strong>new</strong> HashSet&lt;String>(exportParser.getLines(<span class="string">"/mql/enable/@value"</span>));
-<a name="526" href="#526">526</a>         <strong>final</strong> Set&lt;String> disabled = <strong>new</strong> HashSet&lt;String>(exportParser.getLines(<span class="string">"/mql/disable/@value"</span>));
-<a name="527" href="#527">527</a>         Assert.assertFalse(enabled.contains(<span class="string">"iconmail"</span>), <span class="string">"check icon mail not enabled"</span>);
-<a name="528" href="#528">528</a>         Assert.assertFalse(disabled.contains(<span class="string">"iconmail"</span>), <span class="string">"check icon mail not disabled"</span>);
-<a name="529" href="#529">529</a>     }
-<a name="530" href="#530">530</a> }
+<a name="504" href="#504">504</a> 
+<a name="505" href="#505">505</a>     <em>/**<em>*</em></em>
+<a name="506" href="#506">506</a> <em>     * Checks that 'the wants icon mail' - flag is not reset if the</em>
+<a name="507" href="#507">507</a> <em>     * parameter 'UserPersonIgnoreWantsIconMail' is defined.</em>
+<a name="508" href="#508">508</a> <em>     *</em>
+<a name="509" href="#509">509</a> <em>     * @throws Exception if check failed</em>
+<a name="510" href="#510">510</a> <em>     */</em>
+<a name="511" href="#511">511</a>     @Test(description = <span class="string">"checks that the 'wants icon mail' - flag is not reset if the parameter 'UserPersonIgnoreWantsIconMail' is defined"</span>)
+<a name="512" href="#512">512</a>     <strong>public</strong> <strong>void</strong> checkWithIgnoreParameterWantsIconMailFlag()
+<a name="513" href="#513">513</a>         throws Exception
+<a name="514" href="#514">514</a>     {
+<a name="515" href="#515">515</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a> person = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/PersonAdminData.html">PersonAdminData</a>(<strong>this</strong>, <span class="string">"hello \&quot; test"</span>).setWantsIconMail(false);
+<a name="516" href="#516">516</a>         person.create();
+<a name="517" href="#517">517</a>         person.setWantsIconMail(<strong>null</strong>);
+<a name="518" href="#518">518</a>         person.update(<span class="string">"UserPersonIgnoreWantsIconMail"</span>, <span class="string">"*"</span>);
+<a name="519" href="#519">519</a> 
+<a name="520" href="#520">520</a>         <em class="comment">// check not updated</em>
+<a name="521" href="#521">521</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print person \&quot;"</span> + AbstractTest.convertMql(person.getName()) + <span class="string">"\&quot; select iconmailenabled dump"</span>),
+<a name="522" href="#522">522</a>                             <span class="string">"FALSE"</span>,
+<a name="523" href="#523">523</a>                             <span class="string">"check that 'wants icon mail' flag is disabled"</span>);
+<a name="524" href="#524">524</a>         <em class="comment">// check not defined within update file</em>
+<a name="525" href="#525">525</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = person.export(<span class="string">"UserPersonIgnoreWantsIconMail"</span>, <span class="string">"*"</span>);
+<a name="526" href="#526">526</a>         <strong>final</strong> Set&lt;String> enabled = <strong>new</strong> HashSet&lt;String>(exportParser.getLines(<span class="string">"/mql/enable/@value"</span>));
+<a name="527" href="#527">527</a>         <strong>final</strong> Set&lt;String> disabled = <strong>new</strong> HashSet&lt;String>(exportParser.getLines(<span class="string">"/mql/disable/@value"</span>));
+<a name="528" href="#528">528</a>         Assert.assertFalse(enabled.contains(<span class="string">"iconmail"</span>), <span class="string">"check icon mail not enabled"</span>);
+<a name="529" href="#529">529</a>         Assert.assertFalse(disabled.contains(<span class="string">"iconmail"</span>), <span class="string">"check icon mail not disabled"</span>);
+<a name="530" href="#530">530</a>     }
+<a name="531" href="#531">531</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

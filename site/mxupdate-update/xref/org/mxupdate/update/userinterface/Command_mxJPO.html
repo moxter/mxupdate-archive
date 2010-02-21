@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 611 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-11-02 01:20:36 +0100 (Mo, 02 Nov 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 738 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-21 17:33:51 +0100 (So, 21 Feb 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -46,7 +46,7 @@
 <a name="37" href="#37">37</a>  <em> * The class is used to export and import / update command configuration items.</em>
 <a name="38" href="#38">38</a>  <em> *</em>
 <a name="39" href="#39">39</a>  <em> * @author The MxUpdate Team</em>
-<a name="40" href="#40">40</a>  <em> * @version $Id: Command_mxJPO.java 611 2009-11-02 00:20:36Z tim.moxter $</em>
+<a name="40" href="#40">40</a>  <em> * @version $Id: Command_mxJPO.java 738 2010-02-21 16:33:51Z tim.moxter $</em>
 <a name="41" href="#41">41</a>  <em> */</em>
 <a name="42" href="#42">42</a>  <strong>public</strong> <strong>class</strong> Command_mxJPO
 <a name="43" href="#43">43</a>      <strong>extends</strong> AbstractAdminObject_mxJPO
@@ -148,81 +148,84 @@
 <a name="139" href="#139">139</a>                                <strong>final</strong> Appendable _out)
 <a name="140" href="#140">140</a>         throws IOException
 <a name="141" href="#141">141</a>     {
-<a name="142" href="#142">142</a>         _out.append(<span class="string">" &#47;&#47;\n    label \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.label)).append(<span class="string">"\&quot;"</span>)
-<a name="143" href="#143">143</a>             .append(<span class="string">" &#47;&#47;\n    href \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.href)).append(<span class="string">"\&quot;"</span>)
-<a name="144" href="#144">144</a>             .append(<span class="string">" &#47;&#47;\n    alt \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.alt)).append(<span class="string">"\&quot;"</span>);
-<a name="145" href="#145">145</a>         <em class="comment">// users must be sorted alpha-numerically</em>
-<a name="146" href="#146">146</a>         <strong>for</strong> (<strong>final</strong> String user : <strong>this</strong>.users)  {
-<a name="147" href="#147">147</a>             _out.append(<span class="string">" &#47;&#47;\n    add user \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(user)).append(<span class="string">"\&quot;"</span>);
-<a name="148" href="#148">148</a>         }
-<a name="149" href="#149">149</a>         <strong>for</strong> (<strong>final</strong> AdminProperty_mxJPO prop : <strong>this</strong>.getPropertiesMap().values())  {
-<a name="150" href="#150">150</a>             <strong>if</strong> (prop.isSetting())  {
-<a name="151" href="#151">151</a>                 _out.append(<span class="string">" &#47;&#47;\n    add setting \&quot;"</span>)
-<a name="152" href="#152">152</a>                     .append(StringUtil_mxJPO.convertTcl(prop.getName().substring(1))).append(<span class="string">"\&quot;"</span>)
-<a name="153" href="#153">153</a>                     .append(<span class="string">" \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(prop.getValue())).append(<span class="string">"\&quot;"</span>);
-<a name="154" href="#154">154</a>             }
-<a name="155" href="#155">155</a>         }
-<a name="156" href="#156">156</a>     }
-<a name="157" href="#157">157</a> 
-<a name="158" href="#158">158</a>     <em>/**<em>*</em></em>
-<a name="159" href="#159">159</a> <em>     * The method overwrites the original method to append the MQL statements</em>
-<a name="160" href="#160">160</a> <em>     * in the &lt;code>_preMQLCode&lt;/code> to reset this command. Following steps</em>
-<a name="161" href="#161">161</a> <em>     * are done:</em>
-<a name="162" href="#162">162</a> <em>     * &lt;ul></em>
-<a name="163" href="#163">163</a> <em>     * &lt;li>HRef, description, alt and label is set to empty string&lt;/li></em>
-<a name="164" href="#164">164</a> <em>     * &lt;li>all settings and users are removed&lt;/li></em>
-<a name="165" href="#165">165</a> <em>     * &lt;/ul></em>
-<a name="166" href="#166">166</a> <em>     *</em>
-<a name="167" href="#167">167</a> <em>     * @param _paramCache       parameter cache</em>
-<a name="168" href="#168">168</a> <em>     * @param _preMQLCode       MQL statements which must be called before the</em>
-<a name="169" href="#169">169</a> <em>     *                          TCL code is executed</em>
-<a name="170" href="#170">170</a> <em>     * @param _postMQLCode      MQL statements which must be called after the</em>
-<a name="171" href="#171">171</a> <em>     *                          TCL code is executed</em>
-<a name="172" href="#172">172</a> <em>     * @param _preTCLCode       TCL code which is defined before the source</em>
-<a name="173" href="#173">173</a> <em>     *                          file is sourced</em>
-<a name="174" href="#174">174</a> <em>     * @param _tclVariables     map of all TCL variables where the key is the</em>
-<a name="175" href="#175">175</a> <em>     *                          name and the value is value of the TCL variable</em>
-<a name="176" href="#176">176</a> <em>     *                          (the value is automatically converted to TCL</em>
-<a name="177" href="#177">177</a> <em>     *                          syntax!)</em>
-<a name="178" href="#178">178</a> <em>     * @param _sourceFile       souce file with the TCL code to update</em>
-<a name="179" href="#179">179</a> <em>     * @throws Exception if the update from derived class failed</em>
-<a name="180" href="#180">180</a> <em>     */</em>
-<a name="181" href="#181">181</a>     @Override()
-<a name="182" href="#182">182</a>     <strong>protected</strong> <strong>void</strong> update(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="183" href="#183">183</a>                           <strong>final</strong> CharSequence _preMQLCode,
-<a name="184" href="#184">184</a>                           <strong>final</strong> CharSequence _postMQLCode,
-<a name="185" href="#185">185</a>                           <strong>final</strong> CharSequence _preTCLCode,
-<a name="186" href="#186">186</a>                           <strong>final</strong> Map&lt;String,String> _tclVariables,
-<a name="187" href="#187">187</a>                           <strong>final</strong> File _sourceFile)
-<a name="188" href="#188">188</a>         throws Exception
-<a name="189" href="#189">189</a>     {
-<a name="190" href="#190">190</a>         <em class="comment">// reset HRef, description, alt and label</em>
-<a name="191" href="#191">191</a>         <strong>final</strong> StringBuilder preMQLCode = <strong>new</strong> StringBuilder()
-<a name="192" href="#192">192</a>                 .append(<span class="string">"escape mod "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
-<a name="193" href="#193">193</a>                 .append(<span class="string">" \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName())).append('\&quot;')
-<a name="194" href="#194">194</a>                 .append(<span class="string">" href \&quot;\&quot; description \&quot;\&quot; alt \&quot;\&quot; label \&quot;\&quot;"</span>);
-<a name="195" href="#195">195</a> 
-<a name="196" href="#196">196</a>         <em class="comment">// reset settings</em>
-<a name="197" href="#197">197</a>         <strong>for</strong> (<strong>final</strong> AdminProperty_mxJPO prop : <strong>this</strong>.getPropertiesMap().values())  {
-<a name="198" href="#198">198</a>             <strong>if</strong> (prop.isSetting())  {
-<a name="199" href="#199">199</a>                 preMQLCode.append(<span class="string">" remove setting \&quot;"</span>)
-<a name="200" href="#200">200</a>                           .append(StringUtil_mxJPO.convertMql(prop.getName().substring(1)))
-<a name="201" href="#201">201</a>                           .append('\&quot;');
-<a name="202" href="#202">202</a>             }
-<a name="203" href="#203">203</a>         }
-<a name="204" href="#204">204</a> 
-<a name="205" href="#205">205</a>         <em class="comment">// reset users</em>
-<a name="206" href="#206">206</a>         <strong>for</strong> (<strong>final</strong> String user : <strong>this</strong>.users)  {
-<a name="207" href="#207">207</a>             preMQLCode.append(<span class="string">" remove user \&quot;"</span>).append(StringUtil_mxJPO.convertMql(user)).append('\&quot;');
-<a name="208" href="#208">208</a>         }
-<a name="209" href="#209">209</a> 
-<a name="210" href="#210">210</a>         <em class="comment">// append already existing pre MQL code</em>
-<a name="211" href="#211">211</a>         preMQLCode.append(<span class="string">";\n"</span>)
-<a name="212" href="#212">212</a>                   .append(_preMQLCode);
-<a name="213" href="#213">213</a> 
-<a name="214" href="#214">214</a>         <strong>super</strong>.update(_paramCache, preMQLCode, _postMQLCode, _preTCLCode, _tclVariables, _sourceFile);
-<a name="215" href="#215">215</a>     }
-<a name="216" href="#216">216</a> }
+<a name="142" href="#142">142</a>         <strong>if</strong> (<strong>this</strong>.isHidden())  {
+<a name="143" href="#143">143</a>             _out.append(<span class="string">" &#47;&#47;\n    hidden"</span>);
+<a name="144" href="#144">144</a>         }
+<a name="145" href="#145">145</a>         _out.append(<span class="string">" &#47;&#47;\n    label \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.label)).append(<span class="string">"\&quot;"</span>)
+<a name="146" href="#146">146</a>             .append(<span class="string">" &#47;&#47;\n    href \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.href)).append(<span class="string">"\&quot;"</span>)
+<a name="147" href="#147">147</a>             .append(<span class="string">" &#47;&#47;\n    alt \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.alt)).append(<span class="string">"\&quot;"</span>);
+<a name="148" href="#148">148</a>         <em class="comment">// users must be sorted alpha-numerically</em>
+<a name="149" href="#149">149</a>         <strong>for</strong> (<strong>final</strong> String user : <strong>this</strong>.users)  {
+<a name="150" href="#150">150</a>             _out.append(<span class="string">" &#47;&#47;\n    add user \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(user)).append(<span class="string">"\&quot;"</span>);
+<a name="151" href="#151">151</a>         }
+<a name="152" href="#152">152</a>         <strong>for</strong> (<strong>final</strong> AdminProperty_mxJPO prop : <strong>this</strong>.getPropertiesMap().values())  {
+<a name="153" href="#153">153</a>             <strong>if</strong> (prop.isSetting())  {
+<a name="154" href="#154">154</a>                 _out.append(<span class="string">" &#47;&#47;\n    add setting \&quot;"</span>)
+<a name="155" href="#155">155</a>                     .append(StringUtil_mxJPO.convertTcl(prop.getName().substring(1))).append(<span class="string">"\&quot;"</span>)
+<a name="156" href="#156">156</a>                     .append(<span class="string">" \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(prop.getValue())).append(<span class="string">"\&quot;"</span>);
+<a name="157" href="#157">157</a>             }
+<a name="158" href="#158">158</a>         }
+<a name="159" href="#159">159</a>     }
+<a name="160" href="#160">160</a> 
+<a name="161" href="#161">161</a>     <em>/**<em>*</em></em>
+<a name="162" href="#162">162</a> <em>     * The method overwrites the original method to append the MQL statements</em>
+<a name="163" href="#163">163</a> <em>     * in the &lt;code>_preMQLCode&lt;/code> to reset this command. Following steps</em>
+<a name="164" href="#164">164</a> <em>     * are done:</em>
+<a name="165" href="#165">165</a> <em>     * &lt;ul></em>
+<a name="166" href="#166">166</a> <em>     * &lt;li>HRef, description, alt and label is set to empty string&lt;/li></em>
+<a name="167" href="#167">167</a> <em>     * &lt;li>all settings and users are removed&lt;/li></em>
+<a name="168" href="#168">168</a> <em>     * &lt;/ul></em>
+<a name="169" href="#169">169</a> <em>     *</em>
+<a name="170" href="#170">170</a> <em>     * @param _paramCache       parameter cache</em>
+<a name="171" href="#171">171</a> <em>     * @param _preMQLCode       MQL statements which must be called before the</em>
+<a name="172" href="#172">172</a> <em>     *                          TCL code is executed</em>
+<a name="173" href="#173">173</a> <em>     * @param _postMQLCode      MQL statements which must be called after the</em>
+<a name="174" href="#174">174</a> <em>     *                          TCL code is executed</em>
+<a name="175" href="#175">175</a> <em>     * @param _preTCLCode       TCL code which is defined before the source</em>
+<a name="176" href="#176">176</a> <em>     *                          file is sourced</em>
+<a name="177" href="#177">177</a> <em>     * @param _tclVariables     map of all TCL variables where the key is the</em>
+<a name="178" href="#178">178</a> <em>     *                          name and the value is value of the TCL variable</em>
+<a name="179" href="#179">179</a> <em>     *                          (the value is automatically converted to TCL</em>
+<a name="180" href="#180">180</a> <em>     *                          syntax!)</em>
+<a name="181" href="#181">181</a> <em>     * @param _sourceFile       souce file with the TCL code to update</em>
+<a name="182" href="#182">182</a> <em>     * @throws Exception if the update from derived class failed</em>
+<a name="183" href="#183">183</a> <em>     */</em>
+<a name="184" href="#184">184</a>     @Override()
+<a name="185" href="#185">185</a>     <strong>protected</strong> <strong>void</strong> update(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="186" href="#186">186</a>                           <strong>final</strong> CharSequence _preMQLCode,
+<a name="187" href="#187">187</a>                           <strong>final</strong> CharSequence _postMQLCode,
+<a name="188" href="#188">188</a>                           <strong>final</strong> CharSequence _preTCLCode,
+<a name="189" href="#189">189</a>                           <strong>final</strong> Map&lt;String,String> _tclVariables,
+<a name="190" href="#190">190</a>                           <strong>final</strong> File _sourceFile)
+<a name="191" href="#191">191</a>         throws Exception
+<a name="192" href="#192">192</a>     {
+<a name="193" href="#193">193</a>         <em class="comment">// reset HRef, description, alt and label</em>
+<a name="194" href="#194">194</a>         <strong>final</strong> StringBuilder preMQLCode = <strong>new</strong> StringBuilder()
+<a name="195" href="#195">195</a>                 .append(<span class="string">"escape mod "</span>).append(<strong>this</strong>.getTypeDef().getMxAdminName())
+<a name="196" href="#196">196</a>                 .append(<span class="string">" \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getName())).append('\&quot;')
+<a name="197" href="#197">197</a>                 .append(<span class="string">" !hidden href \&quot;\&quot; description \&quot;\&quot; alt \&quot;\&quot; label \&quot;\&quot;"</span>);
+<a name="198" href="#198">198</a> 
+<a name="199" href="#199">199</a>         <em class="comment">// reset settings</em>
+<a name="200" href="#200">200</a>         <strong>for</strong> (<strong>final</strong> AdminProperty_mxJPO prop : <strong>this</strong>.getPropertiesMap().values())  {
+<a name="201" href="#201">201</a>             <strong>if</strong> (prop.isSetting())  {
+<a name="202" href="#202">202</a>                 preMQLCode.append(<span class="string">" remove setting \&quot;"</span>)
+<a name="203" href="#203">203</a>                           .append(StringUtil_mxJPO.convertMql(prop.getName().substring(1)))
+<a name="204" href="#204">204</a>                           .append('\&quot;');
+<a name="205" href="#205">205</a>             }
+<a name="206" href="#206">206</a>         }
+<a name="207" href="#207">207</a> 
+<a name="208" href="#208">208</a>         <em class="comment">// reset users</em>
+<a name="209" href="#209">209</a>         <strong>for</strong> (<strong>final</strong> String user : <strong>this</strong>.users)  {
+<a name="210" href="#210">210</a>             preMQLCode.append(<span class="string">" remove user \&quot;"</span>).append(StringUtil_mxJPO.convertMql(user)).append('\&quot;');
+<a name="211" href="#211">211</a>         }
+<a name="212" href="#212">212</a> 
+<a name="213" href="#213">213</a>         <em class="comment">// append already existing pre MQL code</em>
+<a name="214" href="#214">214</a>         preMQLCode.append(<span class="string">";\n"</span>)
+<a name="215" href="#215">215</a>                   .append(_preMQLCode);
+<a name="216" href="#216">216</a> 
+<a name="217" href="#217">217</a>         <strong>super</strong>.update(_paramCache, preMQLCode, _postMQLCode, _preTCLCode, _tclVariables, _sourceFile);
+<a name="218" href="#218">218</a>     }
+<a name="219" href="#219">219</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

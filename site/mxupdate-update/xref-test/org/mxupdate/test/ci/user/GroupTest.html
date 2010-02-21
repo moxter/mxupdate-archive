@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 748 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-22 00:17:20 +0100 (Mo, 22 Feb 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -54,7 +54,7 @@
 <a name="45" href="#45">45</a>  <em> * Test cases for the export and update of groups.</em>
 <a name="46" href="#46">46</a>  <em> *</em>
 <a name="47" href="#47">47</a>  <em> * @author The MxUpdate Team</em>
-<a name="48" href="#48">48</a>  <em> * @version $Id: GroupTest.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
+<a name="48" href="#48">48</a>  <em> * @version $Id: GroupTest.java 748 2010-02-21 23:17:20Z tim.moxter $</em>
 <a name="49" href="#49">49</a>  <em> */</em>
 <a name="50" href="#50">50</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/ci/user/GroupTest.html">GroupTest</a>
 <a name="51" href="#51">51</a>      <strong>extends</strong> AbstractUserTest&lt;GroupData>
@@ -169,133 +169,134 @@
 <a name="160" href="#160">160</a> <em>     * @param _group        group to test</em>
 <a name="161" href="#161">161</a> <em>     * @throws Exception if test failed</em>
 <a name="162" href="#162">162</a> <em>     */</em>
-<a name="163" href="#163">163</a>     @Test(dataProvider = <span class="string">"groups"</span>, description = <span class="string">"test update of non existing group"</span>)
-<a name="164" href="#164">164</a>     <strong>public</strong> <strong>void</strong> simpleUpdate(<strong>final</strong> String _description,
-<a name="165" href="#165">165</a>                              <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a> _group)
-<a name="166" href="#166">166</a>         throws Exception
-<a name="167" href="#167">167</a>     {
-<a name="168" href="#168">168</a>         <em class="comment">// create all parent groups</em>
-<a name="169" href="#169">169</a>         <strong>for</strong> (<strong>final</strong> GroupData parent : _group.getParent())  {
-<a name="170" href="#170">170</a>             parent.create();
-<a name="171" href="#171">171</a>         }
-<a name="172" href="#172">172</a>         <em class="comment">// create referenced property value</em>
-<a name="173" href="#173">173</a>         <strong>for</strong> (<strong>final</strong> PropertyDef prop : _group.getProperties())  {
-<a name="174" href="#174">174</a>             <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="175" href="#175">175</a>                 prop.getTo().create();
-<a name="176" href="#176">176</a>             }
-<a name="177" href="#177">177</a>         }
-<a name="178" href="#178">178</a>         <em class="comment">// create site</em>
-<a name="179" href="#179">179</a>         <strong>if</strong> (_group.getSite() != <strong>null</strong>)  {
-<a name="180" href="#180">180</a>             _group.getSite().create();
-<a name="181" href="#181">181</a>         }
-<a name="182" href="#182">182</a>         <em class="comment">// create cue properties</em>
-<a name="183" href="#183">183</a>         <strong>for</strong> (<strong>final</strong> CueData&lt;GroupData> cue : _group.getCues())  {
-<a name="184" href="#184">184</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : cue.getProperties())  {
-<a name="185" href="#185">185</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="186" href="#186">186</a>                     prop.getTo().create();
-<a name="187" href="#187">187</a>                 }
-<a name="188" href="#188">188</a>             }
-<a name="189" href="#189">189</a>         }
-<a name="190" href="#190">190</a>         <em class="comment">// create filter properties</em>
-<a name="191" href="#191">191</a>         <strong>for</strong> (<strong>final</strong> FilterData&lt;GroupData> filter : _group.getFilters())  {
-<a name="192" href="#192">192</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : filter.getProperties())  {
-<a name="193" href="#193">193</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="194" href="#194">194</a>                     prop.getTo().create();
-<a name="195" href="#195">195</a>                 }
-<a name="196" href="#196">196</a>             }
-<a name="197" href="#197">197</a>         }
-<a name="198" href="#198">198</a>         <em class="comment">// create query properties</em>
-<a name="199" href="#199">199</a>         <strong>for</strong> (<strong>final</strong> QueryData&lt;GroupData> query : _group.getQueries())  {
-<a name="200" href="#200">200</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : query.getProperties())  {
-<a name="201" href="#201">201</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="202" href="#202">202</a>                     prop.getTo().create();
-<a name="203" href="#203">203</a>                 }
-<a name="204" href="#204">204</a>             }
-<a name="205" href="#205">205</a>         }
-<a name="206" href="#206">206</a>         <em class="comment">// create table properties</em>
-<a name="207" href="#207">207</a>         <strong>for</strong> (<strong>final</strong> TableData&lt;GroupData> table : _group.getTables())  {
-<a name="208" href="#208">208</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : table.getProperties())  {
-<a name="209" href="#209">209</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="210" href="#210">210</a>                     prop.getTo().create();
-<a name="211" href="#211">211</a>                 }
-<a name="212" href="#212">212</a>             }
-<a name="213" href="#213">213</a>         }
-<a name="214" href="#214">214</a>         <em class="comment">// create tip properties</em>
-<a name="215" href="#215">215</a>         <strong>for</strong> (<strong>final</strong> TipData&lt;GroupData> tip : _group.getTips())  {
-<a name="216" href="#216">216</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : tip.getProperties())  {
-<a name="217" href="#217">217</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="218" href="#218">218</a>                     prop.getTo().create();
-<a name="219" href="#219">219</a>                 }
-<a name="220" href="#220">220</a>             }
-<a name="221" href="#221">221</a>         }
-<a name="222" href="#222">222</a>         <em class="comment">// create tool set properties and programs</em>
-<a name="223" href="#223">223</a>         <strong>for</strong> (<strong>final</strong> ToolSetData&lt;GroupData> toolSet : _group.getToolSets())  {
-<a name="224" href="#224">224</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : toolSet.getProperties())  {
-<a name="225" href="#225">225</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="226" href="#226">226</a>                     prop.getTo().create();
-<a name="227" href="#227">227</a>                 }
-<a name="228" href="#228">228</a>             }
-<a name="229" href="#229">229</a>             <strong>for</strong> (<strong>final</strong> AbstractProgramData&lt;?> prog : toolSet.getPrograms())  {
-<a name="230" href="#230">230</a>                 prog.create();
-<a name="231" href="#231">231</a>             }
-<a name="232" href="#232">232</a>         }
-<a name="233" href="#233">233</a>         <em class="comment">// create view properties</em>
-<a name="234" href="#234">234</a>         <strong>for</strong> (<strong>final</strong> ViewData&lt;GroupData> view : _group.getViews())  {
-<a name="235" href="#235">235</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : view.getProperties())  {
-<a name="236" href="#236">236</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
-<a name="237" href="#237">237</a>                     prop.getTo().create();
-<a name="238" href="#238">238</a>                 }
-<a name="239" href="#239">239</a>             }
-<a name="240" href="#240">240</a>         }
-<a name="241" href="#241">241</a> 
-<a name="242" href="#242">242</a>         <em class="comment">// first update with original content</em>
-<a name="243" href="#243">243</a>         <strong>this</strong>.update(_group.getCIFileName(), _group.ciFile());
-<a name="244" href="#244">244</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _group.export();
-<a name="245" href="#245">245</a>         _group.checkExport(exportParser);
-<a name="246" href="#246">246</a> 
-<a name="247" href="#247">247</a>         <em class="comment">// second update with delivered content</em>
-<a name="248" href="#248">248</a>         <strong>this</strong>.update(_group.getCIFileName(), exportParser.getOrigCode());
-<a name="249" href="#249">249</a>         _group.checkExport(_group.export());
-<a name="250" href="#250">250</a>     }
-<a name="251" href="#251">251</a> 
-<a name="252" href="#252">252</a>     <em>/**<em>*</em></em>
-<a name="253" href="#253">253</a> <em>     * Test an update of a group where the site is removed.</em>
-<a name="254" href="#254">254</a> <em>     *</em>
-<a name="255" href="#255">255</a> <em>     * @throws Exception if test failed</em>
-<a name="256" href="#256">256</a> <em>     */</em>
-<a name="257" href="#257">257</a>     @Test(description = <span class="string">"update existing existing group with site by removing site"</span>)
-<a name="258" href="#258">258</a>     <strong>public</strong> <strong>void</strong> checkExistingSiteRemovedWithinUpdate()
-<a name="259" href="#259">259</a>         throws Exception
-<a name="260" href="#260">260</a>     {
-<a name="261" href="#261">261</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a> group = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a>(<strong>this</strong>, <span class="string">"hallo \&quot; test"</span>)
-<a name="262" href="#262">262</a>                 .setSite(<strong>new</strong> <a href="../../../../../org/mxupdate/test/data/other/SiteData.html">SiteData</a>(<strong>this</strong>, <span class="string">"Test \&quot; Site"</span>));
-<a name="263" href="#263">263</a>         group.create();
-<a name="264" href="#264">264</a>         group.setSite(<strong>null</strong>);
-<a name="265" href="#265">265</a>         <strong>this</strong>.update(group);
-<a name="266" href="#266">266</a> 
-<a name="267" href="#267">267</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print group \&quot;"</span> + AbstractTest.convertMql(group.getName()) + <span class="string">"\&quot; select site dump"</span>),
-<a name="268" href="#268">268</a>                             <span class="string">""</span>,
-<a name="269" href="#269">269</a>                             <span class="string">"check that no site is defined"</span>);
-<a name="270" href="#270">270</a>     }
-<a name="271" href="#271">271</a> 
-<a name="272" href="#272">272</a>     <em>/**<em>*</em></em>
-<a name="273" href="#273">273</a> <em>     * Check that the hidden flag is removed within update.</em>
-<a name="274" href="#274">274</a> <em>     *</em>
-<a name="275" href="#275">275</a> <em>     * @throws Exception if test failed</em>
-<a name="276" href="#276">276</a> <em>     */</em>
-<a name="277" href="#277">277</a>     @Test(description = <span class="string">"check that the hidden flag is removed within update"</span>)
-<a name="278" href="#278">278</a>     <strong>public</strong> <strong>void</strong> checkHiddenFlagRemoveWithinUpdate()
-<a name="279" href="#279">279</a>         throws Exception
-<a name="280" href="#280">280</a>     {
-<a name="281" href="#281">281</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a> group = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a>(<strong>this</strong>, <span class="string">"hallo \&quot; test"</span>).setHidden(<strong>true</strong>);
-<a name="282" href="#282">282</a>         group.create();
-<a name="283" href="#283">283</a>         group.setHidden(<strong>null</strong>);
-<a name="284" href="#284">284</a>         <strong>this</strong>.update(group);
-<a name="285" href="#285">285</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print group \&quot;"</span> + AbstractTest.convertMql(group.getName()) + <span class="string">"\&quot; select hidden dump"</span>),
-<a name="286" href="#286">286</a>                             <span class="string">"FALSE"</span>,
-<a name="287" href="#287">287</a>                             <span class="string">"check that group is not hidden"</span>);
-<a name="288" href="#288">288</a>     }
-<a name="289" href="#289">289</a> }
+<a name="163" href="#163">163</a>     @Test(dataProvider = <span class="string">"groups"</span>,
+<a name="164" href="#164">164</a>           description = <span class="string">"test update of non existing group"</span>)
+<a name="165" href="#165">165</a>     <strong>public</strong> <strong>void</strong> simpleUpdate(<strong>final</strong> String _description,
+<a name="166" href="#166">166</a>                              <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a> _group)
+<a name="167" href="#167">167</a>         throws Exception
+<a name="168" href="#168">168</a>     {
+<a name="169" href="#169">169</a>         <em class="comment">// create all parent groups</em>
+<a name="170" href="#170">170</a>         <strong>for</strong> (<strong>final</strong> GroupData parent : _group.getParent())  {
+<a name="171" href="#171">171</a>             parent.create();
+<a name="172" href="#172">172</a>         }
+<a name="173" href="#173">173</a>         <em class="comment">// create referenced property value</em>
+<a name="174" href="#174">174</a>         <strong>for</strong> (<strong>final</strong> PropertyDef prop : _group.getProperties())  {
+<a name="175" href="#175">175</a>             <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="176" href="#176">176</a>                 prop.getTo().create();
+<a name="177" href="#177">177</a>             }
+<a name="178" href="#178">178</a>         }
+<a name="179" href="#179">179</a>         <em class="comment">// create site</em>
+<a name="180" href="#180">180</a>         <strong>if</strong> (_group.getSite() != <strong>null</strong>)  {
+<a name="181" href="#181">181</a>             _group.getSite().create();
+<a name="182" href="#182">182</a>         }
+<a name="183" href="#183">183</a>         <em class="comment">// create cue properties</em>
+<a name="184" href="#184">184</a>         <strong>for</strong> (<strong>final</strong> CueData&lt;GroupData> cue : _group.getCues())  {
+<a name="185" href="#185">185</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : cue.getProperties())  {
+<a name="186" href="#186">186</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="187" href="#187">187</a>                     prop.getTo().create();
+<a name="188" href="#188">188</a>                 }
+<a name="189" href="#189">189</a>             }
+<a name="190" href="#190">190</a>         }
+<a name="191" href="#191">191</a>         <em class="comment">// create filter properties</em>
+<a name="192" href="#192">192</a>         <strong>for</strong> (<strong>final</strong> FilterData&lt;GroupData> filter : _group.getFilters())  {
+<a name="193" href="#193">193</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : filter.getProperties())  {
+<a name="194" href="#194">194</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="195" href="#195">195</a>                     prop.getTo().create();
+<a name="196" href="#196">196</a>                 }
+<a name="197" href="#197">197</a>             }
+<a name="198" href="#198">198</a>         }
+<a name="199" href="#199">199</a>         <em class="comment">// create query properties</em>
+<a name="200" href="#200">200</a>         <strong>for</strong> (<strong>final</strong> QueryData&lt;GroupData> query : _group.getQueries())  {
+<a name="201" href="#201">201</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : query.getProperties())  {
+<a name="202" href="#202">202</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="203" href="#203">203</a>                     prop.getTo().create();
+<a name="204" href="#204">204</a>                 }
+<a name="205" href="#205">205</a>             }
+<a name="206" href="#206">206</a>         }
+<a name="207" href="#207">207</a>         <em class="comment">// create table properties</em>
+<a name="208" href="#208">208</a>         <strong>for</strong> (<strong>final</strong> TableData&lt;GroupData> table : _group.getTables())  {
+<a name="209" href="#209">209</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : table.getProperties())  {
+<a name="210" href="#210">210</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="211" href="#211">211</a>                     prop.getTo().create();
+<a name="212" href="#212">212</a>                 }
+<a name="213" href="#213">213</a>             }
+<a name="214" href="#214">214</a>         }
+<a name="215" href="#215">215</a>         <em class="comment">// create tip properties</em>
+<a name="216" href="#216">216</a>         <strong>for</strong> (<strong>final</strong> TipData&lt;GroupData> tip : _group.getTips())  {
+<a name="217" href="#217">217</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : tip.getProperties())  {
+<a name="218" href="#218">218</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="219" href="#219">219</a>                     prop.getTo().create();
+<a name="220" href="#220">220</a>                 }
+<a name="221" href="#221">221</a>             }
+<a name="222" href="#222">222</a>         }
+<a name="223" href="#223">223</a>         <em class="comment">// create tool set properties and programs</em>
+<a name="224" href="#224">224</a>         <strong>for</strong> (<strong>final</strong> ToolSetData&lt;GroupData> toolSet : _group.getToolSets())  {
+<a name="225" href="#225">225</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : toolSet.getProperties())  {
+<a name="226" href="#226">226</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="227" href="#227">227</a>                     prop.getTo().create();
+<a name="228" href="#228">228</a>                 }
+<a name="229" href="#229">229</a>             }
+<a name="230" href="#230">230</a>             <strong>for</strong> (<strong>final</strong> AbstractProgramData&lt;?> prog : toolSet.getPrograms())  {
+<a name="231" href="#231">231</a>                 prog.create();
+<a name="232" href="#232">232</a>             }
+<a name="233" href="#233">233</a>         }
+<a name="234" href="#234">234</a>         <em class="comment">// create view properties</em>
+<a name="235" href="#235">235</a>         <strong>for</strong> (<strong>final</strong> ViewData&lt;GroupData> view : _group.getViews())  {
+<a name="236" href="#236">236</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : view.getProperties())  {
+<a name="237" href="#237">237</a>                 <strong>if</strong> (prop.getTo() != <strong>null</strong>)  {
+<a name="238" href="#238">238</a>                     prop.getTo().create();
+<a name="239" href="#239">239</a>                 }
+<a name="240" href="#240">240</a>             }
+<a name="241" href="#241">241</a>         }
+<a name="242" href="#242">242</a> 
+<a name="243" href="#243">243</a>         <em class="comment">// first update with original content</em>
+<a name="244" href="#244">244</a>         _group.update();
+<a name="245" href="#245">245</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> exportParser = _group.export();
+<a name="246" href="#246">246</a>         _group.checkExport(exportParser);
+<a name="247" href="#247">247</a> 
+<a name="248" href="#248">248</a>         <em class="comment">// second update with delivered content</em>
+<a name="249" href="#249">249</a>         _group.updateWithCode(exportParser.getOrigCode())
+<a name="250" href="#250">250</a>               .checkExport(_group.export());
+<a name="251" href="#251">251</a>     }
+<a name="252" href="#252">252</a> 
+<a name="253" href="#253">253</a>     <em>/**<em>*</em></em>
+<a name="254" href="#254">254</a> <em>     * Test an update of a group where the site is removed.</em>
+<a name="255" href="#255">255</a> <em>     *</em>
+<a name="256" href="#256">256</a> <em>     * @throws Exception if test failed</em>
+<a name="257" href="#257">257</a> <em>     */</em>
+<a name="258" href="#258">258</a>     @Test(description = <span class="string">"update existing existing group with site by removing site"</span>)
+<a name="259" href="#259">259</a>     <strong>public</strong> <strong>void</strong> checkExistingSiteRemovedWithinUpdate()
+<a name="260" href="#260">260</a>         throws Exception
+<a name="261" href="#261">261</a>     {
+<a name="262" href="#262">262</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a> group = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a>(<strong>this</strong>, <span class="string">"hallo \&quot; test"</span>)
+<a name="263" href="#263">263</a>                 .setSite(<strong>new</strong> <a href="../../../../../org/mxupdate/test/data/other/SiteData.html">SiteData</a>(<strong>this</strong>, <span class="string">"Test \&quot; Site"</span>));
+<a name="264" href="#264">264</a>         group.create();
+<a name="265" href="#265">265</a>         group.setSite(<strong>null</strong>);
+<a name="266" href="#266">266</a>         group.update();
+<a name="267" href="#267">267</a> 
+<a name="268" href="#268">268</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print group \&quot;"</span> + AbstractTest.convertMql(group.getName()) + <span class="string">"\&quot; select site dump"</span>),
+<a name="269" href="#269">269</a>                             <span class="string">""</span>,
+<a name="270" href="#270">270</a>                             <span class="string">"check that no site is defined"</span>);
+<a name="271" href="#271">271</a>     }
+<a name="272" href="#272">272</a> 
+<a name="273" href="#273">273</a>     <em>/**<em>*</em></em>
+<a name="274" href="#274">274</a> <em>     * Check that the hidden flag is removed within update.</em>
+<a name="275" href="#275">275</a> <em>     *</em>
+<a name="276" href="#276">276</a> <em>     * @throws Exception if test failed</em>
+<a name="277" href="#277">277</a> <em>     */</em>
+<a name="278" href="#278">278</a>     @Test(description = <span class="string">"check that the hidden flag is removed within update"</span>)
+<a name="279" href="#279">279</a>     <strong>public</strong> <strong>void</strong> checkHiddenFlagRemoveWithinUpdate()
+<a name="280" href="#280">280</a>         throws Exception
+<a name="281" href="#281">281</a>     {
+<a name="282" href="#282">282</a>         <strong>final</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a> group = <strong>new</strong> <a href="../../../../../org/mxupdate/test/data/user/GroupData.html">GroupData</a>(<strong>this</strong>, <span class="string">"hallo \&quot; test"</span>).setHidden(<strong>true</strong>);
+<a name="283" href="#283">283</a>         group.create();
+<a name="284" href="#284">284</a>         group.setHidden(<strong>null</strong>);
+<a name="285" href="#285">285</a>         group.update();
+<a name="286" href="#286">286</a>         Assert.assertEquals(<strong>this</strong>.mql(<span class="string">"escape print group \&quot;"</span> + AbstractTest.convertMql(group.getName()) + <span class="string">"\&quot; select hidden dump"</span>),
+<a name="287" href="#287">287</a>                             <span class="string">"FALSE"</span>,
+<a name="288" href="#288">288</a>                             <span class="string">"check that group is not hidden"</span>);
+<a name="289" href="#289">289</a>     }
+<a name="290" href="#290">290</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

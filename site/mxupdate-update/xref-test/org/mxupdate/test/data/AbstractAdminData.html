@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 735 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-21 11:57:26 +0100 (So, 21 Feb 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -47,7 +47,7 @@
 <a name="38" href="#38">38</a>  <em> *</em>
 <a name="39" href="#39">39</a>  <em> * @param &lt;DATA>    class which is derived from this class</em>
 <a name="40" href="#40">40</a>  <em> * @author The MxUpdate Team</em>
-<a name="41" href="#41">41</a>  <em> * @version $Id: AbstractAdminData.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
+<a name="41" href="#41">41</a>  <em> * @version $Id: AbstractAdminData.java 735 2010-02-21 10:57:26Z tim.moxter $</em>
 <a name="42" href="#42">42</a>  <em> */</em>
 <a name="43" href="#43">43</a>  <strong>public</strong> <strong>abstract</strong> <strong>class</strong> AbstractAdminData&lt;DATA <strong>extends</strong> AbstractAdminData&lt;?>>
 <a name="44" href="#44">44</a>      <strong>extends</strong> AbstractData&lt;DATA>
@@ -189,122 +189,169 @@
 <a name="180" href="#180">180</a>     }
 <a name="181" href="#181">181</a> 
 <a name="182" href="#182">182</a>     <em>/**<em>*</em></em>
-<a name="183" href="#183">183</a> <em>     * Appends the defined {@link #getValues() values} to the TCL code</em>
-<a name="184" href="#184">184</a> <em>     * &lt;code>_cmd&lt;/code> of the configuration item file.</em>
-<a name="185" href="#185">185</a> <em>     *</em>
-<a name="186" href="#186">186</a> <em>     * @param _cmd  string builder with the TCL commands of the configuration</em>
-<a name="187" href="#187">187</a> <em>     *              item file</em>
-<a name="188" href="#188">188</a> <em>     * @see #values</em>
-<a name="189" href="#189">189</a> <em>     */</em>
-<a name="190" href="#190">190</a>     <strong>protected</strong> <strong>void</strong> append4CIFileValues(<strong>final</strong> StringBuilder _cmd)
-<a name="191" href="#191">191</a>     {
-<a name="192" href="#192">192</a>         <em class="comment">// values</em>
-<a name="193" href="#193">193</a>         <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> entry : <strong>this</strong>.getValues().entrySet())  {
-<a name="194" href="#194">194</a>             _cmd.append(' ').append(entry.getKey()).append(<span class="string">" \&quot;"</span>)
-<a name="195" href="#195">195</a>                 .append(AbstractTest.convertTcl(entry.getValue()))
-<a name="196" href="#196">196</a>                 .append('\&quot;');
-<a name="197" href="#197">197</a>         }
-<a name="198" href="#198">198</a>         <em class="comment">// check for add values</em>
-<a name="199" href="#199">199</a>         <strong>final</strong> Set&lt;String> needAdds = <strong>new</strong> HashSet&lt;String>();
-<a name="200" href="#200">200</a>         <strong>this</strong>.evalAdds4CheckExport(needAdds);
-<a name="201" href="#201">201</a>         <strong>for</strong> (<strong>final</strong> String needAdd : needAdds)  {
-<a name="202" href="#202">202</a>             _cmd.append(<span class="string">" add "</span>).append(needAdd);
-<a name="203" href="#203">203</a>         }
-<a name="204" href="#204">204</a>         <em class="comment">// properties</em>
-<a name="205" href="#205">205</a>         <strong>for</strong> (<strong>final</strong> PropertyDef property : <strong>this</strong>.getProperties())  {
-<a name="206" href="#206">206</a>             _cmd.append(<span class="string">" property \&quot;"</span>).append(AbstractTest.convertTcl(property.getName())).append(<span class="string">"\&quot;"</span>);
-<a name="207" href="#207">207</a>             <strong>if</strong> (property.getTo() != <strong>null</strong>)  {
-<a name="208" href="#208">208</a>                 _cmd.append(<span class="string">" to "</span>).append(property.getTo().getCI().getMxType()).append(<span class="string">" \&quot;"</span>)
-<a name="209" href="#209">209</a>                     .append(AbstractTest.convertTcl(property.getTo().getName())).append(<span class="string">"\&quot;"</span>);
-<a name="210" href="#210">210</a>                 <strong>if</strong> (property.getTo().getCI() == AbstractTest.CI.UI_TABLE)  {
-<a name="211" href="#211">211</a>                     _cmd.append(<span class="string">" system"</span>);
-<a name="212" href="#212">212</a>                 }
-<a name="213" href="#213">213</a>             }
-<a name="214" href="#214">214</a>             <strong>if</strong> (property.getValue() != <strong>null</strong>)  {
-<a name="215" href="#215">215</a>                 _cmd.append(<span class="string">" value \&quot;"</span>).append(AbstractTest.convertTcl(property.getValue())).append(<span class="string">"\&quot;"</span>);
-<a name="216" href="#216">216</a>             }
-<a name="217" href="#217">217</a>         }
-<a name="218" href="#218">218</a>     }
-<a name="219" href="#219">219</a> 
-<a name="220" href="#220">220</a>     <em>/**<em>*</em></em>
-<a name="221" href="#221">221</a> <em>     * Appends the MQL commands to define all {@link #values} and</em>
-<a name="222" href="#222">222</a> <em>     * {@link #properties} within a create.</em>
-<a name="223" href="#223">223</a> <em>     *</em>
-<a name="224" href="#224">224</a> <em>     * @param _cmd  string builder used to append MQL commands</em>
-<a name="225" href="#225">225</a> <em>     * @throws MatrixException if used object could not be created</em>
-<a name="226" href="#226">226</a> <em>     * @see #values</em>
-<a name="227" href="#227">227</a> <em>     */</em>
-<a name="228" href="#228">228</a>     <strong>protected</strong> <strong>void</strong> append4Create(<strong>final</strong> StringBuilder _cmd)
-<a name="229" href="#229">229</a>         throws MatrixException
-<a name="230" href="#230">230</a>     {
-<a name="231" href="#231">231</a>         <em class="comment">// values</em>
-<a name="232" href="#232">232</a>         <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> entry : <strong>this</strong>.getValues().entrySet())  {
-<a name="233" href="#233">233</a>             _cmd.append(' ').append(entry.getKey()).append(<span class="string">" \&quot;"</span>)
-<a name="234" href="#234">234</a>                 .append(AbstractTest.convertMql(entry.getValue()))
-<a name="235" href="#235">235</a>                 .append('\&quot;');
-<a name="236" href="#236">236</a>         }
-<a name="237" href="#237">237</a>         <em class="comment">// properties</em>
-<a name="238" href="#238">238</a>         <strong>for</strong> (<strong>final</strong> PropertyDef property : <strong>this</strong>.properties)  {
-<a name="239" href="#239">239</a>             _cmd.append(<span class="string">" property \&quot;"</span>).append(AbstractTest.convertMql(property.getName())).append(<span class="string">"\&quot;"</span>);
-<a name="240" href="#240">240</a>             <strong>if</strong> (property.getTo() != <strong>null</strong>)  {
-<a name="241" href="#241">241</a>                 property.getTo().create();
-<a name="242" href="#242">242</a>                 _cmd.append(<span class="string">" to "</span>).append(property.getTo().getCI().getMxType()).append(<span class="string">" \&quot;"</span>)
-<a name="243" href="#243">243</a>                     .append(AbstractTest.convertMql(property.getTo().getName())).append(<span class="string">"\&quot;"</span>);
-<a name="244" href="#244">244</a>                 <strong>if</strong> (property.getTo().getCI() == AbstractTest.CI.UI_TABLE)  {
-<a name="245" href="#245">245</a>                     _cmd.append(<span class="string">" system"</span>);
-<a name="246" href="#246">246</a>                 }
-<a name="247" href="#247">247</a>             }
-<a name="248" href="#248">248</a>             <strong>if</strong> (property.getValue() != <strong>null</strong>)  {
-<a name="249" href="#249">249</a>                 _cmd.append(<span class="string">" value \&quot;"</span>).append(AbstractTest.convertMql(property.getValue())).append(<span class="string">"\&quot;"</span>);
-<a name="250" href="#250">250</a>             }
-<a name="251" href="#251">251</a>         }
-<a name="252" href="#252">252</a>     }
-<a name="253" href="#253">253</a> 
-<a name="254" href="#254">254</a>     <em>/**<em>*</em></em>
-<a name="255" href="#255">255</a> <em>     * Checks the export of this data piece if all values are correct defined.</em>
-<a name="256" href="#256">256</a> <em>     *</em>
-<a name="257" href="#257">257</a> <em>     * @param _exportParser     parsed export</em>
-<a name="258" href="#258">258</a> <em>     * @throws MatrixException if check failed</em>
-<a name="259" href="#259">259</a> <em>     */</em>
-<a name="260" href="#260">260</a>     @Override()
-<a name="261" href="#261">261</a>     <strong>public</strong> <strong>void</strong> checkExport(<strong>final</strong> <a href="../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> _exportParser)
-<a name="262" href="#262">262</a>         throws MatrixException
-<a name="263" href="#263">263</a>     {
-<a name="264" href="#264">264</a>         <strong>super</strong>.checkExport(_exportParser);
-<a name="265" href="#265">265</a>         Assert.assertEquals(_exportParser.getSymbolicName(), <strong>this</strong>.getSymbolicName(), <span class="string">"check symbolic name"</span>);
-<a name="266" href="#266">266</a>         <em class="comment">// check for defined values</em>
-<a name="267" href="#267">267</a>         <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> entry : <strong>this</strong>.getValues().entrySet())  {
-<a name="268" href="#268">268</a>             <strong>this</strong>.checkSingleValue(_exportParser, entry.getKey(), entry.getKey(), <span class="string">"\&quot;"</span> + AbstractTest.convertTcl(entry.getValue()) + <span class="string">"\&quot;"</span>);
-<a name="269" href="#269">269</a>         }
-<a name="270" href="#270">270</a>         <em class="comment">// check for all required values</em>
-<a name="271" href="#271">271</a>         <strong>if</strong> (<strong>this</strong>.requiredExportValues != <strong>null</strong>)  {
-<a name="272" href="#272">272</a>             <strong>for</strong> (<strong>final</strong> String valueName : <strong>this</strong>.requiredExportValues)  {
-<a name="273" href="#273">273</a>                 Assert.assertEquals(_exportParser.getLines(<span class="string">"/mql/"</span> + valueName + <span class="string">"/@value"</span>).size(),
-<a name="274" href="#274">274</a>                                     1,
-<a name="275" href="#275">275</a>                                     <span class="string">"required check that minimum and maximum one "</span> + valueName + <span class="string">" is defined"</span>);
-<a name="276" href="#276">276</a>             }
-<a name="277" href="#277">277</a>         }
-<a name="278" href="#278">278</a>         <em class="comment">// check for add values</em>
-<a name="279" href="#279">279</a>         <strong>final</strong> Set&lt;String> needAdds = <strong>new</strong> HashSet&lt;String>();
-<a name="280" href="#280">280</a>         <strong>this</strong>.evalAdds4CheckExport(needAdds);
-<a name="281" href="#281">281</a>         <strong>final</strong> List&lt;String> foundAdds = _exportParser.getLines(<span class="string">"/mql/add/@value"</span>);
-<a name="282" href="#282">282</a>         Assert.assertEquals(foundAdds.size(), needAdds.size(), <span class="string">"all adds defined"</span>);
-<a name="283" href="#283">283</a>         <strong>for</strong> (<strong>final</strong> String foundAdd : foundAdds)  {
-<a name="284" href="#284">284</a>             Assert.assertTrue(needAdds.contains(foundAdd), <span class="string">"check that add '"</span> + foundAdd + <span class="string">"' is defined"</span>);
-<a name="285" href="#285">285</a>         }
-<a name="286" href="#286">286</a>     }
-<a name="287" href="#287">287</a> 
-<a name="288" href="#288">288</a>     <em>/**<em>*</em></em>
-<a name="289" href="#289">289</a> <em>     * Evaluates all 'adds' in the configuration item file (e.g. add</em>
-<a name="290" href="#290">290</a> <em>     * setting, ...). Because for the abstract data no adds exists this method</em>
-<a name="291" href="#291">291</a> <em>     * is only a dummy.</em>
-<a name="292" href="#292">292</a> <em>     *</em>
-<a name="293" href="#293">293</a> <em>     * @param _needAdds     set with add strings used to append the adds</em>
-<a name="294" href="#294">294</a> <em>     */</em>
-<a name="295" href="#295">295</a>     <strong>protected</strong> <strong>void</strong> evalAdds4CheckExport(<strong>final</strong> Set&lt;String> _needAdds)
-<a name="296" href="#296">296</a>     {
-<a name="297" href="#297">297</a>     }
-<a name="298" href="#298">298</a> }
+<a name="183" href="#183">183</a> <em>     * Appends the file header for the CI file.</em>
+<a name="184" href="#184">184</a> <em>     *</em>
+<a name="185" href="#185">185</a> <em>     * @param _cmd  string builder of the CI file content</em>
+<a name="186" href="#186">186</a> <em>     */</em>
+<a name="187" href="#187">187</a>     <strong>protected</strong> <strong>void</strong> append4CIFileHeader(<strong>final</strong> StringBuilder _cmd)
+<a name="188" href="#188">188</a>     {
+<a name="189" href="#189">189</a>         _cmd.append(<span class="string">"#\n"</span>)
+<a name="190" href="#190">190</a>             .append(<span class="string">"# SYMBOLIC NAME:\n"</span>)
+<a name="191" href="#191">191</a>             .append(<span class="string">"# ~~~~~~~~~~~~~~\n"</span>)
+<a name="192" href="#192">192</a>             .append(<span class="string">"# "</span>).append(<strong>this</strong>.getSymbolicName()).append(<span class="string">"\n\n"</span>);
+<a name="193" href="#193">193</a>     }
+<a name="194" href="#194">194</a> 
+<a name="195" href="#195">195</a>     <em>/**<em>*</em></em>
+<a name="196" href="#196">196</a> <em>     * Appends the defined {@link #getValues() values} to the TCL code</em>
+<a name="197" href="#197">197</a> <em>     * &lt;code>_cmd&lt;/code> of the configuration item file.</em>
+<a name="198" href="#198">198</a> <em>     *</em>
+<a name="199" href="#199">199</a> <em>     * @param _cmd  string builder with the TCL commands of the configuration</em>
+<a name="200" href="#200">200</a> <em>     *              item file</em>
+<a name="201" href="#201">201</a> <em>     * @see #values</em>
+<a name="202" href="#202">202</a> <em>     */</em>
+<a name="203" href="#203">203</a>     <strong>protected</strong> <strong>void</strong> append4CIFileValues(<strong>final</strong> StringBuilder _cmd)
+<a name="204" href="#204">204</a>     {
+<a name="205" href="#205">205</a>         <em class="comment">// values</em>
+<a name="206" href="#206">206</a>         <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> entry : <strong>this</strong>.getValues().entrySet())  {
+<a name="207" href="#207">207</a>             _cmd.append(' ').append(entry.getKey()).append(<span class="string">" \&quot;"</span>)
+<a name="208" href="#208">208</a>                 .append(AbstractTest.convertTcl(entry.getValue()))
+<a name="209" href="#209">209</a>                 .append('\&quot;');
+<a name="210" href="#210">210</a>         }
+<a name="211" href="#211">211</a>         <em class="comment">// check for add values</em>
+<a name="212" href="#212">212</a>         <strong>final</strong> Set&lt;String> needAdds = <strong>new</strong> HashSet&lt;String>();
+<a name="213" href="#213">213</a>         <strong>this</strong>.evalAdds4CheckExport(needAdds);
+<a name="214" href="#214">214</a>         <strong>for</strong> (<strong>final</strong> String needAdd : needAdds)  {
+<a name="215" href="#215">215</a>             _cmd.append(<span class="string">" add "</span>).append(needAdd);
+<a name="216" href="#216">216</a>         }
+<a name="217" href="#217">217</a>         <em class="comment">// properties</em>
+<a name="218" href="#218">218</a>         <strong>for</strong> (<strong>final</strong> PropertyDef property : <strong>this</strong>.getProperties())  {
+<a name="219" href="#219">219</a>             _cmd.append(<span class="string">" property \&quot;"</span>).append(AbstractTest.convertTcl(property.getName())).append(<span class="string">"\&quot;"</span>);
+<a name="220" href="#220">220</a>             <strong>if</strong> (property.getTo() != <strong>null</strong>)  {
+<a name="221" href="#221">221</a>                 _cmd.append(<span class="string">" to "</span>).append(property.getTo().getCI().getMxType()).append(<span class="string">" \&quot;"</span>)
+<a name="222" href="#222">222</a>                     .append(AbstractTest.convertTcl(property.getTo().getName())).append(<span class="string">"\&quot;"</span>);
+<a name="223" href="#223">223</a>                 <strong>if</strong> (property.getTo().getCI() == AbstractTest.CI.UI_TABLE)  {
+<a name="224" href="#224">224</a>                     _cmd.append(<span class="string">" system"</span>);
+<a name="225" href="#225">225</a>                 }
+<a name="226" href="#226">226</a>             }
+<a name="227" href="#227">227</a>             <strong>if</strong> (property.getValue() != <strong>null</strong>)  {
+<a name="228" href="#228">228</a>                 _cmd.append(<span class="string">" value \&quot;"</span>).append(AbstractTest.convertTcl(property.getValue())).append(<span class="string">"\&quot;"</span>);
+<a name="229" href="#229">229</a>             }
+<a name="230" href="#230">230</a>         }
+<a name="231" href="#231">231</a>     }
+<a name="232" href="#232">232</a> 
+<a name="233" href="#233">233</a>     <em>/**<em>*</em></em>
+<a name="234" href="#234">234</a> <em>     * Appends the MQL commands to define all {@link #values} and</em>
+<a name="235" href="#235">235</a> <em>     * {@link #properties} within a create.</em>
+<a name="236" href="#236">236</a> <em>     *</em>
+<a name="237" href="#237">237</a> <em>     * @param _cmd  string builder used to append MQL commands</em>
+<a name="238" href="#238">238</a> <em>     * @throws MatrixException if used object could not be created</em>
+<a name="239" href="#239">239</a> <em>     * @see #values</em>
+<a name="240" href="#240">240</a> <em>     */</em>
+<a name="241" href="#241">241</a>     <strong>protected</strong> <strong>void</strong> append4Create(<strong>final</strong> StringBuilder _cmd)
+<a name="242" href="#242">242</a>         throws MatrixException
+<a name="243" href="#243">243</a>     {
+<a name="244" href="#244">244</a>         <em class="comment">// values</em>
+<a name="245" href="#245">245</a>         <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> entry : <strong>this</strong>.getValues().entrySet())  {
+<a name="246" href="#246">246</a>             _cmd.append(' ').append(entry.getKey()).append(<span class="string">" \&quot;"</span>)
+<a name="247" href="#247">247</a>                 .append(AbstractTest.convertMql(entry.getValue()))
+<a name="248" href="#248">248</a>                 .append('\&quot;');
+<a name="249" href="#249">249</a>         }
+<a name="250" href="#250">250</a>         <em class="comment">// properties</em>
+<a name="251" href="#251">251</a>         <strong>for</strong> (<strong>final</strong> PropertyDef property : <strong>this</strong>.properties)  {
+<a name="252" href="#252">252</a>             _cmd.append(<span class="string">" property \&quot;"</span>).append(AbstractTest.convertMql(property.getName())).append(<span class="string">"\&quot;"</span>);
+<a name="253" href="#253">253</a>             <strong>if</strong> (property.getTo() != <strong>null</strong>)  {
+<a name="254" href="#254">254</a>                 property.getTo().create();
+<a name="255" href="#255">255</a>                 _cmd.append(<span class="string">" to "</span>).append(property.getTo().getCI().getMxType()).append(<span class="string">" \&quot;"</span>)
+<a name="256" href="#256">256</a>                     .append(AbstractTest.convertMql(property.getTo().getName())).append(<span class="string">"\&quot;"</span>);
+<a name="257" href="#257">257</a>                 <strong>if</strong> (property.getTo().getCI() == AbstractTest.CI.UI_TABLE)  {
+<a name="258" href="#258">258</a>                     _cmd.append(<span class="string">" system"</span>);
+<a name="259" href="#259">259</a>                 }
+<a name="260" href="#260">260</a>             }
+<a name="261" href="#261">261</a>             <strong>if</strong> (property.getValue() != <strong>null</strong>)  {
+<a name="262" href="#262">262</a>                 _cmd.append(<span class="string">" value \&quot;"</span>).append(AbstractTest.convertMql(property.getValue())).append(<span class="string">"\&quot;"</span>);
+<a name="263" href="#263">263</a>             }
+<a name="264" href="#264">264</a>         }
+<a name="265" href="#265">265</a>     }
+<a name="266" href="#266">266</a> 
+<a name="267" href="#267">267</a>     <em>/**<em>*</em></em>
+<a name="268" href="#268">268</a> <em>     * Checks the export of this data piece if all values are correct defined.</em>
+<a name="269" href="#269">269</a> <em>     *</em>
+<a name="270" href="#270">270</a> <em>     * @param _exportParser     parsed export</em>
+<a name="271" href="#271">271</a> <em>     * @throws MatrixException if check failed</em>
+<a name="272" href="#272">272</a> <em>     */</em>
+<a name="273" href="#273">273</a>     @Override()
+<a name="274" href="#274">274</a>     <strong>public</strong> <strong>void</strong> checkExport(<strong>final</strong> <a href="../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> _exportParser)
+<a name="275" href="#275">275</a>         throws MatrixException
+<a name="276" href="#276">276</a>     {
+<a name="277" href="#277">277</a>         <strong>super</strong>.checkExport(_exportParser);
+<a name="278" href="#278">278</a>         <strong>this</strong>.checkExportProperties(_exportParser);
+<a name="279" href="#279">279</a>         Assert.assertEquals(_exportParser.getSymbolicName(), <strong>this</strong>.getSymbolicName(), <span class="string">"check symbolic name"</span>);
+<a name="280" href="#280">280</a>         <em class="comment">// check for defined values</em>
+<a name="281" href="#281">281</a>         <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> entry : <strong>this</strong>.getValues().entrySet())  {
+<a name="282" href="#282">282</a>             <strong>this</strong>.checkSingleValue(_exportParser, entry.getKey(), entry.getKey(), <span class="string">"\&quot;"</span> + AbstractTest.convertTcl(entry.getValue()) + <span class="string">"\&quot;"</span>);
+<a name="283" href="#283">283</a>         }
+<a name="284" href="#284">284</a>         <em class="comment">// check for all required values</em>
+<a name="285" href="#285">285</a>         <strong>if</strong> (<strong>this</strong>.requiredExportValues != <strong>null</strong>)  {
+<a name="286" href="#286">286</a>             <strong>for</strong> (<strong>final</strong> String valueName : <strong>this</strong>.requiredExportValues)  {
+<a name="287" href="#287">287</a>                 Assert.assertEquals(_exportParser.getLines(<span class="string">"/mql/"</span> + valueName + <span class="string">"/@value"</span>).size(),
+<a name="288" href="#288">288</a>                                     1,
+<a name="289" href="#289">289</a>                                     <span class="string">"required check that minimum and maximum one "</span> + valueName + <span class="string">" is defined"</span>);
+<a name="290" href="#290">290</a>             }
+<a name="291" href="#291">291</a>         }
+<a name="292" href="#292">292</a>         <em class="comment">// check for add values</em>
+<a name="293" href="#293">293</a>         <strong>final</strong> Set&lt;String> needAdds = <strong>new</strong> HashSet&lt;String>();
+<a name="294" href="#294">294</a>         <strong>this</strong>.evalAdds4CheckExport(needAdds);
+<a name="295" href="#295">295</a>         <strong>final</strong> List&lt;String> foundAdds = _exportParser.getLines(<span class="string">"/mql/add/@value"</span>);
+<a name="296" href="#296">296</a>         Assert.assertEquals(foundAdds.size(), needAdds.size(), <span class="string">"all adds defined (found adds = "</span> + foundAdds + <span class="string">"; need adds = "</span> + needAdds + <span class="string">")"</span>);
+<a name="297" href="#297">297</a>         <strong>for</strong> (<strong>final</strong> String foundAdd : foundAdds)  {
+<a name="298" href="#298">298</a>             Assert.assertTrue(needAdds.contains(foundAdd), <span class="string">"check that add '"</span> + foundAdd + <span class="string">"' is defined"</span>);
+<a name="299" href="#299">299</a>         }
+<a name="300" href="#300">300</a>     }
+<a name="301" href="#301">301</a> 
+<a name="302" href="#302">302</a>     <em>/**<em>*</em></em>
+<a name="303" href="#303">303</a> <em>     * Checks that all properties within the export file are correct defined</em>
+<a name="304" href="#304">304</a> <em>     * and equal to the defined properties of this CI file.</em>
+<a name="305" href="#305">305</a> <em>     *</em>
+<a name="306" href="#306">306</a> <em>     * @param _exportParser     parsed export</em>
+<a name="307" href="#307">307</a> <em>     */</em>
+<a name="308" href="#308">308</a>     <strong>protected</strong> <strong>void</strong> checkExportProperties(<strong>final</strong> <a href="../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> _exportParser)
+<a name="309" href="#309">309</a>     {
+<a name="310" href="#310">310</a>         <em class="comment">// only if this instance is a configuration item the check is done..</em>
+<a name="311" href="#311">311</a>         <strong>if</strong> (<strong>this</strong>.getCI() != <strong>null</strong>)  {
+<a name="312" href="#312">312</a>             <strong>final</strong> Set&lt;String> propDefs = <strong>new</strong> HashSet&lt;String>();
+<a name="313" href="#313">313</a>             <strong>for</strong> (<strong>final</strong> ExportParser.Line rootLine : _exportParser.getRootLines())  {
+<a name="314" href="#314">314</a>                 <strong>if</strong> (rootLine.getValue().startsWith(<span class="string">"escape add property"</span>))  {
+<a name="315" href="#315">315</a>                     <strong>final</strong> StringBuilder propDef = <strong>new</strong> StringBuilder().append(<span class="string">"mql "</span>).append(rootLine.getValue());
+<a name="316" href="#316">316</a>                     <strong>for</strong> (<strong>final</strong> ExportParser.Line childLine : rootLine.getChildren())  {
+<a name="317" href="#317">317</a>                         propDef.append(' ').append(childLine.getTag()).append(' ')
+<a name="318" href="#318">318</a>                                .append(childLine.getValue());
+<a name="319" href="#319">319</a>                     }
+<a name="320" href="#320">320</a>                     propDefs.add(propDef.toString());
+<a name="321" href="#321">321</a>                 }
+<a name="322" href="#322">322</a>             }
+<a name="323" href="#323">323</a>             <strong>for</strong> (<strong>final</strong> PropertyDef prop : <strong>this</strong>.properties)  {
+<a name="324" href="#324">324</a>                 <strong>final</strong> String propDefStr = prop.getCITCLString(<strong>this</strong>.getCI());
+<a name="325" href="#325">325</a>                 Assert.assertTrue(
+<a name="326" href="#326">326</a>                         propDefs.contains(propDefStr),
+<a name="327" href="#327">327</a>                         <span class="string">"check that property is defined in ci file (have "</span> + propDefStr + <span class="string">")"</span>);
+<a name="328" href="#328">328</a>                 propDefs.remove(propDefStr);
+<a name="329" href="#329">329</a>             }
+<a name="330" href="#330">330</a> 
+<a name="331" href="#331">331</a>             Assert.assertEquals(propDefs.size(), 0, <span class="string">"check that not too much properties are defined (have "</span> + propDefs + <span class="string">")"</span>);
+<a name="332" href="#332">332</a>         }
+<a name="333" href="#333">333</a>     }
+<a name="334" href="#334">334</a> 
+<a name="335" href="#335">335</a>     <em>/**<em>*</em></em>
+<a name="336" href="#336">336</a> <em>     * Evaluates all 'adds' in the configuration item file (e.g. add</em>
+<a name="337" href="#337">337</a> <em>     * setting, ...). Because for the abstract data no adds exists this method</em>
+<a name="338" href="#338">338</a> <em>     * is only a dummy.</em>
+<a name="339" href="#339">339</a> <em>     *</em>
+<a name="340" href="#340">340</a> <em>     * @param _needAdds     set with add strings used to append the adds</em>
+<a name="341" href="#341">341</a> <em>     */</em>
+<a name="342" href="#342">342</a>     <strong>protected</strong> <strong>void</strong> evalAdds4CheckExport(<strong>final</strong> Set&lt;String> _needAdds)
+<a name="343" href="#343">343</a>     {
+<a name="344" href="#344">344</a>     }
+<a name="345" href="#345">345</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
