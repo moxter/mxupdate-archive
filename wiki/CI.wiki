@@ -47,6 +47,23 @@ All other characters are converted with the algorithm:
 
 ----
 
+= Common TCL Procedures =
+== Logging Procedures ==
+For logging purposes special TCL procedures are defined which maps directly to
+them defined in the MxUpdate Update tool. So the logged text is only printed
+depending on the used logging level. The TCL procedures are
+    * {{{logError TEXT}}}
+    * {{{logWarning TEXT}}}
+    * {{{logInfo TEXT}}}
+    * {{{logDebug TEXT}}}
+    * {{{logTrace TEXT}}}
+
+== TCL Procedure "puts" ==
+The TCL procedure {{{puts}}} is mapped to the above defined TCL procedure
+{{{logDebug}}}.
+
+----
+
 = Common Parameter Definitions =
 A lot of parameters for the !MxUpdate Update tool could be defined. Some parameters could as default only defined within the property file.
 
