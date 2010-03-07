@@ -177,7 +177,7 @@ public class MXPreferencePage
                 MXAdapter.PREF_PROP_FILE,
                 Messages.getString("MXPreferencePage.PropertyFile"), //$NON-NLS-1$
                 parent);
-        this.fileEditor.setFileExtensions(new String[]{"properties", "*"});
+        this.fileEditor.setFileExtensions(new String[]{"*.properties", "*"}); //$NON-NLS-1$
         this.addField(this.fileEditor);
 
         this.propKeyHost = new StringFieldEditor(
