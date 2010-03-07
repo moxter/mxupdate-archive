@@ -41,10 +41,6 @@ All other characters are converted with the algorithm:
     * if a character is in the range of 0 and 254 (ASCII character), then the character is converted to a two characters long hexa-decimal code with '@' as prefix (e.g. double quotes '=' is converted to '@22')
     * characters greater than 254 are converted to a four characters long hexa-decimal code with '@u' as prefix (e.g. the euro sign '€' is converted to '@u20AC')
 
-== Error Codes ==
-|| *Error Code* || *Description* ||
-|| 90602        || The file name is not correct defined and could not be converted back to a configuration item name. The exception could occur within updates. ||
-
 ----
 
 = Common TCL Procedures =
@@ -72,3 +68,11 @@ The parameters are used to control the behavior related to symbolic names. Symbo
 || *Name:* {{{CalcSymbolicNames}}}           <p>*Parameter:* {{{‑‑calculatesymbolicnames}}}</p><p>*Default Value*: {{{false}}}</p><p>With this parameter the symbolic names are always calculated and not extracted from the !MxUpdate file header. This is e.g. useful if symbolic names in the header of !MxUpdate files are not defined correctly.</p> ||
 || *Name:* {{{CalcSymbolicNameRegExp}}}                                                        <p>*Default Value*: allowed are numbers, upper or lower case characters, percent sign {{{%}}}, ampersand {{{&}}}, left {{{(}}} or right {{{)}}} parenthesis, plus {{{+}}} or minus {{{-}}}, colon {{{:}}}, equal sign {{{=}}}, caret {{{^}}}, underscore {{{_}}} and tilde {{{~}}}</p><p>Defines the regular expression for special characters which are not allowed for symbolic names. This special characters are replaced "nothing", means by zero length string.</p> ||
 || *Name:* {{{RegisterSymbolicNames}}}                                                         <p>*Default Value*: {{{eServiceSchemaVariableMapping.tcl}}}</p><p>Defines the name of the program where all administration objects are registered with symbolic names.</p> ||
+
+----
+
+= Explanation of Common Update Error Codes =
+|| *Error Code* || *Description* ||
+|| 60301        || The JPO caller program {{{org.mxupdate.update.util.JPOCaller}}} is called without any required arguments. ||
+|| 60302        || The JPO caller program {{{org.mxupdate.update.util.JPOCaller}}} is called with no correct argument defining the case. ||
+|| 90602        || The file name is not correct defined and could not be converted back to a configuration item name. The exception could occur within updates. ||
