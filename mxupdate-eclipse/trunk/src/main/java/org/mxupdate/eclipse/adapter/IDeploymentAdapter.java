@@ -36,18 +36,28 @@ import org.eclipse.jface.resource.ImageDescriptor;
 public interface IDeploymentAdapter
 {
     /**
-     * Connects to the database.
+     * Checks if the adapter is already connected to the database.
      *
      * @return <i>true</i> if connected; otherwise <i>false</i>
      */
-    boolean connect();
+    boolean isConnected();
+
+    /**
+     * Connects to the database.
+     *
+     * @throws Exception if connect failed
+     */
+    void connect()
+        throws Exception;
 
     /**
      * Disconnects from the database.
      *
      * @return <i>true</i> if disconnected; otherwise <i>false</i>
+     * @throws Exception if disconnect failed
      */
-    boolean disconnect();
+    boolean disconnect()
+        throws Exception;
 
     /**
      * Updates given update <code>_files</code> in the database.
@@ -55,9 +65,11 @@ public interface IDeploymentAdapter
      * @param _files    update files to update in the database
      * @param _compile  if <i>true</i> all program files are compiled; if
      *                  <i>false</i> no files are compiled
+     * @throws Exception if update failed (or connect failed)
      */
     void update(final List<IFile> _files,
-                final boolean _compile);
+                final boolean _compile)
+        throws Exception;
 
     /**
      * Extracts for given <code>_file</code> name the update code from the
@@ -65,8 +77,10 @@ public interface IDeploymentAdapter
      *
      * @param _file update file for which the update code must be extracted
      * @return extracted update code
+     * @throws Exception if export failed
      */
-    IExportItem export(final IFile _file);
+    IExportItem export(final IFile _file)
+        throws Exception;
 
     /**
      * Exports defined <code>_item</code> with depending <code>_typeDef</code>.
@@ -74,18 +88,21 @@ public interface IDeploymentAdapter
      * @param _typeDef  type definition
      * @param _item     MX name to export
      * @return list of exported files
+     * @throws Exception if export failed
      */
     IExportItem export(final String _typeDef,
-                       final String _item);
+                       final String _item)
+        throws Exception;
 
     /**
      * Executes given <code>_command</code> within the console.
      *
      * @param _command  command to execute
      * @return value from executed command
-     * @todo exceptions!
+     * @throws Exception if execute failed
      */
-    String execute(final CharSequence _command) throws Exception;
+    String execute(final CharSequence _command)
+        throws Exception;
 
     /**
      * Searches for given type definitions <code>_typeDefList</code> which

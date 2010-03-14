@@ -20,12 +20,16 @@
 
 package org.mxupdate.eclipse;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.mxupdate.eclipse.adapter.IDeploymentAdapter;
 import org.mxupdate.eclipse.console.Console;
-import org.mxupdate.eclipse.mxadapter.MXAdapter;
+import org.mxupdate.eclipse.properties.ProjectMode;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -57,7 +61,7 @@ public class Activator
     /**
      * Adapter implementing the interface to MX.
      */
-    private IDeploymentAdapter adapter;
+    private final Map<String,IDeploymentAdapter> adapters = new HashMap<String,IDeploymentAdapter>();
 
 
 	/*
@@ -80,7 +84,6 @@ try  {
     e.printStackTrace(System.out);
     this.console.logError("ERROR", e); //$NON-NLS-1$
 }
-        this.adapter = new MXAdapter(this.getPreferenceStore(), this.console);
     }
 
     /*
@@ -130,8 +133,24 @@ try  {
         ConsolePlugin.getDefault().getConsoleManager().showConsoleView(this.console);
     }
 
-    public IDeploymentAdapter getAdapter()
+    /**
+     * Returns the deployment adapter depending on the project.
+     *
+     * @param _project      project for which the deployment adapter is
+     *                      searched
+     * @return deployment adapter
+     * @throws Exception if adapter could not be initialized
+     */
+    public IDeploymentAdapter getAdapter(final IProject _project)
+        throws Exception
     {
-        return this.adapter;
+        final String projectKey = _project.getName();
+        if (!this.adapters.containsKey(projectKey))  {
+            final IDeploymentAdapter adapter = ProjectMode.initAdapter(_project, this.console);
+            if (adapter != null)  {
+                this.adapters.put(projectKey, adapter);
+            }
+        }
+        return this.adapters.get(projectKey);
     }
 }

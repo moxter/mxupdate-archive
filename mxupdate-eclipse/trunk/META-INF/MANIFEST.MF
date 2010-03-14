@@ -9,11 +9,9 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.console,
  org.eclipse.ui.ide,
  org.eclipse.compare,
- org.eclipse.team.ui,
- org.apache.commons.codec;bundle-version="1.3.0",
- eMatrixServletRMI
+ org.eclipse.team.ui
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: The MxUpdate Team
 Export-Package: org.mxupdate.eclipse;
   uses:="org.eclipse.jface.preference,
@@ -25,6 +23,13 @@ Export-Package: org.mxupdate.eclipse;
    org.eclipse.swt.widgets,
    org.mxupdate.eclipse.console,
    org.eclipse.jface.dialogs"
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/bcprov-jdk15-140.jar,
+ lib/jzlib-1.0.7.jar,
+ lib/mina-core-2.0.0-M4.jar,
+ lib/org.apache.commons.codec_1.3.0.jar,
+ lib/slf4j-api-1.5.6.jar,
+ lib/tomcat-apr-5.5.23.jar,
+ lib/commons-io-1.4.jar
 Bundle-Version: 0.0.0
 Bundle-Name: MxUpdate Eclipse Plug-In

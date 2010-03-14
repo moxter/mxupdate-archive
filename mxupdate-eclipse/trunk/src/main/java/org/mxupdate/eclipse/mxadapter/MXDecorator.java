@@ -20,12 +20,9 @@
 
 package org.mxupdate.eclipse.mxadapter;
 
-import org.eclipse.core.resources.IFile;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
-import org.mxupdate.eclipse.Activator;
 
 /**
  * MX Update Eclipse plug-in specific decorator which evaluates depending on
@@ -49,10 +46,11 @@ public class MXDecorator
     public void decorate(final Object _obj,
                          final IDecoration _decoration)
     {
+        /*
         final ImageDescriptor imageDesc = Activator.getDefault().getAdapter().getImageDescriptor((IFile) _obj);
         if (imageDesc != null)  {
             _decoration.addOverlay(imageDesc, IDecoration.TOP_LEFT);
-        }
+        }*/
     }
 
     /**
