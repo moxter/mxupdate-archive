@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.compare.CompareConfiguration;
 import org.eclipse.compare.CompareUI;
@@ -33,8 +34,13 @@ import org.eclipse.compare.ITypedElement;
 import org.eclipse.compare.structuremergeviewer.DiffNode;
 import org.eclipse.compare.structuremergeviewer.ICompareInput;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.team.ui.synchronize.SaveableCompareEditorInput;
 import org.mxupdate.eclipse.Activator;
 import org.mxupdate.eclipse.Messages;
@@ -48,7 +54,7 @@ import org.mxupdate.eclipse.adapter.IExportItem;
  * @version $Id$
  */
 public class CompareHandler
-        extends AbstractFileHandler
+    extends AbstractFileHandler
 {
     /**
      * Opens for each defined file a compare editor.
@@ -56,12 +62,27 @@ public class CompareHandler
      * @param _files    files to compare
      * @see CompareEditor
      */
-    @Override
-    protected void execute(final List<IFile> _files)
+    @Override()
+    protected void execute(final Map<IProject,List<IFile>> _files)
     {
-        for (final IFile file : _files)  {
-
-            CompareUI.openCompareEditor(new CompareEditor(file));
+        for (final Map.Entry<IProject,List<IFile>> fileEntry : _files.entrySet())  {
+            final IProject project = fileEntry.getKey();
+            try  {
+                if (!Activator.getDefault().getAdapter(project).isConnected())  {
+                    Activator.getDefault().getAdapter(project).connect();
+                }
+                for (final IFile file : fileEntry.getValue())  {
+                    CompareUI.openCompareEditor(new CompareEditor(project, file));
+                }
+            } catch (final Throwable ex) {
+                final String msg = Messages.getString("CompareHandler.ExecuteException.Message", fileEntry.getKey().getName()); //$NON-NLS-1$
+                Activator.getDefault().getConsole().logError(msg, ex);
+                ErrorDialog.openError(
+                        (Shell) null,
+                        Messages.getString("CompareHandler.ExecuteException.Title"), //$NON-NLS-1$
+                        msg,
+                        new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, ex.getMessage(), ex));
+            }
         }
     }
 
@@ -70,8 +91,13 @@ public class CompareHandler
      * extracted from the data base.
      */
     class CompareEditor
-            extends SaveableCompareEditorInput
+        extends SaveableCompareEditorInput
     {
+        /**
+         * Project where the file is defined.
+         */
+        private final IProject project;
+
         /**
          * Local file which must be compared against the current object in the
          * data base.
@@ -79,17 +105,21 @@ public class CompareHandler
         private final IFile file;
 
         /**
+         * Default constructor.
          *
+         * @param _project  related project where the file is located
          * @param _file     local update file
          * @see #file
          */
-        CompareEditor(final IFile _file)
+        CompareEditor(final IProject _project,
+                      final IFile _file)
         {
             super(new CompareConfiguration(), null);
             this.getCompareConfiguration().setLeftEditable(true);
             this.getCompareConfiguration().setLeftLabel(Messages.getString("CompareHandler.LocaleFile")); //$NON-NLS-1$
             this.getCompareConfiguration().setRightEditable(false);
             this.getCompareConfiguration().setRightLabel(Messages.getString("CompareHandler.DataBase")); //$NON-NLS-1$
+            this.project = _project;
             this.file = _file;
         }
 
@@ -97,7 +127,7 @@ public class CompareHandler
          * Dummy method because the method is only needed that
          * {@link SaveableCompareEditorInput} is implemented.
          */
-        @Override
+        @Override()
         protected void fireInputChange()
         {
         }
@@ -116,17 +146,18 @@ public class CompareHandler
          *                                   be converted to bytes
          * @todo get bytes in UTF 8 must NOT be hard coded!
          */
-        @Override
+        @Override()
         protected ICompareInput prepareCompareInput(final IProgressMonitor _progressMonitor)
-                throws InvocationTargetException
+            throws InvocationTargetException
         {
             _progressMonitor.beginTask(Messages.getString("CompareHandler.TaskReadFromDataBase"), 2); //$NON-NLS-1$
 
             // get current update code
             final IExportItem item;
             try {
-                item = Activator.getDefault().getAdapter().export(this.file);
+                item = Activator.getDefault().getAdapter(this.project).export(this.file);
             } catch (final Exception ex) {
+                Activator.getDefault().getConsole().logError(Messages.getString("CompareHandler.ExceptionExportFailed", this.file.getName()), ex); //$NON-NLS-1$
                 throw new InvocationTargetException(ex);
             }
 
@@ -157,7 +188,7 @@ public class CompareHandler
      * update file extract from the data base.
      */
     class ByteBufferType
-            implements ITypedElement,IStreamContentAccessor
+        implements ITypedElement,IStreamContentAccessor
     {
         /**
          * Buffer of the extracted original update file.

@@ -18,7 +18,7 @@
  * Last Changed By: $Author$
  */
 
-package org.mxupdate.eclipse.mxadapter;
+package org.mxupdate.eclipse.properties;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -33,12 +33,12 @@ import org.eclipse.swt.widgets.Text;
 import org.mxupdate.eclipse.Messages;
 
 /**
- * MX login page in the case the password of the user is not stored.
+ * Login page in the case the password of the user is not stored.
  *
  * @author The MxUpdate Team
  * @version $Id$
  */
-public class MXLoginPage
+public class AuthenticationDialog
     extends Dialog
 {
     /**
@@ -52,11 +52,25 @@ public class MXLoginPage
     private Text textPassword;
 
     /**
-     * Host to which must be connected.
+     * Title for the authentication dialog.
      *
      * @see #configureShell(Shell)
      */
-    private final String host;
+    private final String title;
+
+    /**
+     * Label for the user name.
+     *
+     * @see #createDialogArea(Composite)
+     */
+    private final String labelUserName;
+
+    /**
+     * Label for the password.
+     *
+     * @see #createDialogArea(Composite)
+     */
+    private final String labelPassword;
 
     /**
      * User name defined by the user interface predefined by the constructor.
@@ -84,15 +98,22 @@ public class MXLoginPage
     private boolean okPressed = false;
 
     /**
+     * Default constructor.
      *
-     * @param _host         host from the preferences
-     * @param _userName     user name from the preferences
+     * @param _title            title used for the authentication dialog
+     * @param _labelUserName    label for the user name
+     * @param _labelPassword    label for the password
+     * @param _userName         user name from the preferences
      */
-    public MXLoginPage(final String _host,
-                       final String _userName)
+    public AuthenticationDialog(final String _title,
+                                final String _labelUserName,
+                                final String _labelPassword,
+                                final String _userName)
     {
         super((Shell) null);
-        this.host = _host;
+        this.title = _title;
+        this.labelUserName = _labelUserName;
+        this.labelPassword = _labelPassword;
         this.userName = _userName;
     }
 
@@ -122,7 +143,7 @@ public class MXLoginPage
         fieldData.widthHint = 150;
 
         final Label userLabel = new Label(comp, SWT.LEFT);
-        userLabel.setText(Messages.getString("MXPreferencePage.UserName")); //$NON-NLS-1$
+        userLabel.setText(this.labelUserName);
         userLabel.setLayoutData(labelData);
 
         this.textUserName = new Text(comp, SWT.BORDER);
@@ -130,7 +151,7 @@ public class MXLoginPage
         this.textUserName.setText(this.userName);
 
         final Label passLabel = new Label(comp, SWT.LEFT);
-        passLabel.setText(Messages.getString("MXPreferencePage.Password")); //$NON-NLS-1$
+        passLabel.setText(this.labelPassword);
         passLabel.setLayoutData(labelData);
 
         this.textPassword = new Text(comp, SWT.BORDER | SWT.PASSWORD);
@@ -192,16 +213,16 @@ public class MXLoginPage
 
     /**
      * Defines the title of the MX login page. The title includes the name of
-     * the {@link #host}.
+     * the {@link #title}.
      *
      * @param _shell    new shell
-     * @see #host
+     * @see #title
      */
     @Override()
     protected void configureShell(final Shell _shell)
     {
         super.configureShell(_shell);
-        _shell.setText(Messages.getString("MXLoginPage.Title", this.host)); //$NON-NLS-1$
+        _shell.setText(this.title);
     }
 
     /**
@@ -215,7 +236,7 @@ public class MXLoginPage
         // create OK and Cancel buttons by default
         this.createButton(_parent,
                           IDialogConstants.OK_ID,
-                          Messages.getString("MXLoginPage.Connect"), //$NON-NLS-1$
+                          Messages.getString("AuthenticationDialog.Connect"), //$NON-NLS-1$
                           true);
         this.createButton(_parent,
                           IDialogConstants.CANCEL_ID,

@@ -26,6 +26,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.mina.filter.logging.LogLevel;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.graphics.Color;
@@ -44,6 +45,26 @@ public class Console
         extends MessageConsole
         implements IPropertyChangeListener
 {
+    private final static String LOG_ERROR_TEXT = "[ERROR] ";
+
+    private final static int LOG_ERROR_LENGTH = LOG_ERROR_TEXT.length();
+
+    private final static String LOG_WARNING_TEXT = "[WARNING] ";
+
+    private final static int LOG_WARNING_LENGTH = LOG_WARNING_TEXT.length();
+
+    private final static String LOG_INFO_TEXT = "[INFO] ";
+
+    private final static int LOG_INFO_LENGTH = LOG_INFO_TEXT.length();
+
+    private final static String LOG_DEBUG_TEXT = "[DEBUG] ";
+
+    private final static int LOG_DEBUG_LENGTH = LOG_DEBUG_TEXT.length();
+
+    private final static String LOG_TRACE_TEXT = "[TRACE] ";
+
+    private final static int LOG_TRACE_LENGTH = LOG_TRACE_TEXT.length();
+
     /**
      * Map of all console streams depending on the log level (and the different
      * colors for each console).
@@ -69,7 +90,27 @@ public class Console
         ConsolePreference.addListener(this);
     }
 
+    public void appendLog(final String _log)
+    {
+        if (_log != null)  {
+            for (final String line : _log.split("\n"))  {
+                if (line.startsWith(Console.LOG_DEBUG_TEXT))  {
+                    this.println(ConsolePreference.DEBUG, line.substring(Console.LOG_DEBUG_LENGTH), null);
+                } else if (line.startsWith(Console.LOG_ERROR_TEXT))  {
+                    this.println(ConsolePreference.ERROR, line.substring(Console.LOG_ERROR_LENGTH), null);
+                } else if (line.startsWith(Console.LOG_INFO_TEXT))  {
+                    this.println(ConsolePreference.INFO, line.substring(Console.LOG_INFO_LENGTH), null);
+                } else if (line.startsWith(Console.LOG_TRACE_TEXT))  {
+                    this.println(ConsolePreference.TRACE, line.substring(Console.LOG_TRACE_LENGTH), null);
+                } else if (line.startsWith(Console.LOG_WARNING_TEXT))  {
+                    this.println(ConsolePreference.WARN, line.substring(Console.LOG_WARNING_LENGTH), null);
+                }
+            }
+        }
+    }
+
     /**
+     * Logging with level info.
      *
      * @param _text     text for the info logging
      * @see #println(ConsolePreference, String, Throwable)
@@ -80,6 +121,7 @@ public class Console
     }
 
     /**
+     * Logging with level info.
      *
      * @param _text     text for the info logging
      * @param _ex       exception instance
@@ -92,6 +134,18 @@ public class Console
     }
 
     /**
+     * Logging with level trace.
+     *
+     * @param _text     text for the trace logging
+     * @see #println(ConsolePreference, String, Throwable)
+     */
+    public void logTrace(final String _text)
+    {
+        this.println(ConsolePreference.TRACE, _text, null);
+    }
+
+    /**
+     * Logging with level error.
      *
      * @param _text     text for the error logging
      * @see #println(ConsolePreference, String, Throwable)
@@ -153,7 +207,7 @@ public class Console
      * If the console is removed, also the event listening on the preferences
      * must be removed.
      */
-    @Override
+    @Override()
     protected void dispose()
     {
         ConsolePreference.removeListener(this);

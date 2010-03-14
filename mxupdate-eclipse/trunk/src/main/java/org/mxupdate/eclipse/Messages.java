@@ -65,12 +65,12 @@ public final class Messages
      *         original key surrounded with &quot;!!!&quot;.
      * @see #RESOURCE_BUNDLE
      */
-    public static String getString(final String _key,
+    public static String getString(final CharSequence _key,
                                    final Object... _arguments)
     {
         String ret;
         try {
-            ret = Messages.RESOURCE_BUNDLE.getString(_key);
+            ret = Messages.RESOURCE_BUNDLE.getString(_key.toString());
         } catch (final MissingResourceException e) {
             ret = "!!!" + _key + "!!!";
         }

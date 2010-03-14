@@ -22,6 +22,13 @@ package org.mxupdate.eclipse.handlers;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.handlers.HandlerUtil;
 import org.mxupdate.eclipse.Activator;
 import org.mxupdate.eclipse.Messages;
 
@@ -35,7 +42,7 @@ public class ConnectHandler
         extends AbstractHandler
 {
     /**
-     * Calls the connect to MX data base method.
+     * Calls the connect to data base method.
      *
      * @param _event  execution event
      * @return always <code>null</code>
@@ -43,10 +50,26 @@ public class ConnectHandler
      */
     public Object execute(final ExecutionEvent _event)
     {
-        final boolean connected = Activator.getDefault().getAdapter().connect();
-        if (!connected)  {
-            Activator.getDefault()
-                    .getConsole().logError(Messages.getString("ConnectHandler.ConnectFailed")); //$NON-NLS-1$
+        final TreeSelection treeSel = (TreeSelection) HandlerUtil.getCurrentSelection(_event);
+        if (treeSel.size() != 1)  {
+            ErrorDialog.openError(
+                    (Shell) null,
+                    Messages.getString("ConnectHandler.NotOrMoreThanOneProjectSelected.Title"), //$NON-NLS-1$
+                    Messages.getString("ConnectHandler.NotOrMoreThanOneProjectSelected.Message"), //$NON-NLS-1$
+                    new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, null, null));
+        } else  {
+            final IProject project = (IProject) treeSel.getFirstElement();
+            try {
+                Activator.getDefault().getAdapter(project).connect();
+            } catch (final Exception ex) {
+                final String msg = Messages.getString("ConnectHandler.ConnectFailed.Message", project.getName()); //$NON-NLS-1$
+                Activator.getDefault().getConsole().logError(msg, ex); //$NON-NLS-1$
+                ErrorDialog.openError(
+                        (Shell) null,
+                        Messages.getString("ConnectHandler.ConnectFailed.Title"), //$NON-NLS-1$
+                        msg,
+                        new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, ex.getMessage(), ex));
+            }
         }
         return null;
     }

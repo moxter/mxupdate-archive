@@ -129,20 +129,6 @@
                   icon="src/main/resources/icons/UpdateCompile.gif"
                   style="push">
             </command>
-            <separator
-                  name="org.mxupdate.eclipse.menus.separator"
-                  visible="true">
-            </separator>
-            <command
-                  commandId="org.mxupdate.eclipse.command.connect"
-                  icon="src/main/resources/icons/Connect.gif"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.mxupdate.eclipse.command.disconnect"
-                  icon="src/main/resources/icons/Disconnect.gif"
-                  style="push">
-            </command>
          </menu>
       </menuContribution>
       <!-- update command for the action toolbar -->
@@ -165,7 +151,43 @@
                      icon="src/main/resources/icons/Update.gif"/>
             <command commandId="org.mxupdate.eclipse.command.updatecompile"
                      icon="src/main/resources/icons/UpdateCompile.gif"/>
+<!--
+   <adapt type="org.eclipse.core.resources.IResource">
+      <test property="org.eclipse.core.resources.name"
+            value="*.java"/>
+   </adapt> -->
             <command commandId="org.mxupdate.eclipse.command.compare"/>
+            <separator
+                  name="org.mxupdate.eclipse.menus.separator"
+                  visible="true">
+            </separator>
+            <command commandId="org.mxupdate.eclipse.command.connect"
+                     icon="src/main/resources/icons/Connect.gif">
+                <visibleWhen>
+                    <and>
+                        <iterate operator="and">
+                            <adapt type="org.eclipse.core.resources.IProject"/>
+                        </iterate>
+                        <with variable="selection">
+                            <count value="1"/>
+                        </with>
+                    </and>
+                </visibleWhen>
+            </command>
+            <command
+                  commandId="org.mxupdate.eclipse.command.disconnect"
+                  icon="src/main/resources/icons/Disconnect.gif">
+                <visibleWhen>
+                    <and>
+                        <iterate operator="and">
+                            <adapt type="org.eclipse.core.resources.IProject"/>
+                        </iterate>
+                        <with variable="selection">
+                            <count value="1"/>
+                        </with>
+                    </and>
+                </visibleWhen>
+            </command>
          </menu>
       </menuContribution>
    </extension>
@@ -206,6 +228,20 @@
              name="%ImportWizard.Plugin.Title">
           <description>%ImportWizard.Plugin.Description</description>
        </wizard>
+    </extension>
+
+    <!-- Project Properties -->
+    <extension point="org.eclipse.ui.propertyPages">
+       <page class="org.mxupdate.eclipse.properties.ProjectPropertyPage"
+             id="org.mxupdate.eclipse.properties.ProjectPropertyPage"
+             name="%ProjectProperty.PropertyPage.Title">
+          <enabledWhen>
+            <adapt type="org.eclipse.core.resources.IProject"/>
+          </enabledWhen>
+       </page>
+    </extension>
+    <extension
+          point="org.eclipse.core.runtime.preferences">
     </extension>
 
 </plugin>

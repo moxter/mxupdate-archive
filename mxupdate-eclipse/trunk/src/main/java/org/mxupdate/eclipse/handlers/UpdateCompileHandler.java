@@ -21,9 +21,16 @@
 package org.mxupdate.eclipse.handlers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.swt.widgets.Shell;
 import org.mxupdate.eclipse.Activator;
+import org.mxupdate.eclipse.Messages;
 
 /**
  * Eclipse Handler called from the update and compile command used to update
@@ -36,14 +43,28 @@ public class UpdateCompileHandler
         extends AbstractFileHandler
 {
     /**
-     *
+     * Executes the update with compile depending step by step for each
+     * project. If within a project an update failed, an error message is
+     * shown.
      *
      * @param _files    set of files for which this handler is called
      * @see Activator#update(String)
      */
-    @Override
-    protected void execute(final List<IFile> _files)
+    @Override()
+    protected void execute(final Map<IProject,List<IFile>> _files)
     {
-        Activator.getDefault().getAdapter().update(_files, true);
+        for (final Map.Entry<IProject,List<IFile>> fileEntry : _files.entrySet())  {
+            try  {
+                Activator.getDefault().getAdapter(fileEntry.getKey()).update(fileEntry.getValue(), true);
+            } catch (final Throwable ex) {
+                final String msg = Messages.getString("UpdateCompileHandler.ExecuteException.Message", fileEntry.getKey().getName()); //$NON-NLS-1$
+                Activator.getDefault().getConsole().logError(msg, ex);
+                ErrorDialog.openError(
+                        (Shell) null,
+                        Messages.getString("UpdateCompileHandler.ExecuteException.Title"), //$NON-NLS-1$
+                        msg,
+                        new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, ex.getMessage(), ex));
+            }
+        }
     }
 }

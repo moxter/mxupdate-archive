@@ -20,14 +20,9 @@
 
 package org.mxupdate.eclipse.mxadapter;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,19 +31,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
 
-import matrix.db.Context;
-import matrix.db.MQLCommand;
-import matrix.util.MatrixException;
-
-import org.apache.commons.codec.binary.Base64;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.swt.graphics.ImageData;
+import org.mxupdate.eclipse.Activator;
 import org.mxupdate.eclipse.Messages;
 import org.mxupdate.eclipse.adapter.IDeploymentAdapter;
 import org.mxupdate.eclipse.adapter.IExportItem;
@@ -56,6 +45,9 @@ import org.mxupdate.eclipse.adapter.ISearchItem;
 import org.mxupdate.eclipse.adapter.ITypeDefNode;
 import org.mxupdate.eclipse.adapter.ITypeDefRoot;
 import org.mxupdate.eclipse.console.Console;
+import org.mxupdate.eclipse.mxadapter.connectors.IConnector;
+import org.mxupdate.eclipse.properties.ProjectMode;
+import org.mxupdate.eclipse.util.CommunicationUtil;
 
 /**
  * Adapter to the MX database.
@@ -66,60 +58,11 @@ import org.mxupdate.eclipse.console.Console;
 public class MXAdapter
     implements IDeploymentAdapter
 {
-    /**
-     * Key of the URL preference.
-     */
-    public static final String PREF_URL = "url"; //$NON-NLS-1$
-
-    /**
-     * Key of the name preference.
-     */
-    public static final String PREF_NAME = "name"; //$NON-NLS-1$
-
-    /**
-     * Key of the password preference.
-     */
-    public static final String PREF_PASSWORD = "password"; //$NON-NLS-1$
-
-    /**
-     * Key of the preference if password could be stored.
-     */
-    public static final String PREF_STORE_PASSWORD = "storePassword"; //$NON-NLS-1$
-
-    /**
-     * Key of the update by file content preference.
-     */
-    public static final String PREF_UPDATE_FILE_CONTENT = "updateByFileContent"; //$NON-NLS-1$
 
     /**
      * Key name of the properties stored in the preferences.
      */
     private static final String PREF_PROPERTIES = "pluginProperties"; //$NON-NLS-1$
-
-    /**
-     * Key if the properties are configured in external property file.
-     */
-    public static final String PREF_EXTERNAL_CONFIGURED = "externalConfigured"; //$NON-NLS-1$
-
-    /**
-     * Key for the external property file.
-     */
-    public static final String PREF_PROP_FILE = "propertyFile"; //$NON-NLS-1$
-
-    /**
-     * Key of the property key host (URL) preference.
-     */
-    public static final String PREF_PROP_KEY_URL = "propKeyUrl"; //$NON-NLS-1$
-
-    /**
-     * Key of the property key user name preference.
-     */
-    public static final String PREF_PROP_KEY_NAME = "propKeyName"; //$NON-NLS-1$
-
-    /**
-     * Key of the property key password preference.
-     */
-    public static final String PREF_PROP_KEY_PASSWORD = "propKeyPassword"; //$NON-NLS-1$
 
     /**
      * Name and place of the manifest file.
@@ -146,36 +89,24 @@ public class MXAdapter
 
     /**
      * Name of the key in the return map for the log message.
-     *
-     * @see #prepareReturn(String, String, Exception, Object)
      */
     private static final String RETURN_KEY_LOG = "log";
 
     /**
      * Name of the key in the return map for the error message.
-     *
-     * @see #prepareReturn(String, String, Exception, Object)
      */
     private static final String RETURN_KEY_ERROR = "error";
 
     /**
      * Name of the key in the return map for the exception.
-     *
-     * @see #prepareReturn(String, String, Exception, Object)
      */
     private static final String RETURN_KEY_EXCEPTION = "exception";
 
     /**
      * Name of the key in the return map for the values.
-     *
-     * @see #prepareReturn(String, String, Exception, Object)
      */
     private static final String RETURN_KEY_VALUES = "values";
 
-    /**
-     * Holds the link to the preferences.
-     */
-    private final IPreferenceStore preferences;
 
     /**
      * MxUpdate plug-in console.
@@ -183,24 +114,6 @@ public class MXAdapter
      * @see #showConsole()
      */
     private final Console console;
-
-    /**
-     * Context to the MX database.
-     *
-     * @see #connected
-     * @see #connect()
-     * @see #disconnect()
-     */
-    private Context mxContext;
-
-    /**
-     * Is {@link #mxContext} connected to the MX database?
-     *
-     * @see #mxContext
-     * @see #connect()
-     * @see #disconnect()
-     */
-    private boolean connected = false;
 
     /**
      * Map used to hold the images for MxUpdate files. The first key is the
@@ -221,15 +134,25 @@ public class MXAdapter
     private final Map<String,ImageDescriptor> typeDef2Image = new HashMap<String,ImageDescriptor>();
 
     /**
+     * Related Eclipse project for which this MX adapter is initiated.
+     */
+    private final IProject project;
+
+    /**
+     * Connector to the database.
+     */
+    private IConnector connector;
+
+    /**
      * Initializes the MX adapter.
      *
-     * @param _preferences  preference store
+     * @param _project      related Eclipse project
      * @param _console      console used for logging purposes
      */
-    public MXAdapter(final IPreferenceStore _preferences,
+    public MXAdapter(final IProject _project,
                      final Console _console)
     {
-        this.preferences = _preferences;
+        this.project = _project;
         this.console = _console;
         this.initImageDescriptors();
     }
@@ -242,6 +165,7 @@ public class MXAdapter
      */
     protected void initImageDescriptors()
     {
+        /*
         final Properties properties = new Properties();
         final String propStr = this.preferences.getString("pluginProperties"); //$NON-NLS-1$
         if (propStr != null)  {
@@ -249,7 +173,7 @@ public class MXAdapter
             try {
                 properties.load(is);
             } catch (final IOException e) {
-                this.console.logError("MxAdapter.ExceptionInitImageDescriptorsLoadPropertiesFailed", e);
+                this.console.logError("MXAdapter.ExceptionInitImageDescriptorsLoadPropertiesFailed", e);
             }
         }
 
@@ -281,30 +205,41 @@ public class MXAdapter
 
             // mapping between type definition and image
             this.typeDef2Image.put(admin, imageDesriptor);
-        }
+        }*/
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return <i>true</i> if the {@link #connector} is not null (means adapter
+     *         is already connected); otherwise <i>false</i>
+     * @see #connector
+     */
+    public boolean isConnected()
+    {
+        return (this.connector != null);
     }
 
     /**
      * Connects to the MX database.
      *
-     * @return <i>true</i> if already connected or connect to MX database was
-     *         successfully; otherwise <i>false</i> is returned
+     * @throws Exception if connect failed
      * @see #connected
      * @see #mxContext
      * @see #checkVersions()
      */
-    public boolean connect()
+    public void connect()
+        throws Exception
     {
-        boolean connect = false;
-        if (this.connected)  {
-            connect = true;
+        if (this.connector != null)  {
             this.console.logInfo(Messages.getString("MXAdapter.AlreadyConnected")); //$NON-NLS-1$
         } else  {
-            final boolean connectAllowed;
-            final String user;
-            final String passwd;
-            final String host;
+            this.connector = ProjectMode.initConnector(this.project, this.console);
 
+            // check versions
+            this.checkVersions();
+
+            /*
             // is external configured
             if (this.preferences.getBoolean(MXAdapter.PREF_EXTERNAL_CONFIGURED))  {
                 final String propFile = this.preferences.getString(MXAdapter.PREF_PROP_FILE);
@@ -324,59 +259,22 @@ public class MXAdapter
                     this.console.logError(Messages.getString("MXAdapter.ExceptionExternalFileOpenFailed"), e); //$NON-NLS-1$
                 }
 
-                if (!read)  {
-                    connectAllowed = false;
-                    host = null;
-                    user = null;
-                    passwd = null;
-                } else if ((propName == null) || "".equals(propName) || (propPass == null) || "".equals(propPass))  {
-                    host = extProps.getProperty(propHost);
-                    final MXLoginPage loginPage = new MXLoginPage(host, this.preferences.getString(MXAdapter.PREF_NAME));
-                    loginPage.open();
-                    connectAllowed = loginPage.isOkPressed();
-                    user = loginPage.getUserName();
-                    passwd = loginPage.getPassword();
-                } else  {
-                    connectAllowed = true;
-                    host = extProps.getProperty(propHost);
-                    user = extProps.getProperty(propName);
-                    passwd = extProps.getProperty(propPass);
-                }
-
-            // internal configured
-            } else {
-                host =  this.preferences.getString(MXAdapter.PREF_URL);
-                if (!this.preferences.getBoolean(MXAdapter.PREF_STORE_PASSWORD))  {
-                    final MXLoginPage loginPage = new MXLoginPage(host, this.preferences.getString(MXAdapter.PREF_NAME));
-                    loginPage.open();
-                    connectAllowed = loginPage.isOkPressed();
-                    user = loginPage.getUserName();
-                    passwd = loginPage.getPassword();
-                } else  {
-                    connectAllowed = true;
-                    user =  this.preferences.getString(MXAdapter.PREF_NAME);
-                    passwd =  this.preferences.getString(MXAdapter.PREF_PASSWORD);
-                }
-            }
 
             if (connectAllowed)  {
 
                 try {
-                    this.mxContext = new Context(host);
-                    this.mxContext.resetContext(user, passwd, null);
-                    this.mxContext.connect();
-                    this.connected = this.mxContext.isConnected();
-                    connect = true;
-                    this.console.logInfo(Messages.getString("MXAdapter.ConnectedTo", host)); //$NON-NLS-1$
-
                     // read properties
+                    final String newProps = (String) this.executeEncoded(null, "GetProperty", null).get(MXAdapter.RETURN_KEY_VALUES);
+                    /*
                     final String newProps = this.execute("exec prog org.mxupdate.plugin.GetProperties"); //$NON-NLS-1$
+                    */
+                    /*
                     final String curProps = this.preferences.getString(MXAdapter.PREF_PROPERTIES);
                     if (!newProps.equals(curProps))  {
                         this.preferences.setValue(MXAdapter.PREF_PROPERTIES, newProps);
                         this.console.logInfo(Messages.getString("MXAdapter.PluginPropertiesChanged")); //$NON-NLS-1$
                     }
-                } catch (final MatrixException e) {
+                } catch (final Exception e) {
                     this.console.logError(Messages.getString("MXAdapter.ConnectFailed"), e); //$NON-NLS-1$
                 }
 
@@ -385,8 +283,8 @@ public class MXAdapter
                     this.checkVersions();
                 }
             }
+*/
         }
-        return connect;
     }
 
     /**
@@ -410,8 +308,8 @@ public class MXAdapter
 
         String updateVersion = null;
         try {
-            updateVersion = this.execute("exec prog org.mxupdate.plugin.GetVersion").replaceAll("-", ".");
-        } catch (final MatrixException e) {
+            updateVersion = (String) this.executeEncoded(null, "GetVersion", null).get(MXAdapter.RETURN_KEY_VALUES);
+        } catch (final Exception e) {
             this.console.logError(Messages.getString("MXAdapter.ExceptionGetUpdateVersion"), e); //$NON-NLS-1$
         }
 
@@ -434,7 +332,7 @@ public class MXAdapter
      * @see #MANIFEST_FILE
      */
     protected String getPlugInVersion()
-            throws IOException
+        throws IOException
     {
         final InputStream in = this.getClass().getClassLoader().getResourceAsStream(MXAdapter.MANIFEST_FILE);
         final byte[] buffer = new byte[in.available()];
@@ -458,25 +356,21 @@ public class MXAdapter
      *
      * @return <i>true</i> if already disconnected or disconnect from MX
      *         database was successfully; otherwise <i>false</i> is returned
+     * @throws Exception if disconnect failed
      * @see #connected
      * @see #mxContext
      */
     public boolean disconnect()
+        throws Exception
     {
         boolean disconnect = false;
-        if (!this.connected)  {
+        if (this.connector == null)  {
             this.console.logInfo(Messages.getString("MXAdapter.AlreadyDisconnected")); //$NON-NLS-1$
             disconnect = true;
         } else  {
-            try {
-                this.mxContext.disconnect();
-                this.mxContext = null;
-                this.connected = false;
-                disconnect = true;
-                this.console.logInfo(Messages.getString("MXAdapter.Disconnected")); //$NON-NLS-1$
-            } catch (final MatrixException e) {
-                this.console.logError(Messages.getString("MXAdapter.DisconnectFailed"), e); //$NON-NLS-1$
-            }
+            this.connector.disconnect();
+            this.connector = null;
+            this.console.logInfo(Messages.getString("MXAdapter.Disconnected")); //$NON-NLS-1$
         }
         return disconnect;
     }
@@ -490,13 +384,19 @@ public class MXAdapter
      * @param _files    MxUpdate file which must be updated
      * @param _compile  if <i>true</i> all JPOs are compiled; if <i>false</i>
      *                  no JPOs are compiled, only an update is done
+     * @throws Exception if update failed (or included connect)
      * @see #execMql(CharSequence)
      */
     public void update(final List<IFile> _files,
                        final boolean _compile)
+        throws Exception
     {
+        if (this.connector == null)  {
+            this.connect();
+        }
+
         // update by file content
-        if (this.preferences.getBoolean(MXAdapter.PREF_UPDATE_FILE_CONTENT))  {
+        if (this.connector.isUpdateByFileContent())  {
             final Map<String,String> files = new HashMap<String,String>();
             for (final IFile file: _files)  {
                 try  {
@@ -524,7 +424,13 @@ public class MXAdapter
                 final Map<?,?> bck = this.executeEncoded(new String[]{"Compile", String.valueOf(_compile)},
                                                          "Update",
                                                          new Object[]{"FileContents", files});
-                this.console.logInfo((String) bck.get(MXAdapter.RETURN_KEY_LOG));
+                this.console.appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
+                final Exception ex = (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION);
+                if (ex != null)  {
+                    this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed",  //$NON-NLS-1$
+                                                             files.keySet().toString()),
+                                          ex);
+                }
             } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed",  //$NON-NLS-1$
                                                          files.keySet().toString()),
@@ -540,7 +446,13 @@ public class MXAdapter
                 final Map<?,?> bck = this.executeEncoded(new String[]{"Compile", String.valueOf(_compile)},
                                                          "Update",
                                                          new Object[]{"FileNames", fileNames});
-                this.console.logInfo((String) bck.get(MXAdapter.RETURN_KEY_LOG));
+                this.console.appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
+                final Exception ex = (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION);
+                if (ex != null)  {
+                    this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed",  //$NON-NLS-1$
+                                                             fileNames.toString()),
+                                          ex);
+                }
             } catch (final Exception e)  {
                 this.console.logError(Messages.getString("MXAdapter.ExceptionUpdateFailed", //$NON-NLS-1$
                                                          fileNames.toString()),
@@ -559,11 +471,7 @@ public class MXAdapter
         Map<?,?> bck = null;
         try {
             bck = this.executeEncoded(null, "TypeDefTreeList", null);
-        } catch (final IOException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionRootTypeDefFailed"), e); //$NON-NLS-1$
-        } catch (final MatrixException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionRootTypeDefFailed"), e); //$NON-NLS-1$
-        } catch (final ClassNotFoundException e) {
+        } catch (final Exception e) {
             this.console.logError(Messages.getString("MXAdapter.ExceptionRootTypeDefFailed"), e); //$NON-NLS-1$
         }
 
@@ -654,12 +562,8 @@ public class MXAdapter
                                       "Search",
                                       new Object[]{"TypeDefList", _typeDefList,
                                                    "Match", _match});
-        } catch (final IOException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionSearchFailed"), e); //$NON-NLS-1$
-        } catch (final MatrixException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionSearchFailed"), e); //$NON-NLS-1$
-        } catch (final ClassNotFoundException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionSearchFailed"), e); //$NON-NLS-1$
+        } catch (final Exception e) {
+            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
         }
 
         final List<ISearchItem> ret = new ArrayList<ISearchItem>();
@@ -699,29 +603,25 @@ public class MXAdapter
      * @param _file     name of the update file for which the TCL update code
      *                  within MX must be extracted
      * @return configuration item update code for given <code>_file</code>
+     * @throws Exception if export failed
      */
     public IExportItem export(final IFile _file)
+        throws Exception
     {
-        Map<?,?> bck = null;
-        try {
-            bck = this.executeEncoded(null,
-                                      "Export",
-                                      new Object[]{"FileName", _file.toString()});
-        } catch (final IOException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
-        } catch (final MatrixException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
-        } catch (final ClassNotFoundException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
+        if (this.connector == null)  {
+            this.connect();
         }
+
+        final Map<?,?> bck = this.executeEncoded(null, "Export", new Object[]{"FileName", _file.toString()});
 
         final IExportItem ret;
         if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
-            ret = null;
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), //$NON-NLS-1$
-                                  (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION));
+            throw (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION);
         } else  {
             final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            Activator.getDefault().getConsole().logInfo(Messages.getString("MXAdapter.ExportLog", //$NON-NLS-1$
+                                                                           (String) value.get("FileName"))); //$NON-NLS-1$
+            Activator.getDefault().getConsole().appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
             ret = new IExportItem() {
                 public String getFileName()
                 {
@@ -761,11 +661,7 @@ public class MXAdapter
                                       "Export",
                                       new Object[]{"TypeDef", _typeDef,
                                                    "Name", _item});
-        } catch (final IOException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
-        } catch (final MatrixException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
-        } catch (final ClassNotFoundException e) {
+        } catch (final Exception e) {
             this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
         }
 
@@ -776,6 +672,9 @@ public class MXAdapter
                                   (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION));
         } else  {
             final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            Activator.getDefault().getConsole().logInfo(Messages.getString("MXAdapter.ExportLog", //$NON-NLS-1$
+                                                                           (String) value.get("FileName")));
+            Activator.getDefault().getConsole().appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
             ret = new IExportItem() {
                 public String getFileName()
                 {
@@ -844,23 +743,24 @@ public class MXAdapter
      *
      * @param _command  MQL command to execute
      * @return trimmed result of the MQL execution
-     * @throws MatrixException if MQL execution fails
+     * @throws Exception if MQL execution fails or a connect failed
      * @see #mxContext
      * @see #connect()
      */
     public String execute(final CharSequence _command)
-            throws MatrixException
+        throws Exception
     {
-        if (!this.connected)  {
+        if (this.connector == null)  {
             this.connect();
         }
-
+/*
         final MQLCommand mql = new MQLCommand();
         mql.executeCommand(this.mxContext, _command.toString());
         if ((mql.getError() != null) && !"".equals(mql.getError()))  { //$NON-NLS-1$
             throw new MatrixException(mql.getError() + "\nMQL command was:\n" + _command);
         }
-        return mql.getResult().trim();
+        return mql.getResult().trim();*/
+        return null;
     }
 
     /**
@@ -868,27 +768,23 @@ public class MXAdapter
      * dispatcher. The MX context {@link #mxContext} is connected to the
      * database if not already done.
      *
+     * @param _parameters   parameters
      * @param _method       method of the called <code>_jpo</code>
      * @param _arguments    list of all parameters for the <code>_jpo</code>
      *                      which are automatically encoded encoded
      * @return returned value from the called <code>_jpo</code>
-     * @throws IOException      if the parameter could not be encoded
-     * @throws MatrixException  if the called <code>_jpo</code> throws an
-     *                          exception
-     * @throws ClassNotFoundException if the class which is decoded from the
-     *                          returned string value could not be found
+     * @throws Exception    if the parameter could not be encoded, or if the
+     *                      called <code>_jpo</code> throws an exception, or
+     *                      if the class which is decoded from the returned
+     *                      string value could not be found
      * @see #mxContext
      * @see #connect()
      */
     protected Map<?,?> executeEncoded(final String[] _parameters,
                                       final String _method,
                                       final Object[] _arguments)
-        throws IOException, MatrixException, ClassNotFoundException
+        throws Exception
     {
-        if (!this.connected)  {
-            this.connect();
-        }
-
         // prepare parameters in a map
         final Map<String,String> parameters;
         if ((_parameters == null) || (_parameters.length == 0))  {
@@ -911,66 +807,11 @@ public class MXAdapter
             }
         }
 
-        // prepare MQL statement with encoded parameters
-        final StringBuilder cmd = new StringBuilder()
-            .append("exec prog ").append("org.mxupdate.plugin.Dispatcher \"")
-            .append(this.encode(parameters)).append("\" \"")
-            .append(this.encode(_method)).append("\" \"")
-            .append(this.encode(arguments)).append("\"");
+        final String bck = this.connector.execute(
+                CommunicationUtil.encode(parameters),
+                CommunicationUtil.encode(_method),
+                CommunicationUtil.encode(arguments));
 
-        // execute MQL command
-        final MQLCommand mql = new MQLCommand();
-        mql.executeCommand(this.mxContext, cmd.toString());
-        if ((mql.getError() != null) && !"".equals(mql.getError()))  { //$NON-NLS-1$
-            throw new MatrixException(mql.getError());
-        }
-
-        return this.<Map<?,?>>decode(mql.getResult());
-    }
-
-    /**
-     * Encodes given <code>_object</code> to a string with <b>base64</b>.
-     *
-     * @param _object   object to encode
-     * @return encoded string
-     * @throws IOException if encode failed
-     */
-    protected String encode(final Object _object)
-        throws IOException
-    {
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        final ObjectOutputStream oos = new ObjectOutputStream(out);
-        oos.writeObject(_object);
-        oos.close();
-        return new String(Base64.encodeBase64(out.toByteArray()));
-    }
-
-    /**
-     * Decodes given string value to an object of given type
-     * <code>&lt;T&gt;</code>. First the string is <b>base64</b> decoded, then
-     * the object instance is extracted from the decoded bytes via the Java
-     * &quot;standard&quot; feature of the {@link ObjectInputStream}.
-     *
-     * @param <T>   type of the object which must be decoded
-     * @param _arg  string argument with encoded instance of
-     *              <code>&lt;T&gt;</code>
-     * @return decoded object instance of given type <code>&lt;T&gt;</code>
-     * @throws IOException              if the value could not be decoded,
-     *                                  the decoder stream could not be
-     *                                  opened or the argument at given
-     *                                  <code>_index</code> is not defined
-     * @throws ClassNotFoundException   if the object itself could not be read
-     *                                  from decoder stream
-     */
-    @SuppressWarnings("unchecked")
-    protected final <T> T decode(final String _arg)
-        throws IOException, ClassNotFoundException
-    {
-        final byte[] bytes = Base64.decodeBase64(_arg.getBytes());
-        final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
-        final ObjectInputStream ois = new ObjectInputStream(in);
-        final T ret = (T) ois.readObject();
-        ois.close();
-        return ret;
+        return CommunicationUtil.<Map<?,?>>decode(bck);
     }
 }

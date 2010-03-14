@@ -21,11 +21,14 @@
 package org.mxupdate.eclipse.handlers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.IEditorInput;
@@ -55,13 +58,17 @@ public abstract class AbstractFileHandler
     {
         final ISelection selection = HandlerUtil.getCurrentSelection(_event);
 
-        final List<IFile> files = new ArrayList<IFile>();
+        final Map<IProject,List<IFile>> files = new HashMap<IProject,List<IFile>>();
 
         // selection from the navigator? (popup)
         if (selection instanceof TreeSelection)  {
             final TreeSelection treeSel = (TreeSelection) selection;
             for (final Object obj : treeSel.toList())  {
-                files.add((IFile) obj);
+                final IFile file = (IFile) obj;
+                if (!files.containsKey(file.getProject()))  {
+                    files.put(file.getProject(), new ArrayList<IFile>());
+                }
+                files.get(file.getProject()).add(file);
             }
         // started within editor or as toolbar command
         } else  {
@@ -69,7 +76,10 @@ public abstract class AbstractFileHandler
             if (activeEditor != null)  {
                 final IEditorInput input = activeEditor.getEditorInput();
                 if (input instanceof IFileEditorInput)  {
-                    files.add(((IFileEditorInput) input).getFile());
+                    final IFile file = ((IFileEditorInput) input).getFile();
+                    final ArrayList<IFile> tmpFiles = new ArrayList<IFile>();
+                    tmpFiles.add(file);
+                    files.put(file.getProject(), tmpFiles);
                 }
             }
         }
@@ -83,7 +93,8 @@ public abstract class AbstractFileHandler
      * A list of files is selected, a command is called and for this command
      * the handler must be executed.
      *
-     * @param _files    set of files for which this handler is called
+     * @param _files    set of files depending on the related project for which
+     *                  this handler is called
      */
-    protected abstract void execute(final List<IFile> _files);
+    protected abstract void execute(final Map<IProject,List<IFile>> _files);
 }
