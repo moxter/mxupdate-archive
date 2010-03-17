@@ -279,3 +279,22 @@ your Eclipse, you could ignore this created jar file.
 
 For more information see the [Development_EclipsePlugIn Eclipse Plug-In development]
 description.
+
+----
+
+= Configuration Items =
+
+== How could I define that a type is not derived from any other type? ==
+The !MxUpdate tool wants that a type is always derived from another type. If a
+type is not derived from any type, the "hidden" type "ADMINISTRATION" could be
+used.
+
+*Example (snippet):*
+{{{
+mql escape mod type "${NAME}" \
+    description "" \
+    derived "ADMINISTRATION" \
+    !hidden \
+    abstract false
+}}}
+
