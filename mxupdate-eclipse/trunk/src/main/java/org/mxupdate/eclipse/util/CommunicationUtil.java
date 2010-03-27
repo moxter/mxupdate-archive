@@ -23,10 +23,8 @@ package org.mxupdate.eclipse.util;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -89,48 +87,5 @@ public final class CommunicationUtil
         final T ret = (T) ois.readObject();
         ois.close();
         return ret;
-    }
-
-
-    public static <KEY,VALUE> Map<KEY,VALUE> readParams(final InputStream _in)
-        throws IOException, ClassNotFoundException, InterruptedException
-    {
-        final int length = Integer.valueOf(CommunicationUtil.readOneWord(_in));
-        final String value = CommunicationUtil.readOneWord(_in);
-        if (value.length() != length)  {
-// TODO
-            throw new Error("wrong parameters");
-        }
-        return CommunicationUtil.<Map<KEY,VALUE>>decode(value);
-    }
-
-    public static String readOneWord(final InputStream _in)
-        throws IOException, InterruptedException
-    {
-        final StringBuilder ret = new StringBuilder();
-
-        int ch;
-
-        while ((ch = (char) CommunicationUtil.readChar(_in)) != ' ')  {
-            ret.append((char) ch);
-        }
-
-        return ret.toString();
-    }
-
-    /**
-     *
-     * @param _in   input stream
-     * @return read character
-     * @throws IOException
-     * @throws InterruptedException
-     */
-    private static int readChar(final InputStream _in)
-        throws IOException, InterruptedException
-    {
-        while (_in.available() == 0)  {
-            Thread.sleep(1000);
-        }
-        return _in.read();
     }
 }
