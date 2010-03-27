@@ -20,7 +20,9 @@
 
 package org.mxupdate.eclipse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -86,18 +88,38 @@ try  {
 }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext)
+    /**
+     * Disconnects all {@link #adapters} and removes the {@link #console}.
+     *
+     * @param _context      bundle context
+     * @throws Exception if an internal exception was thrown
      */
-    @Override
+    @Override()
     public void stop(final BundleContext _context)
-            throws Exception
+        throws Exception
     {
-        ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[]{ this.console });
+        // disconnect all adapters
+        final List<Exception> exceptions = new ArrayList<Exception>();
+        for (final IDeploymentAdapter adapter : this.adapters.values())  {
+            try  {
+                adapter.disconnect();
+            } catch (final Exception e) {
+                exceptions.add(e);
+            }
+        }
+
+        // remove console
+        ConsolePlugin.getDefault().getConsoleManager().removeConsoles(new IConsole[]{this.console});
         this.console = null;
         Activator.plugIn = null;
+
+        // stop stuff from super class
         super.stop(_context);
+
+        // throw exception if exists
+        if (!exceptions.isEmpty())  {
+            throw new Exception(exceptions.toString());
+        }
     }
 
     /**
