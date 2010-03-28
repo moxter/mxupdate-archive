@@ -23,7 +23,6 @@ package org.mxupdate.eclipse.properties;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -49,17 +48,9 @@ public class ProjectPropertyPage
     extends PropertyPage
 {
     /**
-     * Name of the property file name.
-     *
-     * @see #loadProperties()
-     * @see #storeProperties(Properties)
-     */
-    protected static final String PROP_FILE_NAME = ".org.mxupdate.properties";
-
-    /**
      * Project specific properties edit from this property page.
      */
-    private final ProjectProperties properties = new ProjectProperties(this);
+    private ProjectProperties properties;
 
     /**
      * @param _workbench    workbench which must be initialized
@@ -120,7 +111,8 @@ public class ProjectPropertyPage
         });
 
 try {
-    this.loadProperties();
+    this.properties = new ProjectProperties((IProject) this.getElement(), this);
+    this.properties.load();
 } catch (final CoreException e) {
 // TODO
     e.printStackTrace();
@@ -151,12 +143,13 @@ for (final ProjectMode mode : ProjectMode.values())  {
     }
 
     @Override
-    public boolean performOk() {
+    public boolean performOk()
+    {
         // store the value in the owner text field
 
         boolean ret = true;
         try {
-            this.storeProperties();
+            this.properties.store();
         } catch (final CoreException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -167,29 +160,5 @@ for (final ProjectMode mode : ProjectMode.values())  {
             ret = false;
         }
         return ret;
-    }
-
-    /**
-     *
-     * @throws CoreException    if file could not be created
-     * @throws IOException      if file could not be opened and read
-     * @see #PROP_FILE_NAME
-     */
-    protected void loadProperties()
-        throws CoreException, IOException
-    {
-        this.properties.load(((IProject) this.getElement()).getFile(ProjectPropertyPage.PROP_FILE_NAME));
-    }
-
-    /**
-     *
-     * @throws CoreException    if file could not be created or updated
-     * @throws IOException      if properties could not be written
-     * @see #PROP_FILE_NAME
-     */
-    protected void storeProperties()
-        throws CoreException, IOException
-    {
-        this.properties.store(((IProject) this.getElement()).getFile(ProjectPropertyPage.PROP_FILE_NAME));
     }
 }

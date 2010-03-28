@@ -35,6 +35,7 @@ import javax.crypto.spec.PBEParameterSpec;
 
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 
@@ -50,9 +51,22 @@ import org.eclipse.core.runtime.CoreException;
 public class ProjectProperties
 {
     /**
+     * Name of the property file name.
+     *
+     * @see #load()
+     * @see #store()
+     */
+    protected static final String PROP_FILE_NAME = ".org.mxupdate.properties";
+
+    /**
      * Prefix used for the translation of the messages.
      */
     public static final String MSG_PREFIX = "ProjectProperty."; //$NON-NLS-1$
+
+    /**
+     * Key of the property for the cached image configuration.
+     */
+    private static final String PROP_IMAGE_CONFIG = "ImageConfiguration"; //$NON-NLS-1$
 
     /**
      * Key where the project mode is stored.
@@ -114,21 +128,68 @@ public class ProjectProperties
     private final ProjectPropertyPage propertyPage;
 
     /**
-     * Initializes the properties for no property page.
+     * Project mode for which this properties are defined.
      */
-    public ProjectProperties()
+    private ProjectMode mode;
+
+    /**
+     * Related project of the properties.
+     */
+    private final IProject project;
+
+    /**
+     * Initializes the properties for no property page.
+     *
+     * @param _project      project for which the property file is opened
+     * @throws CoreException    if property file could not be created
+     * @throws IOException      if property file could not be opened and read
+     */
+    public ProjectProperties(final IProject _project)
+        throws CoreException, IOException
     {
+        this.project = _project;
         this.propertyPage = null;
+        this.load();
     }
 
     /**
      * Initializes the properties for defined <code>_propertyPage</code>.
      *
+     * @param _project          project for which the property file is opened
      * @param _propertyPage     related property page
      */
-    public ProjectProperties(final ProjectPropertyPage _propertyPage)
+    public ProjectProperties(final IProject _project,
+                             final ProjectPropertyPage _propertyPage)
     {
+        this.project = _project;
         this.propertyPage = _propertyPage;
+    }
+
+    /**
+     * Returns the string of the image configuration.
+     *
+     * @return string of the image configuration
+     */
+    public String getImageConfig()
+    {
+        return this.getString(ProjectProperties.PROP_IMAGE_CONFIG, null);
+    }
+
+    /**
+     * Stores new image configuration <code>_imageConf</code> in the
+     * properties. To be sure that the newest properties exists, the properties
+     * will be loaded first, then updated and at least stored.
+     *
+     * @param _imageConf        new image configuration
+     * @throws Exception if storing of the properties failed
+     */
+    public void storeImageConfig(final String _imageConf)
+        throws Exception
+    {
+        this.properties.clear();
+        this.load();
+        this.setString(ProjectProperties.PROP_IMAGE_CONFIG, _imageConf);
+        this.store();
     }
 
     /**
@@ -294,14 +355,19 @@ public class ProjectProperties
 
     /**
      * Returns current mode defined with key {@link #PREF_MODE} in the
-     * {@link #properties}.
+     * {@link #properties}. If the value is loaded once the value will be
+     * cached.
      *
      * @return defined mode in the properties
      * @see #PREF_MODE
+     * @see #mode
      */
     public ProjectMode getMode()
     {
-        return ProjectMode.valueOf(this.properties.getProperty(ProjectProperties.PREF_MODE, ProjectMode.UNKNOWN.name()));
+        if (this.mode == null)  {
+            this.mode = ProjectMode.valueOf(this.properties.getProperty(ProjectProperties.PREF_MODE, ProjectMode.UNKNOWN.name()));
+        }
+        return this.mode;
     }
 
     /**
@@ -369,18 +435,18 @@ public class ProjectProperties
      * Loads from given <code>_file</code> the properties (if
      * <code>_file</code> exists).
      *
-     * @param _file    file where to load the properties
      * @throws CoreException    if file could not be created
      * @throws IOException      if file could not be opened and read
      * @see #PROP_FILE_NAME
      */
-    public void load(final IFile _file)
+    public void load()
         throws CoreException, IOException
     {
+        final IFile file = this.project.getFile(ProjectProperties.PROP_FILE_NAME);
         this.properties.clear();
-        _file.refreshLocal(IResource.DEPTH_ZERO, null);
-        if (_file.exists())  {
-            this.properties.load(_file.getContents(true));
+        file.refreshLocal(IResource.DEPTH_ZERO, null);
+        if (file.exists())  {
+            this.properties.load(file.getContents(true));
         }
     }
 
@@ -389,24 +455,24 @@ public class ProjectProperties
      * <code>_file</code>. If the <code>_file</code> does not exists, the file
      * is created.
      *
-     * @param _file     file where the {@link #properties} must be stored
      * @throws CoreException    if file could not be created or updated
      * @throws IOException      if properties could not be written
      * @see #PROP_FILE_NAME
      */
-    public void store(final IFile _file)
+    public void store()
         throws CoreException, IOException
     {
-        _file.refreshLocal(IResource.DEPTH_ZERO, null);
-        if (!_file.exists())  {
-            _file.create(new ByteArrayInputStream(new byte[]{}), true, null);
+        final IFile file = this.project.getFile(ProjectProperties.PROP_FILE_NAME);
+        file.refreshLocal(IResource.DEPTH_ZERO, null);
+        if (!file.exists())  {
+            file.create(new ByteArrayInputStream(new byte[]{}), true, null);
         }
         final StringWriter writer = new StringWriter();
         this.properties.store(writer, null);
         final String content = writer.getBuffer().toString();
         writer.close();
 
-        _file.setContents(new ByteArrayInputStream(content.getBytes(ProjectProperties.ENCODING)), true, false, null);
+        file.setContents(new ByteArrayInputStream(content.getBytes(ProjectProperties.ENCODING)), true, false, null);
     }
 
 

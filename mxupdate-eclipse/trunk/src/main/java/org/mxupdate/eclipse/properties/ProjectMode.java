@@ -152,9 +152,8 @@ public enum ProjectMode
         public IDeploymentAdapter initAdapter(final IProject _project,
                                               final ProjectProperties _properties,
                                               final Console _console)
-            throws IOException
         {
-            return new MXAdapter(_project, _console);
+            return new MXAdapter(_project, _properties, _console);
         }
 
         /**
@@ -278,7 +277,7 @@ public enum ProjectMode
                                               final ProjectProperties _properties,
                                               final Console _console)
         {
-            return new MXAdapter(_project, _console);
+            return new MXAdapter(_project, _properties, _console);
         }
 
         @Override()
@@ -426,7 +425,7 @@ public enum ProjectMode
                                               final ProjectProperties _properties,
                                               final Console _console)
         {
-            return new MXAdapter(_project, _console);
+            return new MXAdapter(_project, _properties, _console);
         }
 
         /**
@@ -512,10 +511,10 @@ public enum ProjectMode
          */
         @Override()
         public IDeploymentAdapter initAdapter(final IProject _project,
-                                          final ProjectProperties _properties,
-                                          final Console _console)
+                                              final ProjectProperties _properties,
+                                              final Console _console)
         {
-            return new MXAdapter(_project, _console);
+            return new MXAdapter(_project, _properties, _console);
         }
 
         @Override()
@@ -543,10 +542,10 @@ public enum ProjectMode
          */
         @Override()
         public IDeploymentAdapter initAdapter(final IProject _project,
-                                          final ProjectProperties _properties,
-                                          final Console _console)
+                                              final ProjectProperties _properties,
+                                              final Console _console)
         {
-            return new MXAdapter(_project, _console);
+            return new MXAdapter(_project, _properties, _console);
         }
 
         @Override()
@@ -571,7 +570,7 @@ public enum ProjectMode
 
     /**
      * Initialize the adapter depending on the eclipse <code>_project</code>
-     * for given <code>_properties<code>.
+     * for given <code>_properties</code>.
      *
      * @param _project      eclipse project
      * @param _properties   related properties of the eclipse
@@ -624,10 +623,11 @@ public enum ProjectMode
         throws Exception
     {
         // load properties
-        final ProjectProperties properties = new ProjectProperties();
-        properties.load(_project.getFile(ProjectPropertyPage.PROP_FILE_NAME));
+        final ProjectProperties properties = new ProjectProperties(_project);
         // and connect
-        return properties.getMode().initAdapter(_project, properties, _console);
+        return (properties.getMode() == ProjectMode.UNKNOWN)
+               ? null
+               : properties.getMode().initAdapter(_project, properties, _console);
     }
 
     /**
@@ -638,13 +638,12 @@ public enum ProjectMode
      * @return initialized connector
      * @throws Exception if connector could not be initialized
      */
-    public static IConnector initConnector(final IProject _project,
-                                           final Console _console)
+    public IConnector initConnector(final IProject _project,
+                                    final Console _console)
         throws Exception
     {
             // load properties
-            final ProjectProperties properties = new ProjectProperties();
-            properties.load(_project.getFile(ProjectPropertyPage.PROP_FILE_NAME));
+            final ProjectProperties properties = new ProjectProperties(_project);
             // and connect
             return properties.getMode().initConnector(_project, properties, _console);
     }
