@@ -23,7 +23,11 @@ package org.mxupdate.eclipse.shell;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuCreator;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
@@ -36,7 +40,11 @@ import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.mxupdate.eclipse.Activator;
 import org.mxupdate.eclipse.Messages;
@@ -48,8 +56,8 @@ import org.mxupdate.eclipse.Messages;
  * @version $Id$
  */
 public class ShellView
-        extends ViewPart
-        implements IPropertyChangeListener
+    extends ViewPart
+    implements IPropertyChangeListener
 {
     /**
      * Used color for the output text (returning back from the data base).
@@ -102,6 +110,11 @@ public class ShellView
     private final List<String> history = new ArrayList<String>();
 
     /**
+     * Current selected project name.
+     */
+    private String curProjectName;
+
+    /**
      * Creates the shell view with an output text field {@link #textOutput} and
      * an input text field {@link #textInput}.
      *
@@ -110,7 +123,7 @@ public class ShellView
      * @see #textInput
      * @see #textOutput
      */
-    @Override
+    @Override()
     public void createPartControl(final Composite _parent)
     {
         _parent.setLayout(new GridLayout(1, false));
@@ -118,9 +131,11 @@ public class ShellView
         this.textOutput = new StyledText(_parent, SWT.MULTI | SWT.WRAP | SWT.V_SCROLL | SWT.READ_ONLY);
         this.textOutput.setEditable(false);
         this.textOutput.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 1));
+        this.textOutput.setEnabled(false);
 
         this.textInput = new Text(_parent, SWT.SINGLE | SWT.BORDER);
         this.textInput.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false, 1, 1));
+        this.textInput.setEnabled(false);
 
         // key listener for the input text field
         // (execute, previous history entry, next history entry)
@@ -143,13 +158,73 @@ public class ShellView
         });
 
         // clear button
-        this.getViewSite().getActionBars().getMenuManager()
-                .add(new Action(Messages.getString("ShellView.ClearOutputButton")) { //$NON-NLS-1$
-            @Override
-            public void run() {
+        this.getViewSite().getActionBars().getMenuManager().add(new Action(Messages.getString("ShellView.ClearOutputButton")) { //$NON-NLS-1$
+            @Override()
+            public void run()
+            {
                 ShellView.this.textOutput.setText(""); //$NON-NLS-1$
             }
         });
+
+
+        this.getViewSite().getActionBars().getToolBarManager().add(
+                new Action(
+                        Messages.getString("ShellView.ButtonPrevious"),
+                        PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_BACK))
+                {
+                    @Override()
+                    public void run()
+                    {
+                        ShellView.this.prevHistoryEntry();
+                    }
+                });
+        this.getViewSite().getActionBars().getToolBarManager().add(
+                new Action(
+                        Messages.getString("ShellView.ButtonNext"),
+                        PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD))
+                {
+                    @Override()
+                    public void run()
+                    {
+                        ShellView.this.nextHistoryEntry();
+                    }
+                });
+
+
+        final Action action = new Action("Select Project", Action.AS_DROP_DOWN_MENU){};
+
+        action.setMenuCreator(new IMenuCreator(){
+            @Override()
+            public void dispose()
+            {
+            }
+            @Override()
+            public Menu getMenu(final Control _parent)
+            {
+                final MenuManager mg = new MenuManager();
+                for (final String project : Activator.getDefault().getProjectNames())  {
+                    mg.add(new Action(project){
+                        @Override()
+                        public void run()
+                        {
+                            action.setText(Messages.getString("ShellView.ProjectSelect", project)); //$NON-NLS-1$
+                            ShellView.this.curProjectName = project;
+                            ShellView.this.textInput.setEnabled(true);
+                            ShellView.this.textOutput.setEnabled(true);
+                            ShellView.this.getViewSite().getActionBars().getToolBarManager().update(true);
+                        }
+                    });
+                }
+                return mg.createContextMenu(_parent);
+            }
+            @Override()
+            public Menu getMenu(final Menu _menu)
+            {
+                return null;
+            }});
+
+        this.getViewSite().getActionBars().getToolBarManager().add(action);
+
 
         // set colors
         this.updateStyle();
@@ -202,7 +277,7 @@ public class ShellView
      *
      * @see #textInput
      */
-    @Override
+    @Override()
     public void setFocus()
     {
         this.textInput.setFocus();
@@ -253,7 +328,10 @@ public class ShellView
         final StyleRange txtStyleRange = new StyleRange();
         txtStyleRange.start = this.textOutput.getCharCount();
         try {
-            this.textOutput.append(Activator.getDefault().getAdapter().execute(inputText));
+            this.showBusy(true);
+            final IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(this.curProjectName);
+            this.textOutput.append(Activator.getDefault().getAdapter(project).execute(inputText));
+            this.showBusy(false);
             txtStyleRange.foreground = this.colorOuput;
         } catch (final Exception e1)  {
             this.textOutput.append(e1.toString());
@@ -309,7 +387,7 @@ public class ShellView
      * If the shell is closed this instance must be removed as listener from
      * workspace preference change events.
      */
-    @Override
+    @Override()
     public void dispose()
     {
         ShellPreference.removeListener(this);

@@ -601,37 +601,36 @@ public class MXAdapter
 
         final Map<?,?> bck = this.executeEncoded(null, "Export", new Object[]{"FileName", _file.toString()});
 
-        final IExportItem ret;
         if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
             throw (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION);
-        } else  {
-            final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
-            Activator.getDefault().getConsole().logInfo(Messages.getString("MXAdapter.ExportLog", //$NON-NLS-1$
-                                                                           (String) value.get("FileName"))); //$NON-NLS-1$
-            Activator.getDefault().getConsole().appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
-            ret = new IExportItem() {
-                public String getFileName()
-                {
-                    return (String) value.get("FileName");
-                }
-                public String getFilePath()
-                {
-                    return (String) value.get("FilePath");
-                }
-                public String getName()
-                {
-                    return (String) value.get("Name");
-                }
-                public String getTypeDef()
-                {
-                    return (String) value.get("TypeDef");
-                }
-                public String getContent()
-                {
-                    return (String) value.get("Code");
-                }
-            };
         }
+
+        final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+        Activator.getDefault().getConsole().logInfo(Messages.getString("MXAdapter.ExportLog", //$NON-NLS-1$
+                                                                       (String) value.get("FileName"))); //$NON-NLS-1$
+        Activator.getDefault().getConsole().appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
+        final IExportItem ret = new IExportItem() {
+            public String getFileName()
+            {
+                return (String) value.get("FileName");
+            }
+            public String getFilePath()
+            {
+                return (String) value.get("FilePath");
+            }
+            public String getName()
+            {
+                return (String) value.get("Name");
+            }
+            public String getTypeDef()
+            {
+                return (String) value.get("TypeDef");
+            }
+            public String getContent()
+            {
+                return (String) value.get("Code");
+            }
+        };
 
         return ret;
     }
@@ -724,14 +723,13 @@ public class MXAdapter
     }
 
     /**
-     * Executes given MQL command and returns the trimmed result of the MQL
-     * execution. The MX context {@link #mxContext} is connected to the data
-     * base if not already done.
+     * {@inheritDoc}
+     * To do this the plug-in method &quot;<code>Execute</code>&quot; is called
+     * on the server.
      *
      * @param _command  MQL command to execute
-     * @return trimmed result of the MQL execution
+     * @return result of the MQL execution
      * @throws Exception if MQL execution fails or a connect failed
-     * @see #mxContext
      * @see #connect()
      */
     public String execute(final CharSequence _command)
@@ -740,14 +738,14 @@ public class MXAdapter
         if (this.connector == null)  {
             this.connect();
         }
-/*
-        final MQLCommand mql = new MQLCommand();
-        mql.executeCommand(this.mxContext, _command.toString());
-        if ((mql.getError() != null) && !"".equals(mql.getError()))  { //$NON-NLS-1$
-            throw new MatrixException(mql.getError() + "\nMQL command was:\n" + _command);
+
+        final Map<?,?> bck = this.executeEncoded(null, "Execute", new Object[]{"Command", _command});
+
+        if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
+            throw (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION);
         }
-        return mql.getResult().trim();*/
-        return null;
+
+        return (String) bck.get(MXAdapter.RETURN_KEY_VALUES);
     }
 
     /**
