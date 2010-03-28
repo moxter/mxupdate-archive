@@ -119,8 +119,10 @@ public interface IDeploymentAdapter
      * Evaluates the type tree hierarchy and returns the root.
      *
      * @return root type tree (or <code>null</code> if it could not evaluated)
+     * @throws Exception if execute failed
      */
-    ITypeDefRoot getTypeDefRoot();
+    ITypeDefRoot getTypeDefRoot()
+        throws Exception;
 
     /**
      * Returns for given <code>_file</code> related image descriptor.
