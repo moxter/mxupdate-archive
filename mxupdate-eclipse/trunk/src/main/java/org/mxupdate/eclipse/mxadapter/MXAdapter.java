@@ -467,7 +467,12 @@ public class MXAdapter
      * in the required format.
      */
     public ITypeDefRoot getTypeDefRoot()
+        throws Exception
     {
+        if (this.connector == null)  {
+            this.connect();
+        }
+
         Map<?,?> bck = null;
         try {
             bck = this.executeEncoded(null, "TypeDefTreeList", null);
