@@ -22,7 +22,6 @@ package org.mxupdate.eclipse.importwizard;
 
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -38,6 +37,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.mxupdate.eclipse.Activator;
 import org.mxupdate.eclipse.Messages;
 
 /**
@@ -112,13 +112,7 @@ public class Step1SelectProjectForConnection
         gridData.horizontalAlignment = GridData.FILL;
         gridData.grabExcessHorizontalSpace = true;
         this.projectField.setLayoutData(gridData);
-        // prepare list of all projects, sorted
-        final Set<String> projects = new TreeSet<String>();
-        for (final IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects())  {
-            if (project.isOpen())  {
-                projects.add(project.getName());
-            }
-        }
+        final Set<String> projects = Activator.getDefault().getProjectNames();
         this.projectField.setItems(projects.toArray(new String[projects.size()]));
         if ((this.preSelProject != null) && this.preSelProject.isOpen())  {
             this.projectField.select(new ArrayList<String>(projects).indexOf(this.preSelProject.getName()));

@@ -24,8 +24,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -153,6 +156,23 @@ try  {
     public void showConsole()
     {
         ConsolePlugin.getDefault().getConsoleManager().showConsoleView(this.console);
+    }
+
+    /**
+     * Evaluates the list of names of possible projects which the user could
+     * select.
+     *
+     * @return alphabetically sorted list of projects
+     */
+    public Set<String> getProjectNames()
+    {
+        final Set<String> ret = new TreeSet<String>();
+        for (final IProject project : ResourcesPlugin.getWorkspace().getRoot().getProjects())  {
+            if (project.isOpen())  {
+                ret.add(project.getName());
+            }
+        }
+        return ret;
     }
 
     /**
