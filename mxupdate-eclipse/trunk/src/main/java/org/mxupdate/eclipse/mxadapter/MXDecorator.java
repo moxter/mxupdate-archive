@@ -20,9 +20,13 @@
 
 package org.mxupdate.eclipse.mxadapter;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ILightweightLabelDecorator;
+import org.mxupdate.eclipse.Activator;
+import org.mxupdate.eclipse.adapter.IDeploymentAdapter;
 
 /**
  * MX Update Eclipse plug-in specific decorator which evaluates depending on
@@ -32,7 +36,7 @@ import org.eclipse.jface.viewers.ILightweightLabelDecorator;
  * @version $Id$
  */
 public class MXDecorator
-        implements ILightweightLabelDecorator
+    implements ILightweightLabelDecorator
 {
 
     /**
@@ -46,17 +50,25 @@ public class MXDecorator
     public void decorate(final Object _obj,
                          final IDecoration _decoration)
     {
-        /*
-        final ImageDescriptor imageDesc = Activator.getDefault().getAdapter().getImageDescriptor((IFile) _obj);
-        if (imageDesc != null)  {
-            _decoration.addOverlay(imageDesc, IDecoration.TOP_LEFT);
-        }*/
+        final IFile file = (IFile) _obj;
+        try {
+            final IDeploymentAdapter adapter = Activator.getDefault().getAdapter(file.getProject());
+            if (adapter != null)  {
+                final ImageDescriptor imageDesc = adapter.getImageDescriptor(file);
+                if (imageDesc != null)  {
+                    _decoration.addOverlay(imageDesc, IDecoration.TOP_LEFT);
+                }
+            }
+        } catch (final Exception e)  {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     /**
      * Method stub to implement interface {@link ILightweightLabelDecorator}.
      *
-     * @param _ilabelproviderlistener
+     * @param _ilabelproviderlistener   not used
      */
     public void addListener(final ILabelProviderListener _ilabelproviderlistener)
     {
@@ -82,6 +94,8 @@ public class MXDecorator
 
     /**
      * Method stub to implement interface {@link ILightweightLabelDecorator}.
+     *
+     * @param _ilabelproviderlistener   not used
      */
     public void removeListener(final ILabelProviderListener _ilabelproviderlistener)
     {
