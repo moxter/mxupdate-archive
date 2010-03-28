@@ -20,6 +20,7 @@
 
 package org.mxupdate.eclipse.mxadapter;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,12 +32,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
+import org.apache.commons.codec.binary.Base64;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.ImageData;
 import org.mxupdate.eclipse.Activator;
 import org.mxupdate.eclipse.Messages;
 import org.mxupdate.eclipse.adapter.IDeploymentAdapter;
@@ -46,7 +51,7 @@ import org.mxupdate.eclipse.adapter.ITypeDefNode;
 import org.mxupdate.eclipse.adapter.ITypeDefRoot;
 import org.mxupdate.eclipse.console.Console;
 import org.mxupdate.eclipse.mxadapter.connectors.IConnector;
-import org.mxupdate.eclipse.properties.ProjectMode;
+import org.mxupdate.eclipse.properties.ProjectProperties;
 import org.mxupdate.eclipse.util.CommunicationUtil;
 
 /**
@@ -58,12 +63,6 @@ import org.mxupdate.eclipse.util.CommunicationUtil;
 public class MXAdapter
     implements IDeploymentAdapter
 {
-
-    /**
-     * Key name of the properties stored in the preferences.
-     */
-    private static final String PREF_PROPERTIES = "pluginProperties"; //$NON-NLS-1$
-
     /**
      * Name and place of the manifest file.
      *
@@ -107,6 +106,8 @@ public class MXAdapter
      */
     private static final String RETURN_KEY_VALUES = "values";
 
+    /** Properties for the project. */
+    private final ProjectProperties properties;
 
     /**
      * MxUpdate plug-in console.
@@ -146,12 +147,15 @@ public class MXAdapter
     /**
      * Initializes the MX adapter.
      *
-     * @param _project      related Eclipse project
-     * @param _console      console used for logging purposes
+     * @param _project          related Eclipse project
+     * @param _properties       project properties
+     * @param _console          console used for logging purposes
      */
     public MXAdapter(final IProject _project,
+                     final ProjectProperties _properties,
                      final Console _console)
     {
+        this.properties = _properties;
         this.project = _project;
         this.console = _console;
         this.initImageDescriptors();
@@ -165,13 +169,11 @@ public class MXAdapter
      */
     protected void initImageDescriptors()
     {
-        /*
-        final Properties properties = new Properties();
-        final String propStr = this.preferences.getString("pluginProperties"); //$NON-NLS-1$
-        if (propStr != null)  {
-            final InputStream is = new ByteArrayInputStream(propStr.getBytes());
+        final Properties imageConfig = new Properties();
+        if (this.properties.getImageConfig() != null)  {
+            final InputStream is = new ByteArrayInputStream(this.properties.getImageConfig().getBytes());
             try {
-                properties.load(is);
+                imageConfig.load(is);
             } catch (final IOException e) {
                 this.console.logError("MXAdapter.ExceptionInitImageDescriptorsLoadPropertiesFailed", e);
             }
@@ -179,16 +181,20 @@ public class MXAdapter
 
         // extract all admin type names
         final Set<String> admins = new HashSet<String>();
-        for (final Object keyObj : properties.keySet())  {
+        for (final Object keyObj : imageConfig.keySet())  {
             final String key = keyObj.toString().replaceAll("\\..*", ""); //$NON-NLS-1$ //$NON-NLS-2$
             admins.add(key);
         }
 
+        // remove already stored images
+        this.typeDef2Image.clear();
+        this.imageMap.clear();
+
         // prepare image cache
         for (final String admin : admins)  {
-            final String prefix = properties.getProperty(admin + ".FilePrefix"); //$NON-NLS-1$
-            final String suffix = properties.getProperty(admin + ".FileSuffix"); //$NON-NLS-1$
-            final String iconStr = properties.getProperty(admin + ".Icon"); //$NON-NLS-1$
+            final String prefix = imageConfig.getProperty(admin + ".FilePrefix"); //$NON-NLS-1$
+            final String suffix = imageConfig.getProperty(admin + ".FileSuffix"); //$NON-NLS-1$
+            final String iconStr = imageConfig.getProperty(admin + ".Icon"); //$NON-NLS-1$
 
             final byte[] bin = Base64.decodeBase64(iconStr.getBytes());
             final InputStream in = new ByteArrayInputStream(bin);
@@ -205,7 +211,7 @@ public class MXAdapter
 
             // mapping between type definition and image
             this.typeDef2Image.put(admin, imageDesriptor);
-        }*/
+        }
     }
 
     /**
@@ -234,56 +240,32 @@ public class MXAdapter
         if (this.connector != null)  {
             this.console.logInfo(Messages.getString("MXAdapter.AlreadyConnected")); //$NON-NLS-1$
         } else  {
-            this.connector = ProjectMode.initConnector(this.project, this.console);
+            this.connector = this.properties.getMode().initConnector(this.project, this.console);
 
             // check versions
             this.checkVersions();
 
-            /*
-            // is external configured
-            if (this.preferences.getBoolean(MXAdapter.PREF_EXTERNAL_CONFIGURED))  {
-                final String propFile = this.preferences.getString(MXAdapter.PREF_PROP_FILE);
-                final String propHost = this.preferences.getString(MXAdapter.PREF_PROP_KEY_URL);
-                final String propName = this.preferences.getString(MXAdapter.PREF_PROP_KEY_NAME);
-                final String propPass = this.preferences.getString(MXAdapter.PREF_PROP_KEY_PASSWORD);
+            try {
+                // read properties
+                final String newProps = (String) this.executeEncoded(null, "GetProperty", null).get(MXAdapter.RETURN_KEY_VALUES);
+                final String curProps = this.properties.getImageConfig();
 
-                this.console.logInfo(Messages.getString("MXAdapter.ReadExternalFile", propFile)); //$NON-NLS-1$
-                final Properties extProps = new Properties();
-                boolean read = false;
-                try {
-                    extProps.load(new FileInputStream(propFile));
-                    read = true;
-                } catch (final FileNotFoundException e) {
-                    this.console.logError(Messages.getString("MXAdapter.ExceptionExternalFileOpenFailed"), e); //$NON-NLS-1$
-                } catch (final IOException e) {
-                    this.console.logError(Messages.getString("MXAdapter.ExceptionExternalFileOpenFailed"), e); //$NON-NLS-1$
+                // update if required
+                if (!newProps.equals(curProps))  {
+                    this.properties.storeImageConfig(newProps);
+                    this.console.logInfo(Messages.getString("MXAdapter.PluginPropertiesChanged")); //$NON-NLS-1$
+
+                    // reload image descriptors
+                    this.initImageDescriptors();
+
+                    // and refresh project
+                    this.project.touch(new NullProgressMonitor());
                 }
 
-
-            if (connectAllowed)  {
-
-                try {
-                    // read properties
-                    final String newProps = (String) this.executeEncoded(null, "GetProperty", null).get(MXAdapter.RETURN_KEY_VALUES);
-                    /*
-                    final String newProps = this.execute("exec prog org.mxupdate.plugin.GetProperties"); //$NON-NLS-1$
-                    */
-                    /*
-                    final String curProps = this.preferences.getString(MXAdapter.PREF_PROPERTIES);
-                    if (!newProps.equals(curProps))  {
-                        this.preferences.setValue(MXAdapter.PREF_PROPERTIES, newProps);
-                        this.console.logInfo(Messages.getString("MXAdapter.PluginPropertiesChanged")); //$NON-NLS-1$
-                    }
-                } catch (final Exception e) {
-                    this.console.logError(Messages.getString("MXAdapter.ConnectFailed"), e); //$NON-NLS-1$
-                }
-
-                // check versions
-                if (this.connected)  {
-                    this.checkVersions();
-                }
+            } catch (final Exception e) {
+                this.console.logError(Messages.getString("MXAdapter.ConnectFailed"), e); //$NON-NLS-1$
             }
-*/
+
         }
     }
 
