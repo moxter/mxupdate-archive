@@ -376,9 +376,11 @@ public class ProjectProperties
      *
      * @param _mode     new mode of the project
      * @see #PREF_MODE
+     * @see #mode
      */
     public void setMode(final ProjectMode _mode)
     {
+        this.mode = _mode;
         this.properties.setProperty(ProjectProperties.PREF_MODE, _mode.name());
         this.checkValuesValid();
     }
