@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -51,7 +52,7 @@ import org.mxupdate.eclipse.adapter.ITypeDefRoot;
  * @author The MxUpdate Team
  * @version $Id$
  */
-public class Step1TypeNamePage
+public class Step2TypeNamePage
     extends WizardPage
 {
     /**
@@ -65,6 +66,14 @@ public class Step1TypeNamePage
     private Tree tree;
 
     /**
+     * Stores current selected project. Needed that a query for all existing CI
+     * types is not always needed.
+     *
+     * @see #setVisible(boolean)
+     */
+    private IProject currentProject;
+
+    /**
      * Map holding already created images for this wizard page. The images
      * are used within the tree table showing the type definition tree.
      *
@@ -74,13 +83,13 @@ public class Step1TypeNamePage
     private final List<Image> images = new ArrayList<Image>();
 
     /**
-     * Initializes step 1 page of the import wizard.
+     * Initializes step 2 page of the import wizard.
      */
-    public Step1TypeNamePage()
+    public Step2TypeNamePage()
     {
-        super("Step1");
-        this.setTitle(Messages.getString("ImportWizard.Wizard.Step1.Title")); //$NON-NLS-1$
-        this.setDescription(Messages.getString("ImportWizard.Wizard.Step1.Description")); //$NON-NLS-1$
+        super("Step2");
+        this.setTitle(Messages.getString("ImportWizard.Wizard.Step2.Title")); //$NON-NLS-1$
+        this.setDescription(Messages.getString("ImportWizard.Wizard.Step2.Description")); //$NON-NLS-1$
     }
 
     /**
@@ -93,7 +102,9 @@ public class Step1TypeNamePage
     {
         super.dispose();
         for (final Image image : this.images)  {
-            image.dispose();
+            if (image != null)  {
+                image.dispose();
+            }
         }
         this.images.clear();
     }
@@ -105,8 +116,6 @@ public class Step1TypeNamePage
      */
     public void createControl(final Composite _parent)
     {
-        final ITypeDefRoot typeDefRoot = Activator.getDefault().getAdapter().getTypeDefRoot();
-
         this.initializeDialogUnits(_parent);
 
         final Composite containerGroup = new Composite(_parent, 0);
@@ -128,15 +137,12 @@ public class Step1TypeNamePage
             }
             public void keyReleased(final KeyEvent _event)
             {
-                Step1TypeNamePage.this.validate();
+                Step2TypeNamePage.this.validate();
             }
         });
 
-        this.tree = new Tree(containerGroup, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+        this.tree = new Tree(containerGroup, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.VIRTUAL);
         this.tree.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true, 1, 1));
-        for (final ITypeDefNode typeDefNode : typeDefRoot.getSubTypeDef())  {
-            this.append(typeDefNode, new TreeItem(this.tree, SWT.NONE));
-        }
         this.tree.addSelectionListener(new SelectionListener()
         {
             public void widgetDefaultSelected(final SelectionEvent _event)
@@ -144,12 +150,45 @@ public class Step1TypeNamePage
             }
             public void widgetSelected(final SelectionEvent _event)
             {
-                Step1TypeNamePage.this.validate();
+                Step2TypeNamePage.this.validate();
             }
         });
 
+
         this.setControl(containerGroup);
+
         this.validate();
+    }
+    /**
+     * If this page is shown the configuration item types are defined depending
+     * on the selected project from the first step of the import wizard. The
+     * list of the configuration items will be only updated if the list was not
+     * created before or if {@link #currentProject current project} is not the
+     * selected project from first step.
+     *
+     * @param _visible  must be <i>true</i> that the search is executed
+     */
+    @Override()
+    public void setVisible(final boolean _visible)
+    {
+        if (_visible)  {
+            final IProject project = ((ImportWizard) this.getWizard()).getProject();
+
+            if ((this.currentProject == null) || !this.currentProject.equals(project))  {
+                this.tree.removeAll();
+                try {
+                    final ITypeDefRoot typeDefRoot = Activator.getDefault().getAdapter(project).getTypeDefRoot();
+                    for (final ITypeDefNode typeDefNode : typeDefRoot.getSubTypeDef())  {
+                        this.append(typeDefNode, new TreeItem(this.tree, SWT.NONE));
+                    }
+                } catch (final Exception e) {
+// TODO!!
+                    throw new Error(e);
+                }
+                this.currentProject = project;
+            }
+        }
+        super.setVisible(_visible);
     }
 
     /**
@@ -167,11 +206,17 @@ public class Step1TypeNamePage
         // if one type definition is defined show related image
         if (_node.getTypeDefs().size() == 1)  {
             final String typeDef = _node.getTypeDefs().iterator().next();
-            final ImageDescriptor imageDescr = Activator.getDefault().getAdapter().getImageDescriptor(typeDef);
-            if (imageDescr != null)  {
-                final Image image = imageDescr.createImage();
-                this.images.add(image);
-                _item.setImage(image);
+            final IProject project = ((ImportWizard) this.getWizard()).getProject();
+            try {
+                final ImageDescriptor imageDescr = Activator.getDefault().getAdapter(project).getImageDescriptor(typeDef);
+                if (imageDescr != null)  {
+                    final Image image = imageDescr.createImage();
+                    this.images.add(image);
+                    _item.setImage(image);
+                }
+            } catch (final Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
         }
         for (final ITypeDefNode subNode : _node.getSubTypeDef())  {
@@ -190,14 +235,14 @@ public class Step1TypeNamePage
     protected void validate()
     {
         if ("".equals(this.nameField.getText()))  { //$NON-NLS-1$
-            this.setErrorMessage(Messages.getString("ImportWizard.Wizard.Step1.NameError")); //$NON-NLS-1$
-            Step1TypeNamePage.this.setPageComplete(false);
-        } else if (Step1TypeNamePage.this.tree.getSelectionCount() == 0)  {
-            this.setErrorMessage(Messages.getString("ImportWizard.Wizard.Step1.TypeDefError")); //$NON-NLS-1$
-            Step1TypeNamePage.this.setPageComplete(false);
+            this.setErrorMessage(Messages.getString("ImportWizard.Wizard.Step2.NameError")); //$NON-NLS-1$
+            Step2TypeNamePage.this.setPageComplete(false);
+        } else if (Step2TypeNamePage.this.tree.getSelectionCount() == 0)  {
+            this.setErrorMessage(Messages.getString("ImportWizard.Wizard.Step2.TypeDefError")); //$NON-NLS-1$
+            Step2TypeNamePage.this.setPageComplete(false);
         } else  {
             this.setErrorMessage(null);
-            Step1TypeNamePage.this.setPageComplete(true);
+            Step2TypeNamePage.this.setPageComplete(true);
         }
     }
 
@@ -212,7 +257,7 @@ public class Step1TypeNamePage
     @Override()
     public boolean canFlipToNextPage()
     {
-        return (Step1TypeNamePage.this.tree.getSelectionCount() > 0) && !"".equals(this.nameField.getText());
+        return (Step2TypeNamePage.this.tree.getSelectionCount() > 0) && !this.nameField.getText().isEmpty();
     }
 
     /**
