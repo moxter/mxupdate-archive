@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -45,6 +46,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.dialogs.WizardResourceImportPage;
 import org.mxupdate.eclipse.Activator;
 import org.mxupdate.eclipse.Messages;
+import org.mxupdate.eclipse.adapter.IDeploymentAdapter;
 import org.mxupdate.eclipse.adapter.ISearchItem;
 
 /**
@@ -56,7 +58,7 @@ import org.mxupdate.eclipse.adapter.ISearchItem;
  * @author The MxUpdate Team
  * @version $Id$
  */
-public class Step2ConfigurationItemsPage
+public class Step3ConfigurationItemsPage
     extends WizardResourceImportPage
 {
     /**
@@ -64,7 +66,7 @@ public class Step2ConfigurationItemsPage
      *
      * @see #setVisible(boolean)
      */
-    private final Step1TypeNamePage step1;
+    private final Step2TypeNamePage step2;
 
     /**
      * Table with the found configuration items of the search.
@@ -81,18 +83,18 @@ public class Step2ConfigurationItemsPage
     private final Map<String,Image> images = new HashMap<String,Image>();
 
     /**
-     * Initializes step 2 page of the import wizard.
+     * Initializes step 3 page of the import wizard.
      *
      * @param _typeNamePage     reference to first step of the wizard
      * @param _selection        structured selection
      */
-    public Step2ConfigurationItemsPage(final Step1TypeNamePage _typeNamePage,
+    public Step3ConfigurationItemsPage(final Step2TypeNamePage _typeNamePage,
                                        final IStructuredSelection _selection)
     {
-        super("Step2", _selection);
-        this.step1 = _typeNamePage;
-        this.setTitle(Messages.getString("ImportWizard.Wizard.Step2.Title")); //$NON-NLS-1$
-        this.setDescription(Messages.getString("ImportWizard.Wizard.Step2.Description")); //$NON-NLS-1$
+        super("Step3", _selection);
+        this.step2 = _typeNamePage;
+        this.setTitle(Messages.getString("ImportWizard.Wizard.Step3.Title")); //$NON-NLS-1$
+        this.setDescription(Messages.getString("ImportWizard.Wizard.Step3.Description")); //$NON-NLS-1$
     }
 
     /**
@@ -105,14 +107,16 @@ public class Step2ConfigurationItemsPage
     {
         super.dispose();
         for (final Image image : this.images.values())  {
-            image.dispose();
+            if (image != null)  {
+                image.dispose();
+            }
         }
         this.images.clear();
     }
 
     /**
      * If this page is shown the search for configuration items is performed
-     * depending on the defined values from the {@link #step1 first step} of
+     * depending on the defined values from the {@link #step2 first step} of
      * the wizard.
      *
      * @param _visible  must be <i>true</i> that the search is executed
@@ -121,9 +125,20 @@ public class Step2ConfigurationItemsPage
     public void setVisible(final boolean _visible)
     {
         if (_visible)  {
-            final List<ISearchItem> items = Activator.getDefault().getAdapter().search(this.step1.getTypeDefs(), this.step1.getMatch());
-
             this.table.removeAll();
+
+            final IProject project = ((ImportWizard) this.getWizard()).getProject();
+            IDeploymentAdapter adapter;
+            try {
+                adapter = Activator.getDefault().getAdapter(project);
+            } catch (final Exception e)  {
+// TODO Auto-generated catch block
+                e.printStackTrace();
+                throw new Error(e);
+            }
+
+            final List<ISearchItem> items = adapter.search(this.step2.getTypeDefs(), this.step2.getMatch());
+
             for (final ISearchItem item : items)  {
                 final TableItem tableItem = new TableItem(this.table, SWT.NONE);
                 tableItem.setText(new String[]{item.getName(), item.getFileName(), item.getFilePath()});
@@ -131,7 +146,7 @@ public class Step2ConfigurationItemsPage
 
                 final String typeDef = item.getTypeDef();
                 if (!this.images.containsKey(typeDef))  {
-                    final ImageDescriptor imageDescr = Activator.getDefault().getAdapter().getImageDescriptor(typeDef);
+                    final ImageDescriptor imageDescr = adapter.getImageDescriptor(typeDef);
                     if (imageDescr != null)  {
                         this.images.put(typeDef, imageDescr.createImage());
                     } else  {
@@ -192,7 +207,7 @@ public class Step2ConfigurationItemsPage
         groupGridData.horizontalAlignment = GridData.FILL;
         groupGridData.grabExcessHorizontalSpace = true;
         group.setLayoutData(groupGridData);
-        group.setText(Messages.getString("ImportWizard.Wizard.Step2.TableGroupTitle")); //$NON-NLS-1$
+        group.setText(Messages.getString("ImportWizard.Wizard.Step3.TableGroupTitle")); //$NON-NLS-1$
 
         // result table
         this.table = new Table(group, SWT.MULTI | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -212,23 +227,23 @@ public class Step2ConfigurationItemsPage
 
             public void widgetSelected(final SelectionEvent _event)
             {
-                Step2ConfigurationItemsPage.this.updateWidgetEnablements();
+                Step3ConfigurationItemsPage.this.updateWidgetEnablements();
             }
         });
         // table columns
         final TableColumn tc1 = new TableColumn(this.table, SWT.LEFT);
         final TableColumn tc2 = new TableColumn(this.table, SWT.LEFT);
         final TableColumn tc3 = new TableColumn(this.table, SWT.LEFT);
-        tc1.setText(Messages.getString("ImportWizard.Wizard.Step2.TableHeaderName")); //$NON-NLS-1$
-        tc2.setText(Messages.getString("ImportWizard.Wizard.Step2.TableHeaderFile")); //$NON-NLS-1$
-        tc3.setText(Messages.getString("ImportWizard.Wizard.Step2.TableHeaderPath")); //$NON-NLS-1$
+        tc1.setText(Messages.getString("ImportWizard.Wizard.Step3.TableHeaderName")); //$NON-NLS-1$
+        tc2.setText(Messages.getString("ImportWizard.Wizard.Step3.TableHeaderFile")); //$NON-NLS-1$
+        tc3.setText(Messages.getString("ImportWizard.Wizard.Step3.TableHeaderPath")); //$NON-NLS-1$
         tc1.setWidth(150);
         tc2.setWidth(200);
         tc3.setWidth(150);
 
         // select all button
         final Button buttonAll = new Button(group, SWT.PUSH);
-        buttonAll.setText(Messages.getString("ImportWizard.Wizard.Step2.TableSelectAll")); //$NON-NLS-1$
+        buttonAll.setText(Messages.getString("ImportWizard.Wizard.Step3.TableSelectAll")); //$NON-NLS-1$
         buttonAll.setFont(group.getFont());
         buttonAll.addSelectionListener(new SelectionListener() {
             public void widgetDefaultSelected(final SelectionEvent _event)
@@ -236,14 +251,14 @@ public class Step2ConfigurationItemsPage
             }
             public void widgetSelected(final SelectionEvent _event)
             {
-                Step2ConfigurationItemsPage.this.table.selectAll();
-                Step2ConfigurationItemsPage.this.updateWidgetEnablements();
+                Step3ConfigurationItemsPage.this.table.selectAll();
+                Step3ConfigurationItemsPage.this.updateWidgetEnablements();
             }
         });
 
         // deselect all button
         final Button buttonClear = new Button(group, SWT.PUSH);
-        buttonClear.setText(Messages.getString("ImportWizard.Wizard.Step2.TableSelectClear")); //$NON-NLS-1$
+        buttonClear.setText(Messages.getString("ImportWizard.Wizard.Step3.TableSelectClear")); //$NON-NLS-1$
         buttonClear.setFont(group.getFont());
         buttonClear.addSelectionListener(new SelectionListener() {
             public void widgetDefaultSelected(final SelectionEvent _event)
@@ -251,8 +266,8 @@ public class Step2ConfigurationItemsPage
             }
             public void widgetSelected(final SelectionEvent _event)
             {
-                Step2ConfigurationItemsPage.this.table.deselectAll();
-                Step2ConfigurationItemsPage.this.updateWidgetEnablements();
+                Step3ConfigurationItemsPage.this.table.deselectAll();
+                Step3ConfigurationItemsPage.this.updateWidgetEnablements();
             }
         });
     }
@@ -269,7 +284,7 @@ public class Step2ConfigurationItemsPage
     {
         final boolean ret;
         if ((this.table != null) && this.table.getSelectionCount() == 0)  {
-            this.setErrorMessage(Messages.getString("ImportWizard.Wizard.Step2.TableError")); //$NON-NLS-1$
+            this.setErrorMessage(Messages.getString("ImportWizard.Wizard.Step3.TableError")); //$NON-NLS-1$
             ret = false;
         } else  {
             ret = true;
