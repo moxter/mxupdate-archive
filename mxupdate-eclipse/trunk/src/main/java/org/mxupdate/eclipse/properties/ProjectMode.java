@@ -20,7 +20,10 @@
 
 package org.mxupdate.eclipse.properties;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.swt.widgets.Composite;
@@ -233,39 +236,59 @@ public enum ProjectMode
      */
     MXUPDATE_VIA_URL_WITH_PROPERTY_FILE
     {
-        private final String prefix = "MxUpdateViaURLWithPropertyFile."; //$NON-NLS-1$
+        /** Prefix used for property keys. */
+        private final String prefix = "MxUpdateViaURLWithPropFile."; //$NON-NLS-1$
 
-        private final String prefUrl = prefix + "KeyURL"; //$NON-NLS-1$
+        /** Name of the property key for the property file path. */
+        private final String propPropPath = this.prefix + "PropFilePath"; //$NON-NLS-1$
 
-        private final String prefName = prefix + "KeyUserName"; //$NON-NLS-1$
+        /** Name of the property key for the Java path. */
+        private final String propJavaPath = this.prefix + "KeyJavaPath"; //$NON-NLS-1$
 
-        private final String prefPassword = prefix+ "KeyPassword"; //$NON-NLS-1$
+        /** Default value for the Java path. */
+        private final String valJavaPath = "java"; //$NON-NLS-1$
 
-        private final String prefSavePassword = prefix + "SavePassword"; //$NON-NLS-1$
+        /** Name of the property key for the path of the MX Jar library. */
+        private final String propMxJarLibraryPath = this.prefix + "KeyMxJarLibraryPath"; //$NON-NLS-1$
 
-        private final String prefUpdateByFileContent = prefix + "UpdateByFileContent"; //$NON-NLS-1$
+        /** Name of the property key for the URL to the MX server. */
+        private final String propUrl = this.prefix + "KeyURL"; //$NON-NLS-1$
 
+        /** Name of the property key for the MX user name. */
+        private final String propName = this.prefix + "KeyUserName"; //$NON-NLS-1$
+
+        /** Name of the property key for the password. */
+        private final String propPassword = this.prefix+ "KeyPassword"; //$NON-NLS-1$
+
+        /**
+         * Name of the property key if the update is done with the file
+         * content.
+         */
+        private final String propUpdateByFileContent = this.prefix + "KeyUpdateByFileContent"; //$NON-NLS-1$
+
+        /**
+         * {@inheritDoc}
+         */
         @Override()
         public void createContent(final Composite _parent,
                                   final ProjectProperties _properties)
         {
-/*
-                MXPropertyPage.addTextField(_parent,
-                                            _properties,
-                                            MXAdapter.PREF_PROP_FILE,
-                                            Messages.getString("MXPreferencePage.PropertyFile"), //$NON-NLS-1$
-                                            false);
-            this.fileEditor = new FileFieldEditor(
-                    MXAdapter.PREF_PROP_FILE,
-                    Messages.getString("MXPreferencePage.PropertyFile"), //$NON-NLS-1$
-                    composite);
-            this.fileEditor.setFileExtensions(new String[]{"*.properties", "*"}); //$NON-NLS-1$
-*/
-            FieldUtil.addStringField(_parent, _properties, this.prefUrl, ""); //$NON-NLS-1$
-            FieldUtil.addStringField(_parent, _properties, this.prefName, ""); //$NON-NLS-1$
-            FieldUtil.addStringField(_parent, _properties, this.prefPassword, ""); //$NON-NLS-1$
-            FieldUtil.addBooleanField(_parent, _properties, this.prefSavePassword, false);
-            FieldUtil.addBooleanField(_parent, _properties,this.prefUpdateByFileContent, true);
+            FieldUtil.addFileField(_parent, _properties, this.propPropPath, ""); //$NON-NLS-1$
+
+            // Java instance
+            final Group javaGroup = FieldUtil.createGroup(_parent, this.prefix + "JavaGroup"); //$NON-NLS-1$
+            FieldUtil.addStringField(javaGroup, _properties, this.propJavaPath, ""); //$NON-NLS-1$
+            FieldUtil.addStringField(javaGroup, _properties, this.propMxJarLibraryPath, ""); //$NON-NLS-1$
+
+            // MX settings
+            final Group mxGroup = FieldUtil.createGroup(_parent, this.prefix + "MxGroup"); //$NON-NLS-1$
+            FieldUtil.addStringField(mxGroup, _properties, this.propUrl, ""); //$NON-NLS-1$
+            FieldUtil.addStringField(mxGroup, _properties, this.propName, ""); //$NON-NLS-1$
+            FieldUtil.addStringField(mxGroup, _properties, this.propPassword, ""); //$NON-NLS-1$
+
+            // Other settings
+            final Group other = FieldUtil.createGroup(_parent, this.prefix + "OtherGroup"); //$NON-NLS-1$
+            FieldUtil.addStringField(other, _properties, this.propUpdateByFileContent, ""); //$NON-NLS-1$
         }
 
         /**
@@ -280,14 +303,117 @@ public enum ProjectMode
             return new MXAdapter(_project, _properties, _console);
         }
 
+        /**
+         * {@inheritDoc}
+         * The connection settings are read from external file and the
+         * connection is initialized.
+         */
         @Override()
         public IConnector initConnector(final IProject _project,
-                                              final ProjectProperties _properties,
-                                              final Console _console)
-        throws Exception
+                                        final ProjectProperties _properties,
+                                        final Console _console)
+            throws Exception
         {
-            return null;
+            final String propFile       = _properties.getString(this.propPropPath, ""); //$NON-NLS-1$
+            final String propKeyJava    = _properties.getString(this.propJavaPath, ""); //$NON-NLS-1$
+            final String propKeyMXJar   = _properties.getString(this.propMxJarLibraryPath, ""); //$NON-NLS-1$
+            final String propKeyUrl     = _properties.getString(this.propUrl, ""); //$NON-NLS-1$
+            final String propKeyName    = _properties.getString(this.propName, ""); //$NON-NLS-1$
+            final String propKeyPass    = _properties.getString(this.propPassword, ""); //$NON-NLS-1$
+            final String propKeyFileCnt = _properties.getString(this.propUpdateByFileContent, ""); //$NON-NLS-1$
+
+            // read file
+            _console.logInfo(Messages.getString(
+                    new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterReadExternalFile"), propFile)); //$NON-NLS-1$
+            final Properties extProps = new Properties();
+            try {
+                extProps.load(new FileInputStream(propFile));
+            } catch (final FileNotFoundException e) {
+                final String message = Messages.getString(
+                        new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterFileOpenFailed"), propFile); //$NON-NLS-1$
+                _console.logError(message, e); //$NON-NLS-1$
+                throw new Exception(message, e);
+            } catch (final IOException e) {
+                final String message = Messages.getString(
+                        new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterFileOpenFailed"), propFile); //$NON-NLS-1$
+                _console.logError(message, e); //$NON-NLS-1$
+                throw new Exception(message, e);
+            }
+
+            // Java path
+            final String javaPath;
+            if (propKeyJava.isEmpty())  {
+                javaPath = this.valJavaPath;
+            } else  {
+                javaPath = extProps.getProperty(propKeyJava);
+            }
+
+            // MX Jar Library path
+            final String mxJarLibraryPath = extProps.getProperty(propKeyMXJar);
+
+            // URL
+            final String mxURL;
+            if (propKeyUrl.isEmpty())  {
+                mxURL = "";
+            } else  {
+                mxURL = extProps.getProperty(propKeyUrl);
+            }
+
+            // user and password
+            final String mxUser;
+            final String mxPasswd;
+            if (propKeyName.isEmpty() || propKeyPass.isEmpty())  {
+                final AuthenticationDialog loginPage = new AuthenticationDialog(
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("MxGroup")),
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.propName)),
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.propPassword)),
+                        extProps.getProperty(this.propName, null));
+                loginPage.open();
+                if (!loginPage.isOkPressed())  {
+                    throw new Exception(Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("NotMXAuthenticated")));
+                }
+                mxUser = loginPage.getUserName();
+                mxPasswd = loginPage.getPassword();
+            } else  {
+                mxUser = extProps.getProperty(propKeyName);
+                mxPasswd = extProps.getProperty(propKeyPass);
+            }
+
+            // update by file content flag
+            final boolean flagByFileContent;
+            if (propKeyFileCnt.isEmpty())  {
+                flagByFileContent = true;
+            } else  {
+                flagByFileContent = Boolean.valueOf(extProps.getProperty(propKeyFileCnt));
+            }
+
+            _console.logInfo(Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("ConnectTo"), mxURL)); //$NON-NLS-1$
+
+            return new URLConnector(_project, javaPath, mxJarLibraryPath, mxURL, mxUser, mxPasswd, flagByFileContent);
         }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return <code>null</code> if property key
+         *         {@link #propMxJarLibraryPath} is not empty
+         */
+        @Override()
+        public String isValid(final ProjectProperties _properties)
+        {
+            final String ret;
+
+            if (_properties.getString(this.propPropPath, "").isEmpty())  { //$NON-NLS-1$
+                ret = Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("MissingPropFilePath")); //$NON-NLS-1$
+            } else if (_properties.getString(this.propMxJarLibraryPath, "").isEmpty())  { //$NON-NLS-1$
+                ret = Messages.getString(
+                        new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("MissingKeyMxJarLibraryPath")); //$NON-NLS-1$
+            } else  {
+                ret = null;
+            }
+            return ret;
+        }
+
     },
 
     /**
