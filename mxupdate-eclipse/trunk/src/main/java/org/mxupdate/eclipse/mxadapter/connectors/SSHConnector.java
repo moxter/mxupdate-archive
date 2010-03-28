@@ -23,6 +23,7 @@ package org.mxupdate.eclipse.mxadapter.connectors;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Stack;
 import java.util.Vector;
 
 import org.apache.sshd.ClientChannel;
@@ -55,6 +56,28 @@ public class SSHConnector
     private static final String PRINT_CONTEXT = "print context;"; //$NON-NLS-1$
 
     /**
+     * Maximum length for the logging of the inbounds text.
+     *
+     * @see SSHOutputStream#write(int)
+     */
+    private static final int LOG_INBOUND_MAX_LENGTH = 200;
+
+    /**
+     * String for the prefix of the inbounds logging.
+     *
+     * @see SSHOutputStream#write(int)
+     */
+    private static final String LOG_INBOUND_PREFIX = ">INBOUND: "; //$NON-NLS-1$
+
+    /**
+     * String used for the suffix after the inbounds logging if the inbounds
+     * string is longer than {@link #LOG_INBOUND_MAX_LENGTH}.
+     *
+     * @see SSHOutputStream#write(int)
+     */
+    private static final String LOG_INBOUND_SUFFIX4LONG = "..."; //$NON-NLS-1$
+
+    /**
      * SSH client.
      */
     private final SshClient client;
@@ -82,13 +105,6 @@ public class SSHConnector
     private final boolean log;
 
     /**
-     * Buffer for the input logging.
-     *
-     * @see #logInput(char)
-     */
-    private final StringBuilder logInput = new StringBuilder();
-
-    /**
      * Buffer for the output logging.
      *
      * @see #logOutput(byte[], int, int)
@@ -102,27 +118,11 @@ public class SSHConnector
      */
     private final StringBuilder logError = new StringBuilder();
 
-    /**
-     * Input buffer used from the {@link #in} to store the input from the SSH
-     * server / MQL console.
-     */
-    private final Vector<Integer> inBuf = new Vector<Integer>();
 
     /**
      * Input stream from the SSH server / MQL console.
      */
-    private final OutputStream in = new OutputStream()  {
-
-        @Override()
-        public void write(final int _char)
-            throws IOException
-        {
-            SSHConnector.this.inBuf.add(_char);
-            if (SSHConnector.this.log)  {
-                SSHConnector.this.logInput((char) _char);
-            }
-        }
-    };
+    private final SSHOutputStream in = new SSHOutputStream();
 
     /**
      * Input buffer used from the {@link #err} to store the errors from the SSH
@@ -251,7 +251,7 @@ public class SSHConnector
                 .append(SSHConnector.PRINT_CONTEXT)
                 .append('\n');
         this.chars.add(cmd.toString());
-        final String bck = this.readLine();
+        final String bck = this.in.readLine();
         // check if login was successfully
         if (!bck.startsWith(SSHConnector.CHECK_CONTEXT))  {
             this.disconnect();
@@ -288,41 +288,18 @@ public class SSHConnector
         this.chars.add(cmd.toString());
 
         // get result (must not be the context, otherwise an error happened!)
-        final String ret = this.readLine();
+        final String ret = this.in.readLine();
         if (ret.startsWith((SSHConnector.CHECK_CONTEXT)))  {
             throw new Exception(Messages.getString("MxSSHClient.ExecuteFailed", this.readError())); //$NON-NLS-1$
         }
 
         // in second line the context info must be returned
-        final String checkLine = this.readLine();
+        final String checkLine = this.in.readLine();
         if (!checkLine.startsWith((SSHConnector.CHECK_CONTEXT)))  {
             throw new Exception(Messages.getString("MxSSHClient.ExecuteFailed", this.readError())); //$NON-NLS-1$
         }
 
         return ret;
-    }
-
-    /**
-     * Reads one line from the console. The method waits till the line is
-     * complete.
-     *
-     * @return string of one line
-     * @throws InterruptedException if the thread is interrupted
-     */
-    protected String readLine()
-        throws InterruptedException
-    {
-        while (!this.inBuf.contains(10))  {
-            Thread.sleep(1000);
-        }
-
-        final StringBuilder ret = new StringBuilder();
-        int bck;
-        while ((bck = this.inBuf.remove(0)) != 10)  {
-            ret.append((char) bck);
-        }
-
-        return ret.toString();
     }
 
     /**
@@ -365,27 +342,6 @@ public class SSHConnector
                ? _text.toString().replaceAll("\\\\", "\\\\\\\\") //$NON-NLS-1$ //$NON-NLS-2$
                                  .replaceAll("\\\"", "\\\\\"") //$NON-NLS-1$ //$NON-NLS-2$
                : ""; //$NON-NLS-1$
-    }
-
-    /**
-     * Used to log the MX communication for the input purpose. The
-     * {@link #logInput} buffer is written to the MX console if a new line is
-     * sent from the {@link #in input stream}.
-     *
-     * @param _char     character to log
-     * @see #in
-     * @see #logInput
-     */
-    protected void logInput(final char _char)
-    {
-        synchronized(this.logInput)  {
-            if (_char == '\n')  {
-                Activator.getDefault().getConsole().logTrace(">INBOUND: " + this.logInput.toString());
-                this.logInput.delete(0, this.logInput.length());
-            } else  {
-                this.logInput.append(_char);
-            }
-        }
     }
 
     /**
@@ -435,4 +391,94 @@ public class SSHConnector
             }
         }
     }
+
+    /**
+     * Input stream from the SSH server / MQL console.
+     */
+    private final class SSHOutputStream
+        extends OutputStream
+    {
+        /**
+         * Input buffer used from the {@link #in} to store the input from the SSH
+         * server / MQL console.
+         */
+        private final Stack<InBufferLine> inBuf = new Stack<InBufferLine>();
+
+        /**
+         * Buffer class for one line (which ends with new line).
+         */
+        private final class InBufferLine
+        {
+            /**
+             * Defined so that the class could only initialized from
+             * {@link SSHOutputStream#write(int)}.
+             */
+            private InBufferLine()
+            {
+            }
+
+            /**
+             * Buffer for one line.
+             */
+            private final StringBuilder buffer = new StringBuilder();
+
+            /**
+             * Was a new line already sent?
+             */
+            private boolean hasNewLine = false;
+        }
+
+        /**
+         * {@inheritDoc}
+         * <p>The new character is appended to last instance of
+         * {@link InBufferLine} stored in the {@link #inBuf inbounds buffer}.
+         * If the last character in this instance is already was already a new
+         * line, a new instance of {@link InBufferLine} will be created and
+         * appended to the {@link #inBuf inbounds buffer}.
+         */
+        @Override()
+        public void write(final int _char)
+            throws IOException
+        {
+            final InBufferLine line;
+            if (this.inBuf.isEmpty() || this.inBuf.peek().hasNewLine)  {
+                line = new InBufferLine();
+                this.inBuf.push(line);
+            } else  {
+                line = this.inBuf.peek();
+            }
+
+            if (_char == 10)  {
+                if (SSHConnector.this.log)  {
+                    if (line.buffer.length() > SSHConnector.LOG_INBOUND_MAX_LENGTH)  {
+                        Activator.getDefault().getConsole().logTrace(
+                                SSHConnector.LOG_INBOUND_PREFIX
+                                + line.buffer.substring(0, SSHConnector.LOG_INBOUND_MAX_LENGTH)
+                                + SSHConnector.LOG_INBOUND_SUFFIX4LONG);
+                    } else  {
+                        Activator.getDefault().getConsole().logTrace(SSHConnector.LOG_INBOUND_PREFIX + line.buffer.toString());
+                    }
+                }
+                line.hasNewLine = true;
+            } else  {
+                line.buffer.append((char) _char);
+            }
+        }
+
+        /**
+         * Reads one line from the console. The method waits till the line is
+         * complete.
+         *
+         * @return string of one line
+         * @throws InterruptedException if the thread is interrupted
+         */
+        protected String readLine()
+            throws InterruptedException
+        {
+            while (this.inBuf.isEmpty() || !this.inBuf.firstElement().hasNewLine)  {
+                Thread.sleep(1000);
+            }
+            return this.inBuf.remove(0).buffer.toString();
+        }
+    };
 }
