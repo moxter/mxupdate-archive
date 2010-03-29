@@ -48,6 +48,18 @@ public enum ProjectMode
      * The mode is now defined and unknown.
      */
     UNKNOWN {
+        /** Prefix used for property keys. */
+        private final String prefix = "Unknown."; //$NON-NLS-1$
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override()
+        public String getTitle()
+        {
+            return Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("Title"));
+        }
+
         /**
          * {@inheritDoc}
          * Throws always an error because the mode is unknown and no adapter is
@@ -84,6 +96,19 @@ public enum ProjectMode
         public void createContent(final Composite _composite,
                                   final ProjectProperties _properties)
         {
+        }
+
+        /**
+         * {@inheritDoc}
+         * Because not values could be defined always <code>null</code> is
+         * returned.
+         *
+         * @return always <code>null</code>
+         */
+        @Override()
+        public String isValid(final ProjectProperties _properties)
+        {
+            return null;
         }
     },
 
@@ -125,6 +150,15 @@ public enum ProjectMode
          * content.
          */
         private final String propUpdateByFileContent = this.prefix + "UpdateByFileContent"; //$NON-NLS-1$
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override()
+        public String getTitle()
+        {
+            return Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("Title"));
+        }
 
         /**
          * {@inheritDoc}
@@ -189,13 +223,16 @@ public enum ProjectMode
                         _properties.getString(this.propUser, null));
                 loginPage.open();
                 if (!loginPage.isOkPressed())  {
-                    throw new Exception(Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("NotMXAuthenticated")));
+                    throw new Exception(
+                            Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterNotMXAuthenticated")));
                 }
                 mxUser = loginPage.getUserName();
                 mxPasswd = loginPage.getPassword();
             }
 
-            _console.logInfo(Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("ConnectTo"), mxURL)); //$NON-NLS-1$
+            _console.logInfo(
+                    Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterConnectTo"), //$NON-NLS-1$
+                                       mxURL));
 
             return new URLConnector(
                     _project,
@@ -270,6 +307,15 @@ public enum ProjectMode
          * {@inheritDoc}
          */
         @Override()
+        public String getTitle()
+        {
+            return Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("Title"));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override()
         public void createContent(final Composite _parent,
                                   final ProjectProperties _properties)
         {
@@ -281,7 +327,7 @@ public enum ProjectMode
             FieldUtil.addStringField(javaGroup, _properties, this.propMxJarLibraryPath, ""); //$NON-NLS-1$
 
             // MX settings
-            final Group mxGroup = FieldUtil.createGroup(_parent, this.prefix + "MxGroup"); //$NON-NLS-1$
+            final Group mxGroup = FieldUtil.createGroup(_parent, this.prefix + "MXGroup"); //$NON-NLS-1$
             FieldUtil.addStringField(mxGroup, _properties, this.propUrl, ""); //$NON-NLS-1$
             FieldUtil.addStringField(mxGroup, _properties, this.propName, ""); //$NON-NLS-1$
             FieldUtil.addStringField(mxGroup, _properties, this.propPassword, ""); //$NON-NLS-1$
@@ -364,13 +410,14 @@ public enum ProjectMode
             final String mxPasswd;
             if (propKeyName.isEmpty() || propKeyPass.isEmpty())  {
                 final AuthenticationDialog loginPage = new AuthenticationDialog(
-                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("MxGroup")),
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("MXGroupLogin")),
                         Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.propName)),
                         Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.propPassword)),
-                        extProps.getProperty(this.propName, null));
+                        extProps.getProperty(propKeyName, null));
                 loginPage.open();
                 if (!loginPage.isOkPressed())  {
-                    throw new Exception(Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("NotMXAuthenticated")));
+                    throw new Exception(
+                            Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterNotMXAuthenticated")));
                 }
                 mxUser = loginPage.getUserName();
                 mxPasswd = loginPage.getPassword();
@@ -387,7 +434,9 @@ public enum ProjectMode
                 flagByFileContent = Boolean.valueOf(extProps.getProperty(propKeyFileCnt));
             }
 
-            _console.logInfo(Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("ConnectTo"), mxURL)); //$NON-NLS-1$
+            _console.logInfo(Messages.getString(
+                    new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterConnectTo"), //$NON-NLS-1$
+                    mxURL));
 
             return new URLConnector(_project, javaPath, mxJarLibraryPath, mxURL, mxUser, mxPasswd, flagByFileContent);
         }
@@ -395,8 +444,8 @@ public enum ProjectMode
         /**
          * {@inheritDoc}
          *
-         * @return <code>null</code> if property key
-         *         {@link #propMxJarLibraryPath} is not empty
+         * @return <code>null</code> if property keys {@link #propPropPath} and
+         *         {@link #propMxJarLibraryPath} are not empty
          */
         @Override()
         public String isValid(final ProjectProperties _properties)
@@ -413,7 +462,6 @@ public enum ProjectMode
             }
             return ret;
         }
-
     },
 
     /**
@@ -483,6 +531,15 @@ public enum ProjectMode
 
         /** Default value if the update is done with the file content. */
         private final boolean valMXUpdateByFileContent = true;
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override()
+        public String getTitle()
+        {
+            return Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("Title"));
+        }
 
         /**
          * {@inheritDoc}
@@ -584,7 +641,8 @@ public enum ProjectMode
                         _properties.getString(this.propSSHUser, null));
                 loginPage.open();
                 if (!loginPage.isOkPressed())  {
-                    throw new Exception(Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("NotSSHAuthenticated")));
+                    throw new Exception(
+                            Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterNotSSHAuthenticated")));
                 }
                 sshUser = loginPage.getUserName();
                 sshPasswd = loginPage.getPassword();
@@ -604,13 +662,15 @@ public enum ProjectMode
                         _properties.getString(this.propMXUserName, null));
                 loginPage.open();
                 if (!loginPage.isOkPressed())  {
-                    throw new Exception(Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("NotMXAuthenticated")));
+                    throw new Exception(
+                            Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterNotMXAuthenticated")));
                 }
                 mxUser = loginPage.getUserName();
                 mxPasswd = loginPage.getPassword();
             }
 
-            _console.logInfo(Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("ConnectTo"), //$NON-NLS-1$
+            _console.logInfo(
+                    Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterConnectTo"), //$NON-NLS-1$
                                                 sshServer, sshPort));
 
             return new SSHConnector(
@@ -622,13 +682,101 @@ public enum ProjectMode
         }
     },
 
+    /**
+     * MxUpdate Plug-In uses MQL on a SSH server and the properties are stored
+     * in an external property file.
+     */
     MXUPDATE_SSH_MQL_WITH_PROPERTY_FILE
     {
+        /** Prefix used for property keys. */
+        private final String prefix = "MxUpdateViaSSHMQLWithPropFile."; //$NON-NLS-1$
+
+        /** Name of the property key for the property file path. */
+        private final String propPropPath = this.prefix + "PropFilePath"; //$NON-NLS-1$
+
+        /** Name of the property key for the name of the SSH server. */
+        private final String propSSHServer = this.prefix + "KeySSHServer"; //$NON-NLS-1$
+
+        /** Name of the property key for the port of the SSH server. */
+        private final String propSSHPort = this.prefix + "KeySSHPort"; //$NON-NLS-1$
+
+        /** Default value for the SSH port. */
+        private final int valSSHPort = 22;
+
+        /** Name of the property key for the name of the SSH user. */
+        private final String propSSHUser = this.prefix + "KeySSHUser"; //$NON-NLS-1$
+
+        /** Name of the property key for the password of the SSH user. */
+        private final String propSSHPassword = this.prefix + "KeySSHPassword"; //$NON-NLS-1$
+
+        /**
+         * Name of the property key for the path of the MQL command on the SSH
+         * server.
+         */
+        private final String propMXMQLPath = this.prefix + "KeyMXMQLPath"; //$NON-NLS-1$
+
+        /** Default value for the MQL path. */
+        private final String valMXMQLPath = "mql"; //$NON-NLS-1$
+
+        /** Name of the property key for the MX user name. */
+        private final String propMXUserName = this.prefix + "KeyMXUserName"; //$NON-NLS-1$
+
+        /** Name of the property key for the MX password. */
+        private final String propMXPassword = this.prefix+ "KeyMXPassword"; //$NON-NLS-1$
+
+        /**
+         * Name of the property for the flag if the MX communication is
+         * logged.
+         */
+        private final String propMXLog = this.prefix + "KeyMXLog";
+
+        /** Default value for the MX communication logging. */
+        private final boolean valMXLog = false;
+
+        /**
+         * Name of the property key if the update is done with the file
+         * content.
+         */
+        private final String prefMXUpdateByFileContent = this.prefix + "KeyUpdateByFileContent"; //$NON-NLS-1$
+
+        /** Default value if the update is done with the file content. */
+        private final boolean valMXUpdateByFileContent = true;
+
+        /**
+         * {@inheritDoc}
+         */
         @Override()
-        public void createContent(final Composite _composite,
+        public String getTitle()
+        {
+            return Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("Title"));
+        }
+
+        /**
+         * {@inheritDoc}
+         */
+        @Override()
+        public void createContent(final Composite _parent,
                                   final ProjectProperties _properties)
         {
+            FieldUtil.addFileField(_parent, _properties, this.propPropPath, ""); //$NON-NLS-1$
 
+            // SSH connection settings
+            final Group sshGroup = FieldUtil.createGroup(_parent,  this.prefix + "SSHGroup"); //$NON-NLS-1$
+            FieldUtil.addStringField(sshGroup, _properties, this.propSSHServer, ""); //$NON-NLS-1$
+            FieldUtil.addStringField(sshGroup, _properties, this.propSSHPort, ""); //$NON-NLS-1$
+            FieldUtil.addStringField(sshGroup, _properties, this.propSSHUser, ""); //$NON-NLS-1$
+            FieldUtil.addStringField(sshGroup, _properties, this.propSSHPassword, ""); //$NON-NLS-1$
+
+            // MX connection settings
+            final Group mxGroup = FieldUtil.createGroup(_parent,  this.prefix + "MXGroup"); //$NON-NLS-1$
+            FieldUtil.addStringField(mxGroup, _properties, this.propMXMQLPath, ""); //$NON-NLS-1$
+            FieldUtil.addStringField(mxGroup, _properties, this.propMXUserName, ""); //$NON-NLS-1$
+            FieldUtil.addStringField(mxGroup, _properties, this.propMXPassword, "");
+
+            // Other settings
+            final Group other = FieldUtil.createGroup(_parent, this.prefix + "OtherGroup"); //$NON-NLS-1$
+            FieldUtil.addStringField(other, _properties, this.propMXLog, ""); //$NON-NLS-1$
+            FieldUtil.addStringField(other, _properties, this.prefMXUpdateByFileContent, ""); //$NON-NLS-1$
         }
 
         /**
@@ -649,17 +797,153 @@ public enum ProjectMode
                                               final Console _console)
         throws Exception
         {
-            return null;
+            final String propFile           = _properties.getString(this.propPropPath, ""); //$NON-NLS-1$
+            final String propKeySSHServer   = _properties.getString(this.propSSHServer, ""); //$NON-NLS-1$
+            final String propKeySSHPort     = _properties.getString(this.propSSHPort, ""); //$NON-NLS-1$
+            final String propKeySSHUser     = _properties.getString(this.propSSHUser, ""); //$NON-NLS-1$
+            final String propKeySSHPassword = _properties.getString(this.propSSHPassword, ""); //$NON-NLS-1$
+            final String propKeyMXMqlPath   = _properties.getString(this.propMXMQLPath, ""); //$NON-NLS-1$
+            final String propKeyMXUser      = _properties.getString(this.propMXUserName, ""); //$NON-NLS-1$
+            final String propKeyMXPassword  = _properties.getString(this.propMXPassword, ""); //$NON-NLS-1$
+            final String propKeyLog         = _properties.getString(this.propMXLog, ""); //$NON-NLS-1$
+            final String propKeyFileCnt     = _properties.getString(this.prefMXUpdateByFileContent, ""); //$NON-NLS-1$
+
+            // read file
+            _console.logInfo(Messages.getString(
+                    new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterReadExternalFile"), propFile)); //$NON-NLS-1$
+            final Properties extProps = new Properties();
+            try {
+                extProps.load(new FileInputStream(propFile));
+            } catch (final FileNotFoundException e) {
+                final String message = Messages.getString(
+                        new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterFileOpenFailed"), propFile); //$NON-NLS-1$
+                _console.logError(message, e); //$NON-NLS-1$
+                throw new Exception(message, e);
+            } catch (final IOException e) {
+                final String message = Messages.getString(
+                        new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterFileOpenFailed"), propFile); //$NON-NLS-1$
+                _console.logError(message, e); //$NON-NLS-1$
+                throw new Exception(message, e);
+            }
+
+            // SSH server
+            final String sshServer = extProps.getProperty(propKeySSHServer);
+
+            // SSH port
+            final int sshPort = propKeySSHPort.isEmpty() ? this.valSSHPort : Integer.parseInt(extProps.getProperty(propKeySSHPort));
+
+            // SSH user and SSH password
+            final String sshUser;
+            final String sshPasswd;
+            if (propKeySSHUser.isEmpty() || propKeySSHPassword.isEmpty())  {
+                final AuthenticationDialog loginPage = new AuthenticationDialog(
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("SSHGroupLogin")), //$NON-NLS-1$
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.propSSHUser)),
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.propSSHPassword)),
+                        extProps.getProperty(propKeySSHUser, ""));
+                loginPage.open();
+                if (!loginPage.isOkPressed())  {
+                    throw new Exception(
+                            Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX)
+                                                    .append(this.prefix).append("InitAdapterNotSSHAuthenticated"))); //$NON-NLS-1$
+                }
+                sshUser = loginPage.getUserName();
+                sshPasswd = loginPage.getPassword();
+            } else  {
+                sshUser = extProps.getProperty(propKeySSHUser);
+                sshPasswd = extProps.getProperty(propKeySSHPassword);
+            }
+
+            // MX MQL path
+            final String mxMqlPath;
+            if (propKeyMXMqlPath.isEmpty())  {
+                mxMqlPath = this.valMXMQLPath;
+            } else  {
+                mxMqlPath = extProps.getProperty(propKeyMXMqlPath);
+            }
+
+            // MX user and MX password
+            final String mxUser;
+            final String mxPasswd;
+            if (propKeyMXPassword.isEmpty() || propKeyMXPassword.isEmpty())  {
+                final AuthenticationDialog loginPage = new AuthenticationDialog(
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("MXGroupLogin")), //$NON-NLS-1$
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.propMXUserName)),
+                        Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.propMXPassword)),
+                        extProps.getProperty(propKeyMXUser, null));
+                loginPage.open();
+                if (!loginPage.isOkPressed())  {
+                    throw new Exception(
+                            Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterNotMXAuthenticated")));
+                }
+                mxUser = loginPage.getUserName();
+                mxPasswd = loginPage.getPassword();
+            } else  {
+                mxUser = extProps.getProperty(propKeyMXPassword);
+                mxPasswd = extProps.getProperty(propKeyMXPassword);
+            }
+
+            // update by file content flag
+            final boolean flagLog = propKeyLog.isEmpty() ? this.valMXLog : Boolean.valueOf(extProps.getProperty(propKeyLog));
+
+            // update by file content flag
+            final boolean flagByFileContent = propKeyFileCnt.isEmpty() ? this.valMXUpdateByFileContent : Boolean.valueOf(extProps.getProperty(propKeyFileCnt));
+
+            return new SSHConnector(
+                    sshServer, sshPort, sshUser, sshPasswd,
+                    mxMqlPath, mxUser, mxPasswd,
+                    flagLog, flagByFileContent);
+        }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return <code>null</code> if property keys
+         *         {@link #propPropPath} or {@link #propSSHServer} are not
+         *         empty
+         */
+        @Override()
+        public String isValid(final ProjectProperties _properties)
+        {
+            final String ret;
+
+            if (_properties.getString(this.propPropPath, "").isEmpty())  { //$NON-NLS-1$
+                ret = Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("MissingPropFilePath")); //$NON-NLS-1$
+            } else if (_properties.getString(this.propSSHServer, "").isEmpty())  { //$NON-NLS-1$
+                ret = Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("MissingKeySSHServer")); //$NON-NLS-1$
+            } else  {
+                ret = null;
+            }
+            return ret;
         }
     },
 
+    /**
+     * MxUpdapte connection where all values are stored in external property
+     * file.
+     */
     MXUPDATE_WITH_PROPERTY_FILE
     {
+        /** Prefix used for property keys. */
+        private final String prefix = "MxUpdateWithPropFile."; //$NON-NLS-1$
+
+        /** Name of the property key for the property file path. */
+        private final String propPropPath = this.prefix + "PropFilePath"; //$NON-NLS-1$
+
+        /**
+         * {@inheritDoc}
+         */
         @Override()
-        public void createContent(final Composite _composite,
+        public String getTitle()
+        {
+            return Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("Title"));
+        }
+
+        @Override()
+        public void createContent(final Composite _parent,
                                   final ProjectProperties _properties)
         {
-
+            FieldUtil.addFileField(_parent, _properties, this.propPropPath, ""); //$NON-NLS-1$
         }
 
         /**
@@ -682,7 +966,33 @@ public enum ProjectMode
         {
             return null;
         }
+
+        /**
+         * {@inheritDoc}
+         *
+         * @return <code>null</code> if property key
+         *         {@link #propPropPath} is not empty
+         */
+        @Override()
+        public String isValid(final ProjectProperties _properties)
+        {
+            final String ret;
+
+            if (_properties.getString(this.propPropPath, "").isEmpty())  { //$NON-NLS-1$
+                ret = Messages.getString(new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("MissingPropFilePath")); //$NON-NLS-1$
+            } else  {
+                ret = null;
+            }
+            return ret;
+        }
     };
+
+    /**
+     * Returns the title of the project mode.
+     *
+     * @return title of the project mode for the user interface
+     */
+    public abstract String getTitle();
 
     /**
      * Appends all specific fields needed to configure defined mode.
@@ -731,10 +1041,7 @@ public enum ProjectMode
      * @param _properties   related property values
      * @return <i>true</i> if property values are valid; otherwise <i>false</i>
      */
-    public String isValid(final ProjectProperties _properties)
-    {
-        return "";
-    }
+    public abstract String isValid(final ProjectProperties _properties);
 
     /**
      * Initialize the adapter depending on the eclipse <code>_project</code>.
