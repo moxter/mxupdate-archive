@@ -21,7 +21,9 @@
 package org.mxupdate.eclipse.properties;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
@@ -48,6 +50,19 @@ public class ProjectPropertyPage
     extends PropertyPage
 {
     /**
+     * Mapping between the order of the mode and the project modes itself.
+     */
+    private static final Map<Integer,ProjectMode> MAP_INDEX2MODES = new HashMap<Integer,ProjectMode>();
+    static  {
+        ProjectPropertyPage.MAP_INDEX2MODES.put(0, ProjectMode.UNKNOWN);
+        ProjectPropertyPage.MAP_INDEX2MODES.put(1, ProjectMode.MXUPDATE_VIA_URL);
+        ProjectPropertyPage.MAP_INDEX2MODES.put(2, ProjectMode.MXUPDATE_VIA_URL_WITH_PROPERTY_FILE);
+        ProjectPropertyPage.MAP_INDEX2MODES.put(3, ProjectMode.MXUPDATE_SSH_MQL);
+        ProjectPropertyPage.MAP_INDEX2MODES.put(4, ProjectMode.MXUPDATE_SSH_MQL_WITH_PROPERTY_FILE);
+        ProjectPropertyPage.MAP_INDEX2MODES.put(5, ProjectMode.MXUPDATE_WITH_PROPERTY_FILE);
+    }
+
+    /**
      * Project specific properties edit from this property page.
      */
     private ProjectProperties properties;
@@ -60,7 +75,8 @@ public class ProjectPropertyPage
     }
 
     /**
-     *
+     * @param _parent   parent composite where the project properties GUI must
+     *                  be appended
      */
     @Override()
     protected Control createContents(final Composite _parent)
@@ -75,18 +91,11 @@ public class ProjectPropertyPage
         gridData.grabExcessHorizontalSpace = true;
         gridData.horizontalSpan = 2;
         selection.setLayoutData(gridData);
-        selection.setItems(new String [] {"", "MxUpdate via URL", "MxUpdate via URL with Property File",
-                                              "MxUpdate via SSH + MQL", "MxUpdate via SSH + MQL with Property File",
-                                              "MxUpdate with Property File"});
-
-        final Map<Integer,ProjectMode> mapIdx2Modes = new HashMap<Integer,ProjectMode>();
-        mapIdx2Modes.put(0, ProjectMode.UNKNOWN);
-        mapIdx2Modes.put(1, ProjectMode.MXUPDATE_VIA_URL);
-        mapIdx2Modes.put(2, ProjectMode.MXUPDATE_VIA_URL_WITH_PROPERTY_FILE);
-        mapIdx2Modes.put(3, ProjectMode.MXUPDATE_SSH_MQL);
-        mapIdx2Modes.put(4, ProjectMode.MXUPDATE_SSH_MQL_WITH_PROPERTY_FILE);
-        mapIdx2Modes.put(5, ProjectMode.MXUPDATE_WITH_PROPERTY_FILE);
-
+        final List<String> sels = new ArrayList<String>();
+        for (final ProjectMode mode : ProjectPropertyPage.MAP_INDEX2MODES.values())  {
+            sels.add(mode.getTitle());
+        }
+        selection.setItems(sels.toArray(new String[sels.size()]));
 
         final Map<ProjectMode,Composite> mapMode2Comp = new HashMap<ProjectMode,Composite>();
 
@@ -96,7 +105,7 @@ public class ProjectPropertyPage
             }
             public void widgetSelected(final SelectionEvent _event)
             {
-                final ProjectMode selMode = mapIdx2Modes.get(selection.getSelectionIndex());
+                final ProjectMode selMode = ProjectPropertyPage.MAP_INDEX2MODES.get(selection.getSelectionIndex());
                 ProjectPropertyPage.this.properties.setMode(selMode);
                 for (final ProjectMode mode : ProjectMode.values())  {
                     if (mapMode2Comp.containsKey(mode))  {
@@ -121,21 +130,20 @@ try {
     e.printStackTrace();
 }
 
-final ProjectMode selMode = this.properties.getMode();
+        final ProjectMode selMode = this.properties.getMode();
 
-for (final Map.Entry<Integer,ProjectMode> entry : mapIdx2Modes.entrySet())  {
-    if (entry.getValue() == selMode)  {
-        selection.select(entry.getKey());
-    }
-}
+        for (final Map.Entry<Integer,ProjectMode> entry : ProjectPropertyPage.MAP_INDEX2MODES.entrySet())  {
+            if (entry.getValue() == selMode)  {
+                selection.select(entry.getKey());
+            }
+        }
 
-for (final ProjectMode mode : ProjectMode.values())  {
-    final boolean visible = (selMode == mode);
-
-    final Composite modeComposite = FieldUtil.createComposite(_parent, visible);
-    mode.createContent(modeComposite, this.properties);
-    mapMode2Comp.put(mode, modeComposite);
-}
+        // create and append GUI for all project modes
+        for (final ProjectMode mode : ProjectMode.values())  {
+            final Composite modeComposite = FieldUtil.createComposite(_parent, (selMode == mode));
+            mode.createContent(modeComposite, this.properties);
+            mapMode2Comp.put(mode, modeComposite);
+        }
 
         this.properties.checkValuesValid();
 
