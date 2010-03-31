@@ -119,8 +119,10 @@ public class ProjectPropertyPage
             }
         });
 
+        final IProject project  = (IProject) this.getElement().getAdapter(IProject.class);
+
 try {
-    this.properties = new ProjectProperties((IProject) this.getElement(), this);
+    this.properties = new ProjectProperties(project, this);
     this.properties.load();
 } catch (final CoreException e) {
 // TODO
