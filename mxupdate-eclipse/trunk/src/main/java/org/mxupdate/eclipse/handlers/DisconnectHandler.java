@@ -23,6 +23,7 @@ package org.mxupdate.eclipse.handlers;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.ErrorDialog;
@@ -40,7 +41,7 @@ import org.mxupdate.eclipse.Messages;
  * @version $Id$
  */
 public class DisconnectHandler
-        extends AbstractHandler
+    extends AbstractHandler
 {
     /**
      * Calls the disconnect method.
@@ -59,7 +60,8 @@ public class DisconnectHandler
                     Messages.getString("DisconnectHandler.NotOrMoreThanOneProjectSelected.Message"), //$NON-NLS-1$
                     new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, null, null));
         } else  {
-            final IProject project = (IProject) treeSel.getFirstElement();
+            final IAdaptable adaptable = (IAdaptable) treeSel.getFirstElement();
+            final IProject project = (IProject) adaptable.getAdapter(IProject.class);
             try {
                 Activator.getDefault().getAdapter(project).disconnect();
             } catch (final Exception ex) {
