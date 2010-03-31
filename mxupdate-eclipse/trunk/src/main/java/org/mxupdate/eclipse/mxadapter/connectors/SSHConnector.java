@@ -318,12 +318,16 @@ public class SSHConnector
     }
 
     /**
-     * Closes the {@link #session} and the {@link #client}.
+     * Closes the {@link #channel}, {@link #session} and the {@link #client}.
      */
     public void disconnect()
     {
         try  {
-            this.session.close(false);
+            try  {
+                this.channel.close(true);
+            } finally  {
+                this.session.close(false);
+            }
         } finally {
             this.client.stop();
         }
