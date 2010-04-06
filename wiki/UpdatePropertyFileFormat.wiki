@@ -18,4 +18,3 @@ The keys and their related sub keys are described in:
  * [UpdatePropertyFileFormat_TypeDef Key "TypeDef"]
  * [UpdatePropertyFileFormat_TypeDefGroup Key "TypeDefGroup"]
  * [UpdatePropertyFileFormat_TypeDefTree Key "TypeDefTree"]
- * [UpdatePropertyFileFormat_UpdateCheck Key "UpdateCheck"]
