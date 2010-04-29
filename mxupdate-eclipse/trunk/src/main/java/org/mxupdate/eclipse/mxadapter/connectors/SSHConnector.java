@@ -26,13 +26,12 @@ import java.io.OutputStream;
 import java.util.Stack;
 import java.util.Vector;
 
-import org.apache.sshd.ClientChannel;
-import org.apache.sshd.ClientSession;
-import org.apache.sshd.SshClient;
-import org.apache.sshd.common.util.NoCloseInputStream;
-import org.apache.sshd.common.util.NoCloseOutputStream;
 import org.mxupdate.eclipse.Activator;
 import org.mxupdate.eclipse.Messages;
+
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.Session;
 
 /**
  * Connector to MX via SSH and executed MQL console.
@@ -78,19 +77,9 @@ public class SSHConnector
     private static final String LOG_INBOUND_SUFFIX4LONG = "..."; //$NON-NLS-1$
 
     /**
-     * SSH client.
-     */
-    private final SshClient client;
-
-    /**
      * SSH client session.
      */
-    private final ClientSession session;
-
-    /**
-     * Client channel.
-     */
-    private final ClientChannel channel;
+    private final Session session;
 
     /**
      * Must the MX communication logged?
@@ -118,6 +107,15 @@ public class SSHConnector
      */
     private final StringBuilder logError = new StringBuilder();
 
+    /**
+     * Java SSH session.
+     */
+    private final JSch jsch;
+
+    /**
+     * Client channel.
+     */
+    private final ChannelExec channel;
 
     /**
      * Input stream from the SSH server / MQL console.
@@ -171,6 +169,14 @@ public class SSHConnector
         {
             int ret = 0;
 
+            while (SSHConnector.this.chars.isEmpty())  {
+                try {
+                    Thread.sleep(1000);
+                } catch (final InterruptedException e) {
+                    throw new IOException(e);
+                }
+            }
+
             if (!SSHConnector.this.chars.isEmpty())  {
                 final byte[] buf = SSHConnector.this.chars.remove(0).getBytes();
                 if (buf.length > _len)  {
@@ -223,26 +229,21 @@ public class SSHConnector
 
         this.log = _log;
 
-        this.client = SshClient.setUpDefaultClient();
-        this.client.start();
+        this.jsch = new JSch();
+        this.session = this.jsch.getSession(_sshUser, _sshServer, _sshPort);
+        this.session.setPassword(_sshPassword);
+        this.session.setConfig("StrictHostKeyChecking", "no"); //$NON-NLS-1$ //$NON-NLS-2$
+        this.session.connect();
 
-        this.session = this.client.connect(_sshServer, _sshPort).await().getSession();
-        this.session.authPassword(_sshUser, _sshPassword);
+        this.channel = (ChannelExec) this.session.openChannel("exec"); //$NON-NLS-1$
 
-        final int ret = this.session.waitFor(ClientSession.WAIT_AUTH | ClientSession.CLOSED | ClientSession.AUTHED, 0);
-        if ((ret & ClientSession.CLOSED) != 0) {
-            throw new Exception(Messages.getString("MxSSHClient.SSHServerClosed", _sshServer)); //$NON-NLS-1$
-        }
-        if ((ret & ClientSession.WAIT_AUTH) != 0)  {
-            throw new Exception(Messages.getString("MxSSHClient.WrongSSHPassword", _sshServer)); //$NON-NLS-1$
-        }
-        this.channel = this.session.createChannel(ClientChannel.CHANNEL_EXEC, _mqlPath + " -k -t\n"); //$NON-NLS-1$
+        this.channel.setCommand(_mqlPath + " -k -t\n"); //$NON-NLS-1$
 
-        this.channel.setIn(new NoCloseInputStream(this.out));
-        this.channel.setOut(new NoCloseOutputStream(this.in));
+        this.channel.setInputStream(this.out);
+        this.channel.setOutputStream(this.in);
 
-        this.channel.setErr(new NoCloseOutputStream(this.err));
-        this.channel.open();
+        this.channel.setErrStream(this.err);
+        this.channel.connect();
 
         // login into MQL (and check if not failed!)
         final StringBuilder cmd = new StringBuilder()
@@ -323,13 +324,9 @@ public class SSHConnector
     public void disconnect()
     {
         try  {
-            try  {
-                this.channel.close(true);
-            } finally  {
-                this.session.close(false);
-            }
-        } finally {
-            this.client.stop();
+            this.channel.disconnect();
+        } finally  {
+            this.session.disconnect();
         }
     }
 
@@ -480,7 +477,7 @@ public class SSHConnector
             throws InterruptedException
         {
             while (this.inBuf.isEmpty() || !this.inBuf.firstElement().hasNewLine)  {
-                Thread.sleep(1000);
+                Thread.sleep(5000);
             }
             return this.inBuf.remove(0).buffer.toString();
         }
