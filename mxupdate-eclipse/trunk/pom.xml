@@ -614,6 +614,7 @@
                     <include>plugin_customization.ini</include>
                     <include>plugin.properties</include>
                     <include>splash.bmp</include>
+                    <include>NOTICE.txt</include>
                 </includes>
             </resource>
             <resource>
