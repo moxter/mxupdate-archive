@@ -102,7 +102,7 @@ public class URLConnector
 
     /**
      * Initializes the URL connector to MX database. First the required
-     * {@link #SERVER_CLASSES Java classes}Êand {@link #CODEC_LIB codec library}
+     * {@link #SERVER_CLASSES Java classes} and {@link #CODEC_LIB codec library}
      * are copied to the <code>_project</code> temporary directory. Then the
      * Java {@link #process} {@link URLConnectorServer} is started which
      * handles the connection to the MX database.
@@ -259,11 +259,12 @@ public class URLConnector
      * @param _arg2     second argument
      * @param _arg3     third argument
      * @return returns string from the server
-     * @throws Exception {@link IOException} if the {@link #out}Êstream could
+     * @throws Exception {@link IOException} if the {@link #out} stream could
      *                   not be written,
      *                   {@link ClassNotFoundException} if returned value from
      *                   the server could not be decoded,
-     *                   {@link InterruptedException} if the {@link #process} is interrupted
+     *                   {@link InterruptedException} if the {@link #process}
+     *                   is interrupted
      */
     protected String execute(final String _method,
                              final String _arg1,

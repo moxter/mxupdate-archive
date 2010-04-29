@@ -372,7 +372,7 @@ public class ProjectProperties
 
     /**
      * Defines the new mode of the project. The mode is stored in the
-     * {@link #properties}Êwith key {@link #PREF_MODE}.
+     * {@link #properties} with key {@link #PREF_MODE}.
      *
      * @param _mode     new mode of the project
      * @see #PREF_MODE
