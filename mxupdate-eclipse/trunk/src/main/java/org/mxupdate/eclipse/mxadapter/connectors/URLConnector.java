@@ -53,7 +53,8 @@ public class URLConnector
 {
     /**
      * Classes for the server which must be copied so that the server process
-     * works.
+     * works. The Base64 stuff is copied from the Apache commons jar library
+     * (because the complete Jar library is not necessary).
      *
      * @see #URLConnector(IProject, String, String, String, String, String, boolean)
      */
@@ -61,6 +62,13 @@ public class URLConnector
     static {
         URLConnector.SERVER_CLASSES.add(CommunicationUtil.class);
         URLConnector.SERVER_CLASSES.add(URLConnectorServer.class);
+        URLConnector.SERVER_CLASSES.add(org.apache.commons.codec.binary.Base64.class);
+        URLConnector.SERVER_CLASSES.add(org.apache.commons.codec.BinaryEncoder.class);
+        URLConnector.SERVER_CLASSES.add(org.apache.commons.codec.BinaryDecoder.class);
+        URLConnector.SERVER_CLASSES.add(org.apache.commons.codec.Decoder.class);
+        URLConnector.SERVER_CLASSES.add(org.apache.commons.codec.DecoderException.class);
+        URLConnector.SERVER_CLASSES.add(org.apache.commons.codec.Encoder.class);
+        URLConnector.SERVER_CLASSES.add(org.apache.commons.codec.EncoderException.class);
     }
 
     /**
@@ -171,25 +179,14 @@ public class URLConnector
         }
         for (final Class<?> clazz : URLConnector.SERVER_CLASSES)  {
             final String clazzFileName = "/" + clazz.getName().replace('.', File.separatorChar) + ".class";
-
-            final URL url;
-            // must be checked to differ between development and productive
-            if (_bundle.getEntryPaths("/bin") != null)  {
-                url = _bundle.getEntry("/bin" + clazzFileName);
-            } else  {
-                url = _bundle.getEntry(clazzFileName);
-            }
-
-            this.copy(url, new File(_projectPath, "/bin" + clazzFileName));
+            this.copy(
+                    this.getClass().getClassLoader().getResource(clazzFileName),
+                    new File(_projectPath, "/bin" + clazzFileName));
         }
-        this.copy(_bundle.getEntry("/lib/" + URLConnector.CODEC_LIB),
-                  new File(_projectPath, "/lib/" + URLConnector.CODEC_LIB));
 
         // prepare class path
         final StringBuilder classPath = new StringBuilder()
                 .append("bin").append(File.separatorChar).append('.')
-                .append(File.pathSeparatorChar)
-                .append("lib").append(File.separatorChar).append(URLConnector.CODEC_LIB)
                 .append(File.pathSeparatorChar)
                 .append(_mxJarPath);
 
