@@ -90,7 +90,10 @@ public class URLConnectorServer
     public static void main(final String... _args)
         throws Exception
     {
-        new URLConnectorServer(_args[0], _args[1], _args[2]).run();
+        final String url    = (_args.length > 0) ? _args[0] : "";
+        final String user   = (_args.length > 1) ? _args[1] : "";
+        final String passwd = (_args.length > 2) ? _args[2] : "";
+        new URLConnectorServer(url, user, passwd).run();
     }
 
     /**
