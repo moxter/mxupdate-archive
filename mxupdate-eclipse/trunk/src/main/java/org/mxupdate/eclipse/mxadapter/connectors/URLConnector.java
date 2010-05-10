@@ -72,14 +72,6 @@ public class URLConnector
     }
 
     /**
-     * Name of the Apache URL codec library which is used for the Base64
-     * encoding / decoding.
-     *
-     * @see #URLConnector(IProject, String, String, String, String, String, boolean)
-     */
-    private static final String CODEC_LIB = "org.apache.commons.codec_1.3.0.jar";
-
-    /**
      * External Java process where the connection to MX is established.
      */
     private final Process process;
@@ -178,17 +170,19 @@ public class URLConnector
             _projectPath.mkdirs();
         }
         for (final Class<?> clazz : URLConnector.SERVER_CLASSES)  {
-            final String clazzFileName = "/" + clazz.getName().replace('.', File.separatorChar) + ".class";
+            // the URL must use slashes to be a valid URL (and
+            // File.separatorChar delivers backslashes in Windows)
+            final String clazzFileName = "/" + clazz.getName().replace('.', '/') + ".class";
             this.copy(
                     this.getClass().getClassLoader().getResource(clazzFileName),
                     new File(_projectPath, "/bin" + clazzFileName));
         }
 
-        // prepare class path
+        // prepare class path (and always slashes instead of backslashes)
         final StringBuilder classPath = new StringBuilder()
-                .append("bin").append(File.separatorChar).append('.')
+                .append("bin").append('/').append('.')
                 .append(File.pathSeparatorChar)
-                .append(_mxJarPath);
+                .append(_mxJarPath.replace('\\', '/'));
 
         // start process
         final ProcessBuilder pb = new ProcessBuilder(
