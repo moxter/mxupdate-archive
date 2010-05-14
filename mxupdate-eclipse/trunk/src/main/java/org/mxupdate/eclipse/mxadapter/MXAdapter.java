@@ -306,15 +306,16 @@ public class MXAdapter
             this.console.logError(Messages.getString("MXAdapter.ExceptionGetPlugInVersion"), e); //$NON-NLS-1$
         }
 
-        String updateVersion = null;
+        String updateVersionOrg = null;
         try {
-            updateVersion = (String) this.executeEncoded(null, "GetVersion", null).get(MXAdapter.RETURN_KEY_VALUES);
+            updateVersionOrg = (String) this.executeEncoded(null, "GetVersion", null).get(MXAdapter.RETURN_KEY_VALUES);
         } catch (final Exception e) {
             this.console.logError(Messages.getString("MXAdapter.ExceptionGetUpdateVersion"), e); //$NON-NLS-1$
         }
+        final String updateVersion = (updateVersionOrg != null) ? updateVersionOrg.replace('-', '.') : null;
 
-        final String[] pluginVersions = (pluginVersion != null) ? pluginVersion.split("\\.") : null;
-        final String[] updateVersions = (updateVersion != null) ? updateVersion.split("\\.") : null;
+        final String[] pluginVersions = (pluginVersion != null) ? pluginVersion.split("\\.") : null; //$NON-NLS-1$
+        final String[] updateVersions = (updateVersion != null) ? updateVersion.split("\\.") : null; //$NON-NLS-1$
         if ((pluginVersion == null) || (pluginVersions.length < 2)
                 || (updateVersion == null) || (updateVersions.length < 2)
                 || !pluginVersions[0].equals(updateVersions[0]) || !pluginVersions[1].equals(updateVersions[1]))  {
