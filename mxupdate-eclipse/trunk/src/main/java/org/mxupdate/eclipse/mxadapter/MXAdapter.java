@@ -34,6 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.codec.binary.Base64;
 import org.eclipse.core.resources.IFile;
@@ -105,6 +107,22 @@ public class MXAdapter
      * Name of the key in the return map for the values.
      */
     private static final String RETURN_KEY_VALUES = "values";
+
+    /**
+     * Regular expression for the package line. The package name must be
+     * extracted to get the real name of the JPO used within MX.
+     *
+     * @see #extractMxName(IFile)
+     */
+    private static final Pattern PATTERN_PACKAGE = Pattern.compile("(?<=package)[ \\t]+[A-Za-z0-9\\._]*[ \\t]*;");
+
+    /**
+     * End of a file name which represents a JPO.
+     *
+     * @see #export(IFile)
+     * @see #extractMxName(IFile)
+     */
+    private static final String END_JPO_FILE = "_mxJPO.java";
 
     /** Properties for the project. */
     private final ProjectProperties properties;
@@ -595,45 +613,88 @@ public class MXAdapter
     public IExportItem export(final IFile _file)
         throws Exception
     {
+        final IExportItem ret;
+
         if (this.connector == null)  {
             this.connect();
         }
 
-        final Map<?,?> bck = this.executeEncoded(null, "Export", new Object[]{"FileName", _file.toString()});
+        // if the file is a JPO, the package name is included in the MX name
+        if (_file.getName().endsWith(MXAdapter.END_JPO_FILE))  {
+            // hard coded for the workaround that the package of a JPO must read
+            ret = this.export("JPO", this.extractMxName(_file));
+        } else  {
+            final Map<?,?> bck = this.executeEncoded(null, "Export", new Object[]{"FileName", _file.getName()});
 
-        if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
-            throw (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION);
+            if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
+                throw (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION);
+            }
+
+            final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            Activator.getDefault().getConsole().logInfo(Messages.getString("MXAdapter.ExportLog", //$NON-NLS-1$
+                                                                           (String) value.get("FileName"))); //$NON-NLS-1$
+            Activator.getDefault().getConsole().appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
+            ret = new IExportItem() {
+                public String getFileName()
+                {
+                    return (String) value.get("FileName");
+                }
+                public String getFilePath()
+                {
+                    return (String) value.get("FilePath");
+                }
+                public String getName()
+                {
+                    return (String) value.get("Name");
+                }
+                public String getTypeDef()
+                {
+                    return (String) value.get("TypeDef");
+                }
+                public String getContent()
+                {
+                    return (String) value.get("Code");
+                }
+            };
         }
-
-        final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
-        Activator.getDefault().getConsole().logInfo(Messages.getString("MXAdapter.ExportLog", //$NON-NLS-1$
-                                                                       (String) value.get("FileName"))); //$NON-NLS-1$
-        Activator.getDefault().getConsole().appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
-        final IExportItem ret = new IExportItem() {
-            public String getFileName()
-            {
-                return (String) value.get("FileName");
-            }
-            public String getFilePath()
-            {
-                return (String) value.get("FilePath");
-            }
-            public String getName()
-            {
-                return (String) value.get("Name");
-            }
-            public String getTypeDef()
-            {
-                return (String) value.get("TypeDef");
-            }
-            public String getContent()
-            {
-                return (String) value.get("Code");
-            }
-        };
 
         return ret;
     }
+
+    /**
+     * If a file is a JPO (checked by calling the extraxtMxName method from
+     * super class), the package is extracted from file and returned together
+     * with the extracted MxName from the file.
+     *
+     * @param _file         file for which the MX name is searched
+     * @return MX name or <code>null</code> if the file is not an update file
+     *         for current type definition
+     * @throws CoreException    if file content incl. character set could not
+     *                          be fetched
+     * @throws IOException      if file could not be read
+     * @see #PATTERN_PACKAGE
+     */
+    protected String extractMxName(final IFile _file)
+        throws CoreException, IOException
+    {
+        final InputStream in = _file.getContents();
+        final byte[] bytes = new byte[in.available()];
+        in.read(bytes);
+        in.close();
+
+        final String code = new String(bytes, _file.getCharset());
+
+        String mxName = _file.getName().substring(0, _file.getName().length() - MXAdapter.END_JPO_FILE.length());
+        for (final String line : code.split("\n"))  {
+            final Matcher pckMatch = MXAdapter.PATTERN_PACKAGE.matcher(line);
+            if (pckMatch.find())  {
+                mxName = pckMatch.group().replace(';', ' ').trim() + "." + mxName;
+                break;
+            }
+        }
+        return mxName;
+    }
+
 
     /**
      * {@inheritDoc}
