@@ -15,6 +15,7 @@ of the "ENOVIA Studio Modeling Platform".
 This type properties could be handled from !MxUpdate:
  * description
  * hidden flag
+ * abstract flag
  * methods
  * triggers
  * attributes
@@ -27,6 +28,7 @@ This type properties could be handled from !MxUpdate:
 == Cleanup ==
 Following steps are done before the CI update file is executed:
  * set to not hidden
+ * set to not abstract
  * reset description
  * remove all defined methods
  * remove all defined triggers
@@ -111,7 +113,7 @@ mql escape mod type "${NAME}" \
     description "MxUpdate Test Type with two attributes." \
     derived "ADMINISTRATION" \
     !hidden \
-    abstract false
+    abstract "false"
 
 testAttributes -type "${NAME}" -attributes [list \
     "MxUpdateTestAttribute1" \
