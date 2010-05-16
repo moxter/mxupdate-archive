@@ -54,7 +54,7 @@ No further parameters are defined.
 #
 # SYMBOLIC NAME:
 # ~~~~~~~~~~~~~~
-# rule_TestFormat
+# format_TestFormat
 #
 # DESCRIPTION:
 # ~~~~~~~~~~~~
@@ -67,7 +67,7 @@ No further parameters are defined.
 
 mql escape mod format "${NAME}" \
     description "Format for test purposes." \
-    nothidden \
+    !hidden \
     version "1" \
     suffix "txt" \
     type "text" \
