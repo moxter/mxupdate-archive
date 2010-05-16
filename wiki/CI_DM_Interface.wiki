@@ -15,6 +15,7 @@ Guide" of the "ENOVIA Studio Modeling Platform".
 This interface properties could be handled from !MxUpdate:
  * description
  * hidden flag
+ * abstract flag
  * types and relationships where interfaces could be assigned
  * parent interfaces
 
@@ -25,6 +26,7 @@ This interface properties could be handled from !MxUpdate:
 == Cleanup ==
 Following steps are done before the CI update file is executed:
  * set to not hidden
+ * set to not abstract
  * reset description
  * remove all assigned types and relationships
 
@@ -132,7 +134,7 @@ testParents -interface "${NAME}" -parents [list \
 
 mql escape mod interface "${NAME}" \
     description "MxUpdate Test Interface with two attributes, assignable to one type and two relationships and one parent interface." \
-    abstract false \
+    abstract "false" \
     add relationship "MxUpdateTestRelationship1" \
     add relationship "MxUpdateTestRelationship2" \
     add type "MxUpdateTestType"
