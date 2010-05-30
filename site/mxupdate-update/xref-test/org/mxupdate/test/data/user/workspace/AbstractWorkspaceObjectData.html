@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 665 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:45:26 +0100 (So, 17 Jan 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 803 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-05-25 01:56:50 +0200 (Di, 25 Mai 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -32,8 +32,8 @@
 <a name="23" href="#23">23</a>  <strong>import</strong> java.util.Arrays;
 <a name="24" href="#24">24</a>  <strong>import</strong> java.util.HashSet;
 <a name="25" href="#25">25</a>  <strong>import</strong> java.util.List;
-<a name="26" href="#26">26</a>  <strong>import</strong> java.util.Set;
-<a name="27" href="#27">27</a>  <strong>import</strong> java.util.TreeSet;
+<a name="26" href="#26">26</a>  <strong>import</strong> java.util.Map;
+<a name="27" href="#27">27</a>  <strong>import</strong> java.util.Set;
 <a name="28" href="#28">28</a>  
 <a name="29" href="#29">29</a>  <strong>import</strong> matrix.util.MatrixException;
 <a name="30" href="#30">30</a>  
@@ -49,7 +49,7 @@
 <a name="40" href="#40">40</a>  <em> * to users used to create / update and to export.</em>
 <a name="41" href="#41">41</a>  <em> *</em>
 <a name="42" href="#42">42</a>  <em> * @author The MxUpdate Team</em>
-<a name="43" href="#43">43</a>  <em> * @version $Id: AbstractWorkspaceObjectData.java 665 2010-01-17 20:45:26Z tim.moxter $</em>
+<a name="43" href="#43">43</a>  <em> * @version $Id: AbstractWorkspaceObjectData.java 803 2010-05-24 23:56:50Z tim.moxter $</em>
 <a name="44" href="#44">44</a>  <em> * @param &lt;DATA> workspace object class</em>
 <a name="45" href="#45">45</a>  <em> * @param &lt;USER> for which user class the workspace object class is defined</em>
 <a name="46" href="#46">46</a>  <em> */</em>
@@ -66,7 +66,7 @@
 <a name="57" href="#57">57</a>      <em>/**<em>*</em></em>
 <a name="58" href="#58">58</a>  <em>     * Defines for which user the workspace object is visible.</em>
 <a name="59" href="#59">59</a>  <em>     */</em>
-<a name="60" href="#60">60</a>      <strong>private</strong> <strong>final</strong> Set&lt;String> visible = <strong>new</strong> TreeSet&lt;String>();
+<a name="60" href="#60">60</a>      <strong>private</strong> <strong>final</strong> Set&lt;AbstractUserData&lt;?>> visible = <strong>new</strong> HashSet&lt;AbstractUserData&lt;?>>();
 <a name="61" href="#61">61</a>  
 <a name="62" href="#62">62</a>      <em>/**<em>*</em></em>
 <a name="63" href="#63">63</a>  <em>     * MX administration type.</em>
@@ -90,7 +90,7 @@
 <a name="81" href="#81">81</a>                                  <strong>final</strong> String _mxAdminType,
 <a name="82" href="#82">82</a>                                  <strong>final</strong> USER _user,
 <a name="83" href="#83">83</a>                                  <strong>final</strong> String _name,
-<a name="84" href="#84">84</a>                                  <strong>final</strong> Set&lt;String> _requiredExportValues)
+<a name="84" href="#84">84</a>                                  <strong>final</strong> Map&lt;String,String> _requiredExportValues)
 <a name="85" href="#85">85</a>      {
 <a name="86" href="#86">86</a>          <strong>super</strong>(_test, <strong>null</strong>, _name, _requiredExportValues);
 <a name="87" href="#87">87</a>          <strong>this</strong>.mxAdminType = _mxAdminType;
@@ -127,7 +127,7 @@
 <a name="118" href="#118">118</a> <em>     * @see #visible</em>
 <a name="119" href="#119">119</a> <em>     */</em>
 <a name="120" href="#120">120</a>     @SuppressWarnings(<span class="string">"unchecked"</span>)
-<a name="121" href="#121">121</a>     <strong>public</strong> DATA setVisible(<strong>final</strong> String... _users)
+<a name="121" href="#121">121</a>     <strong>public</strong> DATA setVisible(<strong>final</strong> AbstractUserData&lt;?>... _users)
 <a name="122" href="#122">122</a>     {
 <a name="123" href="#123">123</a>         <strong>this</strong>.visible.addAll(Arrays.asList(_users));
 <a name="124" href="#124">124</a>         <strong>return</strong> (DATA) <strong>this</strong>;
@@ -145,144 +145,161 @@
 <a name="136" href="#136">136</a>         throws MatrixException
 <a name="137" href="#137">137</a>     {
 <a name="138" href="#138">138</a>         <strong>if</strong> (!<strong>this</strong>.isCreated())  {
-<a name="139" href="#139">139</a>             <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
-<a name="140" href="#140">140</a>                     .append(<span class="string">"escape add "</span>).append(<strong>this</strong>.mxAdminType).append(<span class="string">" \&quot;"</span>)
-<a name="141" href="#141">141</a>                     .append(AbstractTest.convertMql(<strong>this</strong>.getName()))
-<a name="142" href="#142">142</a>                     .append(<span class="string">"\&quot; user \&quot;"</span>)
-<a name="143" href="#143">143</a>                     .append(AbstractTest.convertMql(<strong>this</strong>.user.getName()))
-<a name="144" href="#144">144</a>                     .append('\&quot;');
-<a name="145" href="#145">145</a> 
-<a name="146" href="#146">146</a>             <em class="comment">// append values</em>
-<a name="147" href="#147">147</a>             <strong>this</strong>.append4Create(cmd);
-<a name="148" href="#148">148</a> 
-<a name="149" href="#149">149</a>             <strong>this</strong>.getTest().mql(cmd);
+<a name="139" href="#139">139</a>             <strong>this</strong>.setCreated(<strong>true</strong>);
+<a name="140" href="#140">140</a> 
+<a name="141" href="#141">141</a>             <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
+<a name="142" href="#142">142</a>                     .append(<span class="string">"escape add "</span>).append(<strong>this</strong>.mxAdminType).append(<span class="string">" \&quot;"</span>)
+<a name="143" href="#143">143</a>                     .append(AbstractTest.convertMql(<strong>this</strong>.getName()))
+<a name="144" href="#144">144</a>                     .append(<span class="string">"\&quot; user \&quot;"</span>)
+<a name="145" href="#145">145</a>                     .append(AbstractTest.convertMql(<strong>this</strong>.user.getName()))
+<a name="146" href="#146">146</a>                     .append('\&quot;');
+<a name="147" href="#147">147</a> 
+<a name="148" href="#148">148</a>             <em class="comment">// append values</em>
+<a name="149" href="#149">149</a>             <strong>this</strong>.append4Create(cmd);
 <a name="150" href="#150">150</a> 
-<a name="151" href="#151">151</a>             <strong>this</strong>.setCreated(<strong>true</strong>);
+<a name="151" href="#151">151</a>             <strong>this</strong>.getTest().mql(cmd);
 <a name="152" href="#152">152</a>         }
 <a name="153" href="#153">153</a>         <strong>return</strong> (DATA) <strong>this</strong>;
 <a name="154" href="#154">154</a>     }
 <a name="155" href="#155">155</a> 
 <a name="156" href="#156">156</a>     <em>/**<em>*</em></em>
-<a name="157" href="#157">157</a> <em>     * Appends the MQL commands to define the hidden flag and the</em>
-<a name="158" href="#158">158</a> <em>     * {@link #visible users} within a create.</em>
-<a name="159" href="#159">159</a> <em>     *</em>
-<a name="160" href="#160">160</a> <em>     * @param _cmd  string builder used to append MQL commands</em>
-<a name="161" href="#161">161</a> <em>     * @throws MatrixException if used object could not be created</em>
-<a name="162" href="#162">162</a> <em>     * @see #values</em>
-<a name="163" href="#163">163</a> <em>     */</em>
-<a name="164" href="#164">164</a>     @Override()
-<a name="165" href="#165">165</a>     <strong>protected</strong> <strong>void</strong> append4Create(<strong>final</strong> StringBuilder _cmd)
+<a name="157" href="#157">157</a> <em>     * {@inheritDoc}</em>
+<a name="158" href="#158">158</a> <em>     * Creates all {@link #visible users} for which this workspace object is</em>
+<a name="159" href="#159">159</a> <em>     * visible.</em>
+<a name="160" href="#160">160</a> <em>     *</em>
+<a name="161" href="#161">161</a> <em>     * @see #visible</em>
+<a name="162" href="#162">162</a> <em>     */</em>
+<a name="163" href="#163">163</a>     @Override()
+<a name="164" href="#164">164</a>     @SuppressWarnings(<span class="string">"unchecked"</span>)
+<a name="165" href="#165">165</a>     <strong>public</strong> DATA createDependings()
 <a name="166" href="#166">166</a>         throws MatrixException
 <a name="167" href="#167">167</a>     {
-<a name="168" href="#168">168</a>         <strong>super</strong>.append4Create(_cmd);
+<a name="168" href="#168">168</a>         <strong>super</strong>.createDependings();
 <a name="169" href="#169">169</a> 
-<a name="170" href="#170">170</a>         <em class="comment">// hidden flag</em>
-<a name="171" href="#171">171</a>         <strong>if</strong> (<strong>this</strong>.isHidden())  {
-<a name="172" href="#172">172</a>             _cmd.append(<span class="string">" hidden"</span>);
-<a name="173" href="#173">173</a>         } <strong>else</strong>  {
-<a name="174" href="#174">174</a>             _cmd.append(<span class="string">" !hidden"</span>);
-<a name="175" href="#175">175</a>         }
+<a name="170" href="#170">170</a>         <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.visible)  {
+<a name="171" href="#171">171</a>             user.create();
+<a name="172" href="#172">172</a>         }
+<a name="173" href="#173">173</a> 
+<a name="174" href="#174">174</a>         <strong>return</strong> (DATA) <strong>this</strong>;
+<a name="175" href="#175">175</a>     }
 <a name="176" href="#176">176</a> 
-<a name="177" href="#177">177</a>         <em class="comment">// visible users</em>
-<a name="178" href="#178">178</a>         <strong>if</strong> (!<strong>this</strong>.visible.isEmpty())  {
-<a name="179" href="#179">179</a>             _cmd.append(<span class="string">" visible "</span>);
-<a name="180" href="#180">180</a>             <strong>boolean</strong> first = <strong>true</strong>;
-<a name="181" href="#181">181</a>             <strong>for</strong> (<strong>final</strong> String user : <strong>this</strong>.visible)  {
-<a name="182" href="#182">182</a>                 <strong>if</strong> (first)  {
-<a name="183" href="#183">183</a>                     first = false;
-<a name="184" href="#184">184</a>                 } <strong>else</strong>  {
-<a name="185" href="#185">185</a>                     _cmd.append(',');
-<a name="186" href="#186">186</a>                 }
-<a name="187" href="#187">187</a>                 _cmd.append('\&quot;').append(AbstractTest.convertMql(user)).append('\&quot;');
-<a name="188" href="#188">188</a>             }
-<a name="189" href="#189">189</a>         }
-<a name="190" href="#190">190</a>     }
-<a name="191" href="#191">191</a> 
-<a name="192" href="#192">192</a>     <em>/**<em>*</em></em>
-<a name="193" href="#193">193</a> <em>     * Returns the part of the CI file to create this workspace object of an</em>
-<a name="194" href="#194">194</a> <em>     * user.</em>
-<a name="195" href="#195">195</a> <em>     *</em>
-<a name="196" href="#196">196</a> <em>     * @return part of the CI file to create this workspace object of an user</em>
-<a name="197" href="#197">197</a> <em>     */</em>
-<a name="198" href="#198">198</a>     @Override()
-<a name="199" href="#199">199</a>     <strong>public</strong> String ciFile()
-<a name="200" href="#200">200</a>     {
-<a name="201" href="#201">201</a>         <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
-<a name="202" href="#202">202</a>                 .append(<span class="string">"mql escape add "</span>).append(<strong>this</strong>.mxAdminType).append(<span class="string">" \&quot;"</span>)
-<a name="203" href="#203">203</a>                 .append(AbstractTest.convertTcl(<strong>this</strong>.getName()))
-<a name="204" href="#204">204</a>                 .append(<span class="string">"\&quot; &#47;&#47;\n    user \&quot;${NAME}\&quot;"</span>);
-<a name="205" href="#205">205</a> 
-<a name="206" href="#206">206</a>         <em class="comment">// hidden flag</em>
-<a name="207" href="#207">207</a>         <strong>if</strong> (<strong>this</strong>.isHidden())  {
-<a name="208" href="#208">208</a>             cmd.append(<span class="string">" &#47;&#47;\n    hidden"</span>);
-<a name="209" href="#209">209</a>         } <strong>else</strong>  {
-<a name="210" href="#210">210</a>             cmd.append(<span class="string">" &#47;&#47;\n    !hidden"</span>);
-<a name="211" href="#211">211</a>         }
+<a name="177" href="#177">177</a>     <em>/**<em>*</em></em>
+<a name="178" href="#178">178</a> <em>     * Appends the MQL commands to define the hidden flag and the</em>
+<a name="179" href="#179">179</a> <em>     * {@link #visible users} within a create.</em>
+<a name="180" href="#180">180</a> <em>     *</em>
+<a name="181" href="#181">181</a> <em>     * @param _cmd  string builder used to append MQL commands</em>
+<a name="182" href="#182">182</a> <em>     * @throws MatrixException if used object could not be created</em>
+<a name="183" href="#183">183</a> <em>     * @see #values</em>
+<a name="184" href="#184">184</a> <em>     */</em>
+<a name="185" href="#185">185</a>     @Override()
+<a name="186" href="#186">186</a>     <strong>protected</strong> <strong>void</strong> append4Create(<strong>final</strong> StringBuilder _cmd)
+<a name="187" href="#187">187</a>         throws MatrixException
+<a name="188" href="#188">188</a>     {
+<a name="189" href="#189">189</a>         <strong>super</strong>.append4Create(_cmd);
+<a name="190" href="#190">190</a> 
+<a name="191" href="#191">191</a>         <em class="comment">// hidden flag</em>
+<a name="192" href="#192">192</a>         <strong>if</strong> (<strong>this</strong>.isHidden())  {
+<a name="193" href="#193">193</a>             _cmd.append(<span class="string">" hidden"</span>);
+<a name="194" href="#194">194</a>         } <strong>else</strong>  {
+<a name="195" href="#195">195</a>             _cmd.append(<span class="string">" !hidden"</span>);
+<a name="196" href="#196">196</a>         }
+<a name="197" href="#197">197</a> 
+<a name="198" href="#198">198</a>         <em class="comment">// visible users</em>
+<a name="199" href="#199">199</a>         <strong>if</strong> (!<strong>this</strong>.visible.isEmpty())  {
+<a name="200" href="#200">200</a>             _cmd.append(<span class="string">" visible "</span>);
+<a name="201" href="#201">201</a>             <strong>boolean</strong> first = <strong>true</strong>;
+<a name="202" href="#202">202</a>             <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.visible)  {
+<a name="203" href="#203">203</a>                 <strong>if</strong> (first)  {
+<a name="204" href="#204">204</a>                     first = false;
+<a name="205" href="#205">205</a>                 } <strong>else</strong>  {
+<a name="206" href="#206">206</a>                     _cmd.append(',');
+<a name="207" href="#207">207</a>                 }
+<a name="208" href="#208">208</a>                 _cmd.append('\&quot;').append(AbstractTest.convertMql(user.getName())).append('\&quot;');
+<a name="209" href="#209">209</a>             }
+<a name="210" href="#210">210</a>         }
+<a name="211" href="#211">211</a>     }
 <a name="212" href="#212">212</a> 
-<a name="213" href="#213">213</a>         <em class="comment">// visible users</em>
-<a name="214" href="#214">214</a>         <strong>if</strong> (!<strong>this</strong>.visible.isEmpty())  {
-<a name="215" href="#215">215</a>             <strong>for</strong> (<strong>final</strong> String user : <strong>this</strong>.visible)  {
-<a name="216" href="#216">216</a>                 cmd.append(<span class="string">" &#47;&#47;\n    visible \&quot;"</span>)
-<a name="217" href="#217">217</a>                    .append(AbstractTest.convertTcl(user))
-<a name="218" href="#218">218</a>                    .append('\&quot;');
-<a name="219" href="#219">219</a>             }
-<a name="220" href="#220">220</a>         }
-<a name="221" href="#221">221</a> 
-<a name="222" href="#222">222</a>         <strong>this</strong>.append4CIFileValues(cmd);
-<a name="223" href="#223">223</a>         <strong>return</strong> cmd.toString();
-<a name="224" href="#224">224</a>     }
-<a name="225" href="#225">225</a> 
-<a name="226" href="#226">226</a>     <em>/**<em>*</em></em>
-<a name="227" href="#227">227</a> <em>     * Checks the export of this data piece if all values are correct defined.</em>
-<a name="228" href="#228">228</a> <em>     * The hidden flag and the {@link #visible visible users} are checked.</em>
-<a name="229" href="#229">229</a> <em>     *</em>
-<a name="230" href="#230">230</a> <em>     * @param _exportParser     parsed export</em>
-<a name="231" href="#231">231</a> <em>     * @throws MatrixException if check failed</em>
-<a name="232" href="#232">232</a> <em>     */</em>
-<a name="233" href="#233">233</a>     @Override()
-<a name="234" href="#234">234</a>     <strong>public</strong> <strong>void</strong> checkExport(<strong>final</strong> <a href="../../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> _exportParser)
-<a name="235" href="#235">235</a>         throws MatrixException
-<a name="236" href="#236">236</a>     {
-<a name="237" href="#237">237</a>         <strong>super</strong>.checkExport(_exportParser);
-<a name="238" href="#238">238</a> 
-<a name="239" href="#239">239</a>         <em class="comment">// check hidden flag</em>
-<a name="240" href="#240">240</a>         <strong>final</strong> Set&lt;String> main = <strong>new</strong> HashSet&lt;String>(_exportParser.getLines(<span class="string">"/mql/"</span>));
-<a name="241" href="#241">241</a>         <strong>if</strong> (<strong>this</strong>.isHidden())  {
-<a name="242" href="#242">242</a>             Assert.assertTrue(main.contains(<span class="string">"hidden"</span>) || main.contains(<span class="string">"hidden &#47;&#47;"</span>),
-<a name="243" href="#243">243</a>                               <span class="string">"check that "</span> + <strong>this</strong>.mxAdminType + <span class="string">" '"</span> + <strong>this</strong>.getName() + <span class="string">"' is hidden"</span>);
-<a name="244" href="#244">244</a>         } <strong>else</strong>  {
-<a name="245" href="#245">245</a>             Assert.assertTrue(main.contains(<span class="string">"!hidden"</span>) || main.contains(<span class="string">"!hidden &#47;&#47;"</span>),
-<a name="246" href="#246">246</a>                               <span class="string">"check that "</span> + <strong>this</strong>.mxAdminType + <span class="string">" '"</span> + <strong>this</strong>.getName() + <span class="string">"' is not hidden"</span>);
-<a name="247" href="#247">247</a>         }
-<a name="248" href="#248">248</a> 
-<a name="249" href="#249">249</a>         <em class="comment">// check visible users</em>
-<a name="250" href="#250">250</a>         <strong>final</strong> List&lt;String> foundVisible = _exportParser.getLines(<span class="string">"/mql/visible/@value"</span>);
-<a name="251" href="#251">251</a>         <strong>for</strong> (<strong>final</strong> String user : foundVisible)  {
-<a name="252" href="#252">252</a>             <strong>final</strong> String tmpUser = user.replaceAll(<span class="string">"^\&quot;"</span>, <span class="string">""</span>).replaceAll(<span class="string">"\&quot;$"</span>, <span class="string">""</span>);
-<a name="253" href="#253">253</a>             Assert.assertTrue(<strong>this</strong>.visible.contains(tmpUser),
-<a name="254" href="#254">254</a>                               <span class="string">"check that '"</span> + tmpUser + <span class="string">"' was defined visible"</span>);
-<a name="255" href="#255">255</a>         }
-<a name="256" href="#256">256</a>         Assert.assertEquals(foundVisible.size(),
-<a name="257" href="#257">257</a>                             <strong>this</strong>.visible.size(),
-<a name="258" href="#258">258</a>                             <span class="string">"check that all visible users are defined"</span>);
+<a name="213" href="#213">213</a>     <em>/**<em>*</em></em>
+<a name="214" href="#214">214</a> <em>     * Returns the part of the CI file to create this workspace object of an</em>
+<a name="215" href="#215">215</a> <em>     * user.</em>
+<a name="216" href="#216">216</a> <em>     *</em>
+<a name="217" href="#217">217</a> <em>     * @return part of the CI file to create this workspace object of an user</em>
+<a name="218" href="#218">218</a> <em>     */</em>
+<a name="219" href="#219">219</a>     @Override()
+<a name="220" href="#220">220</a>     <strong>public</strong> String ciFile()
+<a name="221" href="#221">221</a>     {
+<a name="222" href="#222">222</a>         <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
+<a name="223" href="#223">223</a>                 .append(<span class="string">"mql escape add "</span>).append(<strong>this</strong>.mxAdminType).append(<span class="string">" \&quot;"</span>)
+<a name="224" href="#224">224</a>                 .append(AbstractTest.convertTcl(<strong>this</strong>.getName()))
+<a name="225" href="#225">225</a>                 .append(<span class="string">"\&quot; &#47;&#47;\n    user \&quot;${NAME}\&quot;"</span>);
+<a name="226" href="#226">226</a> 
+<a name="227" href="#227">227</a>         <em class="comment">// hidden flag</em>
+<a name="228" href="#228">228</a>         <strong>if</strong> (<strong>this</strong>.isHidden())  {
+<a name="229" href="#229">229</a>             cmd.append(<span class="string">" &#47;&#47;\n    hidden"</span>);
+<a name="230" href="#230">230</a>         } <strong>else</strong>  {
+<a name="231" href="#231">231</a>             cmd.append(<span class="string">" &#47;&#47;\n    !hidden"</span>);
+<a name="232" href="#232">232</a>         }
+<a name="233" href="#233">233</a> 
+<a name="234" href="#234">234</a>         <em class="comment">// visible users</em>
+<a name="235" href="#235">235</a>         <strong>if</strong> (!<strong>this</strong>.visible.isEmpty())  {
+<a name="236" href="#236">236</a>             <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.visible)  {
+<a name="237" href="#237">237</a>                 cmd.append(<span class="string">" &#47;&#47;\n    visible \&quot;"</span>)
+<a name="238" href="#238">238</a>                    .append(AbstractTest.convertTcl(user.getName()))
+<a name="239" href="#239">239</a>                    .append('\&quot;');
+<a name="240" href="#240">240</a>             }
+<a name="241" href="#241">241</a>         }
+<a name="242" href="#242">242</a> 
+<a name="243" href="#243">243</a>         <strong>this</strong>.append4CIFileValues(cmd);
+<a name="244" href="#244">244</a>         <strong>return</strong> cmd.toString();
+<a name="245" href="#245">245</a>     }
+<a name="246" href="#246">246</a> 
+<a name="247" href="#247">247</a>     <em>/**<em>*</em></em>
+<a name="248" href="#248">248</a> <em>     * Checks the export of this data piece if all values are correct defined.</em>
+<a name="249" href="#249">249</a> <em>     * The hidden flag and the {@link #visible visible users} are checked.</em>
+<a name="250" href="#250">250</a> <em>     *</em>
+<a name="251" href="#251">251</a> <em>     * @param _exportParser     parsed export</em>
+<a name="252" href="#252">252</a> <em>     * @throws MatrixException if check failed</em>
+<a name="253" href="#253">253</a> <em>     */</em>
+<a name="254" href="#254">254</a>     @Override()
+<a name="255" href="#255">255</a>     <strong>public</strong> <strong>void</strong> checkExport(<strong>final</strong> <a href="../../../../../../org/mxupdate/test/ExportParser.html">ExportParser</a> _exportParser)
+<a name="256" href="#256">256</a>         throws MatrixException
+<a name="257" href="#257">257</a>     {
+<a name="258" href="#258">258</a>         <strong>super</strong>.checkExport(_exportParser);
 <a name="259" href="#259">259</a> 
-<a name="260" href="#260">260</a>         <em class="comment">// check properties</em>
-<a name="261" href="#261">261</a>         <strong>final</strong> Set&lt;String> foundProps = <strong>new</strong> HashSet&lt;String>(_exportParser.getLines(<span class="string">"/mql/property/@value"</span>));
-<a name="262" href="#262">262</a>         <strong>for</strong> (<strong>final</strong> PropertyDef property : <strong>this</strong>.getProperties())  {
-<a name="263" href="#263">263</a>             <strong>final</strong> StringBuilder key = <strong>new</strong> StringBuilder()
-<a name="264" href="#264">264</a>                     .append(<span class="string">"\&quot;"</span>).append(AbstractTest.convertTcl(property.getName())).append(<span class="string">"\&quot;"</span>);
-<a name="265" href="#265">265</a>             <strong>if</strong> (property.getTo() != <strong>null</strong>)  {
-<a name="266" href="#266">266</a>                 key.append(<span class="string">" to "</span>).append(property.getTo().getCI().getMxType()).append(<span class="string">" \&quot;"</span>)
-<a name="267" href="#267">267</a>                     .append(AbstractTest.convertTcl(property.getTo().getName())).append(<span class="string">"\&quot;"</span>);
-<a name="268" href="#268">268</a>             }
-<a name="269" href="#269">269</a>             <strong>if</strong> (property.getValue() != <strong>null</strong>)  {
-<a name="270" href="#270">270</a>                 key.append(<span class="string">" value \&quot;"</span>).append(AbstractTest.convertTcl(property.getValue())).append(<span class="string">"\&quot;"</span>);
-<a name="271" href="#271">271</a>             }
-<a name="272" href="#272">272</a>             foundProps.remove(key.toString());
-<a name="273" href="#273">273</a>         }
-<a name="274" href="#274">274</a>         Assert.assertTrue(foundProps.isEmpty(), <span class="string">"check that all properties are defined"</span>);
-<a name="275" href="#275">275</a>     }
-<a name="276" href="#276">276</a> }
+<a name="260" href="#260">260</a>         <em class="comment">// check visible users</em>
+<a name="261" href="#261">261</a>         <strong>final</strong> List&lt;String> foundVisible = _exportParser.getLines(<span class="string">"/mql/visible/@value"</span>);
+<a name="262" href="#262">262</a>         <strong>for</strong> (<strong>final</strong> String user : foundVisible)  {
+<a name="263" href="#263">263</a>             <strong>final</strong> String tmpUser = user.replaceAll(<span class="string">"^\&quot;"</span>, <span class="string">""</span>).replaceAll(<span class="string">"\&quot;$"</span>, <span class="string">""</span>);
+<a name="264" href="#264">264</a>             <strong>boolean</strong> found = false;
+<a name="265" href="#265">265</a>             <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> userAbstr : <strong>this</strong>.visible)  {
+<a name="266" href="#266">266</a>                 <strong>if</strong> (tmpUser.equals(userAbstr.getName()))  {
+<a name="267" href="#267">267</a>                     found = <strong>true</strong>;
+<a name="268" href="#268">268</a>                     <strong>break</strong>;
+<a name="269" href="#269">269</a>                 }
+<a name="270" href="#270">270</a>             }
+<a name="271" href="#271">271</a>             Assert.assertTrue(found, <span class="string">"check that '"</span> + tmpUser + <span class="string">"' was defined visible"</span>);
+<a name="272" href="#272">272</a>         }
+<a name="273" href="#273">273</a>         Assert.assertEquals(foundVisible.size(),
+<a name="274" href="#274">274</a>                             <strong>this</strong>.visible.size(),
+<a name="275" href="#275">275</a>                             <span class="string">"check that all visible users are defined"</span>);
+<a name="276" href="#276">276</a> 
+<a name="277" href="#277">277</a>         <em class="comment">// check properties</em>
+<a name="278" href="#278">278</a>         <strong>final</strong> Set&lt;String> foundProps = <strong>new</strong> HashSet&lt;String>(_exportParser.getLines(<span class="string">"/mql/property/@value"</span>));
+<a name="279" href="#279">279</a>         <strong>for</strong> (<strong>final</strong> PropertyDef property : <strong>this</strong>.getProperties())  {
+<a name="280" href="#280">280</a>             <strong>final</strong> StringBuilder key = <strong>new</strong> StringBuilder()
+<a name="281" href="#281">281</a>                     .append(<span class="string">"\&quot;"</span>).append(AbstractTest.convertTcl(property.getName())).append(<span class="string">"\&quot;"</span>);
+<a name="282" href="#282">282</a>             <strong>if</strong> (property.getTo() != <strong>null</strong>)  {
+<a name="283" href="#283">283</a>                 key.append(<span class="string">" to "</span>).append(property.getTo().getCI().getMxType()).append(<span class="string">" \&quot;"</span>)
+<a name="284" href="#284">284</a>                     .append(AbstractTest.convertTcl(property.getTo().getName())).append(<span class="string">"\&quot;"</span>);
+<a name="285" href="#285">285</a>             }
+<a name="286" href="#286">286</a>             <strong>if</strong> (property.getValue() != <strong>null</strong>)  {
+<a name="287" href="#287">287</a>                 key.append(<span class="string">" value \&quot;"</span>).append(AbstractTest.convertTcl(property.getValue())).append(<span class="string">"\&quot;"</span>);
+<a name="288" href="#288">288</a>             }
+<a name="289" href="#289">289</a>             foundProps.remove(key.toString());
+<a name="290" href="#290">290</a>         }
+<a name="291" href="#291">291</a>         Assert.assertTrue(foundProps.isEmpty(), <span class="string">"check that all properties are defined"</span>);
+<a name="292" href="#292">292</a>     }
+<a name="293" href="#293">293</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

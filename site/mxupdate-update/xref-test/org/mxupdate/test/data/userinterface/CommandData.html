@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 738 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-21 17:33:51 +0100 (So, 21 Feb 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 797 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-05-17 00:47:14 +0200 (Mo, 17 Mai 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -41,7 +41,7 @@
 <a name="32" href="#32">32</a>  <em> * Used to define a command, create them and test the result.</em>
 <a name="33" href="#33">33</a>  <em> *</em>
 <a name="34" href="#34">34</a>  <em> * @author The MxUpdate Team</em>
-<a name="35" href="#35">35</a>  <em> * @version $Id: CommandData.java 738 2010-02-21 16:33:51Z tim.moxter $</em>
+<a name="35" href="#35">35</a>  <em> * @version $Id: CommandData.java 797 2010-05-16 22:47:14Z tim.moxter $</em>
 <a name="36" href="#36">36</a>  <em> */</em>
 <a name="37" href="#37">37</a>  <strong>public</strong> <strong>class</strong> <a href="../../../../../org/mxupdate/test/data/userinterface/CommandData.html">CommandData</a>
 <a name="38" href="#38">38</a>      <strong>extends</strong> AbstractCommandData&lt;CommandData>
@@ -105,72 +105,113 @@
 <a name="96" href="#96">96</a>          <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder();
 <a name="97" href="#97">97</a>          <strong>this</strong>.append4CIFileHeader(cmd);
 <a name="98" href="#98">98</a>          cmd.append(<span class="string">"mql escape mod command \&quot;${NAME}\&quot;"</span>);
-<a name="99" href="#99">99</a>          <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.users)  {
-<a name="100" href="#100">100</a>             cmd.append(<span class="string">" add user \&quot;"</span>)
-<a name="101" href="#101">101</a>                .append(AbstractTest.convertTcl(user.getName())).append('\&quot;');
-<a name="102" href="#102">102</a>         }
-<a name="103" href="#103">103</a>         <strong>this</strong>.append4CIFileValues(cmd);
-<a name="104" href="#104">104</a> 
-<a name="105" href="#105">105</a>         <strong>return</strong> cmd.toString();
-<a name="106" href="#106">106</a>     }
-<a name="107" href="#107">107</a> 
-<a name="108" href="#108">108</a>     <em>/**<em>*</em></em>
-<a name="109" href="#109">109</a> <em>     * Creates a this command with all values and settings.</em>
-<a name="110" href="#110">110</a> <em>     *</em>
-<a name="111" href="#111">111</a> <em>     * @return this command instance</em>
-<a name="112" href="#112">112</a> <em>     * @throws MatrixException if create failed</em>
-<a name="113" href="#113">113</a> <em>     */</em>
-<a name="114" href="#114">114</a>     @Override()
-<a name="115" href="#115">115</a>     <strong>public</strong> <a href="../../../../../org/mxupdate/test/data/userinterface/CommandData.html">CommandData</a> create()
-<a name="116" href="#116">116</a>         throws MatrixException
-<a name="117" href="#117">117</a>     {
-<a name="118" href="#118">118</a>         <strong>if</strong> (!<strong>this</strong>.isCreated())  {
-<a name="119" href="#119">119</a>             <strong>this</strong>.setCreated(<strong>true</strong>);
-<a name="120" href="#120">120</a> 
-<a name="121" href="#121">121</a>             <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
-<a name="122" href="#122">122</a>                     .append(<span class="string">"escape add command \&quot;"</span> + AbstractTest.convertMql(<strong>this</strong>.getName()) + <span class="string">"\&quot;"</span>);
-<a name="123" href="#123">123</a>             <strong>if</strong> (!<strong>this</strong>.users.isEmpty())  {
-<a name="124" href="#124">124</a>                 cmd.append(<span class="string">" user "</span>);
-<a name="125" href="#125">125</a>                 <strong>boolean</strong> first = <strong>true</strong>;
-<a name="126" href="#126">126</a>                 <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.users)  {
-<a name="127" href="#127">127</a>                     user.create();
-<a name="128" href="#128">128</a>                     <strong>if</strong> (first)  {
-<a name="129" href="#129">129</a>                         first = false;
-<a name="130" href="#130">130</a>                     } <strong>else</strong>  {
-<a name="131" href="#131">131</a>                         cmd.append(',');
-<a name="132" href="#132">132</a>                     }
-<a name="133" href="#133">133</a>                     cmd.append('\&quot;').append(AbstractTest.convertMql(user.getName())).append('\&quot;');
-<a name="134" href="#134">134</a>                 }
-<a name="135" href="#135">135</a>             }
-<a name="136" href="#136">136</a>             <strong>this</strong>.append4Create(cmd);
-<a name="137" href="#137">137</a> 
-<a name="138" href="#138">138</a>             cmd.append(<span class="string">";\n"</span>)
-<a name="139" href="#139">139</a>                .append(<span class="string">"escape add property "</span>).append(<strong>this</strong>.getSymbolicName())
-<a name="140" href="#140">140</a>                .append(<span class="string">" on program eServiceSchemaVariableMapping.tcl"</span>)
-<a name="141" href="#141">141</a>                .append(<span class="string">" to command \&quot;"</span>).append(AbstractTest.convertMql(<strong>this</strong>.getName())).append(<span class="string">"\&quot;"</span>);
-<a name="142" href="#142">142</a> 
-<a name="143" href="#143">143</a>             <strong>this</strong>.getTest().mql(cmd);
-<a name="144" href="#144">144</a>         }
-<a name="145" href="#145">145</a>         <strong>return</strong> <strong>this</strong>;
-<a name="146" href="#146">146</a>     }
-<a name="147" href="#147">147</a> 
-<a name="148" href="#148">148</a>     <em>/**<em>*</em></em>
-<a name="149" href="#149">149</a> <em>     * Evaluates all 'adds' in the configuration item file (e.g. add user, add</em>
-<a name="150" href="#150">150</a> <em>     * setting, ...).</em>
-<a name="151" href="#151">151</a> <em>     *</em>
-<a name="152" href="#152">152</a> <em>     * @param _needAdds     set with add strings used to append the adds for</em>
-<a name="153" href="#153">153</a> <em>     *                      {@link #users}</em>
-<a name="154" href="#154">154</a> <em>     * @see #users</em>
-<a name="155" href="#155">155</a> <em>     */</em>
-<a name="156" href="#156">156</a>     @Override
-<a name="157" href="#157">157</a>     <strong>protected</strong> <strong>void</strong> evalAdds4CheckExport(<strong>final</strong> Set&lt;String> _needAdds)
-<a name="158" href="#158">158</a>     {
-<a name="159" href="#159">159</a>         <strong>super</strong>.evalAdds4CheckExport(_needAdds);
-<a name="160" href="#160">160</a>         <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.users)  {
-<a name="161" href="#161">161</a>             _needAdds.add(<span class="string">"user \&quot;"</span> + AbstractTest.convertTcl(user.getName()) + <span class="string">"\&quot;"</span>);
-<a name="162" href="#162">162</a>         }
-<a name="163" href="#163">163</a>     }
-<a name="164" href="#164">164</a> }
+<a name="99" href="#99">99</a>  
+<a name="100" href="#100">100</a>         <em class="comment">// append hidden flag</em>
+<a name="101" href="#101">101</a>         <strong>if</strong> (<strong>this</strong>.isHidden() != <strong>null</strong>)  {
+<a name="102" href="#102">102</a>             cmd.append(' ');
+<a name="103" href="#103">103</a>             <strong>if</strong> (!<strong>this</strong>.isHidden())  {
+<a name="104" href="#104">104</a>                 cmd.append('!');
+<a name="105" href="#105">105</a>             }
+<a name="106" href="#106">106</a>             cmd.append(<span class="string">"hidden"</span>);
+<a name="107" href="#107">107</a>         }
+<a name="108" href="#108">108</a> 
+<a name="109" href="#109">109</a>         <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.users)  {
+<a name="110" href="#110">110</a>             cmd.append(<span class="string">" add user \&quot;"</span>)
+<a name="111" href="#111">111</a>                .append(AbstractTest.convertTcl(user.getName())).append('\&quot;');
+<a name="112" href="#112">112</a>         }
+<a name="113" href="#113">113</a>         <strong>this</strong>.append4CIFileValues(cmd);
+<a name="114" href="#114">114</a> 
+<a name="115" href="#115">115</a>         <strong>return</strong> cmd.toString();
+<a name="116" href="#116">116</a>     }
+<a name="117" href="#117">117</a> 
+<a name="118" href="#118">118</a>     <em>/**<em>*</em></em>
+<a name="119" href="#119">119</a> <em>     * Creates a this command with all values and settings.</em>
+<a name="120" href="#120">120</a> <em>     *</em>
+<a name="121" href="#121">121</a> <em>     * @return this command instance</em>
+<a name="122" href="#122">122</a> <em>     * @throws MatrixException if create failed</em>
+<a name="123" href="#123">123</a> <em>     */</em>
+<a name="124" href="#124">124</a>     @Override()
+<a name="125" href="#125">125</a>     <strong>public</strong> <a href="../../../../../org/mxupdate/test/data/userinterface/CommandData.html">CommandData</a> create()
+<a name="126" href="#126">126</a>         throws MatrixException
+<a name="127" href="#127">127</a>     {
+<a name="128" href="#128">128</a>         <strong>if</strong> (!<strong>this</strong>.isCreated())  {
+<a name="129" href="#129">129</a>             <strong>this</strong>.setCreated(<strong>true</strong>);
+<a name="130" href="#130">130</a> 
+<a name="131" href="#131">131</a>             <strong>this</strong>.createDependings();
+<a name="132" href="#132">132</a> 
+<a name="133" href="#133">133</a>             <strong>final</strong> StringBuilder cmd = <strong>new</strong> StringBuilder()
+<a name="134" href="#134">134</a>                     .append(<span class="string">"escape add command \&quot;"</span> + AbstractTest.convertMql(<strong>this</strong>.getName()) + <span class="string">"\&quot;"</span>);
+<a name="135" href="#135">135</a> 
+<a name="136" href="#136">136</a>             <em class="comment">// append hidden flag</em>
+<a name="137" href="#137">137</a>             <strong>if</strong> (<strong>this</strong>.isHidden() != <strong>null</strong>)  {
+<a name="138" href="#138">138</a>                 cmd.append(' ');
+<a name="139" href="#139">139</a>                 <strong>if</strong> (!<strong>this</strong>.isHidden())  {
+<a name="140" href="#140">140</a>                     cmd.append('!');
+<a name="141" href="#141">141</a>                 }
+<a name="142" href="#142">142</a>                 cmd.append(<span class="string">"hidden"</span>);
+<a name="143" href="#143">143</a>             }
+<a name="144" href="#144">144</a> 
+<a name="145" href="#145">145</a>             <strong>if</strong> (!<strong>this</strong>.users.isEmpty())  {
+<a name="146" href="#146">146</a>                 cmd.append(<span class="string">" user "</span>);
+<a name="147" href="#147">147</a>                 <strong>boolean</strong> first = <strong>true</strong>;
+<a name="148" href="#148">148</a>                 <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.users)  {
+<a name="149" href="#149">149</a>                     <strong>if</strong> (first)  {
+<a name="150" href="#150">150</a>                         first = false;
+<a name="151" href="#151">151</a>                     } <strong>else</strong>  {
+<a name="152" href="#152">152</a>                         cmd.append(',');
+<a name="153" href="#153">153</a>                     }
+<a name="154" href="#154">154</a>                     cmd.append('\&quot;').append(AbstractTest.convertMql(user.getName())).append('\&quot;');
+<a name="155" href="#155">155</a>                 }
+<a name="156" href="#156">156</a>             }
+<a name="157" href="#157">157</a>             <strong>this</strong>.append4Create(cmd);
+<a name="158" href="#158">158</a> 
+<a name="159" href="#159">159</a>             cmd.append(<span class="string">";\n"</span>)
+<a name="160" href="#160">160</a>                .append(<span class="string">"escape add property "</span>).append(<strong>this</strong>.getSymbolicName())
+<a name="161" href="#161">161</a>                .append(<span class="string">" on program eServiceSchemaVariableMapping.tcl"</span>)
+<a name="162" href="#162">162</a>                .append(<span class="string">" to command \&quot;"</span>).append(AbstractTest.convertMql(<strong>this</strong>.getName())).append(<span class="string">"\&quot;"</span>);
+<a name="163" href="#163">163</a> 
+<a name="164" href="#164">164</a>             <strong>this</strong>.getTest().mql(cmd);
+<a name="165" href="#165">165</a>         }
+<a name="166" href="#166">166</a>         <strong>return</strong> <strong>this</strong>;
+<a name="167" href="#167">167</a>     }
+<a name="168" href="#168">168</a> 
+<a name="169" href="#169">169</a>     <em>/**<em>*</em></em>
+<a name="170" href="#170">170</a> <em>     * {@inheritDoc}</em>
+<a name="171" href="#171">171</a> <em>     * All assigned {@link #users} are created.</em>
+<a name="172" href="#172">172</a> <em>     *</em>
+<a name="173" href="#173">173</a> <em>     * @see #users</em>
+<a name="174" href="#174">174</a> <em>     */</em>
+<a name="175" href="#175">175</a>     @Override()
+<a name="176" href="#176">176</a>     <strong>public</strong> <a href="../../../../../org/mxupdate/test/data/userinterface/CommandData.html">CommandData</a> createDependings()
+<a name="177" href="#177">177</a>         throws MatrixException
+<a name="178" href="#178">178</a>     {
+<a name="179" href="#179">179</a>         <strong>super</strong>.createDependings();
+<a name="180" href="#180">180</a> 
+<a name="181" href="#181">181</a>         <em class="comment">// create assigned users</em>
+<a name="182" href="#182">182</a>         <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.users)  {
+<a name="183" href="#183">183</a>             user.create();
+<a name="184" href="#184">184</a>         }
+<a name="185" href="#185">185</a> 
+<a name="186" href="#186">186</a>         <strong>return</strong> <strong>this</strong>;
+<a name="187" href="#187">187</a>     }
+<a name="188" href="#188">188</a> 
+<a name="189" href="#189">189</a>     <em>/**<em>*</em></em>
+<a name="190" href="#190">190</a> <em>     * Evaluates all 'adds' in the configuration item file (e.g. add user, add</em>
+<a name="191" href="#191">191</a> <em>     * setting, ...).</em>
+<a name="192" href="#192">192</a> <em>     *</em>
+<a name="193" href="#193">193</a> <em>     * @param _needAdds     set with add strings used to append the adds for</em>
+<a name="194" href="#194">194</a> <em>     *                      {@link #users}</em>
+<a name="195" href="#195">195</a> <em>     * @see #users</em>
+<a name="196" href="#196">196</a> <em>     */</em>
+<a name="197" href="#197">197</a>     @Override()
+<a name="198" href="#198">198</a>     <strong>protected</strong> <strong>void</strong> evalAdds4CheckExport(<strong>final</strong> Set&lt;String> _needAdds)
+<a name="199" href="#199">199</a>     {
+<a name="200" href="#200">200</a>         <strong>super</strong>.evalAdds4CheckExport(_needAdds);
+<a name="201" href="#201">201</a>         <strong>for</strong> (<strong>final</strong> AbstractUserData&lt;?> user : <strong>this</strong>.users)  {
+<a name="202" href="#202">202</a>             _needAdds.add(<span class="string">"user \&quot;"</span> + AbstractTest.convertTcl(user.getName()) + <span class="string">"\&quot;"</span>);
+<a name="203" href="#203">203</a>         }
+<a name="204" href="#204">204</a>     }
+<a name="205" href="#205">205</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

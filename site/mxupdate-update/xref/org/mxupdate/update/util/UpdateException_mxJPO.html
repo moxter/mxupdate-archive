@@ -8,7 +8,7 @@
 <div id="overview"><a href="../../../../../../../../../../../../../apidocs/org/mxupdate/update/util/UpdateException_mxJPO.html">View Javadoc</a></div><pre>
 
 <a name="1" href="#1">1</a>   <em class="comment">/*</em>
-<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2009 The MxUpdate Team</em>
+<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2010 The MxUpdate Team</em>
 <a name="3" href="#3">3</a>   <em class="comment"> *</em>
 <a name="4" href="#4">4</a>   <em class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a name="5" href="#5">5</a>   <em class="comment"> * you may not use this file except in compliance with the License.</em>
@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 593 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-19 09:31:58 +0200 (Mo, 19 Okt 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 786 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-05-10 21:00:39 +0200 (Mo, 10 Mai 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -36,7 +36,7 @@
 <a name="27" href="#27">27</a>  <em> * failed).</em>
 <a name="28" href="#28">28</a>  <em> *</em>
 <a name="29" href="#29">29</a>  <em> * @author The MxUpdate Team</em>
-<a name="30" href="#30">30</a>  <em> * @version $Id: UpdateException_mxJPO.java 593 2009-10-19 07:31:58Z tim.moxter $</em>
+<a name="30" href="#30">30</a>  <em> * @version $Id: UpdateException_mxJPO.java 786 2010-05-10 19:00:39Z tim.moxter $</em>
 <a name="31" href="#31">31</a>  <em> */</em>
 <a name="32" href="#32">32</a>  @SuppressWarnings(<span class="string">"serial"</span>)
 <a name="33" href="#33">33</a>  <strong>public</strong> <strong>class</strong> UpdateException_mxJPO
@@ -49,214 +49,286 @@
 <a name="40" href="#40">40</a>  <em>     * administration object, following algorithm is used:</em>
 <a name="41" href="#41">41</a>  <em>     * &lt;ul></em>
 <a name="42" href="#42">42</a>  <em>     * &lt;li>the first digit defines data model (1), program (2), user (3) or</em>
-<a name="43" href="#43">43</a>  <em>     *     user interface (4)&lt;/li></em>
+<a name="43" href="#43">43</a>  <em>     *     user interface (4), integration (5) and abstract (6)&lt;/li></em>
 <a name="44" href="#44">44</a>  <em>     * &lt;li>depending of the first digit, the second and third digit defines the</em>
 <a name="45" href="#45">45</a>  <em>     *     kind of configuration item</em>
 <a name="46" href="#46">46</a>  <em>     *     &lt;ul></em>
-<a name="47" href="#47">47</a>  <em>     *     &lt;li>106: dimension&lt;/li></em>
-<a name="48" href="#48">48</a>  <em>     *     &lt;/ul>&lt;/li></em>
-<a name="49" href="#49">49</a>  <em>     * &lt;li>the fourth and fifth digit defines the error itself&lt;/li></em>
-<a name="50" href="#50">50</a>  <em>     * &lt;/ul>&lt;/p></em>
-<a name="51" href="#51">51</a>  <em>     * &lt;p>Exceptions from utility classes (package</em>
-<a name="52" href="#52">52</a>  <em>     *    org.mxupdate.update.util) starts with 90. The next digit</em>
-<a name="53" href="#53">53</a>  <em>     *    defines the class where the exception is thrown:</em>
-<a name="54" href="#54">54</a>  <em>     * &lt;ul></em>
-<a name="55" href="#55">55</a>  <em>     * &lt;li>1: {@link org.mxupdate.update.util.AbstractParser_mxJPO}&lt;/li></em>
-<a name="56" href="#56">56</a>  <em>     * &lt;li>2: {@link org.mxupdate.update.util.AdminProperty_mxJPO}&lt;/li></em>
-<a name="57" href="#57">57</a>  <em>     * &lt;li>3: {@link org.mxupdate.update.util.JPOCaller_mxJPO}&lt;/li></em>
-<a name="58" href="#58">58</a>  <em>     * &lt;li>4: {@link org.mxupdate.update.util.MqlUtil_mxJPO}&lt;/li></em>
-<a name="59" href="#59">59</a>  <em>     * &lt;li>5: {@link org.mxupdate.update.util.ParameterCache_mxJPO}&lt;/li></em>
-<a name="60" href="#60">60</a>  <em>     * &lt;li>6: {@link org.mxupdate.update.util.StringUtil_mxJPO}&lt;/li></em>
-<a name="61" href="#61">61</a>  <em>     * &lt;/ul></em>
-<a name="62" href="#62">62</a>  <em>     * &lt;/p></em>
-<a name="63" href="#63">63</a>  <em>     *</em>
-<a name="64" href="#64">64</a>  <em>     * &lt;p>&lt;b>Example:&lt;/b>&lt;br/></em>
-<a name="65" href="#65">65</a>  <em>     * 10601: 1 for data model, 06 for dimension, 01 for the error&lt;/p></em>
-<a name="66" href="#66">66</a>  <em>     */</em>
-<a name="67" href="#67">67</a>      <strong>public</strong> enum Error
-<a name="68" href="#68">68</a>      {
-<a name="69" href="#69">69</a>          <em>/**<em>*</em></em>
-<a name="70" href="#70">70</a>  <em>         * The multiplier of a unit of a dimension is tried to update which</em>
-<a name="71" href="#71">71</a>  <em>         * means that potentially some data could be loosed.</em>
-<a name="72" href="#72">72</a>  <em>         *</em>
-<a name="73" href="#73">73</a>  <em>         * @see org.mxupdate.update.datamodel.Dimension_mxJPO</em>
-<a name="74" href="#74">74</a>  <em>         */</em>
-<a name="75" href="#75">75</a>          DIMENSION_UPDATE_MULTIPLIER(10601,
-<a name="76" href="#76">76</a>                  <span class="string">"dimension multiplier could not updated (data will be changed potentially)"</span>),
-<a name="77" href="#77">77</a>  
-<a name="78" href="#78">78</a>          <em>/**<em>*</em></em>
-<a name="79" href="#79">79</a>  <em>         * The offset of a unit of a dimension is tried to update which means</em>
-<a name="80" href="#80">80</a>  <em>         * that potentially some data could be loosed.</em>
-<a name="81" href="#81">81</a>  <em>         *</em>
-<a name="82" href="#82">82</a>  <em>         * @see org.mxupdate.update.datamodel.Dimension_mxJPO</em>
-<a name="83" href="#83">83</a>  <em>         */</em>
-<a name="84" href="#84">84</a>          DIMENSION_UPDATE_OFFSET(10602,
-<a name="85" href="#85">85</a>                  <span class="string">"dimension offset could not updated (data will be changed potentially)"</span>),
-<a name="86" href="#86">86</a>  
-<a name="87" href="#87">87</a>          <em>/**<em>*</em></em>
-<a name="88" href="#88">88</a>  <em>         * The default unit of a dimension is tried to update which means</em>
-<a name="89" href="#89">89</a>  <em>         * that potentially some data could be loosed. FYI: MX itself also</em>
-<a name="90" href="#90">90</a>  <em>         * tries to prevent this if a default unit is already defined, but it</em>
-<a name="91" href="#91">91</a>  <em>         * could be that this case does only happens e.g. in non development</em>
-<a name="92" href="#92">92</a>  <em>         * systems....</em>
-<a name="93" href="#93">93</a>  <em>         *</em>
-<a name="94" href="#94">94</a>  <em>         * @see org.mxupdate.update.datamodel.Dimension_mxJPO</em>
-<a name="95" href="#95">95</a>  <em>         */</em>
-<a name="96" href="#96">96</a>          DIMENSION_UPDATE_DEFAULTUNIT(10603,
-<a name="97" href="#97">97</a>                  <span class="string">"dimension default unit could not updated (data will be changed potentially)"</span>),
-<a name="98" href="#98">98</a>  
-<a name="99" href="#99">99</a>          <em>/**<em>*</em></em>
-<a name="100" href="#100">100</a> <em>         * An unit of a dimension is tried to remove which means that</em>
-<a name="101" href="#101">101</a> <em>         * potentially some data could be loosed. FYI: MX itself also</em>
-<a name="102" href="#102">102</a> <em>         * tries to prevent this if a unit is used, but it could be that this</em>
-<a name="103" href="#103">103</a> <em>         * case does only happens e.g. in non development systems....</em>
-<a name="104" href="#104">104</a> <em>         *</em>
-<a name="105" href="#105">105</a> <em>         * @see org.mxupdate.update.datamodel.Dimension_mxJPO</em>
-<a name="106" href="#106">106</a> <em>         */</em>
-<a name="107" href="#107">107</a>         DIMENSION_UPDATE_REMOVEUNIT(10604,
-<a name="108" href="#108">108</a>                 <span class="string">"removing an unit from a dimension is not allowed (data will be changed potentially)"</span>),
-<a name="109" href="#109">109</a> 
-<a name="110" href="#110">110</a>         <em>/**<em>*</em></em>
-<a name="111" href="#111">111</a> <em>         * &lt;p>A wrong parameter was given the the called TCL procedure</em>
-<a name="112" href="#112">112</a> <em>         * &lt;code>testParents&lt;/code> which defines the derived interfaces.&lt;/p></em>
-<a name="113" href="#113">113</a> <em>         *</em>
-<a name="114" href="#114">114</a> <em>         * &lt;p>Parameters:</em>
-<a name="115" href="#115">115</a> <em>         * &lt;ol></em>
-<a name="116" href="#116">116</a> <em>         * &lt;li>wrong parameter&lt;/li></em>
-<a name="117" href="#117">117</a> <em>         * &lt;/ol></em>
-<a name="118" href="#118">118</a> <em>         * &lt;/p></em>
-<a name="119" href="#119">119</a> <em>         *</em>
-<a name="120" href="#120">120</a> <em>         * @see org.mxupdate.update.datamodel.Interface_mxJPO</em>
-<a name="121" href="#121">121</a> <em>         */</em>
-<a name="122" href="#122">122</a>         DM_INTERFACE_UPDATE_UKNOWN_PARAMETER(10901, <span class="string">"Unknown parameter {0} defined."</span>),
-<a name="123" href="#123">123</a> 
-<a name="124" href="#124">124</a>         <em>/**<em>*</em></em>
-<a name="125" href="#125">125</a> <em>         * &lt;p>The name of the interface which calls the TCL procedure</em>
-<a name="126" href="#126">126</a> <em>         * &lt;code>testParents&lt;/code> and which is defined within the call as</em>
-<a name="127" href="#127">127</a> <em>         * parameter is not equal.&lt;/p></em>
-<a name="128" href="#128">128</a> <em>         *</em>
-<a name="129" href="#129">129</a> <em>         * &lt;p>Parameters:</em>
-<a name="130" href="#130">130</a> <em>         * &lt;ol></em>
-<a name="131" href="#131">131</a> <em>         * &lt;li>administration type (should be interface)&lt;/li></em>
-<a name="132" href="#132">132</a> <em>         * &lt;li>name of the interface which calls the TCL update procedure&lt;/li></em>
-<a name="133" href="#133">133</a> <em>         * &lt;li>name of the interface which is defined as parameter for the TCL</em>
-<a name="134" href="#134">134</a> <em>         *     update procedure&lt;/li></em>
-<a name="135" href="#135">135</a> <em>         * &lt;/ol></em>
-<a name="136" href="#136">136</a> <em>         * &lt;/p></em>
-<a name="137" href="#137">137</a> <em>         *</em>
-<a name="138" href="#138">138</a> <em>         * @see org.mxupdate.update.datamodel.Interface_mxJPO</em>
-<a name="139" href="#139">139</a> <em>         */</em>
-<a name="140" href="#140">140</a>         DM_INTERFACE_UPDATE_WRONG_NAME(10902,
-<a name="141" href="#141">141</a>                 <span class="string">"{0} ''{1}'' was called to update via update script, but {0} ''{1}'' was called in the TCL procedure."</span>),
-<a name="142" href="#142">142</a> 
-<a name="143" href="#143">143</a>         <em>/**<em>*</em></em>
-<a name="144" href="#144">144</a> <em>         * &lt;p>An interface is already derived from another interface, but</em>
-<a name="145" href="#145">145</a> <em>         * within the update this derived interface must be removed. This could</em>
-<a name="146" href="#146">146</a> <em>         * end in potentially losing data and so this action is not allowed.&lt;/p></em>
-<a name="147" href="#147">147</a> <em>         *</em>
-<a name="148" href="#148">148</a> <em>         * &lt;p>Parameters:&lt;br/></em>
-<a name="149" href="#149">149</a> <em>         * &lt;ol></em>
-<a name="150" href="#150">150</a> <em>         * &lt;li>administration type (should be interface)&lt;/li></em>
-<a name="151" href="#151">151</a> <em>         * &lt;li>interface which is tried to update&lt;/li></em>
-<a name="152" href="#152">152</a> <em>         * &lt;li>current derived interface which must be removed (but is not</em>
-<a name="153" href="#153">153</a> <em>         *     allowed)&lt;/li></em>
-<a name="154" href="#154">154</a> <em>         * &lt;/ol></em>
-<a name="155" href="#155">155</a> <em>         * &lt;/p></em>
-<a name="156" href="#156">156</a> <em>         *</em>
-<a name="157" href="#157">157</a> <em>         * @see org.mxupdate.update.datamodel.Interface_mxJPO</em>
-<a name="158" href="#158">158</a> <em>         */</em>
-<a name="159" href="#159">159</a>         DM_INTERFACE_UPDATE_REMOVING_PARENT(10903,
-<a name="160" href="#160">160</a>                 <span class="string">"Current parent {0} ''{2}'' must be removed from {0} ''{1}''. This is not allowed!"</span>),
-<a name="161" href="#161">161</a> 
-<a name="162" href="#162">162</a>         <em>/**<em>*</em></em>
-<a name="163" href="#163">163</a> <em>         * If the name of a configuration item could not be extracted from a</em>
-<a name="164" href="#164">164</a> <em>         * file name.</em>
-<a name="165" href="#165">165</a> <em>         *</em>
-<a name="166" href="#166">166</a> <em>         * @see org.mxupdate.update.util.StringUtil_mxJPO#convertFromFileName(String)</em>
-<a name="167" href="#167">167</a> <em>         */</em>
-<a name="168" href="#168">168</a>         UTIL_STRINGUTIL_CONVERT_FROM_FILENAME(90602,
-<a name="169" href="#169">169</a>                 <span class="string">"the file name is not correct defined and could not be converted back to a configuration item name"</span>);
-<a name="170" href="#170">170</a> 
-<a name="171" href="#171">171</a>         <em>/**<em>*</em></em>
-<a name="172" href="#172">172</a> <em>         * Error code of this error enumeration.</em>
-<a name="173" href="#173">173</a> <em>         */</em>
-<a name="174" href="#174">174</a>         <strong>private</strong> <strong>final</strong> <strong>int</strong> code;
-<a name="175" href="#175">175</a> 
-<a name="176" href="#176">176</a>         <em>/**<em>*</em></em>
-<a name="177" href="#177">177</a> <em>         * Default English error message for this error enumeration.</em>
+<a name="47" href="#47">47</a>  <em>     *     &lt;li>121: {@link org.mxupdate.update.datamodel.AbstractDMWithAttributes_mxJPO data model with attributes}&lt;/li></em>
+<a name="48" href="#48">48</a>  <em>     *     &lt;li>106: {@link org.mxupdate.update.datamodel.Dimension_mxJPO dimension}&lt;/li></em>
+<a name="49" href="#49">49</a>  <em>     *     &lt;li>109: {@link org.mxupdate.update.datamodel.Interface_mxJPO interface}&lt;/li></em>
+<a name="50" href="#50">50</a>  <em>     *     &lt;li>601: {@link org.mxupdate.update.AbstractObject_mxJPO abstract object}&lt;/li></em>
+<a name="51" href="#51">51</a>  <em>     *     &lt;li>602: {@link org.mxupdate.update.AbstractAdminObject_mxJPO abstract administration object}&lt;/li></em>
+<a name="52" href="#52">52</a>  <em>     *     &lt;li>603: {@link org.mxupdate.update.AbstractPropertyObject_mxJPO abstract property object}&lt;/li></em>
+<a name="53" href="#53">53</a>  <em>     *     &lt;li>604: {@link org.mxupdate.update.BusObject_mxJPO business object}&lt;/li></em>
+<a name="54" href="#54">54</a>  <em>     *     &lt;/ul>&lt;/li></em>
+<a name="55" href="#55">55</a>  <em>     * &lt;li>the fourth and fifth digit defines the error itself&lt;/li></em>
+<a name="56" href="#56">56</a>  <em>     * &lt;/ul>&lt;/p></em>
+<a name="57" href="#57">57</a>  <em>     * &lt;p>Exceptions from utility classes (package</em>
+<a name="58" href="#58">58</a>  <em>     *    org.mxupdate.update.util) starts with 90. The next digit</em>
+<a name="59" href="#59">59</a>  <em>     *    defines the class where the exception is thrown:</em>
+<a name="60" href="#60">60</a>  <em>     * &lt;ul></em>
+<a name="61" href="#61">61</a>  <em>     * &lt;li>901: {@link org.mxupdate.update.util.AbstractParser_mxJPO}&lt;/li></em>
+<a name="62" href="#62">62</a>  <em>     * &lt;li>902: {@link org.mxupdate.update.util.AdminProperty_mxJPO}&lt;/li></em>
+<a name="63" href="#63">63</a>  <em>     * &lt;li>903: {@link org.mxupdate.update.util.JPOCaller_mxJPO}&lt;/li></em>
+<a name="64" href="#64">64</a>  <em>     * &lt;li>904: {@link org.mxupdate.update.util.MqlUtil_mxJPO}&lt;/li></em>
+<a name="65" href="#65">65</a>  <em>     * &lt;li>905: {@link org.mxupdate.update.util.ParameterCache_mxJPO}&lt;/li></em>
+<a name="66" href="#66">66</a>  <em>     * &lt;li>906: {@link org.mxupdate.update.util.StringUtil_mxJPO}&lt;/li></em>
+<a name="67" href="#67">67</a>  <em>     * &lt;/ul></em>
+<a name="68" href="#68">68</a>  <em>     * &lt;/p></em>
+<a name="69" href="#69">69</a>  <em>     *</em>
+<a name="70" href="#70">70</a>  <em>     * &lt;p>&lt;b>Example:&lt;/b>&lt;br/></em>
+<a name="71" href="#71">71</a>  <em>     * 10601: 1 for data model, 06 for dimension, 01 for the error&lt;/p></em>
+<a name="72" href="#72">72</a>  <em>     */</em>
+<a name="73" href="#73">73</a>      <strong>public</strong> enum Error
+<a name="74" href="#74">74</a>      {
+<a name="75" href="#75">75</a>          <em>/**<em>*</em></em>
+<a name="76" href="#76">76</a>  <em>         * JPO caller method is called without any argument.</em>
+<a name="77" href="#77">77</a>  <em>         *</em>
+<a name="78" href="#78">78</a>  <em>         * @see org.mxupdate.update.AbstractPropertyObject_mxJPO</em>
+<a name="79" href="#79">79</a>  <em>         */</em>
+<a name="80" href="#80">80</a>          ABSTRACT_PROPERTY_JPO_CALL_METHOD_NOT_DEFINED(60301,
+<a name="81" href="#81">81</a>                  <span class="string">"jpo call is executed without any arguments"</span>),
+<a name="82" href="#82">82</a>  
+<a name="83" href="#83">83</a>          <em>/**<em>*</em></em>
+<a name="84" href="#84">84</a>  <em>         * JPO caller method is called with wrong name for the method.</em>
+<a name="85" href="#85">85</a>  <em>         *</em>
+<a name="86" href="#86">86</a>  <em>         * @see org.mxupdate.update.AbstractPropertyObject_mxJPO</em>
+<a name="87" href="#87">87</a>  <em>         */</em>
+<a name="88" href="#88">88</a>          ABSTRACT_PROPERTY_JPO_CALL_METHOD_UNKNOWN(60302,
+<a name="89" href="#89">89</a>                  <span class="string">"unknown jpo call execute {0}"</span>),
+<a name="90" href="#90">90</a>  
+<a name="91" href="#91">91</a>          <em>/**<em>*</em></em>
+<a name="92" href="#92">92</a>  <em>         * The multiplier of a unit of a dimension is tried to update which</em>
+<a name="93" href="#93">93</a>  <em>         * means that potentially some data could be loosed.</em>
+<a name="94" href="#94">94</a>  <em>         *</em>
+<a name="95" href="#95">95</a>  <em>         * @see org.mxupdate.update.datamodel.Dimension_mxJPO</em>
+<a name="96" href="#96">96</a>  <em>         */</em>
+<a name="97" href="#97">97</a>          DIMENSION_UPDATE_MULTIPLIER(10601,
+<a name="98" href="#98">98</a>                  <span class="string">"dimension multiplier could not updated (data will be changed potentially)"</span>),
+<a name="99" href="#99">99</a>  
+<a name="100" href="#100">100</a>         <em>/**<em>*</em></em>
+<a name="101" href="#101">101</a> <em>         * The offset of a unit of a dimension is tried to update which means</em>
+<a name="102" href="#102">102</a> <em>         * that potentially some data could be loosed.</em>
+<a name="103" href="#103">103</a> <em>         *</em>
+<a name="104" href="#104">104</a> <em>         * @see org.mxupdate.update.datamodel.Dimension_mxJPO</em>
+<a name="105" href="#105">105</a> <em>         */</em>
+<a name="106" href="#106">106</a>         DIMENSION_UPDATE_OFFSET(10602,
+<a name="107" href="#107">107</a>                 <span class="string">"dimension offset could not updated (data will be changed potentially)"</span>),
+<a name="108" href="#108">108</a> 
+<a name="109" href="#109">109</a>         <em>/**<em>*</em></em>
+<a name="110" href="#110">110</a> <em>         * The default unit of a dimension is tried to update which means</em>
+<a name="111" href="#111">111</a> <em>         * that potentially some data could be loosed. FYI: MX itself also</em>
+<a name="112" href="#112">112</a> <em>         * tries to prevent this if a default unit is already defined, but it</em>
+<a name="113" href="#113">113</a> <em>         * could be that this case does only happens e.g. in non development</em>
+<a name="114" href="#114">114</a> <em>         * systems....</em>
+<a name="115" href="#115">115</a> <em>         *</em>
+<a name="116" href="#116">116</a> <em>         * @see org.mxupdate.update.datamodel.Dimension_mxJPO</em>
+<a name="117" href="#117">117</a> <em>         */</em>
+<a name="118" href="#118">118</a>         DIMENSION_UPDATE_DEFAULTUNIT(10603,
+<a name="119" href="#119">119</a>                 <span class="string">"dimension default unit could not updated (data will be changed potentially)"</span>),
+<a name="120" href="#120">120</a> 
+<a name="121" href="#121">121</a>         <em>/**<em>*</em></em>
+<a name="122" href="#122">122</a> <em>         * An unit of a dimension is tried to remove which means that</em>
+<a name="123" href="#123">123</a> <em>         * potentially some data could be loosed. FYI: MX itself also</em>
+<a name="124" href="#124">124</a> <em>         * tries to prevent this if a unit is used, but it could be that this</em>
+<a name="125" href="#125">125</a> <em>         * case does only happens e.g. in non development systems....</em>
+<a name="126" href="#126">126</a> <em>         *</em>
+<a name="127" href="#127">127</a> <em>         * @see org.mxupdate.update.datamodel.Dimension_mxJPO</em>
+<a name="128" href="#128">128</a> <em>         */</em>
+<a name="129" href="#129">129</a>         DIMENSION_UPDATE_REMOVEUNIT(10604,
+<a name="130" href="#130">130</a>                 <span class="string">"removing an unit from a dimension is not allowed (data will be changed potentially)"</span>),
+<a name="131" href="#131">131</a> 
+<a name="132" href="#132">132</a>         <em>/**<em>*</em></em>
+<a name="133" href="#133">133</a> <em>         * &lt;p>The given attribute is not defined anymore but assigned to the</em>
+<a name="134" href="#134">134</a> <em>         * administration object. The attribute is not automatically removed</em>
+<a name="135" href="#135">135</a> <em>         * because otherwise potentially data could be lost.&lt;/p></em>
+<a name="136" href="#136">136</a> <em>         *</em>
+<a name="137" href="#137">137</a> <em>         * &lt;p>Parameters:</em>
+<a name="138" href="#138">138</a> <em>         * &lt;ol></em>
+<a name="139" href="#139">139</a> <em>         * &lt;li>attribute name&lt;/li></em>
+<a name="140" href="#140">140</a> <em>         * &lt;li>MX administration object type (interface, relationship or</em>
+<a name="141" href="#141">141</a> <em>         *     type)&lt;/li></em>
+<a name="142" href="#142">142</a> <em>         * &lt;li>MX administration object name&lt;/li></em>
+<a name="143" href="#143">143</a> <em>         * &lt;/ol></em>
+<a name="144" href="#144">144</a> <em>         * &lt;/p></em>
+<a name="145" href="#145">145</a> <em>         *</em>
+<a name="146" href="#146">146</a> <em>         * @see org.mxupdate.update.datamodel.AbstractDMWithAttributes_mxJPO#jpoCallExecute(ParameterCache_mxJPO, String...)</em>
+<a name="147" href="#147">147</a> <em>         */</em>
+<a name="148" href="#148">148</a>         DM_ABSTRACTWITHATTRIBUTES_UPDATE_ATTRIBUTE_REMOVED(12101,
+<a name="149" href="#149">149</a>                 <span class="string">"Attribute ''{0}'' is defined to be deleted in {1} ''{2}'', but not allowed (and this could potentially meant to loose data)!"</span>),
+<a name="150" href="#150">150</a> 
+<a name="151" href="#151">151</a>         <em>/**<em>*</em></em>
+<a name="152" href="#152">152</a> <em>         * &lt;p>A wrong parameter was given the called TCL procedure</em>
+<a name="153" href="#153">153</a> <em>         * &lt;code>testAttributes&lt;/code> which defines the assigned attributes</em>
+<a name="154" href="#154">154</a> <em>         * for an interface, relationship or type.&lt;/p></em>
+<a name="155" href="#155">155</a> <em>         *</em>
+<a name="156" href="#156">156</a> <em>         * &lt;p>Parameters:</em>
+<a name="157" href="#157">157</a> <em>         * &lt;ol></em>
+<a name="158" href="#158">158</a> <em>         * &lt;li>wrong parameter&lt;/li></em>
+<a name="159" href="#159">159</a> <em>         * &lt;/ol></em>
+<a name="160" href="#160">160</a> <em>         * &lt;/p></em>
+<a name="161" href="#161">161</a> <em>         *</em>
+<a name="162" href="#162">162</a> <em>         * @see org.mxupdate.update.datamodel.AbstractDMWithAttributes_mxJPO#jpoCallExecute(ParameterCache_mxJPO, String...)</em>
+<a name="163" href="#163">163</a> <em>         */</em>
+<a name="164" href="#164">164</a>         DM_ABSTRACTWITHATTRIBUTES_UPDATE_UKNOWN_PARAMETER(12102, <span class="string">"Unknown parameter {0} defined."</span>),
+<a name="165" href="#165">165</a> 
+<a name="166" href="#166">166</a>         <em>/**<em>*</em></em>
+<a name="167" href="#167">167</a> <em>         * &lt;p>The name administration object is not the same then defined</em>
+<a name="168" href="#168">168</a> <em>         * through the name of the CI file.&lt;/p></em>
+<a name="169" href="#169">169</a> <em>         *</em>
+<a name="170" href="#170">170</a> <em>         * &lt;p>Parameters:</em>
+<a name="171" href="#171">171</a> <em>         * &lt;ol></em>
+<a name="172" href="#172">172</a> <em>         * &lt;li>MX administration object type (interface, relationship or</em>
+<a name="173" href="#173">173</a> <em>         *     type)&lt;/li></em>
+<a name="174" href="#174">174</a> <em>         * &lt;li>MX administration object name&lt;/li></em>
+<a name="175" href="#175">175</a> <em>         * &lt;li>name defined in the TCL procedure&lt;/li></em>
+<a name="176" href="#176">176</a> <em>         * &lt;/ol></em>
+<a name="177" href="#177">177</a> <em>         * &lt;/p></em>
 <a name="178" href="#178">178</a> <em>         */</em>
-<a name="179" href="#179">179</a>         <strong>private</strong> <strong>final</strong> String text;
-<a name="180" href="#180">180</a> 
-<a name="181" href="#181">181</a>         <em>/**<em>*</em></em>
-<a name="182" href="#182">182</a> <em>         * Constructor for the error enumeration to initialize the error</em>
-<a name="183" href="#183">183</a> <em>         * {@link #code} and error {@link #text}.</em>
-<a name="184" href="#184">184</a> <em>         *</em>
-<a name="185" href="#185">185</a> <em>         * @param _code     error code</em>
-<a name="186" href="#186">186</a> <em>         * @param _text     error message</em>
-<a name="187" href="#187">187</a> <em>         */</em>
-<a name="188" href="#188">188</a>         Error(<strong>final</strong> <strong>int</strong> _code,
-<a name="189" href="#189">189</a>               <strong>final</strong> String _text)
-<a name="190" href="#190">190</a>         {
-<a name="191" href="#191">191</a>             <strong>this</strong>.code = _code;
-<a name="192" href="#192">192</a>             <strong>this</strong>.text = _text;
-<a name="193" href="#193">193</a>         }
-<a name="194" href="#194">194</a> 
-<a name="195" href="#195">195</a>         <em>/**<em>*</em></em>
-<a name="196" href="#196">196</a> <em>         * Returns the error code of this error enumeration.</em>
-<a name="197" href="#197">197</a> <em>         *</em>
-<a name="198" href="#198">198</a> <em>         * @return error code</em>
-<a name="199" href="#199">199</a> <em>         * @see #code</em>
-<a name="200" href="#200">200</a> <em>         */</em>
-<a name="201" href="#201">201</a>         <strong>public</strong> <strong>int</strong> getCode()
-<a name="202" href="#202">202</a>         {
-<a name="203" href="#203">203</a>             <strong>return</strong> <strong>this</strong>.code;
-<a name="204" href="#204">204</a>         }
-<a name="205" href="#205">205</a> 
-<a name="206" href="#206">206</a>         <em>/**<em>*</em></em>
-<a name="207" href="#207">207</a> <em>         * Returns the error message of this error enumeration.</em>
-<a name="208" href="#208">208</a> <em>         *</em>
-<a name="209" href="#209">209</a> <em>         * @return error message as English text</em>
-<a name="210" href="#210">210</a> <em>         * @see #text</em>
+<a name="179" href="#179">179</a>         DM_ABSTRACTWITHATTRIBUTES_UPDATE_WRONG_OBJECT(12103,
+<a name="180" href="#180">180</a>                 <span class="string">"The {0} ''{1}'' was called to update via CI update script, but {0} ''{2}'' was called in the procedure..."</span>),
+<a name="181" href="#181">181</a> 
+<a name="182" href="#182">182</a>         <em>/**<em>*</em></em>
+<a name="183" href="#183">183</a> <em>         * &lt;p>A wrong parameter was given the called TCL procedure</em>
+<a name="184" href="#184">184</a> <em>         * &lt;code>testParents&lt;/code> which defines the derived interfaces.&lt;/p></em>
+<a name="185" href="#185">185</a> <em>         *</em>
+<a name="186" href="#186">186</a> <em>         * &lt;p>Parameters:</em>
+<a name="187" href="#187">187</a> <em>         * &lt;ol></em>
+<a name="188" href="#188">188</a> <em>         * &lt;li>wrong parameter&lt;/li></em>
+<a name="189" href="#189">189</a> <em>         * &lt;/ol></em>
+<a name="190" href="#190">190</a> <em>         * &lt;/p></em>
+<a name="191" href="#191">191</a> <em>         *</em>
+<a name="192" href="#192">192</a> <em>         * @see org.mxupdate.update.datamodel.Interface_mxJPO</em>
+<a name="193" href="#193">193</a> <em>         */</em>
+<a name="194" href="#194">194</a>         DM_INTERFACE_UPDATE_UKNOWN_PARAMETER(10901, <span class="string">"Unknown parameter {0} defined."</span>),
+<a name="195" href="#195">195</a> 
+<a name="196" href="#196">196</a>         <em>/**<em>*</em></em>
+<a name="197" href="#197">197</a> <em>         * &lt;p>The name of the interface which calls the TCL procedure</em>
+<a name="198" href="#198">198</a> <em>         * &lt;code>testParents&lt;/code> and which is defined within the call as</em>
+<a name="199" href="#199">199</a> <em>         * parameter is not equal.&lt;/p></em>
+<a name="200" href="#200">200</a> <em>         *</em>
+<a name="201" href="#201">201</a> <em>         * &lt;p>Parameters:</em>
+<a name="202" href="#202">202</a> <em>         * &lt;ol></em>
+<a name="203" href="#203">203</a> <em>         * &lt;li>administration type (should be interface)&lt;/li></em>
+<a name="204" href="#204">204</a> <em>         * &lt;li>name of the interface which calls the TCL update procedure&lt;/li></em>
+<a name="205" href="#205">205</a> <em>         * &lt;li>name of the interface which is defined as parameter for the TCL</em>
+<a name="206" href="#206">206</a> <em>         *     update procedure&lt;/li></em>
+<a name="207" href="#207">207</a> <em>         * &lt;/ol></em>
+<a name="208" href="#208">208</a> <em>         * &lt;/p></em>
+<a name="209" href="#209">209</a> <em>         *</em>
+<a name="210" href="#210">210</a> <em>         * @see org.mxupdate.update.datamodel.Interface_mxJPO</em>
 <a name="211" href="#211">211</a> <em>         */</em>
-<a name="212" href="#212">212</a>         <strong>public</strong> String getText()
-<a name="213" href="#213">213</a>         {
-<a name="214" href="#214">214</a>             <strong>return</strong> <strong>this</strong>.text;
-<a name="215" href="#215">215</a>         }
-<a name="216" href="#216">216</a>     }
-<a name="217" href="#217">217</a> 
-<a name="218" href="#218">218</a>     <em>/**<em>*</em></em>
-<a name="219" href="#219">219</a> <em>     * Related error enumerator of this update exception.</em>
-<a name="220" href="#220">220</a> <em>     */</em>
-<a name="221" href="#221">221</a>     <strong>private</strong> <strong>final</strong> Error error;
-<a name="222" href="#222">222</a> 
-<a name="223" href="#223">223</a>     <em>/**<em>*</em></em>
-<a name="224" href="#224">224</a> <em>     * Constructor to initialize this exception. The exception message will</em>
-<a name="225" href="#225">225</a> <em>     * be a concatenation of the {@link Error#code} and {@link Error#text}.</em>
-<a name="226" href="#226">226</a> <em>     *</em>
-<a name="227" href="#227">227</a> <em>     * @param _error        error enumeration instance</em>
-<a name="228" href="#228">228</a> <em>     * @param _arguments    arguments for the exception text used to format the</em>
-<a name="229" href="#229">229</a> <em>     *                      message</em>
-<a name="230" href="#230">230</a> <em>     * @see #error</em>
-<a name="231" href="#231">231</a> <em>     */</em>
-<a name="232" href="#232">232</a>     <strong>public</strong> UpdateException_mxJPO(<strong>final</strong> Error _error,
-<a name="233" href="#233">233</a>                                  <strong>final</strong> Object... _arguments)
-<a name="234" href="#234">234</a>     {
-<a name="235" href="#235">235</a>         <strong>super</strong>(<span class="string">"UpdateError #"</span> + _error.getCode() + <span class="string">": "</span> +
-<a name="236" href="#236">236</a>                 MessageFormat.format(_error.getText(), _arguments));
-<a name="237" href="#237">237</a>         <strong>this</strong>.error = _error;
-<a name="238" href="#238">238</a>     }
-<a name="239" href="#239">239</a> 
-<a name="240" href="#240">240</a>     <em>/**<em>*</em></em>
-<a name="241" href="#241">241</a> <em>     *</em>
-<a name="242" href="#242">242</a> <em>     * @return related error enumeration instance for which this exception is</em>
-<a name="243" href="#243">243</a> <em>     *         thrown</em>
-<a name="244" href="#244">244</a> <em>     * @see #error</em>
-<a name="245" href="#245">245</a> <em>     */</em>
-<a name="246" href="#246">246</a>     <strong>public</strong> Error getError()
-<a name="247" href="#247">247</a>     {
-<a name="248" href="#248">248</a>         <strong>return</strong> <strong>this</strong>.error;
-<a name="249" href="#249">249</a>     }
-<a name="250" href="#250">250</a> }
+<a name="212" href="#212">212</a>         DM_INTERFACE_UPDATE_WRONG_NAME(10902,
+<a name="213" href="#213">213</a>                 <span class="string">"{0} ''{1}'' was called to update via update script, but {0} ''{1}'' was called in the TCL procedure."</span>),
+<a name="214" href="#214">214</a> 
+<a name="215" href="#215">215</a>         <em>/**<em>*</em></em>
+<a name="216" href="#216">216</a> <em>         * &lt;p>An interface is already derived from another interface, but</em>
+<a name="217" href="#217">217</a> <em>         * within the update this derived interface must be removed. This could</em>
+<a name="218" href="#218">218</a> <em>         * end in potentially losing data and so this action is not allowed.&lt;/p></em>
+<a name="219" href="#219">219</a> <em>         *</em>
+<a name="220" href="#220">220</a> <em>         * &lt;p>Parameters:&lt;br/></em>
+<a name="221" href="#221">221</a> <em>         * &lt;ol></em>
+<a name="222" href="#222">222</a> <em>         * &lt;li>administration type (should be interface)&lt;/li></em>
+<a name="223" href="#223">223</a> <em>         * &lt;li>interface which is tried to update&lt;/li></em>
+<a name="224" href="#224">224</a> <em>         * &lt;li>current derived interface which must be removed (but is not</em>
+<a name="225" href="#225">225</a> <em>         *     allowed)&lt;/li></em>
+<a name="226" href="#226">226</a> <em>         * &lt;/ol></em>
+<a name="227" href="#227">227</a> <em>         * &lt;/p></em>
+<a name="228" href="#228">228</a> <em>         *</em>
+<a name="229" href="#229">229</a> <em>         * @see org.mxupdate.update.datamodel.Interface_mxJPO</em>
+<a name="230" href="#230">230</a> <em>         */</em>
+<a name="231" href="#231">231</a>         DM_INTERFACE_UPDATE_REMOVING_PARENT(10903,
+<a name="232" href="#232">232</a>                 <span class="string">"Current parent {0} ''{2}'' must be removed from {0} ''{1}''. This is not allowed!"</span>),
+<a name="233" href="#233">233</a> 
+<a name="234" href="#234">234</a>         <em>/**<em>*</em></em>
+<a name="235" href="#235">235</a> <em>         * If the name of a configuration item could not be extracted from a</em>
+<a name="236" href="#236">236</a> <em>         * file name.</em>
+<a name="237" href="#237">237</a> <em>         *</em>
+<a name="238" href="#238">238</a> <em>         * @see org.mxupdate.update.util.StringUtil_mxJPO#convertFromFileName(String)</em>
+<a name="239" href="#239">239</a> <em>         */</em>
+<a name="240" href="#240">240</a>         UTIL_STRINGUTIL_CONVERT_FROM_FILENAME(90602,
+<a name="241" href="#241">241</a>                 <span class="string">"the file name is not correct defined and could not be converted back to a configuration item name"</span>);
+<a name="242" href="#242">242</a> 
+<a name="243" href="#243">243</a>         <em>/**<em>*</em></em>
+<a name="244" href="#244">244</a> <em>         * Error code of this error enumeration.</em>
+<a name="245" href="#245">245</a> <em>         */</em>
+<a name="246" href="#246">246</a>         <strong>private</strong> <strong>final</strong> <strong>int</strong> code;
+<a name="247" href="#247">247</a> 
+<a name="248" href="#248">248</a>         <em>/**<em>*</em></em>
+<a name="249" href="#249">249</a> <em>         * Default English error message for this error enumeration.</em>
+<a name="250" href="#250">250</a> <em>         */</em>
+<a name="251" href="#251">251</a>         <strong>private</strong> <strong>final</strong> String text;
+<a name="252" href="#252">252</a> 
+<a name="253" href="#253">253</a>         <em>/**<em>*</em></em>
+<a name="254" href="#254">254</a> <em>         * Constructor for the error enumeration to initialize the error</em>
+<a name="255" href="#255">255</a> <em>         * {@link #code} and error {@link #text}.</em>
+<a name="256" href="#256">256</a> <em>         *</em>
+<a name="257" href="#257">257</a> <em>         * @param _code     error code</em>
+<a name="258" href="#258">258</a> <em>         * @param _text     error message</em>
+<a name="259" href="#259">259</a> <em>         */</em>
+<a name="260" href="#260">260</a>         Error(<strong>final</strong> <strong>int</strong> _code,
+<a name="261" href="#261">261</a>               <strong>final</strong> String _text)
+<a name="262" href="#262">262</a>         {
+<a name="263" href="#263">263</a>             <strong>this</strong>.code = _code;
+<a name="264" href="#264">264</a>             <strong>this</strong>.text = _text;
+<a name="265" href="#265">265</a>         }
+<a name="266" href="#266">266</a> 
+<a name="267" href="#267">267</a>         <em>/**<em>*</em></em>
+<a name="268" href="#268">268</a> <em>         * Returns the error code of this error enumeration.</em>
+<a name="269" href="#269">269</a> <em>         *</em>
+<a name="270" href="#270">270</a> <em>         * @return error code</em>
+<a name="271" href="#271">271</a> <em>         * @see #code</em>
+<a name="272" href="#272">272</a> <em>         */</em>
+<a name="273" href="#273">273</a>         <strong>public</strong> <strong>int</strong> getCode()
+<a name="274" href="#274">274</a>         {
+<a name="275" href="#275">275</a>             <strong>return</strong> <strong>this</strong>.code;
+<a name="276" href="#276">276</a>         }
+<a name="277" href="#277">277</a> 
+<a name="278" href="#278">278</a>         <em>/**<em>*</em></em>
+<a name="279" href="#279">279</a> <em>         * Returns the error message of this error enumeration.</em>
+<a name="280" href="#280">280</a> <em>         *</em>
+<a name="281" href="#281">281</a> <em>         * @return error message as English text</em>
+<a name="282" href="#282">282</a> <em>         * @see #text</em>
+<a name="283" href="#283">283</a> <em>         */</em>
+<a name="284" href="#284">284</a>         <strong>public</strong> String getText()
+<a name="285" href="#285">285</a>         {
+<a name="286" href="#286">286</a>             <strong>return</strong> <strong>this</strong>.text;
+<a name="287" href="#287">287</a>         }
+<a name="288" href="#288">288</a>     }
+<a name="289" href="#289">289</a> 
+<a name="290" href="#290">290</a>     <em>/**<em>*</em></em>
+<a name="291" href="#291">291</a> <em>     * Related error enumerator of this update exception.</em>
+<a name="292" href="#292">292</a> <em>     */</em>
+<a name="293" href="#293">293</a>     <strong>private</strong> <strong>final</strong> Error error;
+<a name="294" href="#294">294</a> 
+<a name="295" href="#295">295</a>     <em>/**<em>*</em></em>
+<a name="296" href="#296">296</a> <em>     * Constructor to initialize this exception. The exception message will</em>
+<a name="297" href="#297">297</a> <em>     * be a concatenation of the {@link Error#code} and {@link Error#text}.</em>
+<a name="298" href="#298">298</a> <em>     *</em>
+<a name="299" href="#299">299</a> <em>     * @param _error        error enumeration instance</em>
+<a name="300" href="#300">300</a> <em>     * @param _arguments    arguments for the exception text used to format the</em>
+<a name="301" href="#301">301</a> <em>     *                      message</em>
+<a name="302" href="#302">302</a> <em>     * @see #error</em>
+<a name="303" href="#303">303</a> <em>     */</em>
+<a name="304" href="#304">304</a>     <strong>public</strong> UpdateException_mxJPO(<strong>final</strong> Error _error,
+<a name="305" href="#305">305</a>                                  <strong>final</strong> Object... _arguments)
+<a name="306" href="#306">306</a>     {
+<a name="307" href="#307">307</a>         <strong>super</strong>(<span class="string">"UpdateError #"</span> + _error.getCode() + <span class="string">": "</span> +
+<a name="308" href="#308">308</a>                 MessageFormat.format(_error.getText(), _arguments));
+<a name="309" href="#309">309</a>         <strong>this</strong>.error = _error;
+<a name="310" href="#310">310</a>     }
+<a name="311" href="#311">311</a> 
+<a name="312" href="#312">312</a>     <em>/**<em>*</em></em>
+<a name="313" href="#313">313</a> <em>     *</em>
+<a name="314" href="#314">314</a> <em>     * @return related error enumeration instance for which this exception is</em>
+<a name="315" href="#315">315</a> <em>     *         thrown</em>
+<a name="316" href="#316">316</a> <em>     * @see #error</em>
+<a name="317" href="#317">317</a> <em>     */</em>
+<a name="318" href="#318">318</a>     <strong>public</strong> Error getError()
+<a name="319" href="#319">319</a>     {
+<a name="320" href="#320">320</a>         <strong>return</strong> <strong>this</strong>.error;
+<a name="321" href="#321">321</a>     }
+<a name="322" href="#322">322</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

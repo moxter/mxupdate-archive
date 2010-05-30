@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 748 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-22 00:17:20 +0100 (Mo, 22 Feb 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 780 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-04-06 13:22:55 +0200 (Di, 06 Apr 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -62,7 +62,7 @@
 <a name="53" href="#53">53</a>  <em> * within MX.</em>
 <a name="54" href="#54">54</a>  <em> *</em>
 <a name="55" href="#55">55</a>  <em> * @author The MxUpdate Team</em>
-<a name="56" href="#56">56</a>  <em> * @version $Id: BusObject_mxJPO.java 748 2010-02-21 23:17:20Z tim.moxter $</em>
+<a name="56" href="#56">56</a>  <em> * @version $Id: BusObject_mxJPO.java 780 2010-04-06 11:22:55Z tim.moxter $</em>
 <a name="57" href="#57">57</a>  <em> */</em>
 <a name="58" href="#58">58</a>  <strong>public</strong> <strong>class</strong> BusObject_mxJPO
 <a name="59" href="#59">59</a>      <strong>extends</strong> AbstractPropertyObject_mxJPO
@@ -312,732 +312,750 @@
 <a name="303" href="#303">303</a>     }
 <a name="304" href="#304">304</a> 
 <a name="305" href="#305">305</a>     <em>/**<em>*</em></em>
-<a name="306" href="#306">306</a> <em>     * Parses all information for given administration object.</em>
-<a name="307" href="#307">307</a> <em>     * Sorts the attribute values, defines the description for the TCL</em>
-<a name="308" href="#308">308</a> <em>     * update script (concatenation of the revision and description).</em>
-<a name="309" href="#309">309</a> <em>     *</em>
-<a name="310" href="#310">310</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="311" href="#311">311</a> <em>     * @throws MatrixException if the parse failed</em>
-<a name="312" href="#312">312</a> <em>     * @see #attrValuesSorted</em>
-<a name="313" href="#313">313</a> <em>     * @see #busCurrent</em>
-<a name="314" href="#314">314</a> <em>     * @see #busDescription</em>
-<a name="315" href="#315">315</a> <em>     * @see #busName</em>
-<a name="316" href="#316">316</a> <em>     * @see #busOid</em>
-<a name="317" href="#317">317</a> <em>     * @see #busRevision</em>
-<a name="318" href="#318">318</a> <em>     * @see #busStates</em>
-<a name="319" href="#319">319</a> <em>     * @see #busVault</em>
-<a name="320" href="#320">320</a> <em>     */</em>
-<a name="321" href="#321">321</a>     @Override()
-<a name="322" href="#322">322</a>     <strong>protected</strong> <strong>void</strong> parse(<strong>final</strong> ParameterCache_mxJPO _paramCache)
-<a name="323" href="#323">323</a>         throws MatrixException
-<a name="324" href="#324">324</a>     {
-<a name="325" href="#325">325</a>         <strong>final</strong> BusinessObject bus = <strong>new</strong> BusinessObject(<strong>this</strong>.getBusType(),
-<a name="326" href="#326">326</a>                                                       <strong>this</strong>.getBusName(),
-<a name="327" href="#327">327</a>                                                       <strong>this</strong>.getBusRevision(),
-<a name="328" href="#328">328</a>                                                       <strong>null</strong>);
-<a name="329" href="#329">329</a> 
-<a name="330" href="#330">330</a>         <em class="comment">// id, vault, description and current MX state</em>
-<a name="331" href="#331">331</a>         <strong>final</strong> StringList select = <strong>new</strong> StringList(4);
-<a name="332" href="#332">332</a>         select.addElement(<span class="string">"id"</span>);
-<a name="333" href="#333">333</a>         select.addElement(<span class="string">"vault"</span>);
-<a name="334" href="#334">334</a>         select.addElement(<span class="string">"description"</span>);
-<a name="335" href="#335">335</a>         select.addElement(<span class="string">"current"</span>);
-<a name="336" href="#336">336</a>         select.addElement(<span class="string">"policy.state"</span>);
-<a name="337" href="#337">337</a>         <strong>final</strong> BusinessObjectWithSelect sel = bus.select(_paramCache.getContext(), select);
-<a name="338" href="#338">338</a>         <strong>this</strong>.busOid = sel.getSelectData(<span class="string">"id"</span>);
-<a name="339" href="#339">339</a>         <strong>this</strong>.busVault = sel.getSelectData(<span class="string">"vault"</span>);
-<a name="340" href="#340">340</a>         <strong>this</strong>.busDescription = sel.getSelectData(<span class="string">"description"</span>);
-<a name="341" href="#341">341</a>         <strong>this</strong>.busCurrent = sel.getSelectData(<span class="string">"current"</span>);
-<a name="342" href="#342">342</a>         <strong>this</strong>.busStates = sel.getSelectDataList(<span class="string">"policy.state"</span>);
-<a name="343" href="#343">343</a> 
-<a name="344" href="#344">344</a>         <em class="comment">// define properties (attribute values)</em>
-<a name="345" href="#345">345</a>         <strong>final</strong> AttributeList attrs = bus.getAttributeValues(_paramCache.getContext(), <strong>true</strong>);
-<a name="346" href="#346">346</a>         <strong>for</strong> (<strong>final</strong> Object attrObj : attrs)  {
-<a name="347" href="#347">347</a>             <strong>final</strong> Attribute attr = (Attribute) attrObj;
-<a name="348" href="#348">348</a>             <strong>if</strong> (PropertyDef_mxJPO.AUTHOR.getAttrName(_paramCache).equals(attr.getName()))  {
-<a name="349" href="#349">349</a>                 <strong>this</strong>.setAuthor(attr.getValue());
-<a name="350" href="#350">350</a>             } <strong>else</strong> <strong>if</strong> (PropertyDef_mxJPO.APPLICATION.getAttrName(_paramCache).equals(attr.getName()))  {
-<a name="351" href="#351">351</a>                 <strong>this</strong>.setApplication(attr.getValue());
-<a name="352" href="#352">352</a>             } <strong>else</strong> <strong>if</strong> (PropertyDef_mxJPO.INSTALLEDDATE.getAttrName(_paramCache).equals(attr.getName()))  {
-<a name="353" href="#353">353</a>                 <strong>this</strong>.setInstallationDate(attr.getValue());
-<a name="354" href="#354">354</a>             } <strong>else</strong> <strong>if</strong> (PropertyDef_mxJPO.INSTALLER.getAttrName(_paramCache).equals(attr.getName()))  {
-<a name="355" href="#355">355</a>                 <strong>this</strong>.setInstaller(attr.getValue());
-<a name="356" href="#356">356</a>             } <strong>else</strong> <strong>if</strong> (PropertyDef_mxJPO.VERSION.getAttrName(_paramCache).equals(attr.getName()))  {
-<a name="357" href="#357">357</a>                 <strong>this</strong>.setVersion(attr.getValue());
-<a name="358" href="#358">358</a>             } <strong>else</strong> <strong>if</strong> (!PropertyDef_mxJPO.FILEDATE.getAttrName(_paramCache).equals(attr.getName()))  {
-<a name="359" href="#359">359</a>                 <strong>this</strong>.attrValuesSorted.add(<strong>new</strong> AttributeValue(attr));
-<a name="360" href="#360">360</a>             }
-<a name="361" href="#361">361</a>         }
-<a name="362" href="#362">362</a> 
-<a name="363" href="#363">363</a>         <em class="comment">// define description</em>
-<a name="364" href="#364">364</a>         <strong>final</strong> StringBuilder desc = <strong>new</strong> StringBuilder();
-<a name="365" href="#365">365</a>         <strong>if</strong> ((<strong>this</strong>.busRevision != <strong>null</strong>) &amp;&amp; !<span class="string">""</span>.equals(<strong>this</strong>.busRevision))  {
-<a name="366" href="#366">366</a>             desc.append(<strong>this</strong>.busRevision);
-<a name="367" href="#367">367</a>             <strong>if</strong> (<strong>this</strong>.busDescription != <strong>null</strong>)  {
-<a name="368" href="#368">368</a>                 desc.append('\n');
-<a name="369" href="#369">369</a>             }
-<a name="370" href="#370">370</a>         }
-<a name="371" href="#371">371</a>         <strong>if</strong> (<strong>this</strong>.busDescription != <strong>null</strong>)  {
-<a name="372" href="#372">372</a>             desc.append(<strong>this</strong>.busDescription);
-<a name="373" href="#373">373</a>         }
-<a name="374" href="#374">374</a>         <strong>this</strong>.setDescription(desc.toString());
-<a name="375" href="#375">375</a> 
-<a name="376" href="#376">376</a>         <em class="comment">// evaluate from connections</em>
-<a name="377" href="#377">377</a>         <strong>if</strong> (<strong>this</strong>.getTypeDef().getMxBusRelsFrom() != <strong>null</strong>)  {
-<a name="378" href="#378">378</a>             <strong>for</strong> (<strong>final</strong> String relation : <strong>this</strong>.getTypeDef().getMxBusRelsFrom())  {
-<a name="379" href="#379">379</a>                 <strong>this</strong>.expand4Parse(_paramCache, bus, relation, <strong>true</strong>, false);
-<a name="380" href="#380">380</a>             }
-<a name="381" href="#381">381</a>         }
-<a name="382" href="#382">382</a> 
-<a name="383" href="#383">383</a>         <em class="comment">// evaluate to connections</em>
-<a name="384" href="#384">384</a>         <strong>if</strong> (<strong>this</strong>.getTypeDef().getMxBusRelsTo() != <strong>null</strong>)  {
-<a name="385" href="#385">385</a>             <strong>for</strong> (<strong>final</strong> String relation : <strong>this</strong>.getTypeDef().getMxBusRelsTo())  {
-<a name="386" href="#386">386</a>                 <strong>this</strong>.expand4Parse(_paramCache, bus, relation, false, <strong>true</strong>);
+<a name="306" href="#306">306</a> <em>     * {@inheritDoc}</em>
+<a name="307" href="#307">307</a> <em>     * &lt;p>A &lt;code>print bus&lt;/code> is internally made because the property is</em>
+<a name="308" href="#308">308</a> <em>     * defined as attribute on the business object.&lt;/p></em>
+<a name="309" href="#309">309</a> <em>     */</em>
+<a name="310" href="#310">310</a>     @Override()
+<a name="311" href="#311">311</a>     <strong>public</strong> String getPropValue(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="312" href="#312">312</a>                                <strong>final</strong> PropertyDef_mxJPO _prop)
+<a name="313" href="#313">313</a>         throws MatrixException
+<a name="314" href="#314">314</a>     {
+<a name="315" href="#315">315</a>         <strong>return</strong> MqlUtil_mxJPO.execMql(_paramCache, <strong>new</strong> StringBuilder()
+<a name="316" href="#316">316</a>                 .append(<span class="string">"escape print bus \&quot;"</span>)
+<a name="317" href="#317">317</a>                 .append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getBusType()))
+<a name="318" href="#318">318</a>                 .append(<span class="string">"\&quot; \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getBusName()))
+<a name="319" href="#319">319</a>                 .append(<span class="string">"\&quot; \&quot;"</span>).append(StringUtil_mxJPO.convertMql(<strong>this</strong>.getBusRevision()))
+<a name="320" href="#320">320</a>                 .append(<span class="string">"\&quot; select attribute["</span>).append(StringUtil_mxJPO.convertMql(_prop.getAttrName(_paramCache))).append(<span class="string">"] dump"</span>));
+<a name="321" href="#321">321</a>     }
+<a name="322" href="#322">322</a> 
+<a name="323" href="#323">323</a>     <em>/**<em>*</em></em>
+<a name="324" href="#324">324</a> <em>     * Parses all information for given administration object.</em>
+<a name="325" href="#325">325</a> <em>     * Sorts the attribute values, defines the description for the TCL</em>
+<a name="326" href="#326">326</a> <em>     * update script (concatenation of the revision and description).</em>
+<a name="327" href="#327">327</a> <em>     *</em>
+<a name="328" href="#328">328</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="329" href="#329">329</a> <em>     * @throws MatrixException if the parse failed</em>
+<a name="330" href="#330">330</a> <em>     * @see #attrValuesSorted</em>
+<a name="331" href="#331">331</a> <em>     * @see #busCurrent</em>
+<a name="332" href="#332">332</a> <em>     * @see #busDescription</em>
+<a name="333" href="#333">333</a> <em>     * @see #busName</em>
+<a name="334" href="#334">334</a> <em>     * @see #busOid</em>
+<a name="335" href="#335">335</a> <em>     * @see #busRevision</em>
+<a name="336" href="#336">336</a> <em>     * @see #busStates</em>
+<a name="337" href="#337">337</a> <em>     * @see #busVault</em>
+<a name="338" href="#338">338</a> <em>     */</em>
+<a name="339" href="#339">339</a>     @Override()
+<a name="340" href="#340">340</a>     <strong>protected</strong> <strong>void</strong> parse(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="341" href="#341">341</a>         throws MatrixException
+<a name="342" href="#342">342</a>     {
+<a name="343" href="#343">343</a>         <strong>final</strong> BusinessObject bus = <strong>new</strong> BusinessObject(<strong>this</strong>.getBusType(),
+<a name="344" href="#344">344</a>                                                       <strong>this</strong>.getBusName(),
+<a name="345" href="#345">345</a>                                                       <strong>this</strong>.getBusRevision(),
+<a name="346" href="#346">346</a>                                                       <strong>null</strong>);
+<a name="347" href="#347">347</a> 
+<a name="348" href="#348">348</a>         <em class="comment">// id, vault, description and current MX state</em>
+<a name="349" href="#349">349</a>         <strong>final</strong> StringList select = <strong>new</strong> StringList(4);
+<a name="350" href="#350">350</a>         select.addElement(<span class="string">"id"</span>);
+<a name="351" href="#351">351</a>         select.addElement(<span class="string">"vault"</span>);
+<a name="352" href="#352">352</a>         select.addElement(<span class="string">"description"</span>);
+<a name="353" href="#353">353</a>         select.addElement(<span class="string">"current"</span>);
+<a name="354" href="#354">354</a>         select.addElement(<span class="string">"policy.state"</span>);
+<a name="355" href="#355">355</a>         <strong>final</strong> BusinessObjectWithSelect sel = bus.select(_paramCache.getContext(), select);
+<a name="356" href="#356">356</a>         <strong>this</strong>.busOid = sel.getSelectData(<span class="string">"id"</span>);
+<a name="357" href="#357">357</a>         <strong>this</strong>.busVault = sel.getSelectData(<span class="string">"vault"</span>);
+<a name="358" href="#358">358</a>         <strong>this</strong>.busDescription = sel.getSelectData(<span class="string">"description"</span>);
+<a name="359" href="#359">359</a>         <strong>this</strong>.busCurrent = sel.getSelectData(<span class="string">"current"</span>);
+<a name="360" href="#360">360</a>         <strong>this</strong>.busStates = sel.getSelectDataList(<span class="string">"policy.state"</span>);
+<a name="361" href="#361">361</a> 
+<a name="362" href="#362">362</a>         <em class="comment">// define properties (attribute values)</em>
+<a name="363" href="#363">363</a>         <strong>final</strong> AttributeList attrs = bus.getAttributeValues(_paramCache.getContext(), <strong>true</strong>);
+<a name="364" href="#364">364</a>         <strong>for</strong> (<strong>final</strong> Object attrObj : attrs)  {
+<a name="365" href="#365">365</a>             <strong>final</strong> Attribute attr = (Attribute) attrObj;
+<a name="366" href="#366">366</a>             <strong>if</strong> (PropertyDef_mxJPO.AUTHOR.getAttrName(_paramCache).equals(attr.getName()))  {
+<a name="367" href="#367">367</a>                 <strong>this</strong>.setAuthor(attr.getValue());
+<a name="368" href="#368">368</a>             } <strong>else</strong> <strong>if</strong> (PropertyDef_mxJPO.APPLICATION.getAttrName(_paramCache).equals(attr.getName()))  {
+<a name="369" href="#369">369</a>                 <strong>this</strong>.setApplication(attr.getValue());
+<a name="370" href="#370">370</a>             } <strong>else</strong> <strong>if</strong> (PropertyDef_mxJPO.INSTALLEDDATE.getAttrName(_paramCache).equals(attr.getName()))  {
+<a name="371" href="#371">371</a>                 <strong>this</strong>.setInstallationDate(attr.getValue());
+<a name="372" href="#372">372</a>             } <strong>else</strong> <strong>if</strong> (PropertyDef_mxJPO.INSTALLER.getAttrName(_paramCache).equals(attr.getName()))  {
+<a name="373" href="#373">373</a>                 <strong>this</strong>.setInstaller(attr.getValue());
+<a name="374" href="#374">374</a>             } <strong>else</strong> <strong>if</strong> (PropertyDef_mxJPO.VERSION.getAttrName(_paramCache).equals(attr.getName()))  {
+<a name="375" href="#375">375</a>                 <strong>this</strong>.setVersion(attr.getValue());
+<a name="376" href="#376">376</a>             } <strong>else</strong> <strong>if</strong> (!PropertyDef_mxJPO.FILEDATE.getAttrName(_paramCache).equals(attr.getName()))  {
+<a name="377" href="#377">377</a>                 <strong>this</strong>.attrValuesSorted.add(<strong>new</strong> AttributeValue(attr));
+<a name="378" href="#378">378</a>             }
+<a name="379" href="#379">379</a>         }
+<a name="380" href="#380">380</a> 
+<a name="381" href="#381">381</a>         <em class="comment">// define description</em>
+<a name="382" href="#382">382</a>         <strong>final</strong> StringBuilder desc = <strong>new</strong> StringBuilder();
+<a name="383" href="#383">383</a>         <strong>if</strong> ((<strong>this</strong>.busRevision != <strong>null</strong>) &amp;&amp; !<span class="string">""</span>.equals(<strong>this</strong>.busRevision))  {
+<a name="384" href="#384">384</a>             desc.append(<strong>this</strong>.busRevision);
+<a name="385" href="#385">385</a>             <strong>if</strong> (<strong>this</strong>.busDescription != <strong>null</strong>)  {
+<a name="386" href="#386">386</a>                 desc.append('\n');
 <a name="387" href="#387">387</a>             }
 <a name="388" href="#388">388</a>         }
-<a name="389" href="#389">389</a> 
-<a name="390" href="#390">390</a>         <em class="comment">// evaluate both connections</em>
-<a name="391" href="#391">391</a>         <strong>if</strong> (<strong>this</strong>.getTypeDef().getMxBusRelsBoth() != <strong>null</strong>)  {
-<a name="392" href="#392">392</a>             <strong>for</strong> (<strong>final</strong> String relation : <strong>this</strong>.getTypeDef().getMxBusRelsBoth())  {
-<a name="393" href="#393">393</a>                 <em class="comment">// from</em>
-<a name="394" href="#394">394</a>                 <strong>this</strong>.expand4Parse(_paramCache, bus, relation, <strong>true</strong>, false);
-<a name="395" href="#395">395</a>                 <em class="comment">// to</em>
-<a name="396" href="#396">396</a>                 <strong>this</strong>.expand4Parse(_paramCache, bus, relation, false, <strong>true</strong>);
-<a name="397" href="#397">397</a>             }
-<a name="398" href="#398">398</a>         }
-<a name="399" href="#399">399</a>     }
+<a name="389" href="#389">389</a>         <strong>if</strong> (<strong>this</strong>.busDescription != <strong>null</strong>)  {
+<a name="390" href="#390">390</a>             desc.append(<strong>this</strong>.busDescription);
+<a name="391" href="#391">391</a>         }
+<a name="392" href="#392">392</a>         <strong>this</strong>.setDescription(desc.toString());
+<a name="393" href="#393">393</a> 
+<a name="394" href="#394">394</a>         <em class="comment">// evaluate from connections</em>
+<a name="395" href="#395">395</a>         <strong>if</strong> (<strong>this</strong>.getTypeDef().getMxBusRelsFrom() != <strong>null</strong>)  {
+<a name="396" href="#396">396</a>             <strong>for</strong> (<strong>final</strong> String relation : <strong>this</strong>.getTypeDef().getMxBusRelsFrom())  {
+<a name="397" href="#397">397</a>                 <strong>this</strong>.expand4Parse(_paramCache, bus, relation, <strong>true</strong>, false);
+<a name="398" href="#398">398</a>             }
+<a name="399" href="#399">399</a>         }
 <a name="400" href="#400">400</a> 
-<a name="401" href="#401">401</a>     <em>/**<em>*</em></em>
-<a name="402" href="#402">402</a> <em>     * Expands from the business object depending on the relationship and</em>
-<a name="403" href="#403">403</a> <em>     * stores the connection information. If the relationship has attributes,</em>
-<a name="404" href="#404">404</a> <em>     * the related values are also evaluated.</em>
-<a name="405" href="#405">405</a> <em>     *</em>
-<a name="406" href="#406">406</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="407" href="#407">407</a> <em>     * @param _bus          the business object to expand</em>
-<a name="408" href="#408">408</a> <em>     * @param _relation     name of relationship to expand</em>
-<a name="409" href="#409">409</a> <em>     * @param _getFrom      must be set to &lt;i>true&lt;/i> to expand from</em>
-<a name="410" href="#410">410</a> <em>     *                      connections; otherwise &lt;i>false&lt;/i></em>
-<a name="411" href="#411">411</a> <em>     * @param _getTo        must be set to &lt;i>true&lt;/i> to expand to</em>
-<a name="412" href="#412">412</a> <em>     *                      connections; otherwise &lt;i>false&lt;/i></em>
-<a name="413" href="#413">413</a> <em>     * @throws MatrixException if the expand failed</em>
-<a name="414" href="#414">414</a> <em>     * @see #connections</em>
-<a name="415" href="#415">415</a> <em>     */</em>
-<a name="416" href="#416">416</a>     @SuppressWarnings(<span class="string">"unchecked"</span>)
-<a name="417" href="#417">417</a>     <strong>private</strong> <strong>void</strong> expand4Parse(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="418" href="#418">418</a>                               <strong>final</strong> BusinessObject _bus,
-<a name="419" href="#419">419</a>                               <strong>final</strong> String _relation,
-<a name="420" href="#420">420</a>                               <strong>final</strong> <strong>boolean</strong> _getFrom,
-<a name="421" href="#421">421</a>                               <strong>final</strong> <strong>boolean</strong> _getTo)
-<a name="422" href="#422">422</a>         throws MatrixException
-<a name="423" href="#423">423</a>     {
-<a name="424" href="#424">424</a>         <em class="comment">// get attributes from relationship</em>
-<a name="425" href="#425">425</a>         <strong>final</strong> Map&lt;String,Map> cache = _paramCache.defineValueMap(BusObject_mxJPO.PARAM_RELATION_ATTRS, Map.<strong>class</strong>);
-<a name="426" href="#426">426</a>         Map&lt;String,String> attrs = cache.get(_relation);
-<a name="427" href="#427">427</a>         <strong>if</strong> (attrs == <strong>null</strong>)
-<a name="428" href="#428">428</a>         {
-<a name="429" href="#429">429</a>             attrs = <strong>new</strong> HashMap&lt;String,String>();
-<a name="430" href="#430">430</a>             cache.put(_relation, attrs);
-<a name="431" href="#431">431</a> 
-<a name="432" href="#432">432</a>             <strong>final</strong> String attrStr = MqlUtil_mxJPO.execMql(_paramCache,
-<a name="433" href="#433">433</a>                     <strong>new</strong> StringBuilder(<span class="string">"escape print rel \&quot;"</span>).append(_relation)
-<a name="434" href="#434">434</a>                             .append(<span class="string">"\&quot; select attribute dump '\n'"</span>));
-<a name="435" href="#435">435</a>             <strong>if</strong> (!<span class="string">""</span>.equals(attrStr))  {
-<a name="436" href="#436">436</a>                 <strong>for</strong> (<strong>final</strong> String attr : attrStr.split(<span class="string">"\n"</span>))  {
-<a name="437" href="#437">437</a>                     attrs.put(<span class="string">"attribute["</span> + attr + <span class="string">"]"</span>, attr);
-<a name="438" href="#438">438</a>                 }
-<a name="439" href="#439">439</a>             };
-<a name="440" href="#440">440</a>         }
-<a name="441" href="#441">441</a> 
-<a name="442" href="#442">442</a>         <strong>final</strong> StringList busSelect = <strong>new</strong> StringList(3);
-<a name="443" href="#443">443</a>         busSelect.addElement(<span class="string">"type"</span>);
-<a name="444" href="#444">444</a>         busSelect.addElement(<span class="string">"name"</span>);
-<a name="445" href="#445">445</a>         busSelect.addElement(<span class="string">"revision"</span>);
-<a name="446" href="#446">446</a>         <strong>final</strong> StringList relSelect = <strong>new</strong> StringList(1 + attrs.size());
-<a name="447" href="#447">447</a>         relSelect.addElement(<span class="string">"id"</span>);
-<a name="448" href="#448">448</a>         relSelect.addAll(attrs.keySet());
-<a name="449" href="#449">449</a>         <em class="comment">// get from objects</em>
-<a name="450" href="#450">450</a>         <strong>final</strong> ExpansionWithSelect expandTo = _bus.expandSelect(_paramCache.getContext(),
-<a name="451" href="#451">451</a>                                                               _relation,
-<a name="452" href="#452">452</a>                                                               <span class="string">"*"</span>,
-<a name="453" href="#453">453</a>                                                               busSelect,
-<a name="454" href="#454">454</a>                                                               relSelect,
-<a name="455" href="#455">455</a>                                                               _getFrom,
-<a name="456" href="#456">456</a>                                                               _getTo,
-<a name="457" href="#457">457</a>                                                               (<strong>short</strong>) 1,
-<a name="458" href="#458">458</a>                                                               <strong>null</strong>,
-<a name="459" href="#459">459</a>                                                               <strong>null</strong>,
-<a name="460" href="#460">460</a>                                                               (<strong>short</strong>) 0,
-<a name="461" href="#461">461</a>                                                               <strong>true</strong>);
-<a name="462" href="#462">462</a> 
-<a name="463" href="#463">463</a>         <strong>for</strong> (<strong>final</strong> Object obj : expandTo.getRelationships())  {
-<a name="464" href="#464">464</a>             <strong>this</strong>.connections.add(<strong>new</strong> Connection(_relation,
-<a name="465" href="#465">465</a>                                                 _getFrom ? <span class="string">"from"</span> : <span class="string">"to"</span>,
-<a name="466" href="#466">466</a>                                                 (RelationshipWithSelect) obj,
-<a name="467" href="#467">467</a>                                                 attrs));
-<a name="468" href="#468">468</a>         }
-<a name="469" href="#469">469</a> 
-<a name="470" href="#470">470</a>     }
-<a name="471" href="#471">471</a> 
-<a name="472" href="#472">472</a>     <em>/**<em>*</em></em>
-<a name="473" href="#473">473</a> <em>     * Writes the information to update the business objects.</em>
-<a name="474" href="#474">474</a> <em>     *</em>
-<a name="475" href="#475">475</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="476" href="#476">476</a> <em>     * @param _out          writer instance</em>
-<a name="477" href="#477">477</a> <em>     * @throws IOException if the TCL update code for the business object could</em>
-<a name="478" href="#478">478</a> <em>     *                     not be written</em>
-<a name="479" href="#479">479</a> <em>     */</em>
-<a name="480" href="#480">480</a>     @Override()
-<a name="481" href="#481">481</a>     <strong>protected</strong> <strong>void</strong> write(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="482" href="#482">482</a>                          <strong>final</strong> Appendable _out)
-<a name="483" href="#483">483</a>         throws IOException
-<a name="484" href="#484">484</a>     {
-<a name="485" href="#485">485</a>         <strong>this</strong>.writeHeader(_paramCache, _out);
-<a name="486" href="#486">486</a>         _out.append(<span class="string">"mql escape mod bus \&quot;${OBJECTID}\&quot;"</span>)
-<a name="487" href="#487">487</a>             .append(<span class="string">" &#47;&#47;\n    description \&quot;"</span>)
-<a name="488" href="#488">488</a>             .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.busDescription))
-<a name="489" href="#489">489</a>             .append(<span class="string">"\&quot;"</span>);
-<a name="490" href="#490">490</a>         <strong>for</strong> (<strong>final</strong> AttributeValue attr : <strong>this</strong>.attrValuesSorted)  {
-<a name="491" href="#491">491</a>             attr.write(_out);
-<a name="492" href="#492">492</a>         }
-<a name="493" href="#493">493</a>         <em class="comment">// write all connected objects</em>
-<a name="494" href="#494">494</a>         <strong>for</strong> (<strong>final</strong> Connection con : <strong>this</strong>.connections)  {
-<a name="495" href="#495">495</a>             con.write(_out);
-<a name="496" href="#496">496</a>         }
-<a name="497" href="#497">497</a>         <em class="comment">// write promotes to target states if required</em>
-<a name="498" href="#498">498</a>         <strong>final</strong> <strong>int</strong> target = <strong>this</strong>.busStates.indexOf(<strong>this</strong>.busCurrent);
-<a name="499" href="#499">499</a>         <strong>for</strong> (<strong>int</strong> idx = 0; idx &lt; target; idx++)  {
-<a name="500" href="#500">500</a>             _out.append(<span class="string">"\nmql promote bus \&quot;${OBJECTID}\&quot;"</span>);
-<a name="501" href="#501">501</a>         }
-<a name="502" href="#502">502</a>     }
-<a name="503" href="#503">503</a> 
-<a name="504" href="#504">504</a>     <em>/**<em>*</em></em>
-<a name="505" href="#505">505</a> <em>     * Deletes administration business object from given type with given name.</em>
-<a name="506" href="#506">506</a> <em>     *</em>
-<a name="507" href="#507">507</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="508" href="#508">508</a> <em>     * @throws Exception if delete of the business object failed</em>
-<a name="509" href="#509">509</a> <em>     */</em>
-<a name="510" href="#510">510</a>     @Override()
-<a name="511" href="#511">511</a>     <strong>public</strong> <strong>void</strong> delete(<strong>final</strong> ParameterCache_mxJPO _paramCache)
-<a name="512" href="#512">512</a>         throws Exception
-<a name="513" href="#513">513</a>     {
-<a name="514" href="#514">514</a>         <strong>final</strong> BusinessObject bus = <strong>new</strong> BusinessObject(<strong>this</strong>.busType,
-<a name="515" href="#515">515</a>                                                       <strong>this</strong>.busName,
-<a name="516" href="#516">516</a>                                                       <strong>this</strong>.busRevision,
-<a name="517" href="#517">517</a>                                                       <strong>null</strong>);
-<a name="518" href="#518">518</a>         bus.remove(_paramCache.getContext());
-<a name="519" href="#519">519</a>     }
-<a name="520" href="#520">520</a> 
-<a name="521" href="#521">521</a>     <em>/**<em>*</em></em>
-<a name="522" href="#522">522</a> <em>     * Creates for given name the business object.</em>
-<a name="523" href="#523">523</a> <em>     *</em>
-<a name="524" href="#524">524</a> <em>     * @param _paramCache   parameter cache</em>
-<a name="525" href="#525">525</a> <em>     * @throws Exception if the business object could not be created</em>
-<a name="526" href="#526">526</a> <em>     */</em>
-<a name="527" href="#527">527</a>     @Override()
-<a name="528" href="#528">528</a>     <strong>public</strong> <strong>void</strong> create(<strong>final</strong> ParameterCache_mxJPO _paramCache)
-<a name="529" href="#529">529</a>         throws Exception
-<a name="530" href="#530">530</a>     {
-<a name="531" href="#531">531</a>         <strong>final</strong> BusinessObject bus = <strong>new</strong> BusinessObject(<strong>this</strong>.busType,
-<a name="532" href="#532">532</a>                                                       <strong>this</strong>.busName,
-<a name="533" href="#533">533</a>                                                       <strong>this</strong>.busRevision,
-<a name="534" href="#534">534</a>                                                       <strong>this</strong>.getTypeDef().getMxBusVault());
-<a name="535" href="#535">535</a>         bus.create(_paramCache.getContext(), <strong>this</strong>.getTypeDef().getMxBusPolicy());
-<a name="536" href="#536">536</a>     }
-<a name="537" href="#537">537</a> 
-<a name="538" href="#538">538</a>     <em>/**<em>*</em></em>
-<a name="539" href="#539">539</a> <em>     * The method overwrites the original method to</em>
-<a name="540" href="#540">540</a> <em>     * &lt;ul></em>
-<a name="541" href="#541">541</a> <em>     * &lt;li>reset the description&lt;/li></em>
-<a name="542" href="#542">542</a> <em>     * &lt;li>set the version and author attribute&lt;/li></em>
-<a name="543" href="#543">543</a> <em>     * &lt;li>reset all not ignored attributes&lt;/li></em>
-<a name="544" href="#544">544</a> <em>     * &lt;li>define the TCL variable &amp;quot;OBJECTID&amp;quot; with the object id of</em>
-<a name="545" href="#545">545</a> <em>     *     the represented business object&lt;/li></em>
-<a name="546" href="#546">546</a> <em>     * &lt;/ul></em>
-<a name="547" href="#547">547</a> <em>     * The original method of the super class if called surrounded with a</em>
-<a name="548" href="#548">548</a> <em>     * history off, because if the update itself is done the modified basic</em>
-<a name="549" href="#549">549</a> <em>     * attribute and the version attribute of the business object is updated.</em>
-<a name="550" href="#550">550</a> <em>     * &lt;br/></em>
-<a name="551" href="#551">551</a> <em>     * The new generated MQL code is set in the front of the already defined</em>
-<a name="552" href="#552">552</a> <em>     * MQL code in &lt;code>_preMQLCode&lt;/code> and appended to the MQL statements</em>
-<a name="553" href="#553">553</a> <em>     * in &lt;code>_postMQLCode&lt;/code>.</em>
-<a name="554" href="#554">554</a> <em>     *</em>
-<a name="555" href="#555">555</a> <em>     * @param _paramCache       parameter cache</em>
-<a name="556" href="#556">556</a> <em>     * @param _preMQLCode       MQL statements which must be called before the</em>
-<a name="557" href="#557">557</a> <em>     *                          TCL code is executed</em>
-<a name="558" href="#558">558</a> <em>     * @param _postMQLCode      MQL statements which must be called after the</em>
-<a name="559" href="#559">559</a> <em>     *                          TCL code is executed</em>
-<a name="560" href="#560">560</a> <em>     * @param _preTCLCode       TCL code which is defined before the source</em>
-<a name="561" href="#561">561</a> <em>     *                          file is sourced</em>
-<a name="562" href="#562">562</a> <em>     * @param _tclVariables     map of all TCL variables where the key is the</em>
-<a name="563" href="#563">563</a> <em>     *                          name and the value is value of the TCL variable</em>
-<a name="564" href="#564">564</a> <em>     *                          (the value is automatically converted to TCL</em>
-<a name="565" href="#565">565</a> <em>     *                          syntax!)</em>
-<a name="566" href="#566">566</a> <em>     * @param _sourceFile       souce file with the TCL code to update</em>
-<a name="567" href="#567">567</a> <em>     * @throws Exception if the update executed within derived class failed</em>
-<a name="568" href="#568">568</a> <em>     */</em>
-<a name="569" href="#569">569</a>     @Override()
-<a name="570" href="#570">570</a>     <strong>protected</strong> <strong>void</strong> update(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="571" href="#571">571</a>                           <strong>final</strong> CharSequence _preMQLCode,
-<a name="572" href="#572">572</a>                           <strong>final</strong> CharSequence _postMQLCode,
-<a name="573" href="#573">573</a>                           <strong>final</strong> CharSequence _preTCLCode,
-<a name="574" href="#574">574</a>                           <strong>final</strong> Map&lt;String,String> _tclVariables,
-<a name="575" href="#575">575</a>                           <strong>final</strong> File _sourceFile)
-<a name="576" href="#576">576</a>         throws Exception
-<a name="577" href="#577">577</a>     {
-<a name="578" href="#578">578</a>         <em class="comment">// resets the description</em>
-<a name="579" href="#579">579</a>         <strong>final</strong> StringBuilder preMQLCode = <strong>new</strong> StringBuilder()
-<a name="580" href="#580">580</a>                 .append(<span class="string">"mod bus "</span>).append(<strong>this</strong>.busOid).append(<span class="string">" description \&quot;\&quot;"</span>);
-<a name="581" href="#581">581</a> 
-<a name="582" href="#582">582</a>         <em class="comment">// reset all attributes (if they must not be ignored...)</em>
-<a name="583" href="#583">583</a>         <strong>final</strong> Set&lt;String> ignoreAttrs = (<strong>this</strong>.getTypeDef().getMxBusIgnoredAttributes() == <strong>null</strong>)
-<a name="584" href="#584">584</a>                                         ? <strong>new</strong> HashSet&lt;String>(0)
-<a name="585" href="#585">585</a>                                         : <strong>new</strong> HashSet&lt;String>(<strong>this</strong>.getTypeDef().getMxBusIgnoredAttributes());
-<a name="586" href="#586">586</a>         <strong>final</strong> Map&lt;String,String> defaultAttrValues
-<a name="587" href="#587">587</a>                 = _paramCache.defineValueMap(BusObject_mxJPO.PARAM_DEFAULT_ATTRS, String.<strong>class</strong>);
-<a name="588" href="#588">588</a>         <strong>for</strong> (<strong>final</strong> AttributeValue attr : <strong>this</strong>.attrValuesSorted)  {
-<a name="589" href="#589">589</a>             <strong>if</strong> (!ignoreAttrs.contains(attr.name))  {
-<a name="590" href="#590">590</a>                 <strong>if</strong> (!defaultAttrValues.containsKey(attr.name))  {
-<a name="591" href="#591">591</a>                     <strong>final</strong> String def = MqlUtil_mxJPO.execMql(_paramCache,
-<a name="592" href="#592">592</a>                                                <strong>new</strong> StringBuilder().append(<span class="string">"print attr '"</span>)
-<a name="593" href="#593">593</a>                                                        .append(attr.name).append(<span class="string">"' select default dump"</span>));
-<a name="594" href="#594">594</a>                     defaultAttrValues.put(attr.name, def);
-<a name="595" href="#595">595</a>                 }
-<a name="596" href="#596">596</a>                 preMQLCode.append(<span class="string">" \&quot;"</span>).append(attr.name).append(<span class="string">"\&quot; \&quot;"</span>)
-<a name="597" href="#597">597</a>                         .append(defaultAttrValues.get(attr.name)).append('\&quot;');
-<a name="598" href="#598">598</a>             }
-<a name="599" href="#599">599</a>         }
-<a name="600" href="#600">600</a>         preMQLCode.append(<span class="string">";\n"</span>);
-<a name="601" href="#601">601</a> 
-<a name="602" href="#602">602</a>         <em class="comment">// disconnect all objects</em>
-<a name="603" href="#603">603</a>         <strong>for</strong> (<strong>final</strong> Connection con : <strong>this</strong>.connections)  {
-<a name="604" href="#604">604</a>             preMQLCode.append(<span class="string">"disconnect connection "</span>).append(con.conId).append(<span class="string">";\n"</span>);
-<a name="605" href="#605">605</a>         }
-<a name="606" href="#606">606</a> 
-<a name="607" href="#607">607</a>         <em class="comment">// append demotes if required</em>
-<a name="608" href="#608">608</a>         <strong>final</strong> <strong>int</strong> target = <strong>this</strong>.busStates.indexOf(<strong>this</strong>.busCurrent);
-<a name="609" href="#609">609</a>         <strong>for</strong> (<strong>int</strong> idx = 0; idx &lt; target; idx++)  {
-<a name="610" href="#610">610</a>             preMQLCode.append(<span class="string">"\ndemote bus "</span>).append(<strong>this</strong>.busOid).append(<span class="string">";\n"</span>);
-<a name="611" href="#611">611</a>         }
-<a name="612" href="#612">612</a> 
-<a name="613" href="#613">613</a>         <em class="comment">// append other pre MQL code</em>
-<a name="614" href="#614">614</a>         preMQLCode.append(_preMQLCode);
-<a name="615" href="#615">615</a> 
-<a name="616" href="#616">616</a>         <em class="comment">// post update MQL statements</em>
-<a name="617" href="#617">617</a>         <strong>final</strong> StringBuilder postMQLCode = <strong>new</strong> StringBuilder()
-<a name="618" href="#618">618</a>                 .append(_postMQLCode)
-<a name="619" href="#619">619</a>                 .append(<span class="string">"mod bus "</span>).append(<strong>this</strong>.busOid)
-<a name="620" href="#620">620</a>         <em class="comment">// define version</em>
-<a name="621" href="#621">621</a>                 .append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.VERSION.getAttrName(_paramCache))
-<a name="622" href="#622">622</a>                         .append(<span class="string">"\&quot; \&quot;"</span>).append(_tclVariables.get(PropertyDef_mxJPO.VERSION.name())).append('\&quot;')
-<a name="623" href="#623">623</a>         <em class="comment">// define file date</em>
-<a name="624" href="#624">624</a>                 .append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.FILEDATE.getAttrName(_paramCache))
-<a name="625" href="#625">625</a>                         .append(<span class="string">"\&quot; \&quot;"</span>).append(_tclVariables.get(PropertyDef_mxJPO.FILEDATE.name())).append('\&quot;');
-<a name="626" href="#626">626</a>         <em class="comment">// is installed date property defined?</em>
-<a name="627" href="#627">627</a>         <strong>if</strong> ((<strong>this</strong>.getInstallationDate() == <strong>null</strong>) || <span class="string">""</span>.equals(<strong>this</strong>.getInstallationDate()))  {
-<a name="628" href="#628">628</a>             <strong>final</strong> String date = StringUtil_mxJPO.formatInstalledDate(_paramCache, <strong>new</strong> Date());
-<a name="629" href="#629">629</a>             _paramCache.logTrace(<span class="string">"    - define installed date '"</span> + date + <span class="string">"'"</span>);
-<a name="630" href="#630">630</a>             postMQLCode.append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.INSTALLEDDATE.getAttrName(_paramCache))
-<a name="631" href="#631">631</a>                     .append(<span class="string">"\&quot; \&quot;"</span>).append(date).append('\&quot;');
-<a name="632" href="#632">632</a>         }
-<a name="633" href="#633">633</a>         <em class="comment">// exists no installer property or installer property not equal?</em>
-<a name="634" href="#634">634</a>         <strong>final</strong> String instVal = _tclVariables.get(PropertyDef_mxJPO.INSTALLER.name());
-<a name="635" href="#635">635</a>         <strong>if</strong> ((<strong>this</strong>.getInstaller() == <strong>null</strong>) || !<strong>this</strong>.getInstaller().equals(instVal))  {
-<a name="636" href="#636">636</a>             _paramCache.logTrace(<span class="string">"    - define installer '"</span> + instVal + <span class="string">"'"</span>);
-<a name="637" href="#637">637</a>             postMQLCode.append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.INSTALLER.getAttrName(_paramCache))
-<a name="638" href="#638">638</a>                     .append(<span class="string">"\&quot; \&quot;"</span>).append(instVal).append('\&quot;');
-<a name="639" href="#639">639</a>         }
-<a name="640" href="#640">640</a>         <em class="comment">// exists no application property or application property not equal?</em>
-<a name="641" href="#641">641</a>         <strong>final</strong> String applVal = _tclVariables.get(PropertyDef_mxJPO.APPLICATION.name());
-<a name="642" href="#642">642</a>         <strong>if</strong> ((<strong>this</strong>.getApplication() == <strong>null</strong>) || !<strong>this</strong>.getApplication().equals(applVal))  {
-<a name="643" href="#643">643</a>             _paramCache.logTrace(<span class="string">"    - define application '"</span> + applVal + <span class="string">"'"</span>);
-<a name="644" href="#644">644</a>             postMQLCode.append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.APPLICATION.getAttrName(_paramCache))
-<a name="645" href="#645">645</a>                     .append(<span class="string">"\&quot; \&quot;"</span>).append(applVal).append('\&quot;');
-<a name="646" href="#646">646</a>         }
-<a name="647" href="#647">647</a>         <em class="comment">// exists no author property or author property not equal?</em>
-<a name="648" href="#648">648</a>         <strong>final</strong> String authVal = _tclVariables.get(PropertyDef_mxJPO.AUTHOR.name());
-<a name="649" href="#649">649</a>         <strong>if</strong> ((<strong>this</strong>.getAuthor() == <strong>null</strong>) || !<strong>this</strong>.getAuthor().equals(authVal))  {
-<a name="650" href="#650">650</a>             _paramCache.logTrace(<span class="string">"    - define author '"</span> + authVal + <span class="string">"'"</span>);
-<a name="651" href="#651">651</a>             postMQLCode.append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.AUTHOR.getAttrName(_paramCache))
-<a name="652" href="#652">652</a>                     .append(<span class="string">"\&quot; \&quot;"</span>).append(authVal).append('\&quot;');
-<a name="653" href="#653">653</a>         }
-<a name="654" href="#654">654</a>         postMQLCode.append(<span class="string">";\n"</span>);
-<a name="655" href="#655">655</a> 
-<a name="656" href="#656">656</a>         <em class="comment">// prepare map of all TCL variables incl. id of business object</em>
-<a name="657" href="#657">657</a>         <strong>final</strong> Map&lt;String,String> tclVariables = <strong>new</strong> HashMap&lt;String,String>();
-<a name="658" href="#658">658</a>         tclVariables.put(<span class="string">"OBJECTID"</span>, <strong>this</strong>.busOid);
-<a name="659" href="#659">659</a>         tclVariables.putAll(_tclVariables);
-<a name="660" href="#660">660</a> 
-<a name="661" href="#661">661</a>         <em class="comment">// update must be done with history off (because not required...)</em>
-<a name="662" href="#662">662</a>         <strong>try</strong>  {
-<a name="663" href="#663">663</a>             MqlUtil_mxJPO.setHistoryOff(_paramCache);
-<a name="664" href="#664">664</a>             <strong>super</strong>.update(_paramCache, preMQLCode, postMQLCode, _preTCLCode, tclVariables, _sourceFile);
-<a name="665" href="#665">665</a>         } <strong>finally</strong>  {
-<a name="666" href="#666">666</a>             MqlUtil_mxJPO.setHistoryOn(_paramCache);
-<a name="667" href="#667">667</a>         }
-<a name="668" href="#668">668</a>     }
-<a name="669" href="#669">669</a> 
-<a name="670" href="#670">670</a>     <em>/**<em>*</em></em>
-<a name="671" href="#671">671</a> <em>     * Returns the business type of this business object instance.</em>
-<a name="672" href="#672">672</a> <em>     *</em>
-<a name="673" href="#673">673</a> <em>     * @return business type</em>
-<a name="674" href="#674">674</a> <em>     * @see #busType</em>
-<a name="675" href="#675">675</a> <em>     */</em>
-<a name="676" href="#676">676</a>     <strong>protected</strong> String getBusType()
-<a name="677" href="#677">677</a>     {
-<a name="678" href="#678">678</a>         <strong>return</strong> <strong>this</strong>.busType;
-<a name="679" href="#679">679</a>     }
-<a name="680" href="#680">680</a> 
-<a name="681" href="#681">681</a>     <em>/**<em>*</em></em>
-<a name="682" href="#682">682</a> <em>     * Getter method for instance variable {@link #busName}.</em>
-<a name="683" href="#683">683</a> <em>     *</em>
-<a name="684" href="#684">684</a> <em>     * @return value of instance variable {@link #busName}</em>
-<a name="685" href="#685">685</a> <em>     * @see #busName</em>
-<a name="686" href="#686">686</a> <em>     */</em>
-<a name="687" href="#687">687</a>     <strong>protected</strong> String getBusName()
-<a name="688" href="#688">688</a>     {
-<a name="689" href="#689">689</a>         <strong>return</strong> <strong>this</strong>.busName;
-<a name="690" href="#690">690</a>     }
-<a name="691" href="#691">691</a> 
-<a name="692" href="#692">692</a>     <em>/**<em>*</em></em>
-<a name="693" href="#693">693</a> <em>     * Getter method for instance variable {@link #busRevision}. If</em>
-<a name="694" href="#694">694</a> <em>     * {@link #busRevision} is &lt;code>null&lt;/code> an empty string "" is returned.</em>
-<a name="695" href="#695">695</a> <em>     *</em>
-<a name="696" href="#696">696</a> <em>     * @return value of instance variable {@link #busRevision}</em>
-<a name="697" href="#697">697</a> <em>     * @see #busRevision</em>
-<a name="698" href="#698">698</a> <em>     */</em>
-<a name="699" href="#699">699</a>     <strong>protected</strong> String getBusRevision()
-<a name="700" href="#700">700</a>     {
-<a name="701" href="#701">701</a>         <strong>return</strong> (<strong>this</strong>.busRevision == <strong>null</strong>)
-<a name="702" href="#702">702</a>                ? <span class="string">""</span>
-<a name="703" href="#703">703</a>                : <strong>this</strong>.busRevision;
-<a name="704" href="#704">704</a>     }
-<a name="705" href="#705">705</a> 
-<a name="706" href="#706">706</a>     <em>/**<em>*</em></em>
-<a name="707" href="#707">707</a> <em>     * Getter method for instance variable {@link #busVault}.</em>
-<a name="708" href="#708">708</a> <em>     *</em>
-<a name="709" href="#709">709</a> <em>     * @return value of instance variable {@link #busVault}</em>
-<a name="710" href="#710">710</a> <em>     * @see #busVault</em>
-<a name="711" href="#711">711</a> <em>     */</em>
-<a name="712" href="#712">712</a>     <strong>protected</strong> String getBusVault()
-<a name="713" href="#713">713</a>     {
-<a name="714" href="#714">714</a>         <strong>return</strong> <strong>this</strong>.busVault;
-<a name="715" href="#715">715</a>     }
-<a name="716" href="#716">716</a> 
-<a name="717" href="#717">717</a>     <em>/**<em>*</em></em>
-<a name="718" href="#718">718</a> <em>     * Getter method for instance variable {@link #busDescription}.</em>
-<a name="719" href="#719">719</a> <em>     *</em>
-<a name="720" href="#720">720</a> <em>     * @return value of instance variable {@link #busDescription}</em>
-<a name="721" href="#721">721</a> <em>     * @see #busDescription</em>
-<a name="722" href="#722">722</a> <em>     */</em>
-<a name="723" href="#723">723</a>     <strong>protected</strong> String getBusDescription()
-<a name="724" href="#724">724</a>     {
-<a name="725" href="#725">725</a>         <strong>return</strong> <strong>this</strong>.busDescription;
-<a name="726" href="#726">726</a>     }
-<a name="727" href="#727">727</a> 
-<a name="728" href="#728">728</a>     <em>/**<em>*</em></em>
-<a name="729" href="#729">729</a> <em>     * Getter method for instance variable {@link #busCurrent}.</em>
-<a name="730" href="#730">730</a> <em>     *</em>
-<a name="731" href="#731">731</a> <em>     * @return value of instance variable {@link #busCurrent}</em>
-<a name="732" href="#732">732</a> <em>     * @see #busCurrent</em>
-<a name="733" href="#733">733</a> <em>     */</em>
-<a name="734" href="#734">734</a>     <strong>protected</strong> String getBusCurrent()
-<a name="735" href="#735">735</a>     {
-<a name="736" href="#736">736</a>         <strong>return</strong> <strong>this</strong>.busCurrent;
-<a name="737" href="#737">737</a>     }
-<a name="738" href="#738">738</a> 
-<a name="739" href="#739">739</a>     <em>/**<em>*</em></em>
-<a name="740" href="#740">740</a> <em>     * Getter method for instance variable {@link #busOid}.</em>
-<a name="741" href="#741">741</a> <em>     *</em>
-<a name="742" href="#742">742</a> <em>     * @return value of instance variable {@link #busOid}</em>
-<a name="743" href="#743">743</a> <em>     * @see #busOid</em>
-<a name="744" href="#744">744</a> <em>     */</em>
-<a name="745" href="#745">745</a>     <strong>protected</strong> String getBusOid()
-<a name="746" href="#746">746</a>     {
-<a name="747" href="#747">747</a>         <strong>return</strong> <strong>this</strong>.busOid;
-<a name="748" href="#748">748</a>     }
-<a name="749" href="#749">749</a> 
-<a name="750" href="#750">750</a>     <em>/**<em>*</em></em>
-<a name="751" href="#751">751</a> <em>     * Getter method for instance variable {@link #attrValuesSorted}.</em>
-<a name="752" href="#752">752</a> <em>     *</em>
-<a name="753" href="#753">753</a> <em>     * @return value of instance variable {@link #attrValuesSorted}</em>
-<a name="754" href="#754">754</a> <em>     * @see #attrValuesSorted</em>
-<a name="755" href="#755">755</a> <em>     */</em>
-<a name="756" href="#756">756</a>     <strong>protected</strong> Set&lt;AttributeValue> getAttrValuesSorted()
-<a name="757" href="#757">757</a>     {
-<a name="758" href="#758">758</a>         <strong>return</strong> <strong>this</strong>.attrValuesSorted;
-<a name="759" href="#759">759</a>     }
-<a name="760" href="#760">760</a> 
-<a name="761" href="#761">761</a>     <em>/**<em>*</em></em>
-<a name="762" href="#762">762</a> <em>     * Class used to hold the attributes values. They are comparable by the</em>
-<a name="763" href="#763">763</a> <em>     * attribute name. If numbers within attribute are used, the order is</em>
-<a name="764" href="#764">764</a> <em>     * done depending on the numbers.</em>
-<a name="765" href="#765">765</a> <em>     */</em>
-<a name="766" href="#766">766</a>     <strong>protected</strong> <strong>static</strong> <strong>class</strong> AttributeValue
-<a name="767" href="#767">767</a>         implements Comparable&lt;BusObject_mxJPO.AttributeValue>
-<a name="768" href="#768">768</a>     {
-<a name="769" href="#769">769</a>         <em>/**<em>*</em></em>
-<a name="770" href="#770">770</a> <em>         * Holds the user references of a user access.</em>
-<a name="771" href="#771">771</a> <em>         */</em>
-<a name="772" href="#772">772</a>         <strong>public</strong> <strong>final</strong> String name;
-<a name="773" href="#773">773</a> 
-<a name="774" href="#774">774</a>         <em>/**<em>*</em></em>
-<a name="775" href="#775">775</a> <em>         * Holds the expression filter of a user access.</em>
-<a name="776" href="#776">776</a> <em>         */</em>
-<a name="777" href="#777">777</a>         <strong>public</strong> <strong>final</strong> String value;
+<a name="401" href="#401">401</a>         <em class="comment">// evaluate to connections</em>
+<a name="402" href="#402">402</a>         <strong>if</strong> (<strong>this</strong>.getTypeDef().getMxBusRelsTo() != <strong>null</strong>)  {
+<a name="403" href="#403">403</a>             <strong>for</strong> (<strong>final</strong> String relation : <strong>this</strong>.getTypeDef().getMxBusRelsTo())  {
+<a name="404" href="#404">404</a>                 <strong>this</strong>.expand4Parse(_paramCache, bus, relation, false, <strong>true</strong>);
+<a name="405" href="#405">405</a>             }
+<a name="406" href="#406">406</a>         }
+<a name="407" href="#407">407</a> 
+<a name="408" href="#408">408</a>         <em class="comment">// evaluate both connections</em>
+<a name="409" href="#409">409</a>         <strong>if</strong> (<strong>this</strong>.getTypeDef().getMxBusRelsBoth() != <strong>null</strong>)  {
+<a name="410" href="#410">410</a>             <strong>for</strong> (<strong>final</strong> String relation : <strong>this</strong>.getTypeDef().getMxBusRelsBoth())  {
+<a name="411" href="#411">411</a>                 <em class="comment">// from</em>
+<a name="412" href="#412">412</a>                 <strong>this</strong>.expand4Parse(_paramCache, bus, relation, <strong>true</strong>, false);
+<a name="413" href="#413">413</a>                 <em class="comment">// to</em>
+<a name="414" href="#414">414</a>                 <strong>this</strong>.expand4Parse(_paramCache, bus, relation, false, <strong>true</strong>);
+<a name="415" href="#415">415</a>             }
+<a name="416" href="#416">416</a>         }
+<a name="417" href="#417">417</a>     }
+<a name="418" href="#418">418</a> 
+<a name="419" href="#419">419</a>     <em>/**<em>*</em></em>
+<a name="420" href="#420">420</a> <em>     * Expands from the business object depending on the relationship and</em>
+<a name="421" href="#421">421</a> <em>     * stores the connection information. If the relationship has attributes,</em>
+<a name="422" href="#422">422</a> <em>     * the related values are also evaluated.</em>
+<a name="423" href="#423">423</a> <em>     *</em>
+<a name="424" href="#424">424</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="425" href="#425">425</a> <em>     * @param _bus          the business object to expand</em>
+<a name="426" href="#426">426</a> <em>     * @param _relation     name of relationship to expand</em>
+<a name="427" href="#427">427</a> <em>     * @param _getFrom      must be set to &lt;i>true&lt;/i> to expand from</em>
+<a name="428" href="#428">428</a> <em>     *                      connections; otherwise &lt;i>false&lt;/i></em>
+<a name="429" href="#429">429</a> <em>     * @param _getTo        must be set to &lt;i>true&lt;/i> to expand to</em>
+<a name="430" href="#430">430</a> <em>     *                      connections; otherwise &lt;i>false&lt;/i></em>
+<a name="431" href="#431">431</a> <em>     * @throws MatrixException if the expand failed</em>
+<a name="432" href="#432">432</a> <em>     * @see #connections</em>
+<a name="433" href="#433">433</a> <em>     */</em>
+<a name="434" href="#434">434</a>     @SuppressWarnings(<span class="string">"unchecked"</span>)
+<a name="435" href="#435">435</a>     <strong>private</strong> <strong>void</strong> expand4Parse(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="436" href="#436">436</a>                               <strong>final</strong> BusinessObject _bus,
+<a name="437" href="#437">437</a>                               <strong>final</strong> String _relation,
+<a name="438" href="#438">438</a>                               <strong>final</strong> <strong>boolean</strong> _getFrom,
+<a name="439" href="#439">439</a>                               <strong>final</strong> <strong>boolean</strong> _getTo)
+<a name="440" href="#440">440</a>         throws MatrixException
+<a name="441" href="#441">441</a>     {
+<a name="442" href="#442">442</a>         <em class="comment">// get attributes from relationship</em>
+<a name="443" href="#443">443</a>         <strong>final</strong> Map&lt;String,Map> cache = _paramCache.defineValueMap(BusObject_mxJPO.PARAM_RELATION_ATTRS, Map.<strong>class</strong>);
+<a name="444" href="#444">444</a>         Map&lt;String,String> attrs = cache.get(_relation);
+<a name="445" href="#445">445</a>         <strong>if</strong> (attrs == <strong>null</strong>)
+<a name="446" href="#446">446</a>         {
+<a name="447" href="#447">447</a>             attrs = <strong>new</strong> HashMap&lt;String,String>();
+<a name="448" href="#448">448</a>             cache.put(_relation, attrs);
+<a name="449" href="#449">449</a> 
+<a name="450" href="#450">450</a>             <strong>final</strong> String attrStr = MqlUtil_mxJPO.execMql(_paramCache,
+<a name="451" href="#451">451</a>                     <strong>new</strong> StringBuilder(<span class="string">"escape print rel \&quot;"</span>).append(_relation)
+<a name="452" href="#452">452</a>                             .append(<span class="string">"\&quot; select attribute dump '\n'"</span>));
+<a name="453" href="#453">453</a>             <strong>if</strong> (!<span class="string">""</span>.equals(attrStr))  {
+<a name="454" href="#454">454</a>                 <strong>for</strong> (<strong>final</strong> String attr : attrStr.split(<span class="string">"\n"</span>))  {
+<a name="455" href="#455">455</a>                     attrs.put(<span class="string">"attribute["</span> + attr + <span class="string">"]"</span>, attr);
+<a name="456" href="#456">456</a>                 }
+<a name="457" href="#457">457</a>             };
+<a name="458" href="#458">458</a>         }
+<a name="459" href="#459">459</a> 
+<a name="460" href="#460">460</a>         <strong>final</strong> StringList busSelect = <strong>new</strong> StringList(3);
+<a name="461" href="#461">461</a>         busSelect.addElement(<span class="string">"type"</span>);
+<a name="462" href="#462">462</a>         busSelect.addElement(<span class="string">"name"</span>);
+<a name="463" href="#463">463</a>         busSelect.addElement(<span class="string">"revision"</span>);
+<a name="464" href="#464">464</a>         <strong>final</strong> StringList relSelect = <strong>new</strong> StringList(1 + attrs.size());
+<a name="465" href="#465">465</a>         relSelect.addElement(<span class="string">"id"</span>);
+<a name="466" href="#466">466</a>         relSelect.addAll(attrs.keySet());
+<a name="467" href="#467">467</a>         <em class="comment">// get from objects</em>
+<a name="468" href="#468">468</a>         <strong>final</strong> ExpansionWithSelect expandTo = _bus.expandSelect(_paramCache.getContext(),
+<a name="469" href="#469">469</a>                                                               _relation,
+<a name="470" href="#470">470</a>                                                               <span class="string">"*"</span>,
+<a name="471" href="#471">471</a>                                                               busSelect,
+<a name="472" href="#472">472</a>                                                               relSelect,
+<a name="473" href="#473">473</a>                                                               _getFrom,
+<a name="474" href="#474">474</a>                                                               _getTo,
+<a name="475" href="#475">475</a>                                                               (<strong>short</strong>) 1,
+<a name="476" href="#476">476</a>                                                               <strong>null</strong>,
+<a name="477" href="#477">477</a>                                                               <strong>null</strong>,
+<a name="478" href="#478">478</a>                                                               (<strong>short</strong>) 0,
+<a name="479" href="#479">479</a>                                                               <strong>true</strong>);
+<a name="480" href="#480">480</a> 
+<a name="481" href="#481">481</a>         <strong>for</strong> (<strong>final</strong> Object obj : expandTo.getRelationships())  {
+<a name="482" href="#482">482</a>             <strong>this</strong>.connections.add(<strong>new</strong> Connection(_relation,
+<a name="483" href="#483">483</a>                                                 _getFrom ? <span class="string">"from"</span> : <span class="string">"to"</span>,
+<a name="484" href="#484">484</a>                                                 (RelationshipWithSelect) obj,
+<a name="485" href="#485">485</a>                                                 attrs));
+<a name="486" href="#486">486</a>         }
+<a name="487" href="#487">487</a> 
+<a name="488" href="#488">488</a>     }
+<a name="489" href="#489">489</a> 
+<a name="490" href="#490">490</a>     <em>/**<em>*</em></em>
+<a name="491" href="#491">491</a> <em>     * Writes the information to update the business objects.</em>
+<a name="492" href="#492">492</a> <em>     *</em>
+<a name="493" href="#493">493</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="494" href="#494">494</a> <em>     * @param _out          writer instance</em>
+<a name="495" href="#495">495</a> <em>     * @throws IOException if the TCL update code for the business object could</em>
+<a name="496" href="#496">496</a> <em>     *                     not be written</em>
+<a name="497" href="#497">497</a> <em>     */</em>
+<a name="498" href="#498">498</a>     @Override()
+<a name="499" href="#499">499</a>     <strong>protected</strong> <strong>void</strong> write(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="500" href="#500">500</a>                          <strong>final</strong> Appendable _out)
+<a name="501" href="#501">501</a>         throws IOException
+<a name="502" href="#502">502</a>     {
+<a name="503" href="#503">503</a>         <strong>this</strong>.writeHeader(_paramCache, _out);
+<a name="504" href="#504">504</a>         _out.append(<span class="string">"mql escape mod bus \&quot;${OBJECTID}\&quot;"</span>)
+<a name="505" href="#505">505</a>             .append(<span class="string">" &#47;&#47;\n    description \&quot;"</span>)
+<a name="506" href="#506">506</a>             .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.busDescription))
+<a name="507" href="#507">507</a>             .append(<span class="string">"\&quot;"</span>);
+<a name="508" href="#508">508</a>         <strong>for</strong> (<strong>final</strong> AttributeValue attr : <strong>this</strong>.attrValuesSorted)  {
+<a name="509" href="#509">509</a>             attr.write(_out);
+<a name="510" href="#510">510</a>         }
+<a name="511" href="#511">511</a>         <em class="comment">// write all connected objects</em>
+<a name="512" href="#512">512</a>         <strong>for</strong> (<strong>final</strong> Connection con : <strong>this</strong>.connections)  {
+<a name="513" href="#513">513</a>             con.write(_out);
+<a name="514" href="#514">514</a>         }
+<a name="515" href="#515">515</a>         <em class="comment">// write promotes to target states if required</em>
+<a name="516" href="#516">516</a>         <strong>final</strong> <strong>int</strong> target = <strong>this</strong>.busStates.indexOf(<strong>this</strong>.busCurrent);
+<a name="517" href="#517">517</a>         <strong>for</strong> (<strong>int</strong> idx = 0; idx &lt; target; idx++)  {
+<a name="518" href="#518">518</a>             _out.append(<span class="string">"\nmql promote bus \&quot;${OBJECTID}\&quot;"</span>);
+<a name="519" href="#519">519</a>         }
+<a name="520" href="#520">520</a>     }
+<a name="521" href="#521">521</a> 
+<a name="522" href="#522">522</a>     <em>/**<em>*</em></em>
+<a name="523" href="#523">523</a> <em>     * Deletes administration business object from given type with given name.</em>
+<a name="524" href="#524">524</a> <em>     *</em>
+<a name="525" href="#525">525</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="526" href="#526">526</a> <em>     * @throws Exception if delete of the business object failed</em>
+<a name="527" href="#527">527</a> <em>     */</em>
+<a name="528" href="#528">528</a>     @Override()
+<a name="529" href="#529">529</a>     <strong>public</strong> <strong>void</strong> delete(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="530" href="#530">530</a>         throws Exception
+<a name="531" href="#531">531</a>     {
+<a name="532" href="#532">532</a>         <strong>final</strong> BusinessObject bus = <strong>new</strong> BusinessObject(<strong>this</strong>.busType,
+<a name="533" href="#533">533</a>                                                       <strong>this</strong>.busName,
+<a name="534" href="#534">534</a>                                                       <strong>this</strong>.busRevision,
+<a name="535" href="#535">535</a>                                                       <strong>null</strong>);
+<a name="536" href="#536">536</a>         bus.remove(_paramCache.getContext());
+<a name="537" href="#537">537</a>     }
+<a name="538" href="#538">538</a> 
+<a name="539" href="#539">539</a>     <em>/**<em>*</em></em>
+<a name="540" href="#540">540</a> <em>     * Creates for given name the business object.</em>
+<a name="541" href="#541">541</a> <em>     *</em>
+<a name="542" href="#542">542</a> <em>     * @param _paramCache   parameter cache</em>
+<a name="543" href="#543">543</a> <em>     * @throws Exception if the business object could not be created</em>
+<a name="544" href="#544">544</a> <em>     */</em>
+<a name="545" href="#545">545</a>     @Override()
+<a name="546" href="#546">546</a>     <strong>public</strong> <strong>void</strong> create(<strong>final</strong> ParameterCache_mxJPO _paramCache)
+<a name="547" href="#547">547</a>         throws Exception
+<a name="548" href="#548">548</a>     {
+<a name="549" href="#549">549</a>         <strong>final</strong> BusinessObject bus = <strong>new</strong> BusinessObject(<strong>this</strong>.busType,
+<a name="550" href="#550">550</a>                                                       <strong>this</strong>.busName,
+<a name="551" href="#551">551</a>                                                       <strong>this</strong>.busRevision,
+<a name="552" href="#552">552</a>                                                       <strong>this</strong>.getTypeDef().getMxBusVault());
+<a name="553" href="#553">553</a>         bus.create(_paramCache.getContext(), <strong>this</strong>.getTypeDef().getMxBusPolicy());
+<a name="554" href="#554">554</a>     }
+<a name="555" href="#555">555</a> 
+<a name="556" href="#556">556</a>     <em>/**<em>*</em></em>
+<a name="557" href="#557">557</a> <em>     * The method overwrites the original method to</em>
+<a name="558" href="#558">558</a> <em>     * &lt;ul></em>
+<a name="559" href="#559">559</a> <em>     * &lt;li>reset the description&lt;/li></em>
+<a name="560" href="#560">560</a> <em>     * &lt;li>set the version and author attribute&lt;/li></em>
+<a name="561" href="#561">561</a> <em>     * &lt;li>reset all not ignored attributes&lt;/li></em>
+<a name="562" href="#562">562</a> <em>     * &lt;li>define the TCL variable &amp;quot;OBJECTID&amp;quot; with the object id of</em>
+<a name="563" href="#563">563</a> <em>     *     the represented business object&lt;/li></em>
+<a name="564" href="#564">564</a> <em>     * &lt;/ul></em>
+<a name="565" href="#565">565</a> <em>     * The original method of the super class if called surrounded with a</em>
+<a name="566" href="#566">566</a> <em>     * history off, because if the update itself is done the modified basic</em>
+<a name="567" href="#567">567</a> <em>     * attribute and the version attribute of the business object is updated.</em>
+<a name="568" href="#568">568</a> <em>     * &lt;br/></em>
+<a name="569" href="#569">569</a> <em>     * The new generated MQL code is set in the front of the already defined</em>
+<a name="570" href="#570">570</a> <em>     * MQL code in &lt;code>_preMQLCode&lt;/code> and appended to the MQL statements</em>
+<a name="571" href="#571">571</a> <em>     * in &lt;code>_postMQLCode&lt;/code>.</em>
+<a name="572" href="#572">572</a> <em>     *</em>
+<a name="573" href="#573">573</a> <em>     * @param _paramCache       parameter cache</em>
+<a name="574" href="#574">574</a> <em>     * @param _preMQLCode       MQL statements which must be called before the</em>
+<a name="575" href="#575">575</a> <em>     *                          TCL code is executed</em>
+<a name="576" href="#576">576</a> <em>     * @param _postMQLCode      MQL statements which must be called after the</em>
+<a name="577" href="#577">577</a> <em>     *                          TCL code is executed</em>
+<a name="578" href="#578">578</a> <em>     * @param _preTCLCode       TCL code which is defined before the source</em>
+<a name="579" href="#579">579</a> <em>     *                          file is sourced</em>
+<a name="580" href="#580">580</a> <em>     * @param _tclVariables     map of all TCL variables where the key is the</em>
+<a name="581" href="#581">581</a> <em>     *                          name and the value is value of the TCL variable</em>
+<a name="582" href="#582">582</a> <em>     *                          (the value is automatically converted to TCL</em>
+<a name="583" href="#583">583</a> <em>     *                          syntax!)</em>
+<a name="584" href="#584">584</a> <em>     * @param _sourceFile       souce file with the TCL code to update</em>
+<a name="585" href="#585">585</a> <em>     * @throws Exception if the update executed within derived class failed</em>
+<a name="586" href="#586">586</a> <em>     */</em>
+<a name="587" href="#587">587</a>     @Override()
+<a name="588" href="#588">588</a>     <strong>protected</strong> <strong>void</strong> update(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="589" href="#589">589</a>                           <strong>final</strong> CharSequence _preMQLCode,
+<a name="590" href="#590">590</a>                           <strong>final</strong> CharSequence _postMQLCode,
+<a name="591" href="#591">591</a>                           <strong>final</strong> CharSequence _preTCLCode,
+<a name="592" href="#592">592</a>                           <strong>final</strong> Map&lt;String,String> _tclVariables,
+<a name="593" href="#593">593</a>                           <strong>final</strong> File _sourceFile)
+<a name="594" href="#594">594</a>         throws Exception
+<a name="595" href="#595">595</a>     {
+<a name="596" href="#596">596</a>         <em class="comment">// resets the description</em>
+<a name="597" href="#597">597</a>         <strong>final</strong> StringBuilder preMQLCode = <strong>new</strong> StringBuilder()
+<a name="598" href="#598">598</a>                 .append(<span class="string">"mod bus "</span>).append(<strong>this</strong>.busOid).append(<span class="string">" description \&quot;\&quot;"</span>);
+<a name="599" href="#599">599</a> 
+<a name="600" href="#600">600</a>         <em class="comment">// reset all attributes (if they must not be ignored...)</em>
+<a name="601" href="#601">601</a>         <strong>final</strong> Set&lt;String> ignoreAttrs = (<strong>this</strong>.getTypeDef().getMxBusIgnoredAttributes() == <strong>null</strong>)
+<a name="602" href="#602">602</a>                                         ? <strong>new</strong> HashSet&lt;String>(0)
+<a name="603" href="#603">603</a>                                         : <strong>new</strong> HashSet&lt;String>(<strong>this</strong>.getTypeDef().getMxBusIgnoredAttributes());
+<a name="604" href="#604">604</a>         <strong>final</strong> Map&lt;String,String> defaultAttrValues
+<a name="605" href="#605">605</a>                 = _paramCache.defineValueMap(BusObject_mxJPO.PARAM_DEFAULT_ATTRS, String.<strong>class</strong>);
+<a name="606" href="#606">606</a>         <strong>for</strong> (<strong>final</strong> AttributeValue attr : <strong>this</strong>.attrValuesSorted)  {
+<a name="607" href="#607">607</a>             <strong>if</strong> (!ignoreAttrs.contains(attr.name))  {
+<a name="608" href="#608">608</a>                 <strong>if</strong> (!defaultAttrValues.containsKey(attr.name))  {
+<a name="609" href="#609">609</a>                     <strong>final</strong> String def = MqlUtil_mxJPO.execMql(_paramCache,
+<a name="610" href="#610">610</a>                                                <strong>new</strong> StringBuilder().append(<span class="string">"print attr '"</span>)
+<a name="611" href="#611">611</a>                                                        .append(attr.name).append(<span class="string">"' select default dump"</span>));
+<a name="612" href="#612">612</a>                     defaultAttrValues.put(attr.name, def);
+<a name="613" href="#613">613</a>                 }
+<a name="614" href="#614">614</a>                 preMQLCode.append(<span class="string">" \&quot;"</span>).append(attr.name).append(<span class="string">"\&quot; \&quot;"</span>)
+<a name="615" href="#615">615</a>                         .append(defaultAttrValues.get(attr.name)).append('\&quot;');
+<a name="616" href="#616">616</a>             }
+<a name="617" href="#617">617</a>         }
+<a name="618" href="#618">618</a>         preMQLCode.append(<span class="string">";\n"</span>);
+<a name="619" href="#619">619</a> 
+<a name="620" href="#620">620</a>         <em class="comment">// disconnect all objects</em>
+<a name="621" href="#621">621</a>         <strong>for</strong> (<strong>final</strong> Connection con : <strong>this</strong>.connections)  {
+<a name="622" href="#622">622</a>             preMQLCode.append(<span class="string">"disconnect connection "</span>).append(con.conId).append(<span class="string">";\n"</span>);
+<a name="623" href="#623">623</a>         }
+<a name="624" href="#624">624</a> 
+<a name="625" href="#625">625</a>         <em class="comment">// append demotes if required</em>
+<a name="626" href="#626">626</a>         <strong>final</strong> <strong>int</strong> target = <strong>this</strong>.busStates.indexOf(<strong>this</strong>.busCurrent);
+<a name="627" href="#627">627</a>         <strong>for</strong> (<strong>int</strong> idx = 0; idx &lt; target; idx++)  {
+<a name="628" href="#628">628</a>             preMQLCode.append(<span class="string">"\ndemote bus "</span>).append(<strong>this</strong>.busOid).append(<span class="string">";\n"</span>);
+<a name="629" href="#629">629</a>         }
+<a name="630" href="#630">630</a> 
+<a name="631" href="#631">631</a>         <em class="comment">// append other pre MQL code</em>
+<a name="632" href="#632">632</a>         preMQLCode.append(_preMQLCode);
+<a name="633" href="#633">633</a> 
+<a name="634" href="#634">634</a>         <em class="comment">// post update MQL statements</em>
+<a name="635" href="#635">635</a>         <strong>final</strong> StringBuilder postMQLCode = <strong>new</strong> StringBuilder()
+<a name="636" href="#636">636</a>                 .append(_postMQLCode)
+<a name="637" href="#637">637</a>                 .append(<span class="string">"mod bus "</span>).append(<strong>this</strong>.busOid)
+<a name="638" href="#638">638</a>         <em class="comment">// define version</em>
+<a name="639" href="#639">639</a>                 .append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.VERSION.getAttrName(_paramCache))
+<a name="640" href="#640">640</a>                         .append(<span class="string">"\&quot; \&quot;"</span>).append(_tclVariables.get(PropertyDef_mxJPO.VERSION.name())).append('\&quot;')
+<a name="641" href="#641">641</a>         <em class="comment">// define file date</em>
+<a name="642" href="#642">642</a>                 .append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.FILEDATE.getAttrName(_paramCache))
+<a name="643" href="#643">643</a>                         .append(<span class="string">"\&quot; \&quot;"</span>).append(_tclVariables.get(PropertyDef_mxJPO.FILEDATE.name())).append('\&quot;');
+<a name="644" href="#644">644</a>         <em class="comment">// is installed date property defined?</em>
+<a name="645" href="#645">645</a>         <strong>if</strong> ((<strong>this</strong>.getInstallationDate() == <strong>null</strong>) || <span class="string">""</span>.equals(<strong>this</strong>.getInstallationDate()))  {
+<a name="646" href="#646">646</a>             <strong>final</strong> String date = StringUtil_mxJPO.formatInstalledDate(_paramCache, <strong>new</strong> Date());
+<a name="647" href="#647">647</a>             _paramCache.logTrace(<span class="string">"    - define installed date '"</span> + date + <span class="string">"'"</span>);
+<a name="648" href="#648">648</a>             postMQLCode.append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.INSTALLEDDATE.getAttrName(_paramCache))
+<a name="649" href="#649">649</a>                     .append(<span class="string">"\&quot; \&quot;"</span>).append(date).append('\&quot;');
+<a name="650" href="#650">650</a>         }
+<a name="651" href="#651">651</a>         <em class="comment">// exists no installer property or installer property not equal?</em>
+<a name="652" href="#652">652</a>         <strong>final</strong> String instVal = _tclVariables.get(PropertyDef_mxJPO.INSTALLER.name());
+<a name="653" href="#653">653</a>         <strong>if</strong> ((<strong>this</strong>.getInstaller() == <strong>null</strong>) || !<strong>this</strong>.getInstaller().equals(instVal))  {
+<a name="654" href="#654">654</a>             _paramCache.logTrace(<span class="string">"    - define installer '"</span> + instVal + <span class="string">"'"</span>);
+<a name="655" href="#655">655</a>             postMQLCode.append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.INSTALLER.getAttrName(_paramCache))
+<a name="656" href="#656">656</a>                     .append(<span class="string">"\&quot; \&quot;"</span>).append(instVal).append('\&quot;');
+<a name="657" href="#657">657</a>         }
+<a name="658" href="#658">658</a>         <em class="comment">// exists no application property or application property not equal?</em>
+<a name="659" href="#659">659</a>         <strong>final</strong> String applVal = _tclVariables.get(PropertyDef_mxJPO.APPLICATION.name());
+<a name="660" href="#660">660</a>         <strong>if</strong> ((<strong>this</strong>.getApplication() == <strong>null</strong>) || !<strong>this</strong>.getApplication().equals(applVal))  {
+<a name="661" href="#661">661</a>             _paramCache.logTrace(<span class="string">"    - define application '"</span> + applVal + <span class="string">"'"</span>);
+<a name="662" href="#662">662</a>             postMQLCode.append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.APPLICATION.getAttrName(_paramCache))
+<a name="663" href="#663">663</a>                     .append(<span class="string">"\&quot; \&quot;"</span>).append(applVal).append('\&quot;');
+<a name="664" href="#664">664</a>         }
+<a name="665" href="#665">665</a>         <em class="comment">// exists no author property or author property not equal?</em>
+<a name="666" href="#666">666</a>         <strong>final</strong> String authVal = _tclVariables.get(PropertyDef_mxJPO.AUTHOR.name());
+<a name="667" href="#667">667</a>         <strong>if</strong> ((<strong>this</strong>.getAuthor() == <strong>null</strong>) || !<strong>this</strong>.getAuthor().equals(authVal))  {
+<a name="668" href="#668">668</a>             _paramCache.logTrace(<span class="string">"    - define author '"</span> + authVal + <span class="string">"'"</span>);
+<a name="669" href="#669">669</a>             postMQLCode.append(<span class="string">" \&quot;"</span>).append(PropertyDef_mxJPO.AUTHOR.getAttrName(_paramCache))
+<a name="670" href="#670">670</a>                     .append(<span class="string">"\&quot; \&quot;"</span>).append(authVal).append('\&quot;');
+<a name="671" href="#671">671</a>         }
+<a name="672" href="#672">672</a>         postMQLCode.append(<span class="string">";\n"</span>);
+<a name="673" href="#673">673</a> 
+<a name="674" href="#674">674</a>         <em class="comment">// prepare map of all TCL variables incl. id of business object</em>
+<a name="675" href="#675">675</a>         <strong>final</strong> Map&lt;String,String> tclVariables = <strong>new</strong> HashMap&lt;String,String>();
+<a name="676" href="#676">676</a>         tclVariables.put(<span class="string">"OBJECTID"</span>, <strong>this</strong>.busOid);
+<a name="677" href="#677">677</a>         tclVariables.putAll(_tclVariables);
+<a name="678" href="#678">678</a> 
+<a name="679" href="#679">679</a>         <em class="comment">// update must be done with history off (because not required...)</em>
+<a name="680" href="#680">680</a>         <strong>try</strong>  {
+<a name="681" href="#681">681</a>             MqlUtil_mxJPO.setHistoryOff(_paramCache);
+<a name="682" href="#682">682</a>             <strong>super</strong>.update(_paramCache, preMQLCode, postMQLCode, _preTCLCode, tclVariables, _sourceFile);
+<a name="683" href="#683">683</a>         } <strong>finally</strong>  {
+<a name="684" href="#684">684</a>             MqlUtil_mxJPO.setHistoryOn(_paramCache);
+<a name="685" href="#685">685</a>         }
+<a name="686" href="#686">686</a>     }
+<a name="687" href="#687">687</a> 
+<a name="688" href="#688">688</a>     <em>/**<em>*</em></em>
+<a name="689" href="#689">689</a> <em>     * Returns the business type of this business object instance.</em>
+<a name="690" href="#690">690</a> <em>     *</em>
+<a name="691" href="#691">691</a> <em>     * @return business type</em>
+<a name="692" href="#692">692</a> <em>     * @see #busType</em>
+<a name="693" href="#693">693</a> <em>     */</em>
+<a name="694" href="#694">694</a>     <strong>protected</strong> String getBusType()
+<a name="695" href="#695">695</a>     {
+<a name="696" href="#696">696</a>         <strong>return</strong> <strong>this</strong>.busType;
+<a name="697" href="#697">697</a>     }
+<a name="698" href="#698">698</a> 
+<a name="699" href="#699">699</a>     <em>/**<em>*</em></em>
+<a name="700" href="#700">700</a> <em>     * Getter method for instance variable {@link #busName}.</em>
+<a name="701" href="#701">701</a> <em>     *</em>
+<a name="702" href="#702">702</a> <em>     * @return value of instance variable {@link #busName}</em>
+<a name="703" href="#703">703</a> <em>     * @see #busName</em>
+<a name="704" href="#704">704</a> <em>     */</em>
+<a name="705" href="#705">705</a>     <strong>protected</strong> String getBusName()
+<a name="706" href="#706">706</a>     {
+<a name="707" href="#707">707</a>         <strong>return</strong> <strong>this</strong>.busName;
+<a name="708" href="#708">708</a>     }
+<a name="709" href="#709">709</a> 
+<a name="710" href="#710">710</a>     <em>/**<em>*</em></em>
+<a name="711" href="#711">711</a> <em>     * Getter method for instance variable {@link #busRevision}. If</em>
+<a name="712" href="#712">712</a> <em>     * {@link #busRevision} is &lt;code>null&lt;/code> an empty string "" is returned.</em>
+<a name="713" href="#713">713</a> <em>     *</em>
+<a name="714" href="#714">714</a> <em>     * @return value of instance variable {@link #busRevision}</em>
+<a name="715" href="#715">715</a> <em>     * @see #busRevision</em>
+<a name="716" href="#716">716</a> <em>     */</em>
+<a name="717" href="#717">717</a>     <strong>protected</strong> String getBusRevision()
+<a name="718" href="#718">718</a>     {
+<a name="719" href="#719">719</a>         <strong>return</strong> (<strong>this</strong>.busRevision == <strong>null</strong>)
+<a name="720" href="#720">720</a>                ? <span class="string">""</span>
+<a name="721" href="#721">721</a>                : <strong>this</strong>.busRevision;
+<a name="722" href="#722">722</a>     }
+<a name="723" href="#723">723</a> 
+<a name="724" href="#724">724</a>     <em>/**<em>*</em></em>
+<a name="725" href="#725">725</a> <em>     * Getter method for instance variable {@link #busVault}.</em>
+<a name="726" href="#726">726</a> <em>     *</em>
+<a name="727" href="#727">727</a> <em>     * @return value of instance variable {@link #busVault}</em>
+<a name="728" href="#728">728</a> <em>     * @see #busVault</em>
+<a name="729" href="#729">729</a> <em>     */</em>
+<a name="730" href="#730">730</a>     <strong>protected</strong> String getBusVault()
+<a name="731" href="#731">731</a>     {
+<a name="732" href="#732">732</a>         <strong>return</strong> <strong>this</strong>.busVault;
+<a name="733" href="#733">733</a>     }
+<a name="734" href="#734">734</a> 
+<a name="735" href="#735">735</a>     <em>/**<em>*</em></em>
+<a name="736" href="#736">736</a> <em>     * Getter method for instance variable {@link #busDescription}.</em>
+<a name="737" href="#737">737</a> <em>     *</em>
+<a name="738" href="#738">738</a> <em>     * @return value of instance variable {@link #busDescription}</em>
+<a name="739" href="#739">739</a> <em>     * @see #busDescription</em>
+<a name="740" href="#740">740</a> <em>     */</em>
+<a name="741" href="#741">741</a>     <strong>protected</strong> String getBusDescription()
+<a name="742" href="#742">742</a>     {
+<a name="743" href="#743">743</a>         <strong>return</strong> <strong>this</strong>.busDescription;
+<a name="744" href="#744">744</a>     }
+<a name="745" href="#745">745</a> 
+<a name="746" href="#746">746</a>     <em>/**<em>*</em></em>
+<a name="747" href="#747">747</a> <em>     * Getter method for instance variable {@link #busCurrent}.</em>
+<a name="748" href="#748">748</a> <em>     *</em>
+<a name="749" href="#749">749</a> <em>     * @return value of instance variable {@link #busCurrent}</em>
+<a name="750" href="#750">750</a> <em>     * @see #busCurrent</em>
+<a name="751" href="#751">751</a> <em>     */</em>
+<a name="752" href="#752">752</a>     <strong>protected</strong> String getBusCurrent()
+<a name="753" href="#753">753</a>     {
+<a name="754" href="#754">754</a>         <strong>return</strong> <strong>this</strong>.busCurrent;
+<a name="755" href="#755">755</a>     }
+<a name="756" href="#756">756</a> 
+<a name="757" href="#757">757</a>     <em>/**<em>*</em></em>
+<a name="758" href="#758">758</a> <em>     * Getter method for instance variable {@link #busOid}.</em>
+<a name="759" href="#759">759</a> <em>     *</em>
+<a name="760" href="#760">760</a> <em>     * @return value of instance variable {@link #busOid}</em>
+<a name="761" href="#761">761</a> <em>     * @see #busOid</em>
+<a name="762" href="#762">762</a> <em>     */</em>
+<a name="763" href="#763">763</a>     <strong>protected</strong> String getBusOid()
+<a name="764" href="#764">764</a>     {
+<a name="765" href="#765">765</a>         <strong>return</strong> <strong>this</strong>.busOid;
+<a name="766" href="#766">766</a>     }
+<a name="767" href="#767">767</a> 
+<a name="768" href="#768">768</a>     <em>/**<em>*</em></em>
+<a name="769" href="#769">769</a> <em>     * Getter method for instance variable {@link #attrValuesSorted}.</em>
+<a name="770" href="#770">770</a> <em>     *</em>
+<a name="771" href="#771">771</a> <em>     * @return value of instance variable {@link #attrValuesSorted}</em>
+<a name="772" href="#772">772</a> <em>     * @see #attrValuesSorted</em>
+<a name="773" href="#773">773</a> <em>     */</em>
+<a name="774" href="#774">774</a>     <strong>protected</strong> Set&lt;AttributeValue> getAttrValuesSorted()
+<a name="775" href="#775">775</a>     {
+<a name="776" href="#776">776</a>         <strong>return</strong> <strong>this</strong>.attrValuesSorted;
+<a name="777" href="#777">777</a>     }
 <a name="778" href="#778">778</a> 
-<a name="779" href="#779">779</a>         <em>/**<em>*</em></em>
-<a name="780" href="#780">780</a> <em>         * Defines the name and value of the attribute depending on the</em>
-<a name="781" href="#781">781</a> <em>         * attribute.</em>
-<a name="782" href="#782">782</a> <em>         *</em>
-<a name="783" href="#783">783</a> <em>         * @param _attr attribute</em>
-<a name="784" href="#784">784</a> <em>         */</em>
-<a name="785" href="#785">785</a>         AttributeValue(<strong>final</strong> Attribute _attr)
-<a name="786" href="#786">786</a>         {
-<a name="787" href="#787">787</a>             <strong>this</strong>.name = _attr.getName();
-<a name="788" href="#788">788</a>             <strong>this</strong>.value = _attr.getValue();
-<a name="789" href="#789">789</a>         }
-<a name="790" href="#790">790</a> 
-<a name="791" href="#791">791</a>         <em>/**<em>*</em></em>
-<a name="792" href="#792">792</a> <em>         * Defines the name and value of the attribute.</em>
-<a name="793" href="#793">793</a> <em>         *</em>
-<a name="794" href="#794">794</a> <em>         * @param _name     name of the attribute</em>
-<a name="795" href="#795">795</a> <em>         * @param _value    value of the attribute</em>
-<a name="796" href="#796">796</a> <em>         */</em>
-<a name="797" href="#797">797</a>         AttributeValue(<strong>final</strong> String _name,
-<a name="798" href="#798">798</a>                        <strong>final</strong> String _value)
-<a name="799" href="#799">799</a>         {
-<a name="800" href="#800">800</a>             <strong>this</strong>.name = _name;
-<a name="801" href="#801">801</a>             <strong>this</strong>.value = _value;
-<a name="802" href="#802">802</a>         }
-<a name="803" href="#803">803</a> 
-<a name="804" href="#804">804</a>         <em>/**<em>*</em></em>
-<a name="805" href="#805">805</a> <em>         * Compares this attribute name with given attribute name. The related</em>
-<a name="806" href="#806">806</a> <em>         * attribute values are not used to compare. If the attribute names</em>
-<a name="807" href="#807">807</a> <em>         * includes numbers and the attribute names has the same prefix (before</em>
-<a name="808" href="#808">808</a> <em>         * the numbers), the numbers are compared as integer.&lt;br/></em>
-<a name="809" href="#809">809</a> <em>         * &lt;b>Examples:&lt;/b>&lt;br/></em>
-<a name="810" href="#810">810</a> <em>         * Temp &amp;gt; Name&lt;br/></em>
-<a name="811" href="#811">811</a> <em>         * Temp = Temp&lt;br/></em>
-<a name="812" href="#812">812</a> <em>         * Temp 5 &amp;lt Temp 10</em>
-<a name="813" href="#813">813</a> <em>         *</em>
-<a name="814" href="#814">814</a> <em>         * @param _attribute    attribute instance to compare</em>
-<a name="815" href="#815">815</a> <em>         * @return &lt;code>0&lt;/code> if the attribute names are equal (should not</em>
-<a name="816" href="#816">816</a> <em>         *         possible...); a value less than &lt;code>0&lt;/code> if this</em>
-<a name="817" href="#817">817</a> <em>         *         attribute name is lexicographically less than the compared</em>
-<a name="818" href="#818">818</a> <em>         *         attribute name; a value greater than &lt;code>0&lt;/code> if this</em>
-<a name="819" href="#819">819</a> <em>         *         attribute name is lexicographically greater than the</em>
-<a name="820" href="#820">820</a> <em>         *         compared attribute name</em>
-<a name="821" href="#821">821</a> <em>         */</em>
-<a name="822" href="#822">822</a>         <strong>public</strong> <strong>int</strong> compareTo(<strong>final</strong> AttributeValue _attribute)
-<a name="823" href="#823">823</a>         {
-<a name="824" href="#824">824</a>             <strong>final</strong> String name1 = <strong>this</strong>.name.replaceAll(<span class="string">" [0-9]*$"</span>, <span class="string">""</span>);
-<a name="825" href="#825">825</a>             <strong>final</strong> String name2 = _attribute.name.replaceAll(<span class="string">" [0-9]*$"</span>, <span class="string">""</span>);
-<a name="826" href="#826">826</a>             <strong>int</strong> ret = 0;
-<a name="827" href="#827">827</a>             <strong>if</strong> (name1.equals(name2) &amp;&amp; !name1.equals(<strong>this</strong>.name))  {
-<a name="828" href="#828">828</a>                 <strong>final</strong> <strong>int</strong> index = name1.length();
-<a name="829" href="#829">829</a>                 <strong>final</strong> Integer num1 = Integer.parseInt(<strong>this</strong>.name.substring(index).trim());
-<a name="830" href="#830">830</a>                 <strong>final</strong> Integer num2 = Integer.parseInt(_attribute.name.substring(index).trim());
-<a name="831" href="#831">831</a>                 ret = num1.compareTo(num2);
-<a name="832" href="#832">832</a>             } <strong>else</strong>  {
-<a name="833" href="#833">833</a>                 ret = <strong>this</strong>.name.compareTo(_attribute.name);
-<a name="834" href="#834">834</a>             }
-<a name="835" href="#835">835</a>             <strong>return</strong> ret;
-<a name="836" href="#836">836</a>         }
-<a name="837" href="#837">837</a> 
-<a name="838" href="#838">838</a>         <em>/**<em>*</em></em>
-<a name="839" href="#839">839</a> <em>         * Writes the attribute name and value to the TCL update file.</em>
-<a name="840" href="#840">840</a> <em>         *</em>
-<a name="841" href="#841">841</a> <em>         * @param _out  appendable instance to the TCL update file</em>
-<a name="842" href="#842">842</a> <em>         * @throws IOException if attribute information could not be written</em>
-<a name="843" href="#843">843</a> <em>         * @see #name</em>
-<a name="844" href="#844">844</a> <em>         * @see #value</em>
-<a name="845" href="#845">845</a> <em>         */</em>
-<a name="846" href="#846">846</a>         <strong>public</strong> <strong>void</strong> write(<strong>final</strong> Appendable _out)
-<a name="847" href="#847">847</a>                 throws IOException
-<a name="848" href="#848">848</a>         {
-<a name="849" href="#849">849</a>             _out.append(<span class="string">" &#47;&#47;\n    \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.name))
-<a name="850" href="#850">850</a>                 .append(<span class="string">"\&quot; \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.value)).append(<span class="string">"\&quot;"</span>);
-<a name="851" href="#851">851</a>         }
-<a name="852" href="#852">852</a>    }
-<a name="853" href="#853">853</a> 
-<a name="854" href="#854">854</a>     <em>/**<em>*</em></em>
-<a name="855" href="#855">855</a> <em>     * The class is used to store information about one connection including</em>
-<a name="856" href="#856">856</a> <em>     * all attributes values and the type, name with revision of the connected</em>
-<a name="857" href="#857">857</a> <em>     * business object.</em>
-<a name="858" href="#858">858</a> <em>     */</em>
-<a name="859" href="#859">859</a>     <strong>private</strong> <strong>static</strong> <strong>class</strong> Connection
-<a name="860" href="#860">860</a>         implements Comparable&lt;BusObject_mxJPO.Connection>
-<a name="861" href="#861">861</a>     {
-<a name="862" href="#862">862</a>         <em>/**<em>*</em></em>
-<a name="863" href="#863">863</a> <em>         * Type of the business object.</em>
-<a name="864" href="#864">864</a> <em>         */</em>
-<a name="865" href="#865">865</a>         <strong>final</strong> String type;
-<a name="866" href="#866">866</a> 
-<a name="867" href="#867">867</a>         <em>/**<em>*</em></em>
-<a name="868" href="#868">868</a> <em>         * Name of the business object.</em>
-<a name="869" href="#869">869</a> <em>         */</em>
-<a name="870" href="#870">870</a>         <strong>final</strong> String name;
+<a name="779" href="#779">779</a>     <em>/**<em>*</em></em>
+<a name="780" href="#780">780</a> <em>     * Class used to hold the attributes values. They are comparable by the</em>
+<a name="781" href="#781">781</a> <em>     * attribute name. If numbers within attribute are used, the order is</em>
+<a name="782" href="#782">782</a> <em>     * done depending on the numbers.</em>
+<a name="783" href="#783">783</a> <em>     */</em>
+<a name="784" href="#784">784</a>     <strong>protected</strong> <strong>static</strong> <strong>class</strong> AttributeValue
+<a name="785" href="#785">785</a>         implements Comparable&lt;BusObject_mxJPO.AttributeValue>
+<a name="786" href="#786">786</a>     {
+<a name="787" href="#787">787</a>         <em>/**<em>*</em></em>
+<a name="788" href="#788">788</a> <em>         * Holds the user references of a user access.</em>
+<a name="789" href="#789">789</a> <em>         */</em>
+<a name="790" href="#790">790</a>         <strong>public</strong> <strong>final</strong> String name;
+<a name="791" href="#791">791</a> 
+<a name="792" href="#792">792</a>         <em>/**<em>*</em></em>
+<a name="793" href="#793">793</a> <em>         * Holds the expression filter of a user access.</em>
+<a name="794" href="#794">794</a> <em>         */</em>
+<a name="795" href="#795">795</a>         <strong>public</strong> <strong>final</strong> String value;
+<a name="796" href="#796">796</a> 
+<a name="797" href="#797">797</a>         <em>/**<em>*</em></em>
+<a name="798" href="#798">798</a> <em>         * Defines the name and value of the attribute depending on the</em>
+<a name="799" href="#799">799</a> <em>         * attribute.</em>
+<a name="800" href="#800">800</a> <em>         *</em>
+<a name="801" href="#801">801</a> <em>         * @param _attr attribute</em>
+<a name="802" href="#802">802</a> <em>         */</em>
+<a name="803" href="#803">803</a>         AttributeValue(<strong>final</strong> Attribute _attr)
+<a name="804" href="#804">804</a>         {
+<a name="805" href="#805">805</a>             <strong>this</strong>.name = _attr.getName();
+<a name="806" href="#806">806</a>             <strong>this</strong>.value = _attr.getValue();
+<a name="807" href="#807">807</a>         }
+<a name="808" href="#808">808</a> 
+<a name="809" href="#809">809</a>         <em>/**<em>*</em></em>
+<a name="810" href="#810">810</a> <em>         * Defines the name and value of the attribute.</em>
+<a name="811" href="#811">811</a> <em>         *</em>
+<a name="812" href="#812">812</a> <em>         * @param _name     name of the attribute</em>
+<a name="813" href="#813">813</a> <em>         * @param _value    value of the attribute</em>
+<a name="814" href="#814">814</a> <em>         */</em>
+<a name="815" href="#815">815</a>         AttributeValue(<strong>final</strong> String _name,
+<a name="816" href="#816">816</a>                        <strong>final</strong> String _value)
+<a name="817" href="#817">817</a>         {
+<a name="818" href="#818">818</a>             <strong>this</strong>.name = _name;
+<a name="819" href="#819">819</a>             <strong>this</strong>.value = _value;
+<a name="820" href="#820">820</a>         }
+<a name="821" href="#821">821</a> 
+<a name="822" href="#822">822</a>         <em>/**<em>*</em></em>
+<a name="823" href="#823">823</a> <em>         * Compares this attribute name with given attribute name. The related</em>
+<a name="824" href="#824">824</a> <em>         * attribute values are not used to compare. If the attribute names</em>
+<a name="825" href="#825">825</a> <em>         * includes numbers and the attribute names has the same prefix (before</em>
+<a name="826" href="#826">826</a> <em>         * the numbers), the numbers are compared as integer.&lt;br/></em>
+<a name="827" href="#827">827</a> <em>         * &lt;b>Examples:&lt;/b>&lt;br/></em>
+<a name="828" href="#828">828</a> <em>         * Temp &amp;gt; Name&lt;br/></em>
+<a name="829" href="#829">829</a> <em>         * Temp = Temp&lt;br/></em>
+<a name="830" href="#830">830</a> <em>         * Temp 5 &amp;lt Temp 10</em>
+<a name="831" href="#831">831</a> <em>         *</em>
+<a name="832" href="#832">832</a> <em>         * @param _attribute    attribute instance to compare</em>
+<a name="833" href="#833">833</a> <em>         * @return &lt;code>0&lt;/code> if the attribute names are equal (should not</em>
+<a name="834" href="#834">834</a> <em>         *         possible...); a value less than &lt;code>0&lt;/code> if this</em>
+<a name="835" href="#835">835</a> <em>         *         attribute name is lexicographically less than the compared</em>
+<a name="836" href="#836">836</a> <em>         *         attribute name; a value greater than &lt;code>0&lt;/code> if this</em>
+<a name="837" href="#837">837</a> <em>         *         attribute name is lexicographically greater than the</em>
+<a name="838" href="#838">838</a> <em>         *         compared attribute name</em>
+<a name="839" href="#839">839</a> <em>         */</em>
+<a name="840" href="#840">840</a>         <strong>public</strong> <strong>int</strong> compareTo(<strong>final</strong> AttributeValue _attribute)
+<a name="841" href="#841">841</a>         {
+<a name="842" href="#842">842</a>             <strong>final</strong> String name1 = <strong>this</strong>.name.replaceAll(<span class="string">" [0-9]*$"</span>, <span class="string">""</span>);
+<a name="843" href="#843">843</a>             <strong>final</strong> String name2 = _attribute.name.replaceAll(<span class="string">" [0-9]*$"</span>, <span class="string">""</span>);
+<a name="844" href="#844">844</a>             <strong>int</strong> ret = 0;
+<a name="845" href="#845">845</a>             <strong>if</strong> (name1.equals(name2) &amp;&amp; !name1.equals(<strong>this</strong>.name))  {
+<a name="846" href="#846">846</a>                 <strong>final</strong> <strong>int</strong> index = name1.length();
+<a name="847" href="#847">847</a>                 <strong>final</strong> Integer num1 = Integer.parseInt(<strong>this</strong>.name.substring(index).trim());
+<a name="848" href="#848">848</a>                 <strong>final</strong> Integer num2 = Integer.parseInt(_attribute.name.substring(index).trim());
+<a name="849" href="#849">849</a>                 ret = num1.compareTo(num2);
+<a name="850" href="#850">850</a>             } <strong>else</strong>  {
+<a name="851" href="#851">851</a>                 ret = <strong>this</strong>.name.compareTo(_attribute.name);
+<a name="852" href="#852">852</a>             }
+<a name="853" href="#853">853</a>             <strong>return</strong> ret;
+<a name="854" href="#854">854</a>         }
+<a name="855" href="#855">855</a> 
+<a name="856" href="#856">856</a>         <em>/**<em>*</em></em>
+<a name="857" href="#857">857</a> <em>         * Writes the attribute name and value to the TCL update file.</em>
+<a name="858" href="#858">858</a> <em>         *</em>
+<a name="859" href="#859">859</a> <em>         * @param _out  appendable instance to the TCL update file</em>
+<a name="860" href="#860">860</a> <em>         * @throws IOException if attribute information could not be written</em>
+<a name="861" href="#861">861</a> <em>         * @see #name</em>
+<a name="862" href="#862">862</a> <em>         * @see #value</em>
+<a name="863" href="#863">863</a> <em>         */</em>
+<a name="864" href="#864">864</a>         <strong>public</strong> <strong>void</strong> write(<strong>final</strong> Appendable _out)
+<a name="865" href="#865">865</a>                 throws IOException
+<a name="866" href="#866">866</a>         {
+<a name="867" href="#867">867</a>             _out.append(<span class="string">" &#47;&#47;\n    \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.name))
+<a name="868" href="#868">868</a>                 .append(<span class="string">"\&quot; \&quot;"</span>).append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.value)).append(<span class="string">"\&quot;"</span>);
+<a name="869" href="#869">869</a>         }
+<a name="870" href="#870">870</a>    }
 <a name="871" href="#871">871</a> 
-<a name="872" href="#872">872</a>         <em>/**<em>*</em></em>
-<a name="873" href="#873">873</a> <em>         * Revision of the business object.</em>
-<a name="874" href="#874">874</a> <em>         */</em>
-<a name="875" href="#875">875</a>         <strong>final</strong> String revision;
-<a name="876" href="#876">876</a> 
-<a name="877" href="#877">877</a>         <em>/**<em>*</em></em>
-<a name="878" href="#878">878</a> <em>         * Id of the connection.</em>
-<a name="879" href="#879">879</a> <em>         */</em>
-<a name="880" href="#880">880</a>         <strong>final</strong> String conId;
-<a name="881" href="#881">881</a> 
-<a name="882" href="#882">882</a>         <em>/**<em>*</em></em>
-<a name="883" href="#883">883</a> <em>         * Direction of the connection.</em>
-<a name="884" href="#884">884</a> <em>         */</em>
-<a name="885" href="#885">885</a>         <strong>final</strong> String direction;
-<a name="886" href="#886">886</a> 
-<a name="887" href="#887">887</a>         <em>/**<em>*</em></em>
-<a name="888" href="#888">888</a> <em>         * Name of the relationship.</em>
-<a name="889" href="#889">889</a> <em>         */</em>
-<a name="890" href="#890">890</a>         <strong>final</strong> String relName;
-<a name="891" href="#891">891</a> 
-<a name="892" href="#892">892</a>         <em>/**<em>*</em></em>
-<a name="893" href="#893">893</a> <em>         * Set of all attribute values of this connection.</em>
-<a name="894" href="#894">894</a> <em>         */</em>
-<a name="895" href="#895">895</a>         <strong>final</strong> Set&lt;BusObject_mxJPO.AttributeValue> values = <strong>new</strong> TreeSet&lt;BusObject_mxJPO.AttributeValue>();
-<a name="896" href="#896">896</a> 
-<a name="897" href="#897">897</a>         <em>/**<em>*</em></em>
-<a name="898" href="#898">898</a> <em>         * Constructor to create a new connection instance.</em>
-<a name="899" href="#899">899</a> <em>         *</em>
-<a name="900" href="#900">900</a> <em>         * @param _relName      name of the relationship</em>
-<a name="901" href="#901">901</a> <em>         * @param _direction    direction of the connection</em>
-<a name="902" href="#902">902</a> <em>         * @param _relSelect    relationship selection</em>
-<a name="903" href="#903">903</a> <em>         * @param _attrs        selected attributes within the relationship</em>
-<a name="904" href="#904">904</a> <em>         *                      selection</em>
-<a name="905" href="#905">905</a> <em>         */</em>
-<a name="906" href="#906">906</a>         <strong>public</strong> Connection(<strong>final</strong> String _relName,
-<a name="907" href="#907">907</a>                           <strong>final</strong> String _direction,
-<a name="908" href="#908">908</a>                           <strong>final</strong> RelationshipWithSelect _relSelect,
-<a name="909" href="#909">909</a>                           <strong>final</strong> Map&lt;String,String> _attrs)
-<a name="910" href="#910">910</a>         {
-<a name="911" href="#911">911</a>             <strong>this</strong>.relName = _relName;
-<a name="912" href="#912">912</a>             <strong>this</strong>.direction = _direction;
-<a name="913" href="#913">913</a>             <strong>final</strong> BusinessObjectWithSelect busSelect = _relSelect.getTarget();
-<a name="914" href="#914">914</a>             <strong>this</strong>.type = busSelect.getSelectData(<span class="string">"type"</span>);
-<a name="915" href="#915">915</a>             <strong>this</strong>.name = busSelect.getSelectData(<span class="string">"name"</span>);
-<a name="916" href="#916">916</a>             <strong>this</strong>.revision = busSelect.getSelectData(<span class="string">"revision"</span>);
-<a name="917" href="#917">917</a>             <strong>this</strong>.conId = _relSelect.getSelectData(<span class="string">"id"</span>);
-<a name="918" href="#918">918</a>             <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> attr : _attrs.entrySet())  {
-<a name="919" href="#919">919</a>                 <strong>this</strong>.values.add(<strong>new</strong> AttributeValue(attr.getValue(), _relSelect.getSelectData(attr.getKey())));
-<a name="920" href="#920">920</a>             }
-<a name="921" href="#921">921</a>         }
-<a name="922" href="#922">922</a> 
-<a name="923" href="#923">923</a>         <em>/**<em>*</em></em>
-<a name="924" href="#924">924</a> <em>         * Returns the string representation of the business object. The string</em>
-<a name="925" href="#925">925</a> <em>         * representation is a concatenation of {@link #type}, {@link #name} and</em>
-<a name="926" href="#926">926</a> <em>         * {@link #revision}.</em>
-<a name="927" href="#927">927</a> <em>         *</em>
-<a name="928" href="#928">928</a> <em>         * @return string representation of the business object</em>
-<a name="929" href="#929">929</a> <em>         * @see #type</em>
-<a name="930" href="#930">930</a> <em>         * @see #name</em>
-<a name="931" href="#931">931</a> <em>         * @see #revision</em>
-<a name="932" href="#932">932</a> <em>         */</em>
-<a name="933" href="#933">933</a>         @Override()
-<a name="934" href="#934">934</a>         <strong>public</strong> String toString()
-<a name="935" href="#935">935</a>         {
-<a name="936" href="#936">936</a>             <strong>return</strong> <span class="string">"[type = "</span> + <strong>this</strong>.type + <span class="string">","</span>
-<a name="937" href="#937">937</a>                    + <span class="string">" name = "</span> + <strong>this</strong>.name + <span class="string">","</span>
-<a name="938" href="#938">938</a>                    + <span class="string">" revision = "</span> + <strong>this</strong>.revision + <span class="string">"]"</span>;
+<a name="872" href="#872">872</a>     <em>/**<em>*</em></em>
+<a name="873" href="#873">873</a> <em>     * The class is used to store information about one connection including</em>
+<a name="874" href="#874">874</a> <em>     * all attributes values and the type, name with revision of the connected</em>
+<a name="875" href="#875">875</a> <em>     * business object.</em>
+<a name="876" href="#876">876</a> <em>     */</em>
+<a name="877" href="#877">877</a>     <strong>private</strong> <strong>static</strong> <strong>class</strong> Connection
+<a name="878" href="#878">878</a>         implements Comparable&lt;BusObject_mxJPO.Connection>
+<a name="879" href="#879">879</a>     {
+<a name="880" href="#880">880</a>         <em>/**<em>*</em></em>
+<a name="881" href="#881">881</a> <em>         * Type of the business object.</em>
+<a name="882" href="#882">882</a> <em>         */</em>
+<a name="883" href="#883">883</a>         <strong>final</strong> String type;
+<a name="884" href="#884">884</a> 
+<a name="885" href="#885">885</a>         <em>/**<em>*</em></em>
+<a name="886" href="#886">886</a> <em>         * Name of the business object.</em>
+<a name="887" href="#887">887</a> <em>         */</em>
+<a name="888" href="#888">888</a>         <strong>final</strong> String name;
+<a name="889" href="#889">889</a> 
+<a name="890" href="#890">890</a>         <em>/**<em>*</em></em>
+<a name="891" href="#891">891</a> <em>         * Revision of the business object.</em>
+<a name="892" href="#892">892</a> <em>         */</em>
+<a name="893" href="#893">893</a>         <strong>final</strong> String revision;
+<a name="894" href="#894">894</a> 
+<a name="895" href="#895">895</a>         <em>/**<em>*</em></em>
+<a name="896" href="#896">896</a> <em>         * Id of the connection.</em>
+<a name="897" href="#897">897</a> <em>         */</em>
+<a name="898" href="#898">898</a>         <strong>final</strong> String conId;
+<a name="899" href="#899">899</a> 
+<a name="900" href="#900">900</a>         <em>/**<em>*</em></em>
+<a name="901" href="#901">901</a> <em>         * Direction of the connection.</em>
+<a name="902" href="#902">902</a> <em>         */</em>
+<a name="903" href="#903">903</a>         <strong>final</strong> String direction;
+<a name="904" href="#904">904</a> 
+<a name="905" href="#905">905</a>         <em>/**<em>*</em></em>
+<a name="906" href="#906">906</a> <em>         * Name of the relationship.</em>
+<a name="907" href="#907">907</a> <em>         */</em>
+<a name="908" href="#908">908</a>         <strong>final</strong> String relName;
+<a name="909" href="#909">909</a> 
+<a name="910" href="#910">910</a>         <em>/**<em>*</em></em>
+<a name="911" href="#911">911</a> <em>         * Set of all attribute values of this connection.</em>
+<a name="912" href="#912">912</a> <em>         */</em>
+<a name="913" href="#913">913</a>         <strong>final</strong> Set&lt;BusObject_mxJPO.AttributeValue> values = <strong>new</strong> TreeSet&lt;BusObject_mxJPO.AttributeValue>();
+<a name="914" href="#914">914</a> 
+<a name="915" href="#915">915</a>         <em>/**<em>*</em></em>
+<a name="916" href="#916">916</a> <em>         * Constructor to create a new connection instance.</em>
+<a name="917" href="#917">917</a> <em>         *</em>
+<a name="918" href="#918">918</a> <em>         * @param _relName      name of the relationship</em>
+<a name="919" href="#919">919</a> <em>         * @param _direction    direction of the connection</em>
+<a name="920" href="#920">920</a> <em>         * @param _relSelect    relationship selection</em>
+<a name="921" href="#921">921</a> <em>         * @param _attrs        selected attributes within the relationship</em>
+<a name="922" href="#922">922</a> <em>         *                      selection</em>
+<a name="923" href="#923">923</a> <em>         */</em>
+<a name="924" href="#924">924</a>         <strong>public</strong> Connection(<strong>final</strong> String _relName,
+<a name="925" href="#925">925</a>                           <strong>final</strong> String _direction,
+<a name="926" href="#926">926</a>                           <strong>final</strong> RelationshipWithSelect _relSelect,
+<a name="927" href="#927">927</a>                           <strong>final</strong> Map&lt;String,String> _attrs)
+<a name="928" href="#928">928</a>         {
+<a name="929" href="#929">929</a>             <strong>this</strong>.relName = _relName;
+<a name="930" href="#930">930</a>             <strong>this</strong>.direction = _direction;
+<a name="931" href="#931">931</a>             <strong>final</strong> BusinessObjectWithSelect busSelect = _relSelect.getTarget();
+<a name="932" href="#932">932</a>             <strong>this</strong>.type = busSelect.getSelectData(<span class="string">"type"</span>);
+<a name="933" href="#933">933</a>             <strong>this</strong>.name = busSelect.getSelectData(<span class="string">"name"</span>);
+<a name="934" href="#934">934</a>             <strong>this</strong>.revision = busSelect.getSelectData(<span class="string">"revision"</span>);
+<a name="935" href="#935">935</a>             <strong>this</strong>.conId = _relSelect.getSelectData(<span class="string">"id"</span>);
+<a name="936" href="#936">936</a>             <strong>for</strong> (<strong>final</strong> Map.Entry&lt;String,String> attr : _attrs.entrySet())  {
+<a name="937" href="#937">937</a>                 <strong>this</strong>.values.add(<strong>new</strong> AttributeValue(attr.getValue(), _relSelect.getSelectData(attr.getKey())));
+<a name="938" href="#938">938</a>             }
 <a name="939" href="#939">939</a>         }
 <a name="940" href="#940">940</a> 
 <a name="941" href="#941">941</a>         <em>/**<em>*</em></em>
-<a name="942" href="#942">942</a> <em>         * Compares given connection with this connection. The compare is done</em>
-<a name="943" href="#943">943</a> <em>         * in this order:</em>
-<a name="944" href="#944">944</a> <em>         * &lt;ul></em>
-<a name="945" href="#945">945</a> <em>         * &lt;li>compare connection direction&lt;/li></em>
-<a name="946" href="#946">946</a> <em>         * &lt;li>if equal compare relationship name&lt;/li></em>
-<a name="947" href="#947">947</a> <em>         * &lt;li>if equal compare business object type&lt;/li></em>
-<a name="948" href="#948">948</a> <em>         * &lt;li>if equal compare business object name&lt;/li></em>
-<a name="949" href="#949">949</a> <em>         * &lt;li>if equal compare business object revision&lt;/li></em>
-<a name="950" href="#950">950</a> <em>         * &lt;li>if equal compare attributes with {@link #compareToAttr}&lt;/li></em>
-<a name="951" href="#951">951</a> <em>         * &lt;/ul></em>
-<a name="952" href="#952">952</a> <em>         *</em>
-<a name="953" href="#953">953</a> <em>         * @param _compare      connection instance to compare</em>
-<a name="954" href="#954">954</a> <em>         * @return &lt;code>0&lt;/code> if the connections are equal (should not</em>
-<a name="955" href="#955">955</a> <em>         *         possible...); a value less than &lt;code>0&lt;/code> if this</em>
-<a name="956" href="#956">956</a> <em>         *         connection is lexicographically less than the compared</em>
-<a name="957" href="#957">957</a> <em>         *         connection; a value greater than &lt;code>0&lt;/code> if this</em>
-<a name="958" href="#958">958</a> <em>         *         connection is lexicographically greater than the compared</em>
-<a name="959" href="#959">959</a> <em>         *         connection</em>
-<a name="960" href="#960">960</a> <em>         * @see #compareToAttr</em>
-<a name="961" href="#961">961</a> <em>         */</em>
-<a name="962" href="#962">962</a>         <strong>public</strong> <strong>int</strong> compareTo(<strong>final</strong> Connection _compare)
-<a name="963" href="#963">963</a>         {
-<a name="964" href="#964">964</a>             <strong>return</strong> <strong>this</strong>.direction.equals(_compare.direction)
-<a name="965" href="#965">965</a>                    ? <strong>this</strong>.relName.equals(_compare.relName)
-<a name="966" href="#966">966</a>                        ? <strong>this</strong>.type.equals(_compare.type)
-<a name="967" href="#967">967</a>                            ? <strong>this</strong>.name.equals(_compare.name)
-<a name="968" href="#968">968</a>                                ? <strong>this</strong>.revision.equals(_compare.revision)
-<a name="969" href="#969">969</a>                                    ? <strong>this</strong>.compareToAttr(_compare)
-<a name="970" href="#970">970</a>                                    : <strong>this</strong>.revision.compareTo(_compare.revision)
-<a name="971" href="#971">971</a>                                : <strong>this</strong>.name.compareTo(_compare.name)
-<a name="972" href="#972">972</a>                            : <strong>this</strong>.type.compareTo(_compare.type)
-<a name="973" href="#973">973</a>                        : <strong>this</strong>.relName.compareTo(_compare.relName)
-<a name="974" href="#974">974</a>                    : <strong>this</strong>.direction.compareTo(_compare.direction);
-<a name="975" href="#975">975</a>         }
-<a name="976" href="#976">976</a> 
-<a name="977" href="#977">977</a>         <em>/**<em>*</em></em>
-<a name="978" href="#978">978</a> <em>         * Compares all attributes values from this connection with the values</em>
-<a name="979" href="#979">979</a> <em>         * from the compared connection. If all values of both connections are</em>
-<a name="980" href="#980">980</a> <em>         * equal, the connection id's are compared. The attribute values are</em>
-<a name="981" href="#981">981</a> <em>         * compare in the order of the attributes (by attribute names).</em>
-<a name="982" href="#982">982</a> <em>         *</em>
-<a name="983" href="#983">983</a> <em>         * @param _compare  connection to compare</em>
-<a name="984" href="#984">984</a> <em>         * @return &lt;code>0&lt;/code> if all attributes values and both connection</em>
-<a name="985" href="#985">985</a> <em>         *         id's are equal (should not possible...); a value less than</em>
-<a name="986" href="#986">986</a> <em>         *         &lt;code>0&lt;/code> if one attribute value is lexicographically</em>
-<a name="987" href="#987">987</a> <em>         *         less than the compared attribute value; a value greater than</em>
-<a name="988" href="#988">988</a> <em>         *         &lt;code>0&lt;/code> if one attribute value is lexicographically</em>
-<a name="989" href="#989">989</a> <em>         *         greater than the other attribute value</em>
-<a name="990" href="#990">990</a> <em>         */</em>
-<a name="991" href="#991">991</a>         <strong>protected</strong> <strong>int</strong> compareToAttr(<strong>final</strong> Connection _compare)
-<a name="992" href="#992">992</a>         {
-<a name="993" href="#993">993</a>             <strong>final</strong> Iterator&lt;BusObject_mxJPO.AttributeValue> <strong>this</strong>Iter = <strong>this</strong>.values.iterator();
-<a name="994" href="#994">994</a>             <strong>final</strong> Iterator&lt;BusObject_mxJPO.AttributeValue> compIter = _compare.values.iterator();
-<a name="995" href="#995">995</a>             <strong>int</strong> ret = 0;
-<a name="996" href="#996">996</a>             <strong>while</strong> (thisIter.hasNext() &amp;&amp; (ret == 0))  {
-<a name="997" href="#997">997</a>                 ret = thisIter.next().value.compareTo(compIter.next().value);
-<a name="998" href="#998">998</a>             }
-<a name="999" href="#999">999</a>             <strong>return</strong> (ret == 0)
-<a name="1000" href="#1000">1000</a>                    ? <strong>this</strong>.conId.compareTo(_compare.conId)
-<a name="1001" href="#1001">1001</a>                    : ret;
-<a name="1002" href="#1002">1002</a>         }
-<a name="1003" href="#1003">1003</a> 
-<a name="1004" href="#1004">1004</a>         <em>/**<em>*</em></em>
-<a name="1005" href="#1005">1005</a> <em>         * Writes the TCL update to connect this connection to given business</em>
-<a name="1006" href="#1006">1006</a> <em>         * object and given attribute values.</em>
-<a name="1007" href="#1007">1007</a> <em>         *</em>
-<a name="1008" href="#1008">1008</a> <em>         * @param _out          appendable instance to the TCL update file</em>
-<a name="1009" href="#1009">1009</a> <em>         * @throws IOException if attribute information could not be written</em>
-<a name="1010" href="#1010">1010</a> <em>         * @see #relName</em>
-<a name="1011" href="#1011">1011</a> <em>         * @see #direction</em>
-<a name="1012" href="#1012">1012</a> <em>         * @see #type</em>
-<a name="1013" href="#1013">1013</a> <em>         * @see #name</em>
-<a name="1014" href="#1014">1014</a> <em>         * @see #revision</em>
-<a name="1015" href="#1015">1015</a> <em>         * @see #values</em>
-<a name="1016" href="#1016">1016</a> <em>         */</em>
-<a name="1017" href="#1017">1017</a>         <strong>public</strong> <strong>void</strong> write(<strong>final</strong> Appendable _out)
-<a name="1018" href="#1018">1018</a>                 throws IOException
-<a name="1019" href="#1019">1019</a>         {
-<a name="1020" href="#1020">1020</a>             _out.append(<span class="string">"\nmql connect bus \&quot;${OBJECTID}\&quot; &#47;&#47;"</span>)
-<a name="1021" href="#1021">1021</a>                 .append(<span class="string">"\n    relationship \&quot;"</span>).append(<strong>this</strong>.relName).append(<span class="string">"\&quot; &#47;&#47;"</span>)
-<a name="1022" href="#1022">1022</a>                 .append(<span class="string">"\n    "</span>).append(<strong>this</strong>.direction).append(<span class="string">" \&quot;"</span>)
-<a name="1023" href="#1023">1023</a>                     .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.type)).append(<span class="string">"\&quot; \&quot;"</span>)
-<a name="1024" href="#1024">1024</a>                     .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.name)).append(<span class="string">"\&quot; \&quot;"</span>)
-<a name="1025" href="#1025">1025</a>                     .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.revision)).append(<span class="string">"\&quot;"</span>);
-<a name="1026" href="#1026">1026</a>             <strong>for</strong> (<strong>final</strong> AttributeValue attr : <strong>this</strong>.values)  {
-<a name="1027" href="#1027">1027</a>                 attr.write(_out);
-<a name="1028" href="#1028">1028</a>             }
-<a name="1029" href="#1029">1029</a>         }
-<a name="1030" href="#1030">1030</a>     }
-<a name="1031" href="#1031">1031</a> }
+<a name="942" href="#942">942</a> <em>         * Returns the string representation of the business object. The string</em>
+<a name="943" href="#943">943</a> <em>         * representation is a concatenation of {@link #type}, {@link #name} and</em>
+<a name="944" href="#944">944</a> <em>         * {@link #revision}.</em>
+<a name="945" href="#945">945</a> <em>         *</em>
+<a name="946" href="#946">946</a> <em>         * @return string representation of the business object</em>
+<a name="947" href="#947">947</a> <em>         * @see #type</em>
+<a name="948" href="#948">948</a> <em>         * @see #name</em>
+<a name="949" href="#949">949</a> <em>         * @see #revision</em>
+<a name="950" href="#950">950</a> <em>         */</em>
+<a name="951" href="#951">951</a>         @Override()
+<a name="952" href="#952">952</a>         <strong>public</strong> String toString()
+<a name="953" href="#953">953</a>         {
+<a name="954" href="#954">954</a>             <strong>return</strong> <span class="string">"[type = "</span> + <strong>this</strong>.type + <span class="string">","</span>
+<a name="955" href="#955">955</a>                    + <span class="string">" name = "</span> + <strong>this</strong>.name + <span class="string">","</span>
+<a name="956" href="#956">956</a>                    + <span class="string">" revision = "</span> + <strong>this</strong>.revision + <span class="string">"]"</span>;
+<a name="957" href="#957">957</a>         }
+<a name="958" href="#958">958</a> 
+<a name="959" href="#959">959</a>         <em>/**<em>*</em></em>
+<a name="960" href="#960">960</a> <em>         * Compares given connection with this connection. The compare is done</em>
+<a name="961" href="#961">961</a> <em>         * in this order:</em>
+<a name="962" href="#962">962</a> <em>         * &lt;ul></em>
+<a name="963" href="#963">963</a> <em>         * &lt;li>compare connection direction&lt;/li></em>
+<a name="964" href="#964">964</a> <em>         * &lt;li>if equal compare relationship name&lt;/li></em>
+<a name="965" href="#965">965</a> <em>         * &lt;li>if equal compare business object type&lt;/li></em>
+<a name="966" href="#966">966</a> <em>         * &lt;li>if equal compare business object name&lt;/li></em>
+<a name="967" href="#967">967</a> <em>         * &lt;li>if equal compare business object revision&lt;/li></em>
+<a name="968" href="#968">968</a> <em>         * &lt;li>if equal compare attributes with {@link #compareToAttr}&lt;/li></em>
+<a name="969" href="#969">969</a> <em>         * &lt;/ul></em>
+<a name="970" href="#970">970</a> <em>         *</em>
+<a name="971" href="#971">971</a> <em>         * @param _compare      connection instance to compare</em>
+<a name="972" href="#972">972</a> <em>         * @return &lt;code>0&lt;/code> if the connections are equal (should not</em>
+<a name="973" href="#973">973</a> <em>         *         possible...); a value less than &lt;code>0&lt;/code> if this</em>
+<a name="974" href="#974">974</a> <em>         *         connection is lexicographically less than the compared</em>
+<a name="975" href="#975">975</a> <em>         *         connection; a value greater than &lt;code>0&lt;/code> if this</em>
+<a name="976" href="#976">976</a> <em>         *         connection is lexicographically greater than the compared</em>
+<a name="977" href="#977">977</a> <em>         *         connection</em>
+<a name="978" href="#978">978</a> <em>         * @see #compareToAttr</em>
+<a name="979" href="#979">979</a> <em>         */</em>
+<a name="980" href="#980">980</a>         <strong>public</strong> <strong>int</strong> compareTo(<strong>final</strong> Connection _compare)
+<a name="981" href="#981">981</a>         {
+<a name="982" href="#982">982</a>             <strong>return</strong> <strong>this</strong>.direction.equals(_compare.direction)
+<a name="983" href="#983">983</a>                    ? <strong>this</strong>.relName.equals(_compare.relName)
+<a name="984" href="#984">984</a>                        ? <strong>this</strong>.type.equals(_compare.type)
+<a name="985" href="#985">985</a>                            ? <strong>this</strong>.name.equals(_compare.name)
+<a name="986" href="#986">986</a>                                ? <strong>this</strong>.revision.equals(_compare.revision)
+<a name="987" href="#987">987</a>                                    ? <strong>this</strong>.compareToAttr(_compare)
+<a name="988" href="#988">988</a>                                    : <strong>this</strong>.revision.compareTo(_compare.revision)
+<a name="989" href="#989">989</a>                                : <strong>this</strong>.name.compareTo(_compare.name)
+<a name="990" href="#990">990</a>                            : <strong>this</strong>.type.compareTo(_compare.type)
+<a name="991" href="#991">991</a>                        : <strong>this</strong>.relName.compareTo(_compare.relName)
+<a name="992" href="#992">992</a>                    : <strong>this</strong>.direction.compareTo(_compare.direction);
+<a name="993" href="#993">993</a>         }
+<a name="994" href="#994">994</a> 
+<a name="995" href="#995">995</a>         <em>/**<em>*</em></em>
+<a name="996" href="#996">996</a> <em>         * Compares all attributes values from this connection with the values</em>
+<a name="997" href="#997">997</a> <em>         * from the compared connection. If all values of both connections are</em>
+<a name="998" href="#998">998</a> <em>         * equal, the connection id's are compared. The attribute values are</em>
+<a name="999" href="#999">999</a> <em>         * compare in the order of the attributes (by attribute names).</em>
+<a name="1000" href="#1000">1000</a> <em>         *</em>
+<a name="1001" href="#1001">1001</a> <em>         * @param _compare  connection to compare</em>
+<a name="1002" href="#1002">1002</a> <em>         * @return &lt;code>0&lt;/code> if all attributes values and both connection</em>
+<a name="1003" href="#1003">1003</a> <em>         *         id's are equal (should not possible...); a value less than</em>
+<a name="1004" href="#1004">1004</a> <em>         *         &lt;code>0&lt;/code> if one attribute value is lexicographically</em>
+<a name="1005" href="#1005">1005</a> <em>         *         less than the compared attribute value; a value greater than</em>
+<a name="1006" href="#1006">1006</a> <em>         *         &lt;code>0&lt;/code> if one attribute value is lexicographically</em>
+<a name="1007" href="#1007">1007</a> <em>         *         greater than the other attribute value</em>
+<a name="1008" href="#1008">1008</a> <em>         */</em>
+<a name="1009" href="#1009">1009</a>         <strong>protected</strong> <strong>int</strong> compareToAttr(<strong>final</strong> Connection _compare)
+<a name="1010" href="#1010">1010</a>         {
+<a name="1011" href="#1011">1011</a>             <strong>final</strong> Iterator&lt;BusObject_mxJPO.AttributeValue> <strong>this</strong>Iter = <strong>this</strong>.values.iterator();
+<a name="1012" href="#1012">1012</a>             <strong>final</strong> Iterator&lt;BusObject_mxJPO.AttributeValue> compIter = _compare.values.iterator();
+<a name="1013" href="#1013">1013</a>             <strong>int</strong> ret = 0;
+<a name="1014" href="#1014">1014</a>             <strong>while</strong> (thisIter.hasNext() &amp;&amp; (ret == 0))  {
+<a name="1015" href="#1015">1015</a>                 ret = thisIter.next().value.compareTo(compIter.next().value);
+<a name="1016" href="#1016">1016</a>             }
+<a name="1017" href="#1017">1017</a>             <strong>return</strong> (ret == 0)
+<a name="1018" href="#1018">1018</a>                    ? <strong>this</strong>.conId.compareTo(_compare.conId)
+<a name="1019" href="#1019">1019</a>                    : ret;
+<a name="1020" href="#1020">1020</a>         }
+<a name="1021" href="#1021">1021</a> 
+<a name="1022" href="#1022">1022</a>         <em>/**<em>*</em></em>
+<a name="1023" href="#1023">1023</a> <em>         * Writes the TCL update to connect this connection to given business</em>
+<a name="1024" href="#1024">1024</a> <em>         * object and given attribute values.</em>
+<a name="1025" href="#1025">1025</a> <em>         *</em>
+<a name="1026" href="#1026">1026</a> <em>         * @param _out          appendable instance to the TCL update file</em>
+<a name="1027" href="#1027">1027</a> <em>         * @throws IOException if attribute information could not be written</em>
+<a name="1028" href="#1028">1028</a> <em>         * @see #relName</em>
+<a name="1029" href="#1029">1029</a> <em>         * @see #direction</em>
+<a name="1030" href="#1030">1030</a> <em>         * @see #type</em>
+<a name="1031" href="#1031">1031</a> <em>         * @see #name</em>
+<a name="1032" href="#1032">1032</a> <em>         * @see #revision</em>
+<a name="1033" href="#1033">1033</a> <em>         * @see #values</em>
+<a name="1034" href="#1034">1034</a> <em>         */</em>
+<a name="1035" href="#1035">1035</a>         <strong>public</strong> <strong>void</strong> write(<strong>final</strong> Appendable _out)
+<a name="1036" href="#1036">1036</a>                 throws IOException
+<a name="1037" href="#1037">1037</a>         {
+<a name="1038" href="#1038">1038</a>             _out.append(<span class="string">"\nmql connect bus \&quot;${OBJECTID}\&quot; &#47;&#47;"</span>)
+<a name="1039" href="#1039">1039</a>                 .append(<span class="string">"\n    relationship \&quot;"</span>).append(<strong>this</strong>.relName).append(<span class="string">"\&quot; &#47;&#47;"</span>)
+<a name="1040" href="#1040">1040</a>                 .append(<span class="string">"\n    "</span>).append(<strong>this</strong>.direction).append(<span class="string">" \&quot;"</span>)
+<a name="1041" href="#1041">1041</a>                     .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.type)).append(<span class="string">"\&quot; \&quot;"</span>)
+<a name="1042" href="#1042">1042</a>                     .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.name)).append(<span class="string">"\&quot; \&quot;"</span>)
+<a name="1043" href="#1043">1043</a>                     .append(StringUtil_mxJPO.convertTcl(<strong>this</strong>.revision)).append(<span class="string">"\&quot;"</span>);
+<a name="1044" href="#1044">1044</a>             <strong>for</strong> (<strong>final</strong> AttributeValue attr : <strong>this</strong>.values)  {
+<a name="1045" href="#1045">1045</a>                 attr.write(_out);
+<a name="1046" href="#1046">1046</a>             }
+<a name="1047" href="#1047">1047</a>         }
+<a name="1048" href="#1048">1048</a>     }
+<a name="1049" href="#1049">1049</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
