@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pmd version="4.2.2" timestamp="2010-02-21T20:31:27.616">
+<pmd version="4.2.2" timestamp="2010-05-30T20:49:57.567">
 <file name="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/mxadapter/MXAdapter.java">
-<violation beginline="159" endline="159" begincolumn="33" endcolumn="48" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.mxupdate.eclipse.mxadapter" class="MXAdapter" variable="RETURN_KEY_ERROR" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
+<violation beginline="99" endline="99" begincolumn="33" endcolumn="48" rule="UnusedPrivateField" ruleset="Unused Code Rules" package="org.mxupdate.eclipse.mxadapter" class="MXAdapter" variable="RETURN_KEY_ERROR" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedPrivateField" priority="3">
 Avoid unused private fields such as 'RETURN_KEY_ERROR'.
+</violation>
+</file>
+<file name="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/mxadapter/connectors/URLConnector.java">
+<violation beginline="156" endline="213" begincolumn="12" endcolumn="5" rule="UnusedFormalParameter" ruleset="Unused Code Rules" package="org.mxupdate.eclipse.mxadapter.connectors" class="URLConnector" externalInfoUrl="http://pmd.sourceforge.net/rules/unusedcode.html#UnusedFormalParameter" priority="3">
+Avoid unused constructor parameters such as '_bundle'.
 </violation>
 </file>
 </pmd>

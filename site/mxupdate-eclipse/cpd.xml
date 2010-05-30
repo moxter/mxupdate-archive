@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pmd-cpd>
-<duplication lines="49" tokens="243">
-<file line="709" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/mxadapter/MXAdapter.java"/>
-<file line="763" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/mxadapter/MXAdapter.java"/>
+<duplication lines="30" tokens="175">
+<file line="634" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/mxadapter/MXAdapter.java"/>
+<file line="722" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/mxadapter/MXAdapter.java"/>
 <codefragment>
 <![CDATA[
-                                                   "Name", _item});
-        } catch (final IOException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
-        } catch (final MatrixException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
-        } catch (final ClassNotFoundException e) {
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), e); //$NON-NLS-1$
-        }
-
-        final IExportItem ret;
-        if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
-            ret = null;
-            this.console.logError(Messages.getString("MXAdapter.ExceptionExportFailed"), //$NON-NLS-1$
-                                  (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION));
-        } else  {
             final Map<?,?> value = (Map<?,?>) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            Activator.getDefault().getConsole().logInfo(Messages.getString("MXAdapter.ExportLog", //$NON-NLS-1$
+                                                                           (String) value.get("FileName")));
+            Activator.getDefault().getConsole().appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
             ret = new IExportItem() {
                 public String getFileName()
                 {
@@ -47,13 +35,63 @@
 
         return ret;
     }
+]]>
+</codefragment>
+</duplication>
+<duplication lines="22" tokens="165">
+<file line="369" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/properties/ProjectMode.java"/>
+<file line="809" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/properties/ProjectMode.java"/>
+<codefragment>
+<![CDATA[
+            final String propKeyFileCnt     = _properties.getString(this.prefMXUpdateByFileContent, ""); //$NON-NLS-1$
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see #imageMap
-     */
-    public ImageDescriptor getImageDescriptor(final IFile _file)
+            // read file
+            _console.logInfo(Messages.getString(
+                    new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterReadExternalFile"), propFile)); //$NON-NLS-1$
+            final Properties extProps = new Properties();
+            try {
+                extProps.load(new FileInputStream(propFile));
+            } catch (final FileNotFoundException e) {
+                final String message = Messages.getString(
+                        new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterFileOpenFailed"), propFile); //$NON-NLS-1$
+                _console.logError(message, e); //$NON-NLS-1$
+                throw new Exception(message, e);
+            } catch (final IOException e) {
+                final String message = Messages.getString(
+                        new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append("InitAdapterFileOpenFailed"), propFile); //$NON-NLS-1$
+                _console.logError(message, e); //$NON-NLS-1$
+                throw new Exception(message, e);
+            }
+
+            // SSH server
+            final String sshServer = extProps.getProperty(propKeySSHServer);
+]]>
+</codefragment>
+</duplication>
+<duplication lines="19" tokens="110">
+<file line="174" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/properties/FieldUtil.java"/>
+<file line="225" path="/Users/tim/Daten/Bosch/mxupdate-eclipse/src/main/java/org/mxupdate/eclipse/properties/FieldUtil.java"/>
+<codefragment>
+<![CDATA[
+        textGridData.horizontalAlignment = SWT.FILL;
+        textGridData.grabExcessHorizontalSpace = true;
+        textGridData.widthHint = 150;
+        textField.setLayoutData(textGridData);
+        textField.setText(_properties.getString(_propertyKey, _default));
+        textField.addKeyListener(new KeyAdapter()  {
+            @Override()
+            public void keyReleased(final KeyEvent _event)
+            {
+                _properties.setString(_propertyKey, textField.getText());
+            }
+        });
+        textField.addFocusListener(new FocusAdapter() {
+            @Override()
+            public void focusLost(final FocusEvent _event)
+            {
+                _properties.setString(_propertyKey, textField.getText());
+            }
+        });
 ]]>
 </codefragment>
 </duplication>

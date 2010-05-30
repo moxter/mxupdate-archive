@@ -42,7 +42,7 @@
   
     
             <div class="xleft">
-        Last Published: 2010-02-21
+        Last Published: 2010-05-30
                       </div>
             <div class="xright">            <a href="">MxUpdate Eclipse Plug-In</a>
             
@@ -149,34 +149,22 @@
     <div id="bodyColumn">
       <div id="contentBox">
         <div class="section"><h2>CPD Results</h2>
-<p>The following document contains the results of PMD's  <a class="externalLink" href="http://pmd.sourceforge.net/cpd.html">CPD</a> 4.2.2.</p>
+<p>The following document contains the results of PMD's  <a href="http://pmd.sourceforge.net/cpd.html" class="externalLink">CPD</a> 4.2.2.</p>
 </div>
 <div class="section"><h2>Duplications</h2>
 <p><table class="bodyTable"><tr class="a"><th>File</th>
 <th>Line</th>
 </tr>
 <tr class="b"><td>org/mxupdate/eclipse/mxadapter/MXAdapter.java</td>
-<td><a href="./xref/org/mxupdate/eclipse/mxadapter/MXAdapter.html#709">709</a></td>
+<td><a href="./xref/org/mxupdate/eclipse/mxadapter/MXAdapter.html#634">634</a></td>
 </tr>
 <tr class="a"><td>org/mxupdate/eclipse/mxadapter/MXAdapter.java</td>
-<td><a href="./xref/org/mxupdate/eclipse/mxadapter/MXAdapter.html#763">763</a></td>
+<td><a href="./xref/org/mxupdate/eclipse/mxadapter/MXAdapter.html#722">722</a></td>
 </tr>
-<tr class="b"><td colspan='2'><div class="source"><pre>                                                   &quot;Name&quot;, _item});
-        } catch (final IOException e) {
-            this.console.logError(Messages.getString(&quot;MXAdapter.ExceptionExportFailed&quot;), e); //$NON-NLS-1$
-        } catch (final MatrixException e) {
-            this.console.logError(Messages.getString(&quot;MXAdapter.ExceptionExportFailed&quot;), e); //$NON-NLS-1$
-        } catch (final ClassNotFoundException e) {
-            this.console.logError(Messages.getString(&quot;MXAdapter.ExceptionExportFailed&quot;), e); //$NON-NLS-1$
-        }
-
-        final IExportItem ret;
-        if (bck.get(MXAdapter.RETURN_KEY_EXCEPTION) != null)  {
-            ret = null;
-            this.console.logError(Messages.getString(&quot;MXAdapter.ExceptionExportFailed&quot;), //$NON-NLS-1$
-                                  (Exception) bck.get(MXAdapter.RETURN_KEY_EXCEPTION));
-        } else  {
-            final Map&lt;?,?&gt; value = (Map&lt;?,?&gt;) bck.get(MXAdapter.RETURN_KEY_VALUES);
+<tr class="b"><td colspan='2'><div class="source"><pre>            final Map&lt;?,?&gt; value = (Map&lt;?,?&gt;) bck.get(MXAdapter.RETURN_KEY_VALUES);
+            Activator.getDefault().getConsole().logInfo(Messages.getString(&quot;MXAdapter.ExportLog&quot;, //$NON-NLS-1$
+                                                                           (String) value.get(&quot;FileName&quot;)));
+            Activator.getDefault().getConsole().appendLog((String) bck.get(MXAdapter.RETURN_KEY_LOG));
             ret = new IExportItem() {
                 public String getFileName()
                 {
@@ -202,14 +190,72 @@
         }
 
         return ret;
-    }
+    }</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/eclipse/properties/ProjectMode.java</td>
+<td><a href="./xref/org/mxupdate/eclipse/properties/ProjectMode.html#369">369</a></td>
+</tr>
+<tr class="a"><td>org/mxupdate/eclipse/properties/ProjectMode.java</td>
+<td><a href="./xref/org/mxupdate/eclipse/properties/ProjectMode.html#809">809</a></td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>            final String propKeyFileCnt     = _properties.getString(this.prefMXUpdateByFileContent, &quot;&quot;); //$NON-NLS-1$
 
-    /**
-     * {@inheritDoc}
-     *
-     * @see #imageMap
-     */
-    public ImageDescriptor getImageDescriptor(final IFile _file)</pre>
+            // read file
+            _console.logInfo(Messages.getString(
+                    new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append(&quot;InitAdapterReadExternalFile&quot;), propFile)); //$NON-NLS-1$
+            final Properties extProps = new Properties();
+            try {
+                extProps.load(new FileInputStream(propFile));
+            } catch (final FileNotFoundException e) {
+                final String message = Messages.getString(
+                        new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append(&quot;InitAdapterFileOpenFailed&quot;), propFile); //$NON-NLS-1$
+                _console.logError(message, e); //$NON-NLS-1$
+                throw new Exception(message, e);
+            } catch (final IOException e) {
+                final String message = Messages.getString(
+                        new StringBuilder(ProjectProperties.MSG_PREFIX).append(this.prefix).append(&quot;InitAdapterFileOpenFailed&quot;), propFile); //$NON-NLS-1$
+                _console.logError(message, e); //$NON-NLS-1$
+                throw new Exception(message, e);
+            }
+
+            // SSH server
+            final String sshServer = extProps.getProperty(propKeySSHServer);</pre>
+</div>
+</td></tr>
+<table class="bodyTable"></p>
+<p><table class="bodyTable"><tr class="a"><th>File</th>
+<th>Line</th>
+</tr>
+<tr class="b"><td>org/mxupdate/eclipse/properties/FieldUtil.java</td>
+<td><a href="./xref/org/mxupdate/eclipse/properties/FieldUtil.html#174">174</a></td>
+</tr>
+<tr class="a"><td>org/mxupdate/eclipse/properties/FieldUtil.java</td>
+<td><a href="./xref/org/mxupdate/eclipse/properties/FieldUtil.html#225">225</a></td>
+</tr>
+<tr class="b"><td colspan='2'><div class="source"><pre>        textGridData.horizontalAlignment = SWT.FILL;
+        textGridData.grabExcessHorizontalSpace = true;
+        textGridData.widthHint = 150;
+        textField.setLayoutData(textGridData);
+        textField.setText(_properties.getString(_propertyKey, _default));
+        textField.addKeyListener(new KeyAdapter()  {
+            @Override()
+            public void keyReleased(final KeyEvent _event)
+            {
+                _properties.setString(_propertyKey, textField.getText());
+            }
+        });
+        textField.addFocusListener(new FocusAdapter() {
+            @Override()
+            public void focusLost(final FocusEvent _event)
+            {
+                _properties.setString(_propertyKey, textField.getText());
+            }
+        });</pre>
 </div>
 </td></tr>
 <table class="bodyTable"></p>

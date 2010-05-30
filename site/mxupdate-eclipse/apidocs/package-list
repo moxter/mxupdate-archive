@@ -4,5 +4,8 @@ org.mxupdate.eclipse.console
 org.mxupdate.eclipse.handlers
 org.mxupdate.eclipse.importwizard
 org.mxupdate.eclipse.mxadapter
+org.mxupdate.eclipse.mxadapter.connectors
 org.mxupdate.eclipse.preferences
+org.mxupdate.eclipse.properties
 org.mxupdate.eclipse.shell
+org.mxupdate.eclipse.util
