@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 593 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-10-19 09:31:58 +0200 (Mo, 19 Okt 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 780 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-04-06 13:22:55 +0200 (Di, 06 Apr 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -58,7 +58,7 @@
 <a name="49" href="#49">49</a>  <em> * script.</em>
 <a name="50" href="#50">50</a>  <em> *</em>
 <a name="51" href="#51">51</a>  <em> * @author The MxUpdate Team</em>
-<a name="52" href="#52">52</a>  <em> * @version $Id: InstallDataModel_mxJPO.java 593 2009-10-19 07:31:58Z tim.moxter $</em>
+<a name="52" href="#52">52</a>  <em> * @version $Id: InstallDataModel_mxJPO.java 780 2010-04-06 11:22:55Z tim.moxter $</em>
 <a name="53" href="#53">53</a>  <em> */</em>
 <a name="54" href="#54">54</a>  <strong>public</strong> <strong>class</strong> InstallDataModel_mxJPO
 <a name="55" href="#55">55</a>  {
@@ -697,7 +697,7 @@
 <a name="688" href="#688">688</a>     <strong>protected</strong> <strong>void</strong> updateBusTypes(<strong>final</strong> ParameterCache_mxJPO _paramCache)
 <a name="689" href="#689">689</a>             throws Exception
 <a name="690" href="#690">690</a>     {
-<a name="691" href="#691">691</a>         <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : _paramCache.getMapping().getAllTypeDefs())  {
+<a name="691" href="#691">691</a>         <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : _paramCache.getMapping().getAllTypeDefsSorted())  {
 <a name="692" href="#692">692</a>             <strong>if</strong> ((typeDef.getMxBusType() != <strong>null</strong>) &amp;&amp; !<span class="string">""</span>.equals(typeDef.getMxBusType())
 <a name="693" href="#693">693</a>                     &amp;&amp; (typeDef.getMxAdminName() == <strong>null</strong>)
 <a name="694" href="#694">694</a>                     &amp;&amp; (!typeDef.isBusCheckExists() || typeDef.existsBusType(_paramCache)))  {
@@ -741,7 +741,7 @@
 <a name="732" href="#732">732</a>     {
 <a name="733" href="#733">733</a>         <em class="comment">// prepare properties as set</em>
 <a name="734" href="#734">734</a>         <strong>final</strong> Set&lt;String> props = <strong>new</strong> TreeSet&lt;String>();
-<a name="735" href="#735">735</a>         <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : _paramCache.getMapping().getAllTypeDefs())  {
+<a name="735" href="#735">735</a>         <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : _paramCache.getMapping().getAllTypeDefsSorted())  {
 <a name="736" href="#736">736</a>             <strong>if</strong> (typeDef.getIconPath() != <strong>null</strong>)  {
 <a name="737" href="#737">737</a> 
 <a name="738" href="#738">738</a>                 <strong>final</strong> File file = <strong>new</strong> File(_sourcePath, typeDef.getIconPath());

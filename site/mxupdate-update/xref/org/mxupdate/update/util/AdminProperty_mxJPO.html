@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 611 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2009-11-02 01:20:36 +0100 (Mo, 02 Nov 2009) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 794 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-05-16 20:13:07 +0200 (So, 16 Mai 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -38,7 +38,7 @@
 <a name="29" href="#29">29</a>  <em> * is only used within administration objects (not business objects).</em>
 <a name="30" href="#30">30</a>  <em> *</em>
 <a name="31" href="#31">31</a>  <em> * @author The MxUpdate Team</em>
-<a name="32" href="#32">32</a>  <em> * @version $Id: AdminProperty_mxJPO.java 611 2009-11-02 00:20:36Z tim.moxter $</em>
+<a name="32" href="#32">32</a>  <em> * @version $Id: AdminProperty_mxJPO.java 794 2010-05-16 18:13:07Z tim.moxter $</em>
 <a name="33" href="#33">33</a>  <em> */</em>
 <a name="34" href="#34">34</a>  <strong>public</strong> <strong>class</strong> AdminProperty_mxJPO
 <a name="35" href="#35">35</a>      implements Comparable&lt;AdminProperty_mxJPO>
@@ -107,7 +107,7 @@
 <a name="98" href="#98">98</a>              <strong>if</strong> (<span class="string">"/adminRef/adminName"</span>.equals(_url))  {
 <a name="99" href="#99">99</a>                  <strong>this</strong>.refAdminName = _content;
 <a name="100" href="#100">100</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/adminRef/adminType"</span>.equals(_url))  {
-<a name="101" href="#101">101</a>                 <strong>this</strong>.refAdminType = _content;
+<a name="101" href="#101">101</a>                 <strong>this</strong>.refAdminType = <span class="string">"att"</span>.equals(_content) ? <span class="string">"attribute"</span> : _content;
 <a name="102" href="#102">102</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/flags"</span>.equals(_url))  {
 <a name="103" href="#103">103</a>                 <strong>this</strong>.flags = _content;
 <a name="104" href="#104">104</a>             } <strong>else</strong> <strong>if</strong> (<span class="string">"/name"</span>.equals(_url))  {

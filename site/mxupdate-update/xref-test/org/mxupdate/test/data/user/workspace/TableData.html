@@ -8,7 +8,7 @@
 <div id="overview"><a href="../../../../../../../../../../../../../../../../../apidocs/org/mxupdate/test/data/user/workspace/TableData.html">View Javadoc</a></div><pre>
 
 <a name="1" href="#1">1</a>   <em class="comment">/*</em>
-<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2009 The MxUpdate Team</em>
+<a name="2" href="#2">2</a>   <em class="comment"> * Copyright 2008-2010 The MxUpdate Team</em>
 <a name="3" href="#3">3</a>   <em class="comment"> *</em>
 <a name="4" href="#4">4</a>   <em class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</em>
 <a name="5" href="#5">5</a>   <em class="comment"> * you may not use this file except in compliance with the License.</em>
@@ -22,18 +22,18 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 664 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-01-17 21:08:58 +0100 (So, 17 Jan 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 797 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-05-17 00:47:14 +0200 (Mo, 17 Mai 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
 <a name="21" href="#21">21</a>  <strong>package</strong> org.mxupdate.test.data.user.workspace;
 <a name="22" href="#22">22</a>  
 <a name="23" href="#23">23</a>  <strong>import</strong> java.util.ArrayList;
-<a name="24" href="#24">24</a>  <strong>import</strong> java.util.HashSet;
+<a name="24" href="#24">24</a>  <strong>import</strong> java.util.HashMap;
 <a name="25" href="#25">25</a>  <strong>import</strong> java.util.Iterator;
 <a name="26" href="#26">26</a>  <strong>import</strong> java.util.List;
-<a name="27" href="#27">27</a>  <strong>import</strong> java.util.Set;
+<a name="27" href="#27">27</a>  <strong>import</strong> java.util.Map;
 <a name="28" href="#28">28</a>  
 <a name="29" href="#29">29</a>  <strong>import</strong> matrix.util.MatrixException;
 <a name="30" href="#30">30</a>  
@@ -48,7 +48,7 @@
 <a name="39" href="#39">39</a>  <em> * create / update and to export.</em>
 <a name="40" href="#40">40</a>  <em> *</em>
 <a name="41" href="#41">41</a>  <em> * @author The MxUpdate Team</em>
-<a name="42" href="#42">42</a>  <em> * @version $Id: TableData.java 664 2010-01-17 20:08:58Z tim.moxter $</em>
+<a name="42" href="#42">42</a>  <em> * @version $Id: TableData.java 797 2010-05-16 22:47:14Z tim.moxter $</em>
 <a name="43" href="#43">43</a>  <em> * @param &lt;USER> class of the related user for which this table is defined</em>
 <a name="44" href="#44">44</a>  <em> */</em>
 <a name="45" href="#45">45</a>  <strong>public</strong> <strong>class</strong> TableData&lt;USER <strong>extends</strong> AbstractUserData&lt;?>>
@@ -57,7 +57,7 @@
 <a name="48" href="#48">48</a>      <em>/**<em>*</em></em>
 <a name="49" href="#49">49</a>  <em>     * Within export the description must be defined.</em>
 <a name="50" href="#50">50</a>  <em>     */</em>
-<a name="51" href="#51">51</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> Set&lt;String> REQUIRED_EXPORT_VALUES = <strong>new</strong> HashSet&lt;String>(3);
+<a name="51" href="#51">51</a>      <strong>private</strong> <strong>static</strong> <strong>final</strong> Map&lt;String,String> REQUIRED_EXPORT_VALUES = <strong>new</strong> HashMap&lt;String,String>();
 <a name="52" href="#52">52</a>      <strong>static</strong>  {
 <a name="53" href="#53">53</a>      }
 <a name="54" href="#54">54</a>  

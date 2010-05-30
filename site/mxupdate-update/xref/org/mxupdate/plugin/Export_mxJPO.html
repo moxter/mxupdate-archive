@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 713 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-07 00:28:00 +0100 (So, 07 Feb 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 780 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-04-06 13:22:55 +0200 (Di, 06 Apr 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -43,7 +43,7 @@
 <a name="34" href="#34">34</a>  <em> * created depending on the configuration item type (administration type).</em>
 <a name="35" href="#35">35</a>  <em> *</em>
 <a name="36" href="#36">36</a>  <em> * @author The MxUpdate Team</em>
-<a name="37" href="#37">37</a>  <em> * @version $Id: Export_mxJPO.java 713 2010-02-06 23:28:00Z tim.moxter $</em>
+<a name="37" href="#37">37</a>  <em> * @version $Id: Export_mxJPO.java 780 2010-04-06 11:22:55Z tim.moxter $</em>
 <a name="38" href="#38">38</a>  <em> */</em>
 <a name="39" href="#39">39</a>  <strong>class</strong> Export_mxJPO
 <a name="40" href="#40">40</a>      <strong>extends</strong> AbstractPlugin_mxJPO
@@ -136,86 +136,76 @@
 <a name="127" href="#127">127</a> <em>     * @param _paramCache   parameter cache with the MX context</em>
 <a name="128" href="#128">128</a> <em>     * @param _arguments    map with all search arguments</em>
 <a name="129" href="#129">129</a> <em>     * @return packed return values in maps</em>
-<a name="130" href="#130">130</a> <em>     * @see AbstractPlugin_mxJPO#prepareReturn(String, String, Exception, Object)</em>
-<a name="131" href="#131">131</a> <em>     */</em>
-<a name="132" href="#132">132</a>     Map&lt;String,?> execute(<strong>final</strong> ParameterCache_mxJPO _paramCache,
-<a name="133" href="#133">133</a>                           <strong>final</strong> Map&lt;String,Object> _arguments)
-<a name="134" href="#134">134</a>     {
-<a name="135" href="#135">135</a>         Map&lt;String,?> packedRet = <strong>null</strong>;
-<a name="136" href="#136">136</a>         <strong>try</strong>  {
-<a name="137" href="#137">137</a>             <strong>final</strong> String fileName = <strong>this</strong>.getArgument(_arguments, Export_mxJPO.ARGUMENT_KEY_FILENAME, <strong>null</strong>);
+<a name="130" href="#130">130</a> <em>     * @throws Exception if export failed</em>
+<a name="131" href="#131">131</a> <em>     * @see AbstractPlugin_mxJPO#prepareReturn(String, String, Exception, Object)</em>
+<a name="132" href="#132">132</a> <em>     */</em>
+<a name="133" href="#133">133</a>     Map&lt;String,String> execute(<strong>final</strong> ParameterCache_mxJPO _paramCache,
+<a name="134" href="#134">134</a>                                <strong>final</strong> Map&lt;String,Object> _arguments)
+<a name="135" href="#135">135</a>         throws Exception
+<a name="136" href="#136">136</a>     {
+<a name="137" href="#137">137</a>         <strong>final</strong> String fileName = <strong>this</strong>.getArgument(_arguments, Export_mxJPO.ARGUMENT_KEY_FILENAME, <strong>null</strong>);
 <a name="138" href="#138">138</a> 
-<a name="139" href="#139">139</a>             AbstractObject_mxJPO instance = <strong>null</strong>;
+<a name="139" href="#139">139</a>         AbstractObject_mxJPO instance = <strong>null</strong>;
 <a name="140" href="#140">140</a> 
-<a name="141" href="#141">141</a>             <strong>if</strong> (fileName != <strong>null</strong>)  {
-<a name="142" href="#142">142</a>                 <strong>final</strong> File file = <strong>new</strong> File(fileName);
+<a name="141" href="#141">141</a>         <strong>if</strong> (fileName != <strong>null</strong>)  {
+<a name="142" href="#142">142</a>             <strong>final</strong> File file = <strong>new</strong> File(fileName);
 <a name="143" href="#143">143</a> 
-<a name="144" href="#144">144</a>                 <em class="comment">// first found related type definition</em>
-<a name="145" href="#145">145</a>                 <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : _paramCache.getMapping().getAllTypeDefs())  {
-<a name="146" href="#146">146</a>                     <strong>if</strong> (!typeDef.isFileMatchLast())  {
-<a name="147" href="#147">147</a>                         instance = typeDef.newTypeInstance(<strong>null</strong>);
-<a name="148" href="#148">148</a>                         <strong>final</strong> String mxName = instance.extractMxName(_paramCache, file);
-<a name="149" href="#149">149</a>                         <strong>if</strong> (mxName != <strong>null</strong>)  {
-<a name="150" href="#150">150</a>                             instance = typeDef.newTypeInstance(mxName);
-<a name="151" href="#151">151</a>                             <strong>break</strong>;
-<a name="152" href="#152">152</a>                         } <strong>else</strong>  {
-<a name="153" href="#153">153</a>                             instance = <strong>null</strong>;
-<a name="154" href="#154">154</a>                         }
-<a name="155" href="#155">155</a>                     }
-<a name="156" href="#156">156</a>                 }
-<a name="157" href="#157">157</a>                 <strong>if</strong> (instance == <strong>null</strong>)  {
-<a name="158" href="#158">158</a>                     <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : _paramCache.getMapping().getAllTypeDefs())  {
-<a name="159" href="#159">159</a>                         <strong>if</strong> (typeDef.isFileMatchLast())  {
-<a name="160" href="#160">160</a>                             instance = typeDef.newTypeInstance(<strong>null</strong>);
-<a name="161" href="#161">161</a>                             <strong>final</strong> String mxName = instance.extractMxName(_paramCache, file);
-<a name="162" href="#162">162</a>                             <strong>if</strong> (mxName != <strong>null</strong>)  {
-<a name="163" href="#163">163</a>                                 instance = typeDef.newTypeInstance(mxName);
-<a name="164" href="#164">164</a>                                 <strong>break</strong>;
-<a name="165" href="#165">165</a>                             } <strong>else</strong>  {
-<a name="166" href="#166">166</a>                                 instance = <strong>null</strong>;
-<a name="167" href="#167">167</a>                             }
-<a name="168" href="#168">168</a>                         }
-<a name="169" href="#169">169</a>                     }
-<a name="170" href="#170">170</a>                 }
-<a name="171" href="#171">171</a>             } <strong>else</strong>  {
-<a name="172" href="#172">172</a>                 <em class="comment">// initialize arguments</em>
-<a name="173" href="#173">173</a>                 <strong>final</strong> String typeDefName = <strong>this</strong>.getArgument(_arguments, Export_mxJPO.ARGUMENT_KEY_TYPEDEF, <strong>null</strong>);
-<a name="174" href="#174">174</a>                 <strong>final</strong> String item = <strong>this</strong>.getArgument(_arguments, Export_mxJPO.ARGUMENT_KEY_NAME, <strong>null</strong>);
+<a name="144" href="#144">144</a>             <em class="comment">// first found related type definition</em>
+<a name="145" href="#145">145</a>             <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : _paramCache.getMapping().getAllTypeDefsSorted())  {
+<a name="146" href="#146">146</a>                 <strong>if</strong> (!typeDef.isFileMatchLast())  {
+<a name="147" href="#147">147</a>                     instance = typeDef.newTypeInstance(<strong>null</strong>);
+<a name="148" href="#148">148</a>                     <strong>final</strong> String mxName = instance.extractMxName(_paramCache, file);
+<a name="149" href="#149">149</a>                     <strong>if</strong> (mxName != <strong>null</strong>)  {
+<a name="150" href="#150">150</a>                         instance = typeDef.newTypeInstance(mxName);
+<a name="151" href="#151">151</a>                         <strong>break</strong>;
+<a name="152" href="#152">152</a>                     } <strong>else</strong>  {
+<a name="153" href="#153">153</a>                         instance = <strong>null</strong>;
+<a name="154" href="#154">154</a>                     }
+<a name="155" href="#155">155</a>                 }
+<a name="156" href="#156">156</a>             }
+<a name="157" href="#157">157</a>             <strong>if</strong> (instance == <strong>null</strong>)  {
+<a name="158" href="#158">158</a>                 <strong>for</strong> (<strong>final</strong> TypeDef_mxJPO typeDef : _paramCache.getMapping().getAllTypeDefsSorted())  {
+<a name="159" href="#159">159</a>                     <strong>if</strong> (typeDef.isFileMatchLast())  {
+<a name="160" href="#160">160</a>                         instance = typeDef.newTypeInstance(<strong>null</strong>);
+<a name="161" href="#161">161</a>                         <strong>final</strong> String mxName = instance.extractMxName(_paramCache, file);
+<a name="162" href="#162">162</a>                         <strong>if</strong> (mxName != <strong>null</strong>)  {
+<a name="163" href="#163">163</a>                             instance = typeDef.newTypeInstance(mxName);
+<a name="164" href="#164">164</a>                             <strong>break</strong>;
+<a name="165" href="#165">165</a>                         } <strong>else</strong>  {
+<a name="166" href="#166">166</a>                             instance = <strong>null</strong>;
+<a name="167" href="#167">167</a>                         }
+<a name="168" href="#168">168</a>                     }
+<a name="169" href="#169">169</a>                 }
+<a name="170" href="#170">170</a>             }
+<a name="171" href="#171">171</a>         } <strong>else</strong>  {
+<a name="172" href="#172">172</a>             <em class="comment">// initialize arguments</em>
+<a name="173" href="#173">173</a>             <strong>final</strong> String typeDefName = <strong>this</strong>.getArgument(_arguments, Export_mxJPO.ARGUMENT_KEY_TYPEDEF, <strong>null</strong>);
+<a name="174" href="#174">174</a>             <strong>final</strong> String item = <strong>this</strong>.getArgument(_arguments, Export_mxJPO.ARGUMENT_KEY_NAME, <strong>null</strong>);
 <a name="175" href="#175">175</a> 
-<a name="176" href="#176">176</a>                 <em class="comment">// export all objects depending on the type definitions</em>
-<a name="177" href="#177">177</a>                 <strong>final</strong> TypeDef_mxJPO typeDef = _paramCache.getMapping().getTypeDef(typeDefName);
-<a name="178" href="#178">178</a>                 instance = typeDef.newTypeInstance(item);
-<a name="179" href="#179">179</a>             }
+<a name="176" href="#176">176</a>             <em class="comment">// export all objects depending on the type definitions</em>
+<a name="177" href="#177">177</a>             <strong>final</strong> TypeDef_mxJPO typeDef = _paramCache.getMapping().getTypeDef(typeDefName);
+<a name="178" href="#178">178</a>             instance = typeDef.newTypeInstance(item);
+<a name="179" href="#179">179</a>         }
 <a name="180" href="#180">180</a> 
-<a name="181" href="#181">181</a>             <em class="comment">// export code</em>
-<a name="182" href="#182">182</a>             <strong>final</strong> Map&lt;String,String> ret;
-<a name="183" href="#183">183</a>             <strong>if</strong> (instance == <strong>null</strong>)  {
-<a name="184" href="#184">184</a>                 ret = <strong>null</strong>;
-<a name="185" href="#185">185</a>             } <strong>else</strong>  {
-<a name="186" href="#186">186</a>                 <strong>final</strong> StringBuilder code = <strong>new</strong> StringBuilder();
-<a name="187" href="#187">187</a>                 instance.export(_paramCache, code);
+<a name="181" href="#181">181</a>         <em class="comment">// export code</em>
+<a name="182" href="#182">182</a>         <strong>final</strong> Map&lt;String,String> ret;
+<a name="183" href="#183">183</a>         <strong>if</strong> (instance == <strong>null</strong>)  {
+<a name="184" href="#184">184</a>             ret = <strong>null</strong>;
+<a name="185" href="#185">185</a>         } <strong>else</strong>  {
+<a name="186" href="#186">186</a>             <strong>final</strong> StringBuilder code = <strong>new</strong> StringBuilder();
+<a name="187" href="#187">187</a>             instance.export(_paramCache, code);
 <a name="188" href="#188">188</a> 
-<a name="189" href="#189">189</a>                 ret = <strong>new</strong> HashMap&lt;String,String>();
-<a name="190" href="#190">190</a>                 ret.put(Export_mxJPO.RETURN_KEY_TYPEDEF,    instance.getTypeDef().getName());
-<a name="191" href="#191">191</a>                 ret.put(Export_mxJPO.RETURN_KEY_NAME,       instance.getName());
-<a name="192" href="#192">192</a>                 ret.put(Export_mxJPO.RETURN_KEY_CODE,       code.toString());
-<a name="193" href="#193">193</a>                 ret.put(Export_mxJPO.RETURN_KEY_PATH,       instance.getPath());
-<a name="194" href="#194">194</a>                 ret.put(Export_mxJPO.RETURN_KEY_FILENAME,   instance.getFileName());
-<a name="195" href="#195">195</a>             }
+<a name="189" href="#189">189</a>             ret = <strong>new</strong> HashMap&lt;String,String>();
+<a name="190" href="#190">190</a>             ret.put(Export_mxJPO.RETURN_KEY_TYPEDEF,    instance.getTypeDef().getName());
+<a name="191" href="#191">191</a>             ret.put(Export_mxJPO.RETURN_KEY_NAME,       instance.getName());
+<a name="192" href="#192">192</a>             ret.put(Export_mxJPO.RETURN_KEY_CODE,       code.toString());
+<a name="193" href="#193">193</a>             ret.put(Export_mxJPO.RETURN_KEY_PATH,       instance.getPath());
+<a name="194" href="#194">194</a>             ret.put(Export_mxJPO.RETURN_KEY_FILENAME,   instance.getFileName());
+<a name="195" href="#195">195</a>         }
 <a name="196" href="#196">196</a> 
-<a name="197" href="#197">197</a>             packedRet = <strong>this</strong>.prepareReturn(_paramCache.getLogString(),
-<a name="198" href="#198">198</a>                                            (String) <strong>null</strong>,
-<a name="199" href="#199">199</a>                                            (Exception) <strong>null</strong>,
-<a name="200" href="#200">200</a>                                            ret);
-<a name="201" href="#201">201</a>         } <strong>catch</strong> (<strong>final</strong> Exception e)  {
-<a name="202" href="#202">202</a>             packedRet = <strong>this</strong>.prepareReturn((String) <strong>null</strong>,
-<a name="203" href="#203">203</a>                                            (String) <strong>null</strong>,
-<a name="204" href="#204">204</a>                                            e,
-<a name="205" href="#205">205</a>                                            <strong>null</strong>);
-<a name="206" href="#206">206</a>         }
-<a name="207" href="#207">207</a>         <strong>return</strong> packedRet;
-<a name="208" href="#208">208</a>     }
-<a name="209" href="#209">209</a> }
+<a name="197" href="#197">197</a>         <strong>return</strong> ret;
+<a name="198" href="#198">198</a>     }
+<a name="199" href="#199">199</a> }
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>

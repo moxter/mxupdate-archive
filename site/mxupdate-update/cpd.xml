@@ -104,7 +104,7 @@
 </duplication>
 <duplication lines="25" tokens="108">
 <file line="127" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/JPOProgram_mxJPO.java"/>
-<file line="100" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/MQLProgram_mxJPO.java"/>
+<file line="108" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/program/MQLProgram_mxJPO.java"/>
 <codefragment>
 <![CDATA[
     public MQLProgram_mxJPO(final TypeDef_mxJPO _typeDef,
@@ -219,7 +219,7 @@
 </codefragment>
 </duplication>
 <duplication lines="45" tokens="103">
-<file line="364" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/AbstractAttribute_mxJPO.java"/>
+<file line="399" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/datamodel/AbstractAttribute_mxJPO.java"/>
 <file line="169" path="/Users/tim/Daten/Bosch/mxupdate/src/main/java/org/mxupdate/update/userinterface/Form_mxJPO.java"/>
 <codefragment>
 <![CDATA[

@@ -22,8 +22,8 @@
 <a name="13" href="#13">13</a>  <em class="comment"> * See the License for the specific language governing permissions and</em>
 <a name="14" href="#14">14</a>  <em class="comment"> * limitations under the License.</em>
 <a name="15" href="#15">15</a>  <em class="comment"> *</em>
-<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 727 $</em>
-<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-02-20 19:13:54 +0100 (Sa, 20 Feb 2010) $</em>
+<a name="16" href="#16">16</a>  <em class="comment"> * Revision:        $Rev: 797 $</em>
+<a name="17" href="#17">17</a>  <em class="comment"> * Last Changed:    $Date: 2010-05-17 00:47:14 +0200 (Mo, 17 Mai 2010) $</em>
 <a name="18" href="#18">18</a>  <em class="comment"> * Last Changed By: $Author: tim.moxter $</em>
 <a name="19" href="#19">19</a>  <em class="comment"> */</em>
 <a name="20" href="#20">20</a>  
@@ -43,7 +43,7 @@
 <a name="34" href="#34">34</a>  <em>/**<em>*</em></em>
 <a name="35" href="#35">35</a>  <em> *</em>
 <a name="36" href="#36">36</a>  <em> * @author The MxUpdate Team</em>
-<a name="37" href="#37">37</a>  <em> * @version $Id: Format_mxJPO.java 727 2010-02-20 18:13:54Z tim.moxter $</em>
+<a name="37" href="#37">37</a>  <em> * @version $Id: Format_mxJPO.java 797 2010-05-16 22:47:14Z tim.moxter $</em>
 <a name="38" href="#38">38</a>  <em> */</em>
 <a name="39" href="#39">39</a>  <strong>public</strong> <strong>class</strong> Format_mxJPO
 <a name="40" href="#40">40</a>      <strong>extends</strong> AbstractAdminObject_mxJPO
@@ -154,7 +154,7 @@
 <a name="145" href="#145">145</a>                                <strong>final</strong> Appendable _out)
 <a name="146" href="#146">146</a>         throws IOException
 <a name="147" href="#147">147</a>     {
-<a name="148" href="#148">148</a>         _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.isHidden() ? <span class="string">"hidden"</span> : <span class="string">"nothidden"</span>)
+<a name="148" href="#148">148</a>         _out.append(<span class="string">" &#47;&#47;\n    "</span>).append(<strong>this</strong>.isHidden() ? <span class="string">"hidden"</span> : <span class="string">"!hidden"</span>)
 <a name="149" href="#149">149</a>             .append(<span class="string">" &#47;&#47;\n    version \&quot;"</span>).append((<strong>this</strong>.version != <strong>null</strong>) ? StringUtil_mxJPO.convertTcl(<strong>this</strong>.version) : <span class="string">""</span>).append('\&quot;')
 <a name="150" href="#150">150</a>             .append(<span class="string">" &#47;&#47;\n    suffix \&quot;"</span>).append((<strong>this</strong>.fileSuffix != <strong>null</strong>) ? StringUtil_mxJPO.convertTcl(<strong>this</strong>.fileSuffix) : <span class="string">""</span>).append('\&quot;')
 <a name="151" href="#151">151</a>             .append(<span class="string">" &#47;&#47;\n    type \&quot;"</span>).append((<strong>this</strong>.fileType != <strong>null</strong>) ? StringUtil_mxJPO.convertTcl(<strong>this</strong>.fileType) : <span class="string">""</span>).append('\&quot;')
