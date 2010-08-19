@@ -154,6 +154,18 @@ ParameterDef.UserRoleSupportRoleType.Default = false
 }}}
 The installed default value is {{{true}}}.
 
+=== Products on Persons ===
+If the used MX version does not uses products on person, the property
+"!UserPersonIgnoreProducts" must be changed:
+{{{
+ParameterDef.UserPersonIgnoreProducts.Default               = *
+}}}
+The default value is nothing. So now the products are not handled for all
+persons (including the administration persons).
+For for information see also the configuration item
+[CI_User_PersonAdmin administration person].
+
+<wiki:comment>--------------------------------------------------------------------------------</wiki:comment>
 
 == How could I use !MxUpdate Update together with emxGerLibUpdate? ==
 "!MxUpdate Update" and "emxGerLibUpdate" could be used together within one
