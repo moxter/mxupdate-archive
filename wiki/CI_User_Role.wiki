@@ -8,7 +8,7 @@
 Roles are used to define for persons specific access depending on there role.
 The three different kind of roles for standard roles, organizational roles and
 project roles exists. For a deep instruction see the "MQL Guide" or
-"Business Modeler Guide" of the "ENOVIAvStudio Modeling Platform".
+"Business Modeler Guide" of the "ENOVIA Studio Modeling Platform".
 
 ----
 
