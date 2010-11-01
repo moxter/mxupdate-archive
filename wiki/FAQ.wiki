@@ -165,8 +165,6 @@ persons (including the administration persons).
 For for information see also the configuration item
 [CI_User_PersonAdmin administration person].
 
-<wiki:comment>--------------------------------------------------------------------------------</wiki:comment>
-
 == How could I use !MxUpdate Update together with emxGerLibUpdate? ==
 "!MxUpdate Update" and "emxGerLibUpdate" could be used together within one
 installation. The recommendation is to use only one tool.
@@ -256,11 +254,14 @@ ParameterDef.DMWithAttrRemoveIntAttr.Default = *
 
 == How could I predefine the Installer? ==
 If !MxUpdate is installed the used default name of the installer for
-configuration items without an already defined installer is "The MxUpdate Team".
+configuration items without an already defined installer is "The !MxUpdate Team".
 This value could be changed by defining following property in the mapping:
 {{{
 ParameterDef.DefaultInstaller.Default = YOUR_VALUE
 }}}
+
+== How are symbolic names handled? ==
+Symbolic names are typically defined in the configuration item header
 
 ----
 
