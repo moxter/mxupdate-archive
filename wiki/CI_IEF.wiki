@@ -8,3 +8,5 @@ CAD programs.
  * [CI_IEF_EBOMSyncConfig IEF EBOM Sync Configurations]
  * [CI_IEF_GlobalConfig IEF Global Configurations]
  * [CI_IEF_GlobalRegistry IEF Global Registries]
+ * [CI_IEF_MassPromoteConfig IEF Mass Promote Configuration]
+ * [CI_IEF_UnassignedRegistry IEF Unassigned Registries]
