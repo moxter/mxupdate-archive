@@ -26,7 +26,7 @@ settings:
 || org.mxupdate.mx.user          || User for the login. ||
 || org.mxupdate.mx.password      || Password for the login. ||
 || org.mxupdate.mx.jar.ematrix   || File path for the {{{eMatrixServletRMI.jar}}} file. ||
-|| org.mxupdate.mx.jar.fcsclient || File path for the {{{FcsClient.jar}}} file. ||
+|| org.mxupdate.mx.jar.m1jsystem || File path for the {{{m1jsystem.jar}}} file. ||
 
 *Example:*
 The MX Jar libraries are located in the Eclipse {{{mxupdate}}} project
@@ -48,7 +48,7 @@ Tool.
         <org.mxupdate.mx.user>creator</org.mxupdate.mx.user>
         <org.mxupdate.mx.password></org.mxupdate.mx.password>
         <org.mxupdate.mx.jar.ematrix>${basedir}/../mxupdate/lib/eMatrixServletRMI.${mxversion}.jar</org.mxupdate.mx.jar.ematrix>
-        <org.mxupdate.mx.jar.fcsclient>${basedir}/../mxupdate/lib/FcsClient.${mxversion}.jar</org.mxupdate.mx.jar.fcsclient>
+        <org.mxupdate.mx.jar.m1jsystem>${basedir}/../mxupdate/lib/m1jsystem.${mxversion}.jar</org.mxupdate.mx.jar.m1jsystem>
       </properties>
     </profile>
        :

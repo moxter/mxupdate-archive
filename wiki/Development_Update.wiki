@@ -13,7 +13,7 @@ Prerequisites is that the Maven settings are already defined (as described in
   * Update Maven dependencies.
 
 The Maven dependencies are updated and the {{{eMatrixServletRMI.jar}}} and
-{{{FcsClient.jar}}} are added (which should be checked).
+{{{m1jsystem.jar}}} are added (which should be checked).
 
 ----
 
