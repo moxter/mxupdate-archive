@@ -62,7 +62,9 @@ TOKEN : /** first level */
   | <FORMAT:          "format">           : LALL_EXPECTED
   | <STORE:           "store">            : S_EXPECTED
   | <DEFAULTFORMAT:   "defaultformat">    : S_EXPECTED
+  | <DELIMITER:       "delimiter">        : S_EXPECTED
   | <SEQUENCE:        "sequence">         : S_EXPECTED
+  | <MAJORSEQUENCE:   "majorsequence">    : S_EXPECTED
   | <HIDDEN:          "hidden">           : B_EXPECTED
   | <STATE:           "state">            : S_EXPECTED
   | <ALLSTATE:        "allstate">         : DEFAULT
@@ -72,6 +74,7 @@ TOKEN : /** State and depending signature and trigger Tokens */
 {
       <REGISTEREDNAME:  "registeredName">   : S_EXPECTED
     | <REVISION:        "revision">         : B_EXPECTED
+    | <MAJORREVISION:   "majorrevision">    : B_EXPECTED
     | <VERSION:         "version">          : B_EXPECTED
     | <PROMOTE:         "promote">          : B_EXPECTED
     | <CHECKOUTHISTORY: "checkouthistory">  : B_EXPECTED
@@ -218,7 +221,9 @@ Policy_mxJPO policy(final ParameterCache_mxJPO _paramCache,
       | ( format(policy) )
       | ( type(policy) )
       | ( <DEFAULTFORMAT>  tmp = sString()     {this.getField(policy, "defaultFormat").set(tmp);} )
+      | ( <DELIMITER>      tmp = sString()     {this.getField(policy, "delimiter").set(tmp);} )
       | ( <SEQUENCE>       tmp = sString()     {this.getField(policy, "sequence").set(tmp);} )
+      | ( <MAJORSEQUENCE>  tmp = sString()     {this.getField(policy, "majorsequence").set(tmp);} )
       | ( <STORE>          tmp = sString()     {this.getField(policy, "store").set(tmp);} )
       | ( <HIDDEN>         ( <BOOLEAN_TRUE>    {this.getField(policy, "hidden").set(true);}
                           | <BOOLEAN_FALSE>    {this.getField(policy, "hidden").set(false);} ) )
@@ -308,6 +313,8 @@ void state(final Policy_mxJPO _policy) : {
         ( (<REGISTEREDNAME>     tmpStr = sString()  {this.appendValue(state, "symbolicNames", tmpStr);})
         | (<REVISION>           ( <BOOLEAN_TRUE>    {this.getField(state, "revisionable").set(true);}
                                 | <BOOLEAN_FALSE>   {this.getField(state, "revisionable").set(false);} ) )
+        | (<MAJORREVISION>      ( <BOOLEAN_TRUE>    {this.getField(state, "majorrevisionable").set(true);}
+                                | <BOOLEAN_FALSE>   {this.getField(state, "majorrevisionable").set(false);} ) )
         | (<VERSION>            ( <BOOLEAN_TRUE>    {this.getField(state, "versionable").set(true);}
                                 | <BOOLEAN_FALSE>   {this.getField(state, "versionable").set(false);} ) )
         | (<PROMOTE>            ( <BOOLEAN_TRUE>    {this.getField(state, "autoPromotion").set(true);}
