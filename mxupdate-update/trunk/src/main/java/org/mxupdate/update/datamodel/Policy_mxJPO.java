@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -83,12 +84,15 @@ public class Policy_mxJPO
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/publicRevoke/access");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/userAccessList");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/userAccessList/userAccess/access");
+        Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/userAccessList/userAccess/matchOrganization");
+        Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/userAccessList/userAccess/matchProject");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/signatureDefList");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/signatureDefList/signatureDef/approveUserList");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/signatureDefList/signatureDef/ignoreUserList");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/signatureDefList/signatureDef/rejectUserList");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/actionProgram");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/checkProgram");
+        Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/published");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/routeUser");
         Policy_mxJPO.IGNORED_URLS.add("/stateDefList/stateDef/triggerList");
     }
@@ -137,9 +141,19 @@ public class Policy_mxJPO
     private boolean allFormats;
 
     /**
-     * Sequence of this policy.
+     * Minor Sequence of this policy.
      */
     private String sequence = null;
+
+    /**
+     * Major Sequence of this policy.
+     */
+    private String majorsequence = null;
+
+    /**
+     * Delimiter between Major and Minor Name.
+     */
+    private String delimiter = null;
 
     /**
      * Store of this policy.
@@ -220,8 +234,14 @@ public class Policy_mxJPO
             this.allFormats = true;
             parsed = true;
 
+        } else if ("/delimiter".equals(_url))  {
+            this.delimiter = _content;
+            parsed = true;
         } else if ("/sequence".equals(_url))  {
             this.sequence = _content;
+            parsed = true;
+        } else if ("/majorsequence".equals(_url))  {
+            this.majorsequence = _content;
             parsed = true;
 
         } else if ("/storeRef".equals(_url))  {
@@ -324,7 +344,9 @@ public class Policy_mxJPO
                 .append("}");
         }
         _out.append("\n  defaultformat \"").append(StringUtil_mxJPO.convertTcl(this.defaultFormat)).append('\"')
+            .append("\n  delimiter \"").append(StringUtil_mxJPO.convertTcl(this.delimiter)).append('\"')
             .append("\n  sequence \"").append(StringUtil_mxJPO.convertTcl(this.sequence)).append('\"')
+            .append("\n  majorsequence \"").append(StringUtil_mxJPO.convertTcl(this.majorsequence)).append('\"')
             .append("\n  store \"").append(StringUtil_mxJPO.convertTcl(this.store)).append('\"')
             .append("\n  hidden \"").append(Boolean.toString(this.isHidden())).append("\"");
         // all state access
@@ -459,6 +481,7 @@ public class Policy_mxJPO
             }
 
             this.calcValueDelta(cmd, "sequence", policy.sequence, this.sequence);
+            this.calcValueDelta(cmd, "majorsequence", policy.majorsequence, this.majorsequence);
             // hidden flag, because hidden flag must be set with special syntax
             if (this.isHidden() != policy.isHidden())  {
                 cmd.append(' ');
@@ -784,12 +807,33 @@ throw new Exception("some states are not defined anymore!");
 
             } else if ("/userAccessList/userAccess".equals(_url))  {
                 this.userAccess.add(new UserAccessFilter());
+            } else if ("/userAccessList/userAccess/userAccessKind".equals(_url))  {
+                this.userAccess.peek().userAccessKind = _content;
             } else if ("/userAccessList/userAccess/userRef".equals(_url))  {
                 this.userAccess.peek().userRef = _content;
+
             } else if (_url.startsWith("/userAccessList/userAccess/access"))  {
-                this.userAccess.peek().access.add(_url.replaceAll("^/userAccessList/userAccess/access/", "").replaceAll("Access$", "").toLowerCase());
+                if ("user".equals(this.userAccess.peek().userAccessKind))  {
+                    this.userAccess.peek().access.add(_url.replaceAll("^/userAccessList/userAccess/access/", "").replaceAll("Access$", "").toLowerCase());
+                }
+                else if ("public".equals(this.userAccess.peek().userAccessKind))  {
+                    this.publicAccess.access.add(_url.replaceAll("^/userAccessList/userAccess/access/", "").replaceAll("Access$", "").toLowerCase());
+                }
+                else if ("owner".equals(this.userAccess.peek().userAccessKind))  {
+                    this.ownerAccess.access.add(_url.replaceAll("^/userAccessList/userAccess/access/", "").replaceAll("Access$", "").toLowerCase());
+                }
+
             } else if ("/userAccessList/userAccess/expressionFilter".equals(_url))  {
-                this.userAccess.peek().filter = _content;
+                if ("user".equals(this.userAccess.peek().userAccessKind))  {
+                    this.userAccess.peek().filter = _content;
+                }
+                else if ("public".equals(this.userAccess.peek().userAccessKind))  {
+                    this.publicAccess.filter = _content;
+                }
+                else if ("owner".equals(this.userAccess.peek().userAccessKind))  {
+                    this.ownerAccess.filter = _content;
+                }
+
             } else  {
                 ret = false;
             }
@@ -948,9 +992,14 @@ throw new Exception("some states are not defined anymore!");
         private boolean checkoutHistory = false;
 
         /**
-         * Is the business object in this state revisionable?
+         * Is the business object in this state (minor) revisionable?
          */
         private boolean revisionable = false;
+
+        /**
+         * Is the business object in this state major revisionable?
+         */
+        private boolean majorrevisionable = false;
 
         /**
          * Is the business object in this state versionable?
@@ -1003,6 +1052,8 @@ throw new Exception("some states are not defined anymore!");
                 this.checkoutHistory = true;
             } else if ("/revisionable".equals(_url))  {
                 this.revisionable = true;
+            } else if ("/majorrevisionable".equals(_url))  {
+                this.majorrevisionable = true;
             } else if ("/versionable".equals(_url))  {
                 this.versionable = true;
 
@@ -1090,6 +1141,7 @@ throw new Exception("some states are not defined anymore!");
                 }
             }
             _out.append("\n    revision \"").append(Boolean.toString(this.revisionable)).append('\"')
+                .append("\n    majorrevision \"").append(Boolean.toString(this.majorrevisionable)).append('\"')
                 .append("\n    version \"").append(Boolean.toString(this.versionable)).append('\"')
                 .append("\n    promote \"").append(Boolean.toString(this.autoPromotion)).append('\"')
                 .append("\n    checkouthistory \"").append(Boolean.toString(this.checkoutHistory)).append('\"');
@@ -1133,6 +1185,7 @@ throw new Exception("some states are not defined anymore!");
             // basics
             _out.append(" promote ").append(String.valueOf(this.autoPromotion))
                 .append(" revision ").append(String.valueOf(this.revisionable))
+                .append(" majorrevision ").append(String.valueOf(this.majorrevisionable))
                 .append(" checkouthistory ").append(String.valueOf(this.checkoutHistory))
                 .append(" version ").append(String.valueOf(this.versionable))
                 .append(" action \"").append(StringUtil_mxJPO.convertMql(this.actionProgram)).append('\"')
@@ -1207,6 +1260,10 @@ throw new Exception("some states are not defined anymore!");
         private String userRef;
 
         /**
+         * Holds the kind of a user access.
+         */
+        private String userAccessKind;
+        /**
          * Compares this user access instance to another user access instance.
          * Only the user reference {@link #userRef} is used to compare.
          *
@@ -1219,7 +1276,12 @@ throw new Exception("some states are not defined anymore!");
          */
         public int compareTo(final UserAccessFilter _userAccess)
         {
-            return this.userRef.compareTo(_userAccess.userRef);
+            int ret = 0;
+            if (this.userRef != null && _userAccess.userRef != null)
+            {
+                ret = this.userRef.compareTo(_userAccess.userRef);
+            }
+            return ret;
         }
 
         /**
